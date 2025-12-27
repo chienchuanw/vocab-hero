@@ -1,65 +1,76 @@
-import Image from "next/image";
+import { Layout } from '@/components/shared';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { BookOpen, GraduationCap, TrendingUp } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <Layout streak={0}>
+      <div className="space-y-6">
+        {/* Welcome Section */}
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold">Welcome to Vocab Hero</h1>
+          <p className="text-muted-foreground">
+            Start your Japanese vocabulary learning journey today
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Quick Stats */}
+        <div className="grid gap-4 md:grid-cols-3">
+          <Card className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="rounded-lg bg-primary/10 p-3">
+                <BookOpen className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">0</p>
+                <p className="text-sm text-muted-foreground">Total Words</p>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="rounded-lg bg-primary/10 p-3">
+                <GraduationCap className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">0</p>
+                <p className="text-sm text-muted-foreground">Words Mastered</p>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6">
+            <div className="flex items-center gap-4">
+              <div className="rounded-lg bg-primary/10 p-3">
+                <TrendingUp className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">0</p>
+                <p className="text-sm text-muted-foreground">Study Sessions</p>
+              </div>
+            </div>
+          </Card>
         </div>
-      </main>
-    </div>
+
+        {/* Daily Goal */}
+        <Card className="p-6">
+          <h2 className="mb-4 text-xl font-semibold">Daily Goal</h2>
+          <div className="space-y-4">
+            <div>
+              <div className="mb-2 flex items-center justify-between text-sm">
+                <span>Words studied today</span>
+                <span className="font-medium">0 / 10</span>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-secondary">
+                <div className="h-full w-0 bg-primary transition-all" />
+              </div>
+            </div>
+            <Button className="w-full">Start Studying</Button>
+          </div>
+        </Card>
+      </div>
+    </Layout>
   );
 }
