@@ -250,3 +250,153 @@ describe('GET /api/vocabulary', () => {
     expect(data.data.items[0].groups[0].name).toBe('Test Group');
   });
 });
+
+describe('POST /api/vocabulary', () => {
+  beforeEach(async () => {
+    await cleanDatabase();
+  });
+
+  it('should create new vocabulary item with required fields only', async () => {
+    const request = new Request('http://localhost:3000/api/vocabulary', {
+      method: 'POST',
+      body: JSON.stringify({
+        word: 'konnichiwa',
+        reading: 'こんにちは',
+        meaning: 'hello',
+      }),
+    });
+
+    const response = await POST(request as any);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.success).toBe(true);
+    expect(data.data.word).toBe('konnichiwa');
+    expect(data.data.reading).toBe('こんにちは');
+    expect(data.data.meaning).toBe('hello');
+    expect(data.data.id).toBeTruthy();
+  });
+
+  it('should create vocabulary item with all optional fields', async () => {
+    const request = new Request('http://localhost:3000/api/vocabulary', {
+      method: 'POST',
+      body: JSON.stringify({
+        word: 'arigatou',
+        reading: 'ありがとう',
+        meaning: 'thank you',
+        notes: 'Common expression of gratitude',
+      }),
+    });
+
+    const response = await POST(request as any);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.data.notes).toBe('Common expression of gratitude');
+  });
+
+  it('should create vocabulary item with example sentences', async () => {
+    const request = new Request('http://localhost:3000/api/vocabulary', {
+      method: 'POST',
+      body: JSON.stringify({
+        word: 'taberu',
+        reading: 'たべる',
+        meaning: 'to eat',
+        exampleSentences: [
+          {
+            sentence: 'ごはんを食べます',
+            reading: 'ごはんをたべます',
+            meaning: 'I eat rice',
+            order: 1,
+          },
+        ],
+      }),
+    });
+
+    const response = await POST(request as any);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.data.exampleSentences).toHaveLength(1);
+    expect(data.data.exampleSentences[0].sentence).toBe('ごはんを食べます');
+  });
+
+  it('should create vocabulary item with group associations', async () => {
+    const user = await prisma.user.create({
+      data: { email: 'test@example.com', name: 'Test User' },
+    });
+
+    const group = await prisma.vocabularyGroup.create({
+      data: { name: 'JLPT N5', userId: user.id },
+    });
+
+    const request = new Request('http://localhost:3000/api/vocabulary', {
+      method: 'POST',
+      body: JSON.stringify({
+        word: 'neko',
+        reading: 'ねこ',
+        meaning: 'cat',
+        groupIds: [group.id],
+      }),
+    });
+
+    const response = await POST(request as any);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.data.groups).toHaveLength(1);
+    expect(data.data.groups[0].name).toBe('JLPT N5');
+  });
+
+  it('should return 400 for missing required fields', async () => {
+    const request = new Request('http://localhost:3000/api/vocabulary', {
+      method: 'POST',
+      body: JSON.stringify({
+        word: 'test',
+        // missing reading and meaning
+      }),
+    });
+
+    const response = await POST(request as any);
+    const data = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(data.success).toBe(false);
+    expect(data.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('should return 400 for invalid data types', async () => {
+    const request = new Request('http://localhost:3000/api/vocabulary', {
+      method: 'POST',
+      body: JSON.stringify({
+        word: 123, // should be string
+        reading: 'test',
+        meaning: 'test',
+      }),
+    });
+
+    const response = await POST(request as any);
+    const data = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(data.success).toBe(false);
+  });
+
+  it('should return 400 for invalid group ID', async () => {
+    const request = new Request('http://localhost:3000/api/vocabulary', {
+      method: 'POST',
+      body: JSON.stringify({
+        word: 'test',
+        reading: 'test',
+        meaning: 'test',
+        groupIds: ['non-existent-id'],
+      }),
+    });
+
+    const response = await POST(request as any);
+    const data = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(data.success).toBe(false);
+  });
+});
