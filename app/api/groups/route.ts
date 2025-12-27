@@ -1,14 +1,40 @@
 import { NextRequest } from 'next/server';
 import { successResponse, ApiErrors } from '@/lib/api';
+import { prisma } from '@/lib/db/prisma';
 
 /**
  * GET /api/groups
- * Retrieve all vocabulary groups
+ * 取得所有群組列表
+ * 包含每個群組的單字數量統計
  */
 export async function GET(request: NextRequest) {
   try {
-    // TODO: Implement groups retrieval logic
-    return successResponse([]);
+    // 查詢所有群組，包含單字數量統計
+    const groups = await prisma.vocabularyGroup.findMany({
+      include: {
+        _count: {
+          select: {
+            vocabularyItems: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    // 轉換資料格式，將 _count 轉換為 vocabularyCount
+    const groupsWithCount = groups.map((group) => ({
+      id: group.id,
+      name: group.name,
+      description: group.description,
+      userId: group.userId,
+      createdAt: group.createdAt,
+      updatedAt: group.updatedAt,
+      vocabularyCount: group._count.vocabularyItems,
+    }));
+
+    return successResponse(groupsWithCount);
   } catch (error) {
     console.error('Error fetching groups:', error);
     return ApiErrors.INTERNAL_ERROR('Failed to fetch groups');
@@ -29,4 +55,3 @@ export async function POST(request: NextRequest) {
     return ApiErrors.INTERNAL_ERROR('Failed to create group');
   }
 }
-
