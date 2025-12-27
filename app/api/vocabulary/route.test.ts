@@ -183,18 +183,20 @@ describe('GET /api/vocabulary', () => {
   });
 
   it('should support cursor-based pagination', async () => {
-    // Create vocabulary items
-    const items = await Promise.all(
-      Array.from({ length: 5 }, (_, i) =>
-        prisma.vocabularyItem.create({
-          data: {
-            word: `word${i}`,
-            reading: `reading${i}`,
-            meaning: `meaning${i}`,
-          },
-        })
-      )
-    );
+    // Create vocabulary items sequentially to ensure consistent createdAt order
+    const items = [];
+    for (let i = 0; i < 5; i++) {
+      const item = await prisma.vocabularyItem.create({
+        data: {
+          word: `word${i}`,
+          reading: `reading${i}`,
+          meaning: `meaning${i}`,
+        },
+      });
+      items.push(item);
+      // Small delay to ensure different createdAt timestamps
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
 
     // First page
     const request1 = new Request(

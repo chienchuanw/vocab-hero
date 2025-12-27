@@ -12,6 +12,8 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     exclude: ['**/node_modules/**', '**/e2e/**', '**/.git/**'],
+    // Run tests sequentially to avoid database conflicts
+    fileParallelism: false,
     env: {
       // Use test database
       DATABASE_URL:
