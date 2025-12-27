@@ -100,6 +100,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 /**
  * DELETE /api/vocabulary/:id
  * 刪除單字
+ * 會自動級聯刪除關聯的 exampleSentences 和 reviewSchedule
  */
 export async function DELETE(
   request: NextRequest,
@@ -107,8 +108,22 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    // TODO: Implement delete logic
-    return successResponse({ id });
+
+    // 檢查單字是否存在
+    const existingItem = await prisma.vocabularyItem.findUnique({
+      where: { id },
+    });
+
+    if (!existingItem) {
+      return ApiErrors.NOT_FOUND('Vocabulary item not found');
+    }
+
+    // 刪除單字（會自動級聯刪除 exampleSentences 和 reviewSchedule）
+    await prisma.vocabularyItem.delete({
+      where: { id },
+    });
+
+    return successResponse({ id, message: 'Vocabulary item deleted successfully' });
   } catch (error) {
     console.error('Error deleting vocabulary item:', error);
     return ApiErrors.INTERNAL_ERROR('Failed to delete vocabulary item');
