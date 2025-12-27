@@ -30,10 +30,10 @@ export interface VocabularyItem {
  */
 interface VocabularyListResponse {
   success: boolean;
-  data: VocabularyItem[];
-  pagination: {
+  data: {
+    items: VocabularyItem[];
     nextCursor: string | null;
-    hasMore: boolean;
+    hasNextPage: boolean;
   };
 }
 
@@ -71,12 +71,12 @@ export function useVocabulary(params: VocabularyQueryParams = {}) {
         throw new Error('Failed to fetch vocabulary');
       }
 
-      const data: VocabularyListResponse = await response.json();
-      return data;
+      const result: VocabularyListResponse = await response.json();
+      return result.data;
     },
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {
-      return lastPage.pagination.hasMore ? lastPage.pagination.nextCursor : undefined;
+      return lastPage.hasNextPage ? lastPage.nextCursor : undefined;
     },
   });
 }
@@ -106,4 +106,3 @@ export function useVocabularyItem(id: string | undefined) {
     enabled: !!id,
   });
 }
-

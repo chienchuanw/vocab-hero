@@ -67,7 +67,7 @@ export function VocabularyList({ query, onEdit, onDelete }: VocabularyListProps)
   }
 
   // 取得所有頁面的資料
-  const vocabularyItems = data?.pages.flatMap((page: any) => page.data) ?? [];
+  const vocabularyItems = data?.pages.flatMap((page: any) => page.items) ?? [];
 
   // 空狀態
   if (vocabularyItems.length === 0) {
