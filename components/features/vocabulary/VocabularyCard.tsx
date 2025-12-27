@@ -5,7 +5,7 @@ import { Edit, Trash2 } from 'lucide-react';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
 
 /**
- * VocabularyCard 元件的 Props
+ * VocabularyCard component props
  */
 export interface VocabularyCardProps {
   vocabulary: VocabularyItem;
@@ -14,7 +14,7 @@ export interface VocabularyCardProps {
 }
 
 /**
- * 根據 mastery 等級取得對應的顏色
+ * Get mastery level color based on score
  */
 function getMasteryColor(mastery: number): string {
   if (mastery >= 80) return 'bg-green-500';
@@ -25,19 +25,19 @@ function getMasteryColor(mastery: number): string {
 }
 
 /**
- * 根據 mastery 等級取得對應的文字
+ * Get mastery level label based on score
  */
 function getMasteryLabel(mastery: number): string {
-  if (mastery >= 80) return '精通';
-  if (mastery >= 60) return '熟悉';
-  if (mastery >= 40) return '學習中';
-  if (mastery >= 20) return '初學';
-  return '未學習';
+  if (mastery >= 80) return 'Mastered';
+  if (mastery >= 60) return 'Familiar';
+  if (mastery >= 40) return 'Learning';
+  if (mastery >= 20) return 'Beginner';
+  return 'Not Started';
 }
 
 /**
- * VocabularyCard 元件
- * 顯示單一單字的卡片，包含 word, reading, meaning, mastery 顯示
+ * VocabularyCard component
+ * Displays a single vocabulary item card with word, reading, meaning, and mastery level
  */
 export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardProps) {
   return (
@@ -45,11 +45,11 @@ export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardP
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            {/* 單字 */}
+            {/* Word */}
             <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {vocabulary.word}
             </h3>
-            {/* 讀音 */}
+            {/* Reading */}
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{vocabulary.reading}</p>
           </div>
 
@@ -61,29 +61,29 @@ export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardP
       </CardHeader>
 
       <CardContent className="pb-3">
-        {/* 意思 */}
+        {/* Meaning */}
         <p className="text-gray-700 dark:text-gray-300">{vocabulary.meaning}</p>
 
-        {/* 筆記（如果有的話） */}
+        {/* Notes (if any) */}
         {vocabulary.notes && (
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 italic">{vocabulary.notes}</p>
         )}
       </CardContent>
 
       <CardFooter className="flex justify-between items-center pt-3 border-t">
-        {/* 建立時間 */}
+        {/* Created date */}
         <span className="text-xs text-gray-500 dark:text-gray-400">
-          {new Date(vocabulary.createdAt).toLocaleDateString('zh-TW')}
+          {new Date(vocabulary.createdAt).toLocaleDateString('en-US')}
         </span>
 
-        {/* 操作按鈕 */}
+        {/* Action buttons */}
         <div className="flex gap-2">
           {onEdit && (
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onEdit(vocabulary)}
-              aria-label="編輯單字"
+              aria-label="Edit word"
             >
               <Edit className="h-4 w-4" />
             </Button>
@@ -93,7 +93,7 @@ export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardP
               variant="ghost"
               size="sm"
               onClick={() => onDelete(vocabulary)}
-              aria-label="刪除單字"
+              aria-label="Delete word"
               className="text-red-600 hover:text-red-700 hover:bg-red-50"
             >
               <Trash2 className="h-4 w-4" />
@@ -104,4 +104,3 @@ export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardP
     </Card>
   );
 }
-
