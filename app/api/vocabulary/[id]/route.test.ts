@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, PUT, DELETE } from './route';
 import { prisma } from '@/lib/db/prisma';
+import { cleanDatabase } from '@/tests/setup-db';
 
 /**
  * API Route Tests for /api/vocabulary/:id
@@ -9,23 +10,8 @@ import { prisma } from '@/lib/db/prisma';
 
 describe('GET /api/vocabulary/:id', () => {
   beforeEach(async () => {
-    // Clean up database before each test - order matters due to foreign keys
-    await prisma.exampleSentence.deleteMany();
-    await prisma.reviewSchedule.deleteMany();
-    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
-    await prisma.vocabularyItem.deleteMany();
-    await prisma.vocabularyGroup.deleteMany();
-    await prisma.user.deleteMany();
-  });
-
-  afterEach(async () => {
-    // Clean up after each test - order matters due to foreign keys
-    await prisma.exampleSentence.deleteMany();
-    await prisma.reviewSchedule.deleteMany();
-    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
-    await prisma.vocabularyItem.deleteMany();
-    await prisma.vocabularyGroup.deleteMany();
-    await prisma.user.deleteMany();
+    // Clean database before each test
+    await cleanDatabase();
   });
 
   it('should return vocabulary item with all related data', async () => {
@@ -141,21 +127,7 @@ describe('GET /api/vocabulary/:id', () => {
 
 describe('PUT /api/vocabulary/:id', () => {
   beforeEach(async () => {
-    await prisma.exampleSentence.deleteMany();
-    await prisma.reviewSchedule.deleteMany();
-    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
-    await prisma.vocabularyItem.deleteMany();
-    await prisma.vocabularyGroup.deleteMany();
-    await prisma.user.deleteMany();
-  });
-
-  afterEach(async () => {
-    await prisma.exampleSentence.deleteMany();
-    await prisma.reviewSchedule.deleteMany();
-    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
-    await prisma.vocabularyItem.deleteMany();
-    await prisma.vocabularyGroup.deleteMany();
-    await prisma.user.deleteMany();
+    await cleanDatabase();
   });
 
   it('should update vocabulary item successfully', async () => {
@@ -258,21 +230,7 @@ describe('PUT /api/vocabulary/:id', () => {
 
 describe('DELETE /api/vocabulary/:id', () => {
   beforeEach(async () => {
-    await prisma.exampleSentence.deleteMany();
-    await prisma.reviewSchedule.deleteMany();
-    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
-    await prisma.vocabularyItem.deleteMany();
-    await prisma.vocabularyGroup.deleteMany();
-    await prisma.user.deleteMany();
-  });
-
-  afterEach(async () => {
-    await prisma.exampleSentence.deleteMany();
-    await prisma.reviewSchedule.deleteMany();
-    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
-    await prisma.vocabularyItem.deleteMany();
-    await prisma.vocabularyGroup.deleteMany();
-    await prisma.user.deleteMany();
+    await cleanDatabase();
   });
 
   it('should delete vocabulary item successfully', async () => {

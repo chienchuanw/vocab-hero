@@ -12,6 +12,12 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     exclude: ['**/node_modules/**', '**/e2e/**', '**/.git/**'],
+    env: {
+      // Use test database
+      DATABASE_URL:
+        'postgresql://postgres:postgres@localhost:5432/db_vocab_hero_test?schema=public',
+    },
+    setupFiles: ['./tests/setup-db.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/db/prisma';
+import { cleanDatabase } from '@/tests/setup-db';
 
 /**
  * API Route Tests for /api/vocabulary
@@ -9,23 +10,8 @@ import { prisma } from '@/lib/db/prisma';
 
 describe('GET /api/vocabulary', () => {
   beforeEach(async () => {
-    // Clean up database before each test - order matters due to foreign keys
-    await prisma.exampleSentence.deleteMany();
-    await prisma.reviewSchedule.deleteMany();
-    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
-    await prisma.vocabularyItem.deleteMany();
-    await prisma.vocabularyGroup.deleteMany();
-    await prisma.user.deleteMany();
-  });
-
-  afterEach(async () => {
-    // Clean up after each test - order matters due to foreign keys
-    await prisma.exampleSentence.deleteMany();
-    await prisma.reviewSchedule.deleteMany();
-    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
-    await prisma.vocabularyItem.deleteMany();
-    await prisma.vocabularyGroup.deleteMany();
-    await prisma.user.deleteMany();
+    // Clean database before each test
+    await cleanDatabase();
   });
 
   it('should return empty array when no vocabulary items exist', async () => {
