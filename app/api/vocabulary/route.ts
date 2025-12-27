@@ -123,15 +123,58 @@ export async function GET(request: NextRequest) {
 
 /**
  * POST /api/vocabulary
- * Create a new vocabulary item
+ * 新增單字
+ * 支援同時新增 exampleSentences 和關聯 groups
  */
 export async function POST(request: NextRequest) {
   try {
-    // TODO: Implement vocabulary creation logic
     const body = await request.json();
-    return successResponse({ id: 'placeholder' }, 201);
+
+    // 使用 Zod 驗證輸入
+    const { createVocabularySchema } = await import('@/lib/validations');
+    const validationResult = createVocabularySchema.safeParse(body);
+
+    if (!validationResult.success) {
+      return ApiErrors.VALIDATION_ERROR('Invalid input data', validationResult.error.flatten());
+    }
+
+    const { exampleSentences, groupIds, ...vocabularyData } = validationResult.data;
+
+    // 建立單字資料，包含關聯的 exampleSentences 和 groups
+    const vocabularyItem = await prisma.vocabularyItem.create({
+      data: {
+        ...vocabularyData,
+        exampleSentences: exampleSentences
+          ? {
+              create: exampleSentences,
+            }
+          : undefined,
+        groups: groupIds
+          ? {
+              connect: groupIds.map((id) => ({ id })),
+            }
+          : undefined,
+      },
+      include: {
+        exampleSentences: true,
+        groups: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    return successResponse(vocabularyItem, 201);
   } catch (error) {
     console.error('Error creating vocabulary:', error);
+
+    // 處理 Prisma 錯誤
+    if (error instanceof Error && error.message.includes('Foreign key constraint')) {
+      return ApiErrors.BAD_REQUEST('Invalid group ID provided');
+    }
+
     return ApiErrors.INTERNAL_ERROR('Failed to create vocabulary');
   }
 }
