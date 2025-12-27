@@ -7,6 +7,7 @@ import { Plus } from 'lucide-react';
 import { GroupList } from '@/components/features/groups/GroupList';
 import { AddGroupDialog } from '@/components/features/groups/AddGroupDialog';
 import { EditGroupDialog } from '@/components/features/groups/EditGroupDialog';
+import { DeleteGroupDialog } from '@/components/features/groups/DeleteGroupDialog';
 import { useGroups, type Group } from '@/hooks/useGroups';
 
 /**
@@ -17,6 +18,7 @@ export default function GroupsPage() {
   // Dialog state
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
 
   // Data query
@@ -26,6 +28,12 @@ export default function GroupsPage() {
   const handleEdit = (group: Group) => {
     setSelectedGroup(group);
     setEditDialogOpen(true);
+  };
+
+  // Handle delete
+  const handleDelete = (group: Group) => {
+    setSelectedGroup(group);
+    setDeleteDialogOpen(true);
   };
 
   // Handle group click - navigate to group detail (future implementation)
@@ -41,9 +49,7 @@ export default function GroupsPage() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold">Groups</h1>
-            <p className="text-muted-foreground mt-1">
-              Organize your vocabulary into groups
-            </p>
+            <p className="text-muted-foreground mt-1">Organize your vocabulary into groups</p>
           </div>
           <Button onClick={() => setAddDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
@@ -55,6 +61,7 @@ export default function GroupsPage() {
         <GroupList
           query={groupsQuery}
           onEdit={handleEdit}
+          onDelete={handleDelete}
           onClick={handleGroupClick}
         />
 
@@ -65,8 +72,12 @@ export default function GroupsPage() {
           onOpenChange={setEditDialogOpen}
           group={selectedGroup}
         />
+        <DeleteGroupDialog
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
+          group={selectedGroup}
+        />
       </div>
     </Layout>
   );
 }
-
