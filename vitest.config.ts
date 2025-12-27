@@ -11,14 +11,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'tests/',
-        '**/*.config.*',
-        '**/*.d.ts',
-        '**/types/',
-        '.next/',
-      ],
+      exclude: ['node_modules/', 'tests/', '**/*.config.*', '**/*.d.ts', '**/types/', '.next/'],
       thresholds: {
         lines: 80,
         functions: 80,
@@ -33,4 +26,3 @@ export default defineConfig({
     },
   },
 });
-
