@@ -42,3 +42,11 @@ next-env.d.ts
 
 # augment
 /.augment
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
