@@ -18,18 +18,19 @@
 - All 15 tasks completed successfully
 - Last updated: 2025-12-27
 
-**Phase 2: Vocabulary Management** 🚀 **IN PROGRESS** (40%)
+**Phase 2: Vocabulary Management** ✅ **COMPLETED** (100%)
 
 - ✅ Vocabulary CRUD frontend components completed
 - ✅ Groups CRUD frontend components completed
 - ✅ UI fully translated to English
-- ⏳ Vocabulary Backend API (7 tasks remaining)
-- ⏳ Groups Backend API (7 tasks remaining)
+- ✅ Vocabulary Backend API - 30 tests, 100% pass rate
+- ✅ Groups Backend API - 19 tests, 100% pass rate
+- ✅ React hooks connected to real APIs (no mock data)
 - 📋 Example Sentences deferred to Phase 2.5
 - 📋 Drag-and-drop deferred to Phase 11
 - Last updated: 2025-12-27
 
-**Current Status**: Ready to implement Vocabulary and Groups Backend APIs
+**Current Status**: Backend APIs complete and fully tested. Ready for Phase 3 (Frontend Components)
 
 ---
 
@@ -127,17 +128,17 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 2: Vocabulary Management 🚀 IN PROGRESS (40%)
+## Phase 2: Vocabulary Management ✅ COMPLETED (100%)
 
-### 2.1 Vocabulary CRUD - Backend
+### 2.1 Vocabulary CRUD - Backend ✅ COMPLETED
 
-- [ ] Create Zod validation schemas for vocabulary
-- [ ] Create GET /api/vocabulary endpoint (list all with filtering)
-- [ ] Create GET /api/vocabulary/:id endpoint (single item)
-- [ ] Create POST /api/vocabulary endpoint (create)
-- [ ] Create PUT /api/vocabulary/:id endpoint (update)
-- [ ] Create DELETE /api/vocabulary/:id endpoint (delete)
-- [ ] Write API integration tests for vocabulary endpoints
+- [x] Create Zod validation schemas for vocabulary
+- [x] Create GET /api/vocabulary endpoint (list all with filtering)
+- [x] Create GET /api/vocabulary/:id endpoint (single item)
+- [x] Create POST /api/vocabulary endpoint (create)
+- [x] Create PUT /api/vocabulary/:id endpoint (update)
+- [x] Create DELETE /api/vocabulary/:id endpoint (delete)
+- [x] Write API integration tests for vocabulary endpoints (30 tests, 100% pass rate)
 
 ### 2.2 Vocabulary CRUD - Frontend ✅ COMPLETED
 
@@ -151,15 +152,15 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [x] Write component unit tests
 - [x] Translate all UI text to English
 
-### 2.3 Groups CRUD - Backend
+### 2.3 Groups CRUD - Backend ✅ COMPLETED
 
-- [ ] Create Zod validation schemas for groups
-- [ ] Create GET /api/groups endpoint (list all with vocabulary count)
-- [ ] Create GET /api/groups/:id endpoint (single group with vocabularies)
-- [ ] Create POST /api/groups endpoint (create)
-- [ ] Create PUT /api/groups/:id endpoint (update)
-- [ ] Create DELETE /api/groups/:id endpoint (delete)
-- [ ] Write API integration tests for groups endpoints
+- [x] Create Zod validation schemas for groups
+- [x] Create GET /api/groups endpoint (list all with vocabulary count)
+- [x] Create GET /api/groups/:id endpoint (single group with vocabularies)
+- [x] Create POST /api/groups endpoint (create)
+- [x] Create PUT /api/groups/:id endpoint (update)
+- [x] Create DELETE /api/groups/:id endpoint (delete)
+- [x] Write API integration tests for groups endpoints (19 tests, 100% pass rate)
 
 ### 2.4 Groups CRUD - Frontend ✅ COMPLETED
 
@@ -174,18 +175,55 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 > **Note**: This feature is deferred until core CRUD functionality is complete.
 > Will use kuroshiro or similar library for furigana support.
+> Backend support for example sentences is already implemented in Phase 2.
 
-- [ ] Add example sentences field to VocabularyItem model
 - [ ] Create ExampleSentence component with word highlighting
-- [ ] Implement add/edit/delete example sentences
+- [ ] Implement add/edit/delete example sentences UI
 - [ ] Create example sentence display with furigana support (using kuroshiro)
 - [ ] Write tests for example sentence functionality
+- [ ] Integrate example sentences into vocabulary management UI
 
 ---
 
-## Phase 3: Spaced Repetition System (SM-2)
+## Phase 3: Frontend Components and Integration 🚀 READY TO START
 
-### 3.1 SM-2 Algorithm Implementation
+> **Note**: Backend APIs are complete with 49 passing tests. React hooks are implemented and connected to real APIs.
+
+### 3.1 Vocabulary Management UI
+
+- [ ] Create vocabulary list page with backend integration
+- [ ] Create vocabulary card component with real data display
+- [ ] Create add vocabulary form connected to POST API
+- [ ] Create edit vocabulary modal connected to PUT API
+- [ ] Create delete confirmation dialog connected to DELETE API
+- [ ] Implement search functionality using backend filtering
+- [ ] Implement sorting and pagination using backend features
+- [ ] Write component integration tests with real API calls
+
+### 3.2 Groups Management UI
+
+- [ ] Create groups list page with backend integration
+- [ ] Create group card component with vocabulary count display
+- [ ] Create add group dialog connected to POST API
+- [ ] Create edit group dialog connected to PUT API
+- [ ] Create delete group dialog connected to DELETE API
+- [ ] Display vocabulary items within each group
+- [ ] Write component integration tests with real API calls
+
+### 3.3 E2E Testing and Validation
+
+- [ ] Write E2E tests for complete vocabulary CRUD workflow
+- [ ] Write E2E tests for complete groups CRUD workflow
+- [ ] Test error handling (network errors, validation errors)
+- [ ] Test loading states and empty states
+- [ ] Test data persistence and refresh behavior
+- [ ] Verify all React hooks work correctly with UI components
+
+---
+
+## Phase 4: Spaced Repetition System (SM-2)
+
+### 4.1 SM-2 Algorithm Implementation
 
 - [ ] Research and document SM-2 algorithm
 - [ ] Create SM-2 calculation utility (lib/srs/sm2.ts)
@@ -195,7 +233,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create quality rating system (0-5)
 - [ ] Write comprehensive unit tests for SM-2
 
-### 3.2 Review Schedule Management
+### 4.2 Review Schedule Management
 
 - [ ] Create ReviewSchedule database operations
 - [ ] Implement due vocabulary query
@@ -204,7 +242,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create API endpoints for review data
 - [ ] Write integration tests
 
-### 3.3 Mastery Level Display
+### 4.3 Mastery Level Display
 
 - [ ] Define mastery level thresholds
 - [ ] Create MasteryIndicator component (color-coded)
@@ -214,9 +252,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 4: Study Modes - Flashcard
+## Phase 5: Study Modes - Flashcard
 
-### 4.1 Flashcard Mode - Core
+### 5.1 Flashcard Mode - Core
 
 - [ ] Create FlashcardStudy page
 - [ ] Create Flashcard component with flip animation
@@ -226,7 +264,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Implement quality rating buttons (1-5)
 - [ ] Write component tests
 
-### 4.2 Flashcard Mode - Session Management
+### 5.2 Flashcard Mode - Session Management
 
 - [ ] Create StudySession model operations
 - [ ] Implement session start/end logic
@@ -238,9 +276,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 5: Study Modes - Quiz
+## Phase 6: Study Modes - Quiz
 
-### 5.1 Multiple Choice Quiz
+### 6.1 Multiple Choice Quiz
 
 - [ ] Create QuizStudy page
 - [ ] Create MultipleChoiceQuestion component
@@ -252,7 +290,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create quiz summary screen
 - [ ] Write component and integration tests
 
-### 5.2 Spelling Quiz
+### 6.2 Spelling Quiz
 
 - [ ] Create SpellingQuiz component
 - [ ] Display meaning/reading, user types Japanese word
@@ -262,7 +300,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create visual feedback for correct/incorrect characters
 - [ ] Write tests for spelling validation
 
-### 5.3 Matching Game
+### 6.3 Matching Game
 
 - [ ] Create MatchingGame page
 - [ ] Create MatchingCard component
@@ -274,7 +312,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create game completion screen
 - [ ] Write E2E tests for matching game
 
-### 5.4 Random Quiz Mode
+### 6.4 Random Quiz Mode
 
 - [ ] Create RandomQuiz page
 - [ ] Implement vocabulary selection across all groups
@@ -286,9 +324,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 6: Audio and Pronunciation
+## Phase 7: Audio and Pronunciation
 
-### 6.1 Text-to-Speech (TTS)
+### 7.1 Text-to-Speech (TTS)
 
 - [ ] Create TTS utility using Web Speech API (lib/tts/)
 - [ ] Implement Japanese voice selection
@@ -300,7 +338,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Handle TTS unavailability gracefully
 - [ ] Write tests with TTS mocking
 
-### 6.2 Listening Quiz
+### 7.2 Listening Quiz
 
 - [ ] Create ListeningQuiz page
 - [ ] Play audio, user selects correct meaning
@@ -309,7 +347,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create listening-specific scoring
 - [ ] Write tests for listening mode
 
-### 6.3 Audio Recording and Comparison
+### 7.3 Audio Recording and Comparison
 
 - [ ] Implement microphone access with MediaRecorder API
 - [ ] Create RecordButton component
@@ -321,9 +359,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 7: Progress Tracking
+## Phase 8: Progress Tracking
 
-### 7.1 Daily Progress Log
+### 8.1 Daily Progress Log
 
 - [ ] Create ProgressLog database operations
 - [ ] Track daily: words studied, new words, review words
@@ -331,7 +369,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create progress logging middleware
 - [ ] Write tests for progress logging
 
-### 7.2 GitHub-style Contribution Wall
+### 9.2 GitHub-style Contribution Wall
 
 - [ ] Create ContributionWall component
 - [ ] Implement 365-day grid display
@@ -341,7 +379,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Implement year navigation
 - [ ] Write component tests
 
-### 7.3 Statistics Dashboard
+### 9.3 Statistics Dashboard
 
 - [ ] Create ProgressDashboard page
 - [ ] Create StatCard component (total words, mastery rate, etc.)
@@ -351,7 +389,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create weekly/monthly/yearly view toggle
 - [ ] Write tests for statistics calculations
 
-### 7.4 Streak Tracking
+### 9.4 Streak Tracking
 
 - [ ] Implement streak calculation logic
 - [ ] Create StreakDisplay component
@@ -362,9 +400,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 8: Daily Goals and Reminders
+## Phase 9: Daily Goals and Reminders
 
-### 8.1 Goal Setting
+### 9.1 Goal Setting
 
 - [ ] Create DailyGoal model and API endpoints
 - [ ] Create GoalSettings page
@@ -373,7 +411,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Store and retrieve user goals
 - [ ] Write tests for goal management
 
-### 8.2 Goal Progress Display
+### 9.2 Goal Progress Display
 
 - [ ] Create GoalProgressBar component
 - [ ] Display progress on dashboard and home page
@@ -381,7 +419,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Implement goal reset at midnight
 - [ ] Write component tests
 
-### 8.3 In-App Notifications
+### 9.3 In-App Notifications
 
 - [ ] Create NotificationCenter component
 - [ ] Implement reminder notifications for study time
@@ -390,7 +428,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Implement notification preferences
 - [ ] Write tests for notification logic
 
-### 8.4 Browser Push Notifications
+### 9.4 Browser Push Notifications
 
 - [ ] Implement Service Worker for push notifications
 - [ ] Create notification permission request flow
@@ -401,9 +439,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 9: Data Import/Export
+## Phase 10: Data Import/Export
 
-### 9.1 Export Functionality
+### 10.1 Export Functionality
 
 - [ ] Create export API endpoint
 - [ ] Implement JSON export format
@@ -413,7 +451,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Include study progress in export
 - [ ] Write tests for export functionality
 
-### 9.2 Import Functionality
+### 10.2 Import Functionality
 
 - [ ] Create import API endpoint
 - [ ] Implement JSON import parser
@@ -425,7 +463,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Handle import errors gracefully
 - [ ] Write tests for import functionality
 
-### 9.3 Anki Deck Import (Optional)
+### 10.3 Anki Deck Import (Optional)
 
 - [ ] Research Anki deck format (.apkg)
 - [ ] Implement Anki deck parser
@@ -435,9 +473,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 10: Settings and Preferences
+## Phase 11: Settings and Preferences
 
-### 10.1 User Preferences
+### 11.1 User Preferences
 
 - [ ] Create Settings page
 - [ ] Implement theme settings (light/dark mode)
@@ -447,7 +485,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Store preferences in database
 - [ ] Write tests for settings
 
-### 10.2 Data Management
+### 11.2 Data Management
 
 - [ ] Create data management section in settings
 - [ ] Implement "Reset Progress" functionality
@@ -458,9 +496,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 11: UI/UX Polish
+## Phase 12: UI/UX Polish
 
-### 11.1 Animations and Transitions
+### 12.1 Animations and Transitions
 
 - [ ] Add page transition animations
 - [ ] Implement card flip animations
@@ -469,7 +507,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Implement micro-interactions for buttons
 - [ ] Optimize animation performance
 
-### 11.2 Responsive Design
+### 12.2 Responsive Design
 
 - [ ] Audit all pages for mobile responsiveness
 - [ ] Optimize touch interactions
@@ -478,7 +516,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Test on various screen sizes
 - [ ] Write visual regression tests
 
-### 11.3 Drag-and-Drop Functionality
+### 12.3 Drag-and-Drop Functionality
 
 > **Note**: Deferred from Phase 2 for better UX polish
 
@@ -489,7 +527,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Add touch support for mobile drag-and-drop
 - [ ] Write tests for drag-and-drop functionality
 
-### 11.4 Accessibility
+### 12.4 Accessibility
 
 - [ ] Audit with accessibility tools (axe, Lighthouse)
 - [ ] Ensure keyboard navigation works everywhere
@@ -498,7 +536,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Ensure sufficient color contrast
 - [ ] Add skip links and focus management
 
-### 11.5 Error Handling and Edge Cases
+### 12.5 Error Handling and Edge Cases
 
 - [ ] Implement global error boundary
 - [ ] Create user-friendly error pages (404, 500)
@@ -509,9 +547,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 12: Performance Optimization
+## Phase 13: Performance Optimization
 
-### 12.1 Frontend Performance
+### 13.1 Frontend Performance
 
 - [ ] Implement code splitting for study modes
 - [ ] Optimize bundle size (analyze with webpack-bundle-analyzer)
@@ -520,7 +558,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Optimize React re-renders
 - [ ] Implement virtualized lists for large datasets
 
-### 12.2 Backend Performance
+### 13.2 Backend Performance
 
 - [ ] Add database indexes for common queries
 - [ ] Implement query optimization
@@ -528,7 +566,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Optimize API response payload sizes
 - [ ] Implement pagination for list endpoints
 
-### 12.3 Performance Testing
+### 13.3 Performance Testing
 
 - [ ] Set up Lighthouse CI
 - [ ] Create performance benchmarks
@@ -538,9 +576,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 13: Testing and Quality Assurance
+## Phase 14: Testing and Quality Assurance
 
-### 13.1 Test Coverage
+### 14.1 Test Coverage
 
 - [ ] Achieve 80% overall code coverage
 - [ ] 100% coverage for SM-2 algorithm
@@ -548,7 +586,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Full E2E coverage for critical paths
 - [ ] Write integration tests for all API routes
 
-### 13.2 Cross-Browser Testing
+### 14.2 Cross-Browser Testing
 
 - [ ] Test on Chrome
 - [ ] Test on Firefox
@@ -556,7 +594,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Test on Edge
 - [ ] Document browser-specific issues
 
-### 13.3 Manual QA
+### 14.3 Manual QA
 
 - [ ] Create QA test cases document
 - [ ] Perform full application walkthrough
@@ -566,16 +604,16 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 14: Documentation
+## Phase 15: Documentation
 
-### 14.1 User Documentation
+### 15.1 User Documentation
 
 - [ ] Create user guide
 - [ ] Document all study modes
 - [ ] Create FAQ section
 - [ ] Add tooltips and onboarding hints in-app
 
-### 14.2 Technical Documentation
+### 15.2 Technical Documentation
 
 - [ ] Document API endpoints
 - [ ] Document database schema
@@ -585,9 +623,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 15: Deployment and Launch
+## Phase 16: Deployment and Launch
 
-### 15.1 Production Setup
+### 16.1 Production Setup
 
 - [ ] Configure production database (Neon/Supabase)
 - [ ] Set up production environment variables
@@ -595,7 +633,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Set up error monitoring (Sentry or similar)
 - [ ] Configure analytics (optional)
 
-### 15.2 Pre-Launch Checklist
+### 16.2 Pre-Launch Checklist
 
 - [ ] Final security audit
 - [ ] Performance audit (Lighthouse score > 90)
@@ -604,7 +642,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] All tests passing
 - [ ] Documentation complete
 
-### 15.3 Launch
+### 16.3 Launch
 
 - [ ] Deploy to production
 - [ ] Verify production deployment
@@ -613,9 +651,9 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 16: Mobile Application (PWA)
+## Phase 17: Mobile Application (PWA)
 
-### 16.1 PWA Setup
+### 17.1 PWA Setup
 
 - [ ] Create web app manifest
 - [ ] Configure service worker for offline support
@@ -623,7 +661,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Add splash screen and app icons
 - [ ] Test PWA installation on mobile devices
 
-### 16.2 Offline Functionality
+### 17.2 Offline Functionality
 
 - [ ] Implement offline data storage (IndexedDB)
 - [ ] Create offline-first study mode
@@ -631,7 +669,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Handle sync conflicts
 - [ ] Write tests for offline functionality
 
-### 16.3 Mobile-Specific Features
+### 17.3 Mobile-Specific Features
 
 - [ ] Optimize touch interactions
 - [ ] Implement haptic feedback
@@ -641,15 +679,15 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 17: Native Mobile App (Future)
+## Phase 18: Native Mobile App (Future)
 
-### 17.1 Technology Selection
+### 18.1 Technology Selection
 
 - [ ] Evaluate React Native vs Expo vs Capacitor
 - [ ] Set up mobile development environment
 - [ ] Create project structure
 
-### 17.2 Core App Development
+### 18.2 Core App Development
 
 - [ ] Port core components to mobile
 - [ ] Implement native navigation
@@ -657,7 +695,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Implement native TTS
 - [ ] Create native notifications
 
-### 17.3 App Store Deployment
+### 18.3 App Store Deployment
 
 - [ ] Prepare app store assets (icons, screenshots)
 - [ ] Create app store descriptions
@@ -669,7 +707,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ## Summary
 
-### Total Phases: 17
+### Total Phases: 18
 
 ### Estimated Tasks: 250+
 
@@ -677,16 +715,17 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 1. Phases 0-4: Core functionality (must have)
 2. Phases 5-8: Enhanced learning features (must have)
-3. Phases 9-10: Data management (must have)
-4. Phases 11-14: Polish and quality (should have)
-5. Phases 15-16: Deployment and PWA (must have)
-6. Phase 17: Native app (future enhancement)
+3. Phases 9-11: Data management and settings (must have)
+4. Phases 12-15: Polish and quality (should have)
+5. Phases 16-17: Deployment and PWA (must have)
+6. Phase 18: Native app (future enhancement)
 
 ### Key Milestones
 
-- **Milestone 1**: Basic vocabulary management working (Phase 2 complete)
-- **Milestone 2**: Flashcard study mode working (Phase 4 complete)
-- **Milestone 3**: All study modes working (Phase 6 complete)
-- **Milestone 4**: Full progress tracking (Phase 8 complete)
-- **Milestone 5**: Production-ready web app (Phase 15 complete)
-- **Milestone 6**: Mobile app available (Phase 16/17 complete)
+- **Milestone 1**: Basic vocabulary management working (Phase 2 complete ✅)
+- **Milestone 2**: Frontend components integrated (Phase 3 complete)
+- **Milestone 3**: Flashcard study mode working (Phase 5 complete)
+- **Milestone 4**: All study modes working (Phase 7 complete)
+- **Milestone 5**: Full progress tracking (Phase 8 complete)
+- **Milestone 6**: Production-ready web app (Phase 16 complete)
+- **Milestone 7**: Mobile app available (Phase 17/18 complete)
