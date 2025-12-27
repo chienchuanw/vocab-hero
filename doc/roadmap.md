@@ -18,7 +18,15 @@
 - All 15 tasks completed successfully
 - Last updated: 2025-12-27
 
-**Current Status**: Ready to begin Phase 2: Vocabulary Management
+**Phase 2: Vocabulary Management** 🚀 **IN PROGRESS** (40%)
+
+- Vocabulary CRUD frontend components completed
+- Vocabulary Groups CRUD frontend components completed
+- UI fully translated to English
+- Backend API endpoints and tests pending
+- Last updated: 2025-12-27
+
+**Current Status**: Phase 2 frontend components completed, ready for backend API implementation
 
 ---
 
@@ -116,7 +124,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 2: Vocabulary Management
+## Phase 2: Vocabulary Management 🚀 IN PROGRESS (40%)
 
 ### 2.1 Vocabulary CRUD - Backend
 
@@ -128,16 +136,17 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Add input validation with Zod
 - [ ] Write API integration tests
 
-### 2.2 Vocabulary CRUD - Frontend
+### 2.2 Vocabulary CRUD - Frontend ✅ COMPLETED
 
-- [ ] Create VocabularyList page
-- [ ] Create VocabularyCard component
-- [ ] Create AddVocabularyForm component
-- [ ] Create EditVocabularyModal component
-- [ ] Create DeleteConfirmationDialog component
-- [ ] Implement vocabulary search functionality
-- [ ] Implement vocabulary filtering (by group, mastery level)
-- [ ] Write component unit tests
+- [x] Create VocabularyList page
+- [x] Create VocabularyCard component
+- [x] Create AddVocabularyForm component
+- [x] Create EditVocabularyModal component
+- [x] Create DeleteConfirmationDialog component
+- [x] Implement vocabulary search functionality
+- [x] Implement vocabulary filtering (by group, mastery level)
+- [x] Write component unit tests
+- [x] Translate all UI text to English
 
 ### 2.3 Example Sentences
 
@@ -147,18 +156,20 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create example sentence display with furigana support
 - [ ] Write tests for example sentence functionality
 
-### 2.4 Vocabulary Groups
+### 2.4 Vocabulary Groups ✅ COMPLETED
 
+- [x] Create GroupList page
+- [x] Create GroupCard component
+- [x] Create AddGroupDialog component
+- [x] Create EditGroupDialog component
+- [x] Display vocabulary count per group
+- [x] Translate all UI text to English
 - [ ] Create GET /api/groups endpoint
 - [ ] Create POST /api/groups endpoint
 - [ ] Create PUT /api/groups/:id endpoint
 - [ ] Create DELETE /api/groups/:id endpoint
-- [ ] Create GroupList page
-- [ ] Create GroupCard component
-- [ ] Create AddGroupForm component
 - [ ] Implement drag-and-drop vocabulary to groups
-- [ ] Display vocabulary count per group
-- [ ] Write tests for group management
+- [ ] Write API integration tests
 
 ---
 
