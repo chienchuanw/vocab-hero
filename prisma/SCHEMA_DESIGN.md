@@ -5,6 +5,7 @@ This document outlines the database schema design for Vocab Hero application.
 ## Core Models
 
 ### User
+
 Single user application, but keeping user model for future multi-user support.
 
 ```prisma
@@ -25,6 +26,7 @@ model User {
 ```
 
 ### VocabularyItem
+
 Individual vocabulary entries.
 
 ```prisma
@@ -33,19 +35,41 @@ model VocabularyItem {
   word            String
   reading         String
   meaning         String
-  exampleSentence String?  @map("example_sentence")
   notes           String?
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
-  groups          VocabularyGroup[]
-  reviewSchedule  ReviewSchedule?
+  groups           VocabularyGroup[]
+  exampleSentences ExampleSentence[]
+  reviewSchedule   ReviewSchedule?
 
   @@map("vocabulary_items")
 }
 ```
 
+### ExampleSentence
+
+Example sentences for vocabulary items. Each vocabulary item can have multiple example sentences.
+
+```prisma
+model ExampleSentence {
+  id               String   @id @default(cuid())
+  vocabularyItemId String   @map("vocabulary_item_id")
+  sentence         String   // 日文例句
+  reading          String?  // 例句的讀音（假名）
+  meaning          String   // 例句的中文翻譯
+  order            Int      @default(0) // 顯示順序
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  vocabularyItem VocabularyItem @relation(fields: [vocabularyItemId], references: [id], onDelete: Cascade)
+
+  @@map("example_sentences")
+}
+```
+
 ### VocabularyGroup
+
 Collections/decks of vocabulary items.
 
 ```prisma
@@ -65,6 +89,7 @@ model VocabularyGroup {
 ```
 
 ### ReviewSchedule
+
 SM-2 algorithm data for spaced repetition.
 
 ```prisma
@@ -86,6 +111,7 @@ model ReviewSchedule {
 ```
 
 ### StudySession
+
 Study session records.
 
 ```prisma
@@ -108,6 +134,7 @@ model StudySession {
 ```
 
 ### ProgressLog
+
 Daily progress tracking.
 
 ```prisma
@@ -130,6 +157,7 @@ model ProgressLog {
 ```
 
 ### DailyGoal
+
 User's daily study goals.
 
 ```prisma
@@ -155,7 +183,9 @@ model DailyGoal {
 - User has one DailyGoal
 - VocabularyGroup belongs to User
 - VocabularyGroup has many VocabularyItems (many-to-many)
+- VocabularyItem has many ExampleSentences (one-to-many)
 - VocabularyItem has one ReviewSchedule
+- ExampleSentence belongs to VocabularyItem
 - StudySession belongs to User
 - ProgressLog belongs to User
 - DailyGoal belongs to User
@@ -164,7 +194,7 @@ model DailyGoal {
 
 - User: email (unique)
 - VocabularyItem: word, reading
+- ExampleSentence: vocabularyItemId, order
 - ReviewSchedule: nextReviewDate, vocabularyItemId (unique)
 - ProgressLog: date (unique), userId
 - DailyGoal: userId (unique)
-

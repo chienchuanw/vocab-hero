@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +8,141 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// User model - Single user application, but keeping for future multi-user support
+model User {
+  id        String   @id @default(cuid())
+  email     String?  @unique
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  vocabularyGroups VocabularyGroup[]
+  studySessions    StudySession[]
+  progressLogs     ProgressLog[]
+  dailyGoals       DailyGoal[]
+
+  @@map("users")
+}
+
+// VocabularyItem model - Individual vocabulary entries
+model VocabularyItem {
+  id        String   @id @default(cuid())
+  word      String
+  reading   String
+  meaning   String
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  groups           VocabularyGroup[]
+  exampleSentences ExampleSentence[]
+  reviewSchedule   ReviewSchedule?
+
+  @@index([word])
+  @@index([reading])
+  @@map("vocabulary_items")
+}
+
+// ExampleSentence model - Example sentences for vocabulary items
+model ExampleSentence {
+  id               String   @id @default(cuid())
+  vocabularyItemId String   @map("vocabulary_item_id")
+  sentence         String
+  reading          String?
+  meaning          String
+  order            Int      @default(0)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  vocabularyItem VocabularyItem @relation(fields: [vocabularyItemId], references: [id], onDelete: Cascade)
+
+  @@index([vocabularyItemId])
+  @@index([order])
+  @@map("example_sentences")
+}
+
+// VocabularyGroup model - Collections/decks of vocabulary items
+model VocabularyGroup {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  userId      String   @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vocabularyItems VocabularyItem[]
+
+  @@map("vocabulary_groups")
+}
+
+// ReviewSchedule model - SM-2 algorithm data for spaced repetition
+model ReviewSchedule {
+  id               String    @id @default(cuid())
+  vocabularyItemId String    @unique @map("vocabulary_item_id")
+  easinessFactor   Float     @default(2.5) @map("easiness_factor")
+  interval         Int       @default(0)
+  repetitions      Int       @default(0)
+  nextReviewDate   DateTime  @map("next_review_date")
+  lastReviewDate   DateTime? @map("last_review_date")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  vocabularyItem VocabularyItem @relation(fields: [vocabularyItemId], references: [id], onDelete: Cascade)
+
+  @@index([nextReviewDate])
+  @@map("review_schedules")
+}
+
+// StudySession model - Study session records
+model StudySession {
+  id               String    @id @default(cuid())
+  userId           String    @map("user_id")
+  mode             String
+  cardsReviewed    Int       @default(0) @map("cards_reviewed")
+  correctAnswers   Int       @default(0) @map("correct_answers")
+  timeSpentMinutes Int       @default(0) @map("time_spent_minutes")
+  startedAt        DateTime  @default(now()) @map("started_at")
+  completedAt      DateTime? @map("completed_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("study_sessions")
+}
+
+// ProgressLog model - Daily progress tracking
+model ProgressLog {
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  date              DateTime @unique
+  wordsStudied      Int      @default(0) @map("words_studied")
+  newWords          Int      @default(0) @map("new_words")
+  reviewWords       Int      @default(0) @map("review_words")
+  timeSpentMinutes  Int      @default(0) @map("time_spent_minutes")
+  sessionsCompleted Int      @default(0) @map("sessions_completed")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("progress_logs")
+}
+
+// DailyGoal model - User's daily study goals
+model DailyGoal {
+  id            String   @id @default(cuid())
+  userId        String   @unique @map("user_id")
+  wordsPerDay   Int      @default(10) @map("words_per_day")
+  minutesPerDay Int      @default(15) @map("minutes_per_day")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("daily_goals")
 }
