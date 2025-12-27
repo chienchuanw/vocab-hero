@@ -1,9 +1,8 @@
 /**
  * Validation Schemas Index
- * 集中匯出所有驗證 schema
+ * Centralized export for all validation schemas
  */
 
 export * from './vocabulary';
 export * from './group';
 export * from './example-sentence';
-
