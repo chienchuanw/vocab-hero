@@ -43,13 +43,52 @@ export async function GET(request: NextRequest) {
 
 /**
  * POST /api/groups
- * Create a new vocabulary group
+ * 新增群組
+ * 需要提供 userId（目前為單一使用者應用，可使用固定值或從 session 取得）
  */
 export async function POST(request: NextRequest) {
   try {
-    // TODO: Implement group creation logic
     const body = await request.json();
-    return successResponse({ id: 'placeholder' }, 201);
+
+    const { groupSchema } = await import('@/lib/validations');
+    const validationResult = groupSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      return ApiErrors.VALIDATION_ERROR('Invalid input data', validationResult.error.flatten());
+    }
+
+    // 取得或建立預設使用者
+    let user = await prisma.user.findFirst();
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email: 'default@vocab-hero.local',
+          name: 'Default User',
+        },
+      });
+    }
+
+    const group = await prisma.vocabularyGroup.create({
+      data: {
+        ...validationResult.data,
+        userId: user.id,
+      },
+      include: {
+        _count: {
+          select: {
+            vocabularyItems: true,
+          },
+        },
+      },
+    });
+
+    return successResponse(
+      {
+        ...group,
+        vocabularyCount: group._count.vocabularyItems,
+      },
+      201
+    );
   } catch (error) {
     console.error('Error creating group:', error);
     return ApiErrors.INTERNAL_ERROR('Failed to create group');
