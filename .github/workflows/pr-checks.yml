@@ -1,0 +1,85 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  pr-info:
+    name: PR Information
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: PR Info
+        run: |
+          echo "PR #${{ github.event.pull_request.number }}"
+          echo "Title: ${{ github.event.pull_request.title }}"
+          echo "Author: ${{ github.event.pull_request.user.login }}"
+          echo "Base: ${{ github.event.pull_request.base.ref }}"
+          echo "Head: ${{ github.event.pull_request.head.ref }}"
+
+  validate-pr:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check PR title format
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|style|refactor|perf|test|chore|ci)(\(.+\))?: ]]; then
+            echo "❌ PR title must follow Conventional Commits format"
+            echo "Examples:"
+            echo "  feat(vocabulary): add vocabulary card component"
+            echo "  fix(auth): resolve login redirect issue"
+            echo "  docs(readme): update installation instructions"
+            exit 1
+          fi
+          echo "✅ PR title follows Conventional Commits format"
+
+      - name: Check for merge conflicts
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          if git merge-base --is-ancestor HEAD origin/${{ github.event.pull_request.base.ref }}; then
+            echo "✅ No merge conflicts detected"
+          else
+            echo "⚠️ Please rebase your branch on ${{ github.event.pull_request.base.ref }}"
+          fi
+
+  size-check:
+    name: Check PR Size
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check changed files
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...HEAD | wc -l)
+          CHANGED_LINES=$(git diff --stat origin/${{ github.event.pull_request.base.ref }}...HEAD | tail -1 | awk '{print $4+$6}')
+          
+          echo "Changed files: $CHANGED_FILES"
+          echo "Changed lines: $CHANGED_LINES"
+          
+          if [ "$CHANGED_FILES" -gt 50 ]; then
+            echo "⚠️ This PR changes $CHANGED_FILES files. Consider breaking it into smaller PRs."
+          fi
+          
+          if [ "$CHANGED_LINES" -gt 1000 ]; then
+            echo "⚠️ This PR changes $CHANGED_LINES lines. Consider breaking it into smaller PRs."
+          fi
+
+  required-checks:
+    name: All Required Checks
+    runs-on: ubuntu-latest
+    needs: [pr-info, validate-pr, size-check]
+    
+    steps:
+      - name: All checks passed
+        run: echo "✅ All PR checks passed"
+
