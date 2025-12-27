@@ -47,7 +47,11 @@
     "prettier": "^3.7.4",
     "prisma": "6.1.0",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5",
     "vitest": "^4.0.16"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
