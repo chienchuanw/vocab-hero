@@ -9,14 +9,20 @@ import { prisma } from '@/lib/db/prisma';
 
 describe('GET /api/vocabulary', () => {
   beforeEach(async () => {
-    // Clean up database before each test
+    // Clean up database before each test - order matters due to foreign keys
+    await prisma.exampleSentence.deleteMany();
+    await prisma.reviewSchedule.deleteMany();
+    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
     await prisma.vocabularyItem.deleteMany();
     await prisma.vocabularyGroup.deleteMany();
     await prisma.user.deleteMany();
   });
 
   afterEach(async () => {
-    // Clean up after each test
+    // Clean up after each test - order matters due to foreign keys
+    await prisma.exampleSentence.deleteMany();
+    await prisma.reviewSchedule.deleteMany();
+    await prisma.$executeRaw`DELETE FROM "_VocabularyGroupToVocabularyItem"`;
     await prisma.vocabularyItem.deleteMany();
     await prisma.vocabularyGroup.deleteMany();
     await prisma.user.deleteMany();
@@ -104,6 +110,7 @@ describe('GET /api/vocabulary', () => {
     const data = await response.json();
 
     expect(response.status).toBe(200);
+    expect(data.data.items).toHaveLength(3);
     expect(data.data.items[0].word).toBe('apple');
     expect(data.data.items[1].word).toBe('mango');
     expect(data.data.items[2].word).toBe('zebra');

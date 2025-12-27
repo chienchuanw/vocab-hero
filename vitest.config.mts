@@ -11,10 +11,19 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
+    exclude: ['**/node_modules/**', '**/e2e/**', '**/.git/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: ['node_modules/', 'tests/', '**/*.config.*', '**/*.d.ts', '**/types/', '.next/'],
+      exclude: [
+        'node_modules/',
+        'tests/',
+        '**/*.config.*',
+        '**/*.d.ts',
+        '**/types/',
+        '.next/',
+        'e2e/',
+      ],
       thresholds: {
         lines: 80,
         functions: 80,
