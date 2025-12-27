@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import type { CreateVocabularyInput } from '@/hooks/useVocabularyMutations';
 
 /**
- * AddVocabularyForm 元件的 Props
+ * AddVocabularyForm component props
  */
 export interface AddVocabularyFormProps {
   onSubmit: (data: CreateVocabularyInput) => void;
@@ -17,8 +17,8 @@ export interface AddVocabularyFormProps {
 }
 
 /**
- * AddVocabularyForm 元件
- * 新增單字的表單元件，包含表單驗證
+ * AddVocabularyForm component
+ * Form component for adding new vocabulary with validation
  */
 export function AddVocabularyForm({
   onSubmit,
@@ -34,25 +34,25 @@ export function AddVocabularyForm({
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // 驗證表單
+  // Validate form
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.word.trim()) {
-      newErrors.word = '請輸入單字';
+      newErrors.word = 'Please enter word';
     }
     if (!formData.reading.trim()) {
-      newErrors.reading = '請輸入讀音';
+      newErrors.reading = 'Please enter reading';
     }
     if (!formData.meaning.trim()) {
-      newErrors.meaning = '請輸入意思';
+      newErrors.meaning = 'Please enter meaning';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // 處理表單提交
+  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -63,68 +63,68 @@ export function AddVocabularyForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* 單字 */}
+      {/* Word */}
       <div>
-        <Label htmlFor="word">單字 *</Label>
+        <Label htmlFor="word">Word *</Label>
         <Input
           id="word"
           value={formData.word}
           onChange={(e) => setFormData({ ...formData, word: e.target.value })}
-          placeholder="例：勉強"
+          placeholder="e.g., 勉強"
           className={errors.word ? 'border-red-500' : ''}
         />
         {errors.word && <p className="text-sm text-red-500 mt-1">{errors.word}</p>}
       </div>
 
-      {/* 讀音 */}
+      {/* Reading */}
       <div>
-        <Label htmlFor="reading">讀音 *</Label>
+        <Label htmlFor="reading">Reading *</Label>
         <Input
           id="reading"
           value={formData.reading}
           onChange={(e) => setFormData({ ...formData, reading: e.target.value })}
-          placeholder="例：べんきょう"
+          placeholder="e.g., べんきょう"
           className={errors.reading ? 'border-red-500' : ''}
         />
         {errors.reading && <p className="text-sm text-red-500 mt-1">{errors.reading}</p>}
       </div>
 
-      {/* 意思 */}
+      {/* Meaning */}
       <div>
-        <Label htmlFor="meaning">意思 *</Label>
+        <Label htmlFor="meaning">Meaning *</Label>
         <Input
           id="meaning"
           value={formData.meaning}
           onChange={(e) => setFormData({ ...formData, meaning: e.target.value })}
-          placeholder="例：學習、用功"
+          placeholder="e.g., study, learn"
           className={errors.meaning ? 'border-red-500' : ''}
         />
         {errors.meaning && <p className="text-sm text-red-500 mt-1">{errors.meaning}</p>}
       </div>
 
-      {/* 筆記 */}
+      {/* Notes */}
       <div>
-        <Label htmlFor="notes">筆記（選填）</Label>
+        <Label htmlFor="notes">Notes (Optional)</Label>
         <Textarea
           id="notes"
           value={formData.notes}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setFormData({ ...formData, notes: e.target.value })
           }
-          placeholder="補充說明或記憶技巧..."
+          placeholder="Additional notes or memory tips..."
           rows={3}
         />
       </div>
 
-      {/* 按鈕 */}
+      {/* Buttons */}
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
-            取消
+            Cancel
           </Button>
         )}
         <Button type="submit" disabled={isLoading}>
-          {isLoading ? '新增中...' : '新增單字'}
+          {isLoading ? 'Adding...' : 'Add Word'}
         </Button>
       </div>
     </form>

@@ -15,7 +15,7 @@ import { toast } from 'sonner';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
 
 /**
- * DeleteConfirmationDialog 元件的 Props
+ * DeleteConfirmationDialog component props
  */
 export interface DeleteConfirmationDialogProps {
   open: boolean;
@@ -24,8 +24,8 @@ export interface DeleteConfirmationDialogProps {
 }
 
 /**
- * DeleteConfirmationDialog 元件
- * 刪除確認的 Dialog 彈窗
+ * DeleteConfirmationDialog component
+ * Confirmation dialog for deleting vocabulary
  */
 export function DeleteConfirmationDialog({
   open,
@@ -39,10 +39,10 @@ export function DeleteConfirmationDialog({
 
     try {
       await deleteMutation.mutateAsync(vocabulary.id);
-      toast.success('單字已刪除');
+      toast.success('Word deleted successfully');
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : '刪除失敗，請稍後再試');
+      toast.error(error instanceof Error ? error.message : 'Failed to delete, please try again');
     }
   };
 
@@ -50,23 +50,22 @@ export function DeleteConfirmationDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>確認刪除</AlertDialogTitle>
+          <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
           <AlertDialogDescription>
-            確定要刪除單字「{vocabulary?.word}」嗎？此操作無法復原。
+            Are you sure you want to delete "{vocabulary?.word}"? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>取消</AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             className="bg-red-600 hover:bg-red-700"
             disabled={deleteMutation.isPending}
           >
-            {deleteMutation.isPending ? '刪除中...' : '刪除'}
+            {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 }
-

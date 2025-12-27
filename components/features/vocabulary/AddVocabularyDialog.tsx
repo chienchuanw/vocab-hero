@@ -12,7 +12,7 @@ import { useCreateVocabulary } from '@/hooks/useVocabularyMutations';
 import { toast } from 'sonner';
 
 /**
- * AddVocabularyDialog 元件的 Props
+ * AddVocabularyDialog component props
  */
 export interface AddVocabularyDialogProps {
   open: boolean;
@@ -20,8 +20,8 @@ export interface AddVocabularyDialogProps {
 }
 
 /**
- * AddVocabularyDialog 元件
- * 新增單字的 Dialog 彈窗
+ * AddVocabularyDialog component
+ * Dialog for adding new vocabulary
  */
 export function AddVocabularyDialog({ open, onOpenChange }: AddVocabularyDialogProps) {
   const createMutation = useCreateVocabulary();
@@ -29,10 +29,10 @@ export function AddVocabularyDialog({ open, onOpenChange }: AddVocabularyDialogP
   const handleSubmit = async (data: any) => {
     try {
       await createMutation.mutateAsync(data);
-      toast.success('單字新增成功！');
+      toast.success('Word added successfully!');
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : '新增失敗，請稍後再試');
+      toast.error(error instanceof Error ? error.message : 'Failed to add word, please try again');
     }
   };
 
@@ -40,8 +40,10 @@ export function AddVocabularyDialog({ open, onOpenChange }: AddVocabularyDialogP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>新增單字</DialogTitle>
-          <DialogDescription>填寫單字資訊，建立新的學習項目</DialogDescription>
+          <DialogTitle>Add Word</DialogTitle>
+          <DialogDescription>
+            Fill in word information to create a new learning item
+          </DialogDescription>
         </DialogHeader>
         <AddVocabularyForm
           onSubmit={handleSubmit}
@@ -52,4 +54,3 @@ export function AddVocabularyDialog({ open, onOpenChange }: AddVocabularyDialogP
     </Dialog>
   );
 }
-

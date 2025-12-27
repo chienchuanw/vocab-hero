@@ -16,7 +16,7 @@ import { useCreateGroup } from '@/hooks/useGroupMutations';
 import { toast } from 'sonner';
 
 /**
- * AddGroupDialog 元件的 Props
+ * AddGroupDialog component props
  */
 export interface AddGroupDialogProps {
   open: boolean;
@@ -24,8 +24,8 @@ export interface AddGroupDialogProps {
 }
 
 /**
- * AddGroupDialog 元件
- * 新增群組的 Dialog 彈窗
+ * AddGroupDialog component
+ * Dialog for adding new group
  */
 export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
   const createMutation = useCreateGroup();
@@ -38,17 +38,17 @@ export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-      toast.error('請輸入群組名稱');
+      toast.error('Please enter group name');
       return;
     }
 
     try {
       await createMutation.mutateAsync(formData);
-      toast.success('群組新增成功！');
+      toast.success('Group added successfully!');
       setFormData({ name: '', description: '' });
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : '新增失敗，請稍後再試');
+      toast.error(error instanceof Error ? error.message : 'Failed to add group, please try again');
     }
   };
 
@@ -56,38 +56,40 @@ export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>新增群組</DialogTitle>
-          <DialogDescription>建立新的單字群組來組織你的學習內容</DialogDescription>
+          <DialogTitle>Add Group</DialogTitle>
+          <DialogDescription>
+            Create a new vocabulary group to organize your learning content
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="group-name">群組名稱 *</Label>
+            <Label htmlFor="group-name">Group Name *</Label>
             <Input
               id="group-name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="例：JLPT N5 單字"
+              placeholder="e.g., JLPT N5 Vocabulary"
               required
             />
           </div>
           <div>
-            <Label htmlFor="group-description">描述（選填）</Label>
+            <Label htmlFor="group-description">Description (Optional)</Label>
             <Textarea
               id="group-description"
               value={formData.description}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              placeholder="群組的說明或用途..."
+              placeholder="Group description or purpose..."
               rows={3}
             />
           </div>
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              取消
+              Cancel
             </Button>
             <Button type="submit" disabled={createMutation.isPending}>
-              {createMutation.isPending ? '新增中...' : '新增群組'}
+              {createMutation.isPending ? 'Adding...' : 'Add Group'}
             </Button>
           </div>
         </form>

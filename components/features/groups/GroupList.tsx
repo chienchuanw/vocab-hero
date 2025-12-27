@@ -6,7 +6,7 @@ import type { Group } from '@/hooks/useGroups';
 import type { UseQueryResult } from '@tanstack/react-query';
 
 /**
- * GroupList 元件的 Props
+ * GroupList component props
  */
 export interface GroupListProps {
   query: UseQueryResult<Group[], Error>;
@@ -16,37 +16,39 @@ export interface GroupListProps {
 }
 
 /**
- * GroupList 元件
- * 顯示群組列表
+ * GroupList component
+ * Displays list of groups
  */
 export function GroupList({ query, onEdit, onDelete, onClick }: GroupListProps) {
   const { data: groups, isLoading, isError, error } = query;
 
-  // Loading 狀態
+  // Loading state
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-2 text-gray-600">載入中...</span>
+        <span className="ml-2 text-gray-600">Loading...</span>
       </div>
     );
   }
 
-  // Error 狀態
+  // Error state
   if (isError) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-600">載入失敗：{error.message}</p>
+        <p className="text-red-600">Failed to load: {error.message}</p>
       </div>
     );
   }
 
-  // 空狀態
+  // Empty state
   if (!groups || groups.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">尚無群組資料</p>
-        <p className="text-sm text-gray-400 mt-2">點擊「新增群組」開始組織你的單字</p>
+        <p className="text-gray-500">No groups yet</p>
+        <p className="text-sm text-gray-400 mt-2">
+          Click "Add Group" to start organizing your vocabulary
+        </p>
       </div>
     );
   }
@@ -65,4 +67,3 @@ export function GroupList({ query, onEdit, onDelete, onClick }: GroupListProps) 
     </div>
   );
 }
-

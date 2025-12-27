@@ -17,7 +17,7 @@ import { toast } from 'sonner';
 import type { Group } from '@/hooks/useGroups';
 
 /**
- * EditGroupDialog 元件的 Props
+ * EditGroupDialog component props
  */
 export interface EditGroupDialogProps {
   open: boolean;
@@ -26,8 +26,8 @@ export interface EditGroupDialogProps {
 }
 
 /**
- * EditGroupDialog 元件
- * 編輯群組的 Dialog 彈窗
+ * EditGroupDialog component
+ * Dialog for editing group
  */
 export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogProps) {
   const updateMutation = useUpdateGroup();
@@ -55,10 +55,10 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
         id: group.id,
         data: formData,
       });
-      toast.success('群組更新成功！');
+      toast.success('Group updated successfully!');
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : '更新失敗，請稍後再試');
+      toast.error(error instanceof Error ? error.message : 'Failed to update, please try again');
     }
   };
 
@@ -66,12 +66,12 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>編輯群組</DialogTitle>
-          <DialogDescription>修改群組資訊</DialogDescription>
+          <DialogTitle>Edit Group</DialogTitle>
+          <DialogDescription>Modify group information</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="edit-group-name">群組名稱</Label>
+            <Label htmlFor="edit-group-name">Group Name</Label>
             <Input
               id="edit-group-name"
               value={formData.name}
@@ -80,7 +80,7 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
             />
           </div>
           <div>
-            <Label htmlFor="edit-group-description">描述</Label>
+            <Label htmlFor="edit-group-description">Description</Label>
             <Textarea
               id="edit-group-description"
               value={formData.description}
@@ -92,10 +92,10 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
           </div>
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              取消
+              Cancel
             </Button>
             <Button type="submit" disabled={updateMutation.isPending}>
-              {updateMutation.isPending ? '更新中...' : '更新'}
+              {updateMutation.isPending ? 'Updating...' : 'Update'}
             </Button>
           </div>
         </form>
