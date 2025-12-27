@@ -20,13 +20,16 @@
 
 **Phase 2: Vocabulary Management** 🚀 **IN PROGRESS** (40%)
 
-- Vocabulary CRUD frontend components completed
-- Vocabulary Groups CRUD frontend components completed
-- UI fully translated to English
-- Backend API endpoints and tests pending
+- ✅ Vocabulary CRUD frontend components completed
+- ✅ Groups CRUD frontend components completed
+- ✅ UI fully translated to English
+- ⏳ Vocabulary Backend API (7 tasks remaining)
+- ⏳ Groups Backend API (7 tasks remaining)
+- 📋 Example Sentences deferred to Phase 2.5
+- 📋 Drag-and-drop deferred to Phase 11
 - Last updated: 2025-12-27
 
-**Current Status**: Phase 2 frontend components completed, ready for backend API implementation
+**Current Status**: Ready to implement Vocabulary and Groups Backend APIs
 
 ---
 
@@ -128,13 +131,13 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ### 2.1 Vocabulary CRUD - Backend
 
-- [ ] Create GET /api/vocabulary endpoint (list all)
+- [ ] Create Zod validation schemas for vocabulary
+- [ ] Create GET /api/vocabulary endpoint (list all with filtering)
 - [ ] Create GET /api/vocabulary/:id endpoint (single item)
 - [ ] Create POST /api/vocabulary endpoint (create)
 - [ ] Create PUT /api/vocabulary/:id endpoint (update)
 - [ ] Create DELETE /api/vocabulary/:id endpoint (delete)
-- [ ] Add input validation with Zod
-- [ ] Write API integration tests
+- [ ] Write API integration tests for vocabulary endpoints
 
 ### 2.2 Vocabulary CRUD - Frontend ✅ COMPLETED
 
@@ -148,15 +151,17 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [x] Write component unit tests
 - [x] Translate all UI text to English
 
-### 2.3 Example Sentences
+### 2.3 Groups CRUD - Backend
 
-- [ ] Add example sentences field to VocabularyItem model
-- [ ] Create ExampleSentence component with word highlighting
-- [ ] Implement add/edit/delete example sentences
-- [ ] Create example sentence display with furigana support
-- [ ] Write tests for example sentence functionality
+- [ ] Create Zod validation schemas for groups
+- [ ] Create GET /api/groups endpoint (list all with vocabulary count)
+- [ ] Create GET /api/groups/:id endpoint (single group with vocabularies)
+- [ ] Create POST /api/groups endpoint (create)
+- [ ] Create PUT /api/groups/:id endpoint (update)
+- [ ] Create DELETE /api/groups/:id endpoint (delete)
+- [ ] Write API integration tests for groups endpoints
 
-### 2.4 Vocabulary Groups ✅ COMPLETED
+### 2.4 Groups CRUD - Frontend ✅ COMPLETED
 
 - [x] Create GroupList page
 - [x] Create GroupCard component
@@ -164,12 +169,17 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [x] Create EditGroupDialog component
 - [x] Display vocabulary count per group
 - [x] Translate all UI text to English
-- [ ] Create GET /api/groups endpoint
-- [ ] Create POST /api/groups endpoint
-- [ ] Create PUT /api/groups/:id endpoint
-- [ ] Create DELETE /api/groups/:id endpoint
-- [ ] Implement drag-and-drop vocabulary to groups
-- [ ] Write API integration tests
+
+### 2.5 Example Sentences (Deferred to Phase 2.5)
+
+> **Note**: This feature is deferred until core CRUD functionality is complete.
+> Will use kuroshiro or similar library for furigana support.
+
+- [ ] Add example sentences field to VocabularyItem model
+- [ ] Create ExampleSentence component with word highlighting
+- [ ] Implement add/edit/delete example sentences
+- [ ] Create example sentence display with furigana support (using kuroshiro)
+- [ ] Write tests for example sentence functionality
 
 ---
 
@@ -468,7 +478,18 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Test on various screen sizes
 - [ ] Write visual regression tests
 
-### 11.3 Accessibility
+### 11.3 Drag-and-Drop Functionality
+
+> **Note**: Deferred from Phase 2 for better UX polish
+
+- [ ] Research drag-and-drop libraries (dnd-kit, react-beautiful-dnd)
+- [ ] Implement drag-and-drop vocabulary to groups
+- [ ] Create visual feedback during drag operations
+- [ ] Implement reordering vocabulary within groups
+- [ ] Add touch support for mobile drag-and-drop
+- [ ] Write tests for drag-and-drop functionality
+
+### 11.4 Accessibility
 
 - [ ] Audit with accessibility tools (axe, Lighthouse)
 - [ ] Ensure keyboard navigation works everywhere
@@ -477,7 +498,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Ensure sufficient color contrast
 - [ ] Add skip links and focus management
 
-### 11.4 Error Handling and Edge Cases
+### 11.5 Error Handling and Edge Cases
 
 - [ ] Implement global error boundary
 - [ ] Create user-friendly error pages (404, 500)
