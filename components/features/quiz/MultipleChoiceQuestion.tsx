@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { AnswerFeedback } from './AnswerFeedback';
 
 /**
  * Quiz Question Interface
@@ -86,16 +87,12 @@ export function MultipleChoiceQuestion({
             <>
               <div className="text-4xl font-bold">{question.word}</div>
               <div className="text-xl text-muted-foreground">{question.reading}</div>
-              <div className="pt-4 text-sm text-muted-foreground">
-                What does this word mean?
-              </div>
+              <div className="pt-4 text-sm text-muted-foreground">What does this word mean?</div>
             </>
           ) : (
             <>
               <div className="text-2xl font-bold">{question.correctAnswer}</div>
-              <div className="pt-4 text-sm text-muted-foreground">
-                Which word means this?
-              </div>
+              <div className="pt-4 text-sm text-muted-foreground">Which word means this?</div>
             </>
           )}
         </div>
@@ -108,10 +105,7 @@ export function MultipleChoiceQuestion({
             key={index}
             variant="outline"
             size="lg"
-            className={cn(
-              'h-auto min-h-[60px] text-lg transition-all',
-              getOptionClassName(option)
-            )}
+            className={cn('h-auto min-h-[60px] text-lg transition-all', getOptionClassName(option))}
             onClick={() => handleOptionClick(option)}
             disabled={!!selectedAnswer}
           >
@@ -127,19 +121,14 @@ export function MultipleChoiceQuestion({
       </div>
 
       {/* 答案反饋 */}
-      {selectedAnswer && (
-        <div
-          className={cn(
-            'rounded-lg p-4 text-center font-medium',
-            isCorrect
-              ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-              : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-          )}
-        >
-          {isCorrect ? '✓ Correct!' : `✗ Incorrect. The correct answer is: ${question.correctAnswer}`}
-        </div>
+      {selectedAnswer && isCorrect !== undefined && (
+        <AnswerFeedback
+          isCorrect={isCorrect}
+          message={
+            isCorrect ? 'Correct!' : `Incorrect. The correct answer is: ${question.correctAnswer}`
+          }
+        />
       )}
     </div>
   );
 }
-
