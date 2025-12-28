@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/select';
 import { Search } from 'lucide-react';
 import type { VocabularyQueryParams } from '@/hooks/useVocabulary';
+import { MasteryLevel, MASTERY_LEVEL_CONFIGS } from '@/lib/srs/mastery';
 
 /**
  * VocabularyFilterBar component props
@@ -73,6 +74,32 @@ export function VocabularyFilterBar({
         <SelectContent>
           <SelectItem value="asc">Ascending</SelectItem>
           <SelectItem value="desc">Descending</SelectItem>
+        </SelectContent>
+      </Select>
+
+      {/* Mastery level filter */}
+      <Select
+        value={filters.masteryLevel || 'all'}
+        onValueChange={(value: string) =>
+          onFiltersChange({
+            ...filters,
+            masteryLevel: value === 'all' ? undefined : (value as MasteryLevel),
+          })
+        }
+      >
+        <SelectTrigger className="w-full md:w-[180px]">
+          <SelectValue placeholder="Mastery Level" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All Levels</SelectItem>
+          {Object.values(MasteryLevel).map((level) => {
+            const config = MASTERY_LEVEL_CONFIGS[level];
+            return (
+              <SelectItem key={level} value={level}>
+                {config.label}
+              </SelectItem>
+            );
+          })}
         </SelectContent>
       </Select>
 

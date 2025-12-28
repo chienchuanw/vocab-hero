@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { successResponse, ApiErrors } from '@/lib/api';
 import { prisma } from '@/lib/db/prisma';
 import { Prisma } from '@prisma/client';
+import { calculateMasteryLevel, MasteryLevel } from '@/lib/srs/mastery';
 
 /**
  * GET /api/vocabulary
@@ -12,6 +13,7 @@ import { Prisma } from '@prisma/client';
  * - sortBy: 排序欄位（createdAt, word, updatedAt）
  * - sortOrder: 排序方向（asc, desc）
  * - groupId: 依群組篩選
+ * - masteryLevel: 依精熟程度篩選（NEW, LEARNING, FAMILIAR, LEARNED, MASTERED）
  * - limit: 每頁筆數（預設 20）
  * - cursor: 分頁游標（上一頁的最後一筆 ID）
  */
@@ -24,6 +26,7 @@ export async function GET(request: NextRequest) {
     const sortBy = searchParams.get('sortBy') || 'createdAt';
     const sortOrder = searchParams.get('sortOrder') || 'desc';
     const groupId = searchParams.get('groupId');
+    const masteryLevel = searchParams.get('masteryLevel') as MasteryLevel | null;
     const limit = parseInt(searchParams.get('limit') || '20', 10);
     const cursor = searchParams.get('cursor');
 
@@ -38,6 +41,10 @@ export async function GET(request: NextRequest) {
 
     if (!['asc', 'desc'].includes(sortOrder)) {
       return ApiErrors.BAD_REQUEST('Invalid sortOrder parameter');
+    }
+
+    if (masteryLevel && !Object.values(MasteryLevel).includes(masteryLevel)) {
+      return ApiErrors.BAD_REQUEST('Invalid masteryLevel parameter');
     }
 
     // 建立查詢條件
@@ -100,7 +107,23 @@ export async function GET(request: NextRequest) {
     }
 
     // 執行查詢
-    const items = await prisma.vocabularyItem.findMany(queryOptions);
+    let items = await prisma.vocabularyItem.findMany(queryOptions);
+
+    // 依精熟程度篩選（在記憶體中進行，因為精熟程度是計算出來的）
+    if (masteryLevel) {
+      items = items.filter((item) => {
+        const level = calculateMasteryLevel(
+          item.reviewSchedule
+            ? {
+                easinessFactor: item.reviewSchedule.easinessFactor,
+                interval: item.reviewSchedule.interval,
+                repetitions: item.reviewSchedule.repetitions,
+              }
+            : null
+        );
+        return level === masteryLevel;
+      });
+    }
 
     // 判斷是否有下一頁
     const hasNextPage = items.length > limit;

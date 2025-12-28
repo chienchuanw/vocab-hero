@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import type { MasteryLevel } from '@/lib/srs/mastery';
 
 /**
  * Vocabulary 查詢參數介面
@@ -8,6 +9,7 @@ export interface VocabularyQueryParams {
   sortBy?: 'createdAt' | 'word' | 'mastery';
   sortOrder?: 'asc' | 'desc';
   groupId?: string;
+  masteryLevel?: MasteryLevel;
   limit?: number;
 }
 
@@ -53,6 +55,7 @@ function buildQueryString(params: VocabularyQueryParams, cursor?: string): strin
   if (params.sortBy) searchParams.set('sortBy', params.sortBy);
   if (params.sortOrder) searchParams.set('sortOrder', params.sortOrder);
   if (params.groupId) searchParams.set('groupId', params.groupId);
+  if (params.masteryLevel) searchParams.set('masteryLevel', params.masteryLevel);
   if (params.limit) searchParams.set('limit', params.limit.toString());
   if (cursor) searchParams.set('cursor', cursor);
 

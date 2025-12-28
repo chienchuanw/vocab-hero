@@ -249,6 +249,94 @@ describe('GET /api/vocabulary', () => {
     expect(data.data.items[0].groups).toHaveLength(1);
     expect(data.data.items[0].groups[0].name).toBe('Test Group');
   });
+
+  it('should filter vocabulary by mastery level', async () => {
+    // Create vocabulary items with different mastery levels
+    const vocab1 = await prisma.vocabularyItem.create({
+      data: {
+        word: 'new',
+        reading: 'njuː',
+        meaning: 'not old',
+      },
+    });
+
+    const vocab2 = await prisma.vocabularyItem.create({
+      data: {
+        word: 'learning',
+        reading: 'ˈlɜːrnɪŋ',
+        meaning: 'acquiring knowledge',
+      },
+    });
+
+    const vocab3 = await prisma.vocabularyItem.create({
+      data: {
+        word: 'mastered',
+        reading: 'ˈmæstərd',
+        meaning: 'fully learned',
+      },
+    });
+
+    // Create review schedules
+    await prisma.reviewSchedule.create({
+      data: {
+        vocabularyItemId: vocab2.id,
+        easinessFactor: 2.5,
+        interval: 1,
+        repetitions: 1,
+        nextReviewDate: new Date(),
+      },
+    });
+
+    await prisma.reviewSchedule.create({
+      data: {
+        vocabularyItemId: vocab3.id,
+        easinessFactor: 2.5,
+        interval: 30,
+        repetitions: 10,
+        nextReviewDate: new Date(),
+      },
+    });
+
+    // Filter by NEW level
+    const requestNew = new Request('http://localhost:3000/api/vocabulary?masteryLevel=NEW');
+    const responseNew = await GET(requestNew as any);
+    const dataNew = await responseNew.json();
+
+    expect(responseNew.status).toBe(200);
+    expect(dataNew.data.items).toHaveLength(1);
+    expect(dataNew.data.items[0].word).toBe('new');
+
+    // Filter by LEARNING level
+    const requestLearning = new Request(
+      'http://localhost:3000/api/vocabulary?masteryLevel=LEARNING'
+    );
+    const responseLearning = await GET(requestLearning as any);
+    const dataLearning = await responseLearning.json();
+
+    expect(responseLearning.status).toBe(200);
+    expect(dataLearning.data.items).toHaveLength(1);
+    expect(dataLearning.data.items[0].word).toBe('learning');
+
+    // Filter by MASTERED level
+    const requestMastered = new Request(
+      'http://localhost:3000/api/vocabulary?masteryLevel=MASTERED'
+    );
+    const responseMastered = await GET(requestMastered as any);
+    const dataMastered = await responseMastered.json();
+
+    expect(responseMastered.status).toBe(200);
+    expect(dataMastered.data.items).toHaveLength(1);
+    expect(dataMastered.data.items[0].word).toBe('mastered');
+  });
+
+  it('should return 400 for invalid masteryLevel parameter', async () => {
+    const request = new Request('http://localhost:3000/api/vocabulary?masteryLevel=INVALID');
+    const response = await GET(request as any);
+    const data = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(data.success).toBe(false);
+  });
 });
 
 describe('POST /api/vocabulary', () => {
