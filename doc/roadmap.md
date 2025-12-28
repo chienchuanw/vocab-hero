@@ -121,7 +121,21 @@
   - E2E tests for random quiz
 - Last updated: 2025-12-28
 
-**Current Status**: Phase 6 fully complete. Ready for Phase 7 (Audio and Pronunciation).
+**Phase 7: Audio and Pronunciation** ✅ **PHASE 7.1 COMPLETED** (33%)
+
+- ✅ Phase 7.1: Text-to-Speech (TTS) (100%)
+  - TTSEngine class with Web Speech API wrapper
+  - Japanese voice detection and selection
+  - SpeakerButton component with loading states
+  - TTS integration in VocabularyCard, Flashcard, and ExampleSentence
+  - TTSControls component with speed and repeat controls
+  - Comprehensive unit tests with TTS mocking
+  - Graceful fallback when TTS unavailable
+- 📋 Phase 7.2: Listening Quiz (0%)
+- 📋 Phase 7.3: Audio Recording and Comparison (0%)
+- Last updated: 2025-12-28
+
+**Current Status**: Phase 7.1 (TTS) complete. Ready for Phase 7.2 (Listening Quiz) or Phase 8 (Progress Tracking).
 
 ---
 
@@ -438,17 +452,17 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ## Phase 7: Audio and Pronunciation
 
-### 7.1 Text-to-Speech (TTS)
+### 7.1 Text-to-Speech (TTS) ✅ COMPLETED
 
-- [ ] Create TTS utility using Web Speech API (lib/tts/)
-- [ ] Implement Japanese voice selection
-- [ ] Create SpeakerButton component
-- [ ] Add TTS to vocabulary cards
-- [ ] Add TTS to flashcard mode
-- [ ] Add TTS to example sentences
-- [ ] Implement TTS playback controls (speed, repeat)
-- [ ] Handle TTS unavailability gracefully
-- [ ] Write tests with TTS mocking
+- [x] Create TTS utility using Web Speech API (lib/tts/)
+- [x] Implement Japanese voice selection
+- [x] Create SpeakerButton component
+- [x] Add TTS to vocabulary cards
+- [x] Add TTS to flashcard mode
+- [x] Add TTS to example sentences
+- [x] Implement TTS playback controls (speed, repeat)
+- [x] Handle TTS unavailability gracefully
+- [x] Write tests with TTS mocking
 
 ### 7.2 Listening Quiz
 
@@ -587,13 +601,17 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ## Phase 11: Settings and Preferences
 
+> **Note**: TTS settings persistence (speed, volume, voice selection) will be implemented in this phase.
+> Phase 7 implements TTS as a frontend-only feature with default settings.
+
 ### 11.1 User Preferences
 
 - [ ] Create Settings page
 - [ ] Implement theme settings (light/dark mode)
 - [ ] Implement language preferences
 - [ ] Create study preferences (cards per session, etc.)
-- [ ] Implement TTS voice preferences
+- [ ] Implement TTS voice preferences (speed, volume, voice selection)
+- [ ] Persist TTS settings to database (deferred from Phase 7)
 - [ ] Store preferences in database
 - [ ] Write tests for settings
 
