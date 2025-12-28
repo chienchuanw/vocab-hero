@@ -154,4 +154,76 @@ describe('useStudySession', () => {
       expect(stats.timeSpent).toBe(30);
     });
   });
+
+  describe('startQuizSession', () => {
+    it('should create a quiz session with quiz-specific fields', async () => {
+      const mockQuizSession = {
+        id: 'quiz-session-1',
+        userId: 'user-1',
+        mode: 'quiz',
+        studyMode: 'MULTIPLE_CHOICE',
+        quizType: 'WORD_TO_MEANING',
+        questionCount: 10,
+        groupId: 'group-1',
+        cardsReviewed: 0,
+        correctAnswers: 0,
+        timeSpentMinutes: 0,
+        startedAt: new Date().toISOString(),
+        completedAt: null,
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, data: mockQuizSession }),
+      });
+
+      const { result } = renderHook(() => useStudySession(), {
+        wrapper: createWrapper(),
+      });
+
+      result.current.startQuizSession('user-1', {
+        studyMode: 'MULTIPLE_CHOICE',
+        quizType: 'WORD_TO_MEANING',
+        questionCount: 10,
+        groupId: 'group-1',
+      });
+
+      await waitFor(() => {
+        expect(result.current.session).toEqual(mockQuizSession);
+      });
+    });
+
+    it('should create a spelling quiz session', async () => {
+      const mockSpellingSession = {
+        id: 'spelling-session-1',
+        userId: 'user-1',
+        mode: 'quiz',
+        studyMode: 'SPELLING',
+        questionCount: 5,
+        cardsReviewed: 0,
+        correctAnswers: 0,
+        timeSpentMinutes: 0,
+        startedAt: new Date().toISOString(),
+        completedAt: null,
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, data: mockSpellingSession }),
+      });
+
+      const { result } = renderHook(() => useStudySession(), {
+        wrapper: createWrapper(),
+      });
+
+      result.current.startQuizSession('user-1', {
+        studyMode: 'SPELLING',
+        questionCount: 5,
+      });
+
+      await waitFor(() => {
+        expect(result.current.session).toEqual(mockSpellingSession);
+      });
+    });
+  });
 });

@@ -2,12 +2,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 /**
- * Study Session 介面
+ * Study Session interface
  */
 export interface StudySession {
   id: string;
   userId: string;
   mode: string;
+  studyMode?: 'FLASHCARD' | 'MULTIPLE_CHOICE' | 'SPELLING' | 'MATCHING' | 'RANDOM';
+  quizType?: 'WORD_TO_MEANING' | 'MEANING_TO_WORD' | 'MIXED';
+  questionCount?: number;
+  groupId?: string;
   cardsReviewed: number;
   correctAnswers: number;
   timeSpentMinutes: number;
@@ -15,6 +19,16 @@ export interface StudySession {
   completedAt: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+/**
+ * Quiz Session Configuration
+ */
+export interface QuizSessionConfig {
+  studyMode: 'MULTIPLE_CHOICE' | 'SPELLING' | 'MATCHING' | 'RANDOM';
+  quizType?: 'WORD_TO_MEANING' | 'MEANING_TO_WORD' | 'MIXED';
+  questionCount?: number;
+  groupId?: string;
 }
 
 /**
@@ -135,12 +149,21 @@ export function useStudySession() {
     },
   });
 
-  // 開始 session
+  // Start flashcard session
   const startSession = (userId: string, mode: string) => {
     startSessionMutation.mutate({ userId, mode });
   };
 
-  // 記錄複習
+  // Start quiz session with quiz-specific configuration
+  const startQuizSession = (userId: string, config: QuizSessionConfig) => {
+    startSessionMutation.mutate({
+      userId,
+      mode: 'quiz',
+      ...config,
+    } as any);
+  };
+
+  // Record review progress
   const recordReview = (
     sessionId: string,
     cardsReviewed: number,
@@ -155,7 +178,7 @@ export function useStudySession() {
     });
   };
 
-  // 結束 session
+  // End session
   const endSession = (
     sessionId: string,
     cardsReviewed: number,
@@ -170,7 +193,7 @@ export function useStudySession() {
     });
   };
 
-  // 計算統計資料
+  // Calculate session statistics
   const getSessionStats = (session: StudySession): SessionStats => {
     return {
       totalCards: session.cardsReviewed,
@@ -183,6 +206,7 @@ export function useStudySession() {
   return {
     session,
     startSession,
+    startQuizSession,
     recordReview,
     endSession,
     getSessionStats,
@@ -191,4 +215,3 @@ export function useStudySession() {
     isEnding: endSessionMutation.isPending,
   };
 }
-
