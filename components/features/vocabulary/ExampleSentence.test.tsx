@@ -3,11 +3,28 @@
  */
 
 import '@testing-library/jest-dom/vitest';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@/tests/test-utils';
+import userEvent from '@testing-library/user-event';
 import { ExampleSentence } from './ExampleSentence';
+import * as ttsModule from '@/lib/tts';
+
+vi.mock('@/lib/tts', () => ({
+  ttsEngine: {
+    isSupported: vi.fn(() => true),
+    speak: vi.fn(() => Promise.resolve()),
+    stop: vi.fn(),
+    getState: vi.fn(() => 'idle'),
+  },
+}));
 
 describe('ExampleSentence', () => {
+  const mockTTSEngine = ttsModule.ttsEngine;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   const mockSentence = {
     id: '1',
     sentence: '毎日日本語を勉強します。',
@@ -43,6 +60,38 @@ describe('ExampleSentence', () => {
     );
     const element = container.querySelector('.custom-class');
     expect(element).toBeInTheDocument();
+  });
+
+  describe('TTS Integration', () => {
+    it('should render speaker button for sentence pronunciation', () => {
+      render(<ExampleSentence sentence={mockSentence} />);
+      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
+      expect(speakerButton).toBeInTheDocument();
+    });
+
+    it('should call TTS engine when speaker button is clicked', async () => {
+      const user = userEvent.setup();
+      render(<ExampleSentence sentence={mockSentence} />);
+
+      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
+      await user.click(speakerButton);
+
+      expect(mockTTSEngine.speak).toHaveBeenCalledWith('毎日日本語を勉強します。', undefined);
+    });
+
+    it('should not render speaker button when TTS is not supported', () => {
+      vi.mocked(mockTTSEngine.isSupported).mockReturnValue(false);
+      render(<ExampleSentence sentence={mockSentence} />);
+
+      const speakerButton = screen.queryByRole('button', { name: /play pronunciation/i });
+      expect(speakerButton).not.toBeInTheDocument();
+    });
+
+    it('should not render speaker button in empty state', () => {
+      render(<ExampleSentence sentence={null} />);
+      const speakerButton = screen.queryByRole('button', { name: /play pronunciation/i });
+      expect(speakerButton).not.toBeInTheDocument();
+    });
   });
 });
 

@@ -1,12 +1,13 @@
 import { cn } from '@/lib/utils';
+import { SpeakerButton } from '@/components/features/audio';
 import type { ExampleSentenceProps } from './ExampleSentence.types';
 
 /**
  * ExampleSentence component
- * 
+ *
  * Displays a single example sentence with Japanese text, reading (furigana), and translation.
  * Shows a placeholder message when no sentence is provided.
- * 
+ *
  * @param sentence - Example sentence data object
  * @param className - Optional CSS class name for styling
  * @param emptyMessage - Custom message to display when no sentence is provided
@@ -28,23 +29,21 @@ export function ExampleSentence({
 
   return (
     <div className={cn('space-y-1', className)}>
-      {/* Japanese sentence */}
-      <p className="text-base text-gray-900 dark:text-gray-100 font-medium">
-        {sentence.sentence}
-      </p>
+      {/* Japanese sentence with pronunciation button */}
+      <div className="flex items-start gap-2">
+        <p className="text-base text-gray-900 dark:text-gray-100 font-medium flex-1">
+          {sentence.sentence}
+        </p>
+        <SpeakerButton text={sentence.sentence} />
+      </div>
 
       {/* Reading (furigana) - only show if provided */}
       {sentence.reading && (
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          {sentence.reading}
-        </p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">{sentence.reading}</p>
       )}
 
       {/* English translation */}
-      <p className="text-sm text-gray-700 dark:text-gray-300">
-        {sentence.meaning}
-      </p>
+      <p className="text-sm text-gray-700 dark:text-gray-300">{sentence.meaning}</p>
     </div>
   );
 }
-
