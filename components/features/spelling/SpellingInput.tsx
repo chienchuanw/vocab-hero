@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { CharacterFeedback } from './CharacterFeedback';
 
 /**
  * SpellingInput Props
@@ -124,44 +125,54 @@ export function SpellingInput({
 
       {/* 答案反饋 */}
       {userAnswer !== undefined && isCorrect !== undefined && (
-        <div
-          className={cn(
-            'rounded-lg p-6 text-center font-medium',
-            isCorrect
-              ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-              : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-          )}
-        >
-          <div className="flex items-center justify-center gap-3">
-            <div
-              className={cn(
-                'flex h-12 w-12 items-center justify-center rounded-full text-2xl',
-                isCorrect
-                  ? 'bg-green-500 text-white dark:bg-green-600'
-                  : 'bg-red-500 text-white dark:bg-red-600'
-              )}
-            >
-              {isCorrect ? '✓' : '✗'}
-            </div>
+        <div className="space-y-4">
+          <div
+            className={cn(
+              'rounded-lg p-6 text-center font-medium',
+              isCorrect
+                ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+            )}
+          >
+            <div className="flex items-center justify-center gap-3">
+              <div
+                className={cn(
+                  'flex h-12 w-12 items-center justify-center rounded-full text-2xl',
+                  isCorrect
+                    ? 'bg-green-500 text-white dark:bg-green-600'
+                    : 'bg-red-500 text-white dark:bg-red-600'
+                )}
+              >
+                {isCorrect ? '✓' : '✗'}
+              </div>
 
-            <div className="text-lg">
-              {isCorrect ? (
-                'Correct!'
-              ) : (
-                <div className="space-y-1">
-                  <div>Incorrect</div>
-                  {correctReading && (
-                    <div className="text-sm">
-                      Correct answer: <span className="font-bold">{correctReading}</span>
-                    </div>
-                  )}
-                </div>
-              )}
+              <div className="text-lg">
+                {isCorrect ? (
+                  'Correct!'
+                ) : (
+                  <div className="space-y-1">
+                    <div>Incorrect</div>
+                    {correctReading && (
+                      <div className="text-sm">
+                        Correct answer: <span className="font-bold">{correctReading}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+
+          {/* 字元級別反饋 */}
+          {!isCorrect && correctReading && (
+            <CharacterFeedback
+              userAnswer={userAnswer}
+              correctAnswer={correctReading}
+              showFeedback={true}
+            />
+          )}
         </div>
       )}
     </div>
   );
 }
-
