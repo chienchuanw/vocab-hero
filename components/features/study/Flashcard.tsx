@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ExampleSentence } from '@/components/features/vocabulary/ExampleSentence';
+import { SpeakerButton } from '@/components/features/audio';
 import type { FlashcardProps } from './Flashcard.types';
 import type { ExampleSentenceData } from '@/components/features/vocabulary/ExampleSentence.types';
 
@@ -63,7 +64,12 @@ export function Flashcard({ vocabulary, onFlip }: FlashcardProps) {
           }}
         >
           <div className="text-center space-y-4">
-            <h2 className="text-6xl font-bold text-foreground">{vocabulary.word}</h2>
+            <div className="flex items-center justify-center gap-4">
+              <h2 className="text-6xl font-bold text-foreground">{vocabulary.word}</h2>
+              <div onClick={(e) => e.stopPropagation()}>
+                <SpeakerButton text={vocabulary.word} size="default" />
+              </div>
+            </div>
             <p className="text-3xl text-muted-foreground">{vocabulary.reading}</p>
           </div>
           <p className="absolute bottom-4 text-sm text-muted-foreground">

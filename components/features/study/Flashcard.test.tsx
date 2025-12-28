@@ -3,13 +3,29 @@
  */
 
 import '@testing-library/jest-dom/vitest';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@/tests/test-utils';
 import userEvent from '@testing-library/user-event';
 import { Flashcard } from './Flashcard';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
+import * as ttsModule from '@/lib/tts';
+
+vi.mock('@/lib/tts', () => ({
+  ttsEngine: {
+    isSupported: vi.fn(() => true),
+    speak: vi.fn(() => Promise.resolve()),
+    stop: vi.fn(),
+    getState: vi.fn(() => 'idle'),
+  },
+}));
 
 describe('Flashcard', () => {
+  const mockTTSEngine = ttsModule.ttsEngine;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   const mockVocabulary: VocabularyItem = {
     id: '1',
     word: '勉強',
@@ -117,5 +133,44 @@ describe('Flashcard', () => {
     await user.tab();
 
     expect(card).toHaveFocus();
+  });
+
+  describe('TTS Integration', () => {
+    it('should render speaker button on front side', () => {
+      render(<Flashcard vocabulary={mockVocabulary} />);
+      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
+      expect(speakerButton).toBeInTheDocument();
+    });
+
+    it('should call TTS engine when speaker button is clicked', async () => {
+      const user = userEvent.setup();
+      render(<Flashcard vocabulary={mockVocabulary} />);
+
+      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
+      await user.click(speakerButton);
+
+      expect(mockTTSEngine.speak).toHaveBeenCalledWith('勉強', undefined);
+    });
+
+    it('should not flip card when speaker button is clicked', async () => {
+      const user = userEvent.setup();
+      const handleFlip = vi.fn();
+      const { container } = render(<Flashcard vocabulary={mockVocabulary} onFlip={handleFlip} />);
+
+      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
+      await user.click(speakerButton);
+
+      const cardInner = container.querySelector('.flashcard-inner');
+      expect(cardInner).toHaveStyle({ transform: 'rotateY(0deg)' });
+      expect(handleFlip).not.toHaveBeenCalled();
+    });
+
+    it('should not render speaker button when TTS is not supported', () => {
+      vi.mocked(mockTTSEngine.isSupported).mockReturnValue(false);
+      render(<Flashcard vocabulary={mockVocabulary} />);
+
+      const speakerButton = screen.queryByRole('button', { name: /play pronunciation/i });
+      expect(speakerButton).not.toBeInTheDocument();
+    });
   });
 });
