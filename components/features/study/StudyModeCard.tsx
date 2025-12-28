@@ -6,7 +6,7 @@ import type { StudyModeCardProps } from './StudyModeCard.types';
  * StudyModeCard Component
  * 顯示單一學習模式的卡片，包含圖示、標題、描述和導航連結
  */
-export function StudyModeCard({ mode }: StudyModeCardProps): JSX.Element {
+export function StudyModeCard({ mode }: StudyModeCardProps) {
   const Icon = mode.icon;
 
   return (
@@ -27,4 +27,3 @@ export function StudyModeCard({ mode }: StudyModeCardProps): JSX.Element {
     </Link>
   );
 }
-
