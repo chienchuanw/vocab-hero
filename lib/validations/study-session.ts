@@ -10,6 +10,7 @@ export const studyModeSchema = z.enum([
   'SPELLING',
   'MATCHING',
   'RANDOM',
+  'LISTENING',
 ]);
 
 /**

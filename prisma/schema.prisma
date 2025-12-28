@@ -103,6 +103,7 @@ enum StudyMode {
   SPELLING
   MATCHING
   RANDOM
+  LISTENING
 }
 
 // QuizType enum - Different quiz question types
