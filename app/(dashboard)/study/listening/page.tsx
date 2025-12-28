@@ -21,13 +21,13 @@ import type {
 
 /**
  * ListeningQuiz Page
- * 
+ *
  * Main page for listening quiz mode where users hear Japanese audio
  * and select or type the correct meaning.
  */
 export default function ListeningQuizPage() {
   const router = useRouter();
-  const { data: vocabularyData } = useVocabulary();
+  const { data: vocabularyQueryData } = useVocabulary();
   const { startQuizSession, endSession, session } = useStudySession();
 
   const [questionType, setQuestionType] = useState<QuestionType>('multiple-choice');
@@ -39,6 +39,9 @@ export default function ListeningQuizPage() {
   const [answers, setAnswers] = useState<ListeningAnswer[]>([]);
   const [startTime, setStartTime] = useState<number>(0);
   const [isComplete, setIsComplete] = useState(false);
+
+  // 從 infinite query 中提取所有單字資料
+  const vocabularyData = vocabularyQueryData?.pages.flatMap((page) => page.items) ?? [];
 
   // Generate questions when quiz starts
   const handleStartQuiz = () => {
@@ -53,10 +56,10 @@ export default function ListeningQuizPage() {
 
     for (let i = 0; i < Math.min(questionCount, vocabPool.length); i++) {
       const vocab = vocabPool[i];
+      if (!vocab) continue; // 跳過 undefined 的項目
+
       const distractors =
-        questionType === 'multiple-choice'
-          ? generateDistractors(vocabPool, vocab.meaning, 3)
-          : [];
+        questionType === 'multiple-choice' ? generateDistractors(vocabPool, vocab.meaning, 3) : [];
 
       const question = generateListeningQuestion(
         {
@@ -87,6 +90,8 @@ export default function ListeningQuizPage() {
   // Handle answer submission
   const handleAnswer = (answer: string) => {
     const currentQuestion = questions[currentIndex];
+    if (!currentQuestion) return; // 防止 undefined
+
     const isCorrect = validateListeningAnswer(answer, currentQuestion.correctAnswer);
     const timeMs = Date.now() - startTime;
 
@@ -123,7 +128,10 @@ export default function ListeningQuizPage() {
   // Handle replay
   const handleReplay = () => {
     const updatedQuestions = [...questions];
-    updatedQuestions[currentIndex].replaysUsed += 1;
+    const currentQuestion = updatedQuestions[currentIndex];
+    if (!currentQuestion) return; // 防止 undefined
+
+    currentQuestion.replaysUsed += 1;
     setQuestions(updatedQuestions);
   };
 
@@ -132,7 +140,7 @@ export default function ListeningQuizPage() {
       <div className="container max-w-2xl mx-auto py-8">
         <Card className="p-6">
           <h1 className="text-3xl font-bold mb-6">Listening Quiz</h1>
-          
+
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium mb-2">Question Type</label>
@@ -169,7 +177,9 @@ export default function ListeningQuizPage() {
           <h2 className="text-2xl font-bold mb-4">Quiz Complete!</h2>
           <div className="space-y-2">
             <p>Accuracy: {stats.accuracy.toFixed(1)}%</p>
-            <p>Correct: {stats.correctAnswers}/{stats.totalQuestions}</p>
+            <p>
+              Correct: {stats.correctAnswers}/{stats.totalQuestions}
+            </p>
             <p>Total Replays: {stats.totalReplays}</p>
           </div>
           <Button onClick={() => router.push('/study')} className="mt-6">
@@ -181,6 +191,17 @@ export default function ListeningQuizPage() {
   }
 
   const currentQuestion = questions[currentIndex];
+
+  // 如果沒有當前問題，顯示載入中
+  if (!currentQuestion) {
+    return (
+      <div className="container max-w-2xl mx-auto py-8">
+        <Card className="p-6">
+          <p className="text-center text-gray-600">Loading question...</p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="container max-w-2xl mx-auto py-8">
@@ -199,4 +220,3 @@ export default function ListeningQuizPage() {
     </div>
   );
 }
-

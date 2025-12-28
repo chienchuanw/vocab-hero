@@ -8,7 +8,7 @@ export interface StudySession {
   id: string;
   userId: string;
   mode: string;
-  studyMode?: 'FLASHCARD' | 'MULTIPLE_CHOICE' | 'SPELLING' | 'MATCHING' | 'RANDOM';
+  studyMode?: 'FLASHCARD' | 'MULTIPLE_CHOICE' | 'SPELLING' | 'MATCHING' | 'RANDOM' | 'LISTENING';
   quizType?: 'WORD_TO_MEANING' | 'MEANING_TO_WORD' | 'MIXED';
   questionCount?: number;
   groupId?: string;
@@ -25,7 +25,7 @@ export interface StudySession {
  * Quiz Session Configuration
  */
 export interface QuizSessionConfig {
-  studyMode: 'MULTIPLE_CHOICE' | 'SPELLING' | 'MATCHING' | 'RANDOM';
+  studyMode: 'MULTIPLE_CHOICE' | 'SPELLING' | 'MATCHING' | 'RANDOM' | 'LISTENING';
   quizType?: 'WORD_TO_MEANING' | 'MEANING_TO_WORD' | 'MIXED';
   questionCount?: number;
   groupId?: string;
