@@ -6,3 +6,4 @@
 export * from './vocabulary';
 export * from './group';
 export * from './example-sentence';
+export * from './study-session';
