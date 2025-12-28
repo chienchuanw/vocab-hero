@@ -121,7 +121,7 @@
   - E2E tests for random quiz
 - Last updated: 2025-12-28
 
-**Phase 7: Audio and Pronunciation** ✅ **PHASE 7.1 COMPLETED** (33%)
+**Phase 7: Audio and Pronunciation** ✅ **PHASE 7.1 & 7.2 COMPLETED** (67%)
 
 - ✅ Phase 7.1: Text-to-Speech (TTS) (100%)
   - TTSEngine class with Web Speech API wrapper
@@ -131,11 +131,17 @@
   - TTSControls component with speed and repeat controls
   - Comprehensive unit tests with TTS mocking
   - Graceful fallback when TTS unavailable
-- 📋 Phase 7.2: Listening Quiz (0%)
+- ✅ Phase 7.2: Listening Quiz (100%)
+  - Listening quiz types and utilities
+  - ListeningQuestion component with audio playback
+  - ListeningQuiz page with configuration
+  - Audio replay with limit tracking
+  - Statistics calculation and summary
+  - Support for multiple choice and typing modes
 - 📋 Phase 7.3: Audio Recording and Comparison (0%)
 - Last updated: 2025-12-28
 
-**Current Status**: Phase 7.1 (TTS) complete. Ready for Phase 7.2 (Listening Quiz) or Phase 8 (Progress Tracking).
+**Current Status**: Phase 7.1 & 7.2 complete. Ready for Phase 7.3 (Audio Recording) or Phase 8 (Progress Tracking).
 
 ---
 
@@ -464,14 +470,14 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [x] Handle TTS unavailability gracefully
 - [x] Write tests with TTS mocking
 
-### 7.2 Listening Quiz
+### 7.2 Listening Quiz ✅ COMPLETED
 
-- [ ] Create ListeningQuiz page
-- [ ] Play audio, user selects correct meaning
-- [ ] Play audio, user types the word
-- [ ] Implement audio replay functionality
-- [ ] Create listening-specific scoring
-- [ ] Write tests for listening mode
+- [x] Create ListeningQuiz page
+- [x] Play audio, user selects correct meaning
+- [x] Play audio, user types the word
+- [x] Implement audio replay functionality
+- [x] Create listening-specific scoring
+- [x] Write tests for listening mode
 
 ### 7.3 Audio Recording and Comparison
 
