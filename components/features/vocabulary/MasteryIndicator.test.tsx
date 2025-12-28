@@ -1,3 +1,8 @@
+/**
+ * @vitest-environment happy-dom
+ */
+
+import '@testing-library/jest-dom/vitest';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@/tests/test-utils';
 import { MasteryIndicator } from './MasteryIndicator';
@@ -95,4 +100,3 @@ describe('MasteryIndicator', () => {
     expect(badge).toBeInTheDocument();
   });
 });
-
