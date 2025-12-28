@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { QuizConfigForm, type QuizConfig } from '@/components/features/quiz/QuizConfigForm';
 import { MultipleChoiceQuestion } from '@/components/features/quiz/MultipleChoiceQuestion';
+import { QuizSummary, type QuizAnswerRecord } from '@/components/features/quiz/QuizSummary';
 import { useQuizSession } from '@/hooks/useQuizSession';
 import { Button } from '@/components/ui/button';
 import { generateQuizQuestions } from '@/lib/quiz/quiz-utils';
@@ -96,24 +97,29 @@ export default function QuizStudyPage() {
 
   // 顯示測驗完成畫面
   if (quiz.isComplete) {
-    return (
-      <div className="container mx-auto max-w-2xl py-8">
-        <div className="rounded-lg border bg-card p-8 text-center">
-          <h2 className="text-2xl font-bold">Quiz Complete!</h2>
-          <div className="mt-6 space-y-2">
-            <p className="text-lg">
-              Score: {quiz.stats.correctAnswers} / {quiz.stats.totalQuestions}
-            </p>
-            <p className="text-muted-foreground">Accuracy: {quiz.stats.accuracy.toFixed(1)}%</p>
-          </div>
+    // 轉換答案記錄格式
+    const answerRecords: QuizAnswerRecord[] = quiz.answers.map((answer) => {
+      const question = questions.find((q) => q.id === answer.questionId);
+      return {
+        questionId: answer.questionId,
+        word: question?.word || '',
+        reading: question?.reading || '',
+        correctAnswer: question?.correctAnswer || '',
+        selectedAnswer: answer.selectedAnswer,
+        isCorrect: answer.isCorrect,
+      };
+    });
 
-          <div className="mt-8 flex gap-4 justify-center">
-            <Button onClick={quiz.restart}>Try Again</Button>
-            <Button variant="outline" onClick={() => router.push('/study')}>
-              Back to Study
-            </Button>
-          </div>
-        </div>
+    return (
+      <div className="container mx-auto max-w-3xl py-8">
+        <QuizSummary
+          answers={answerRecords}
+          totalQuestions={quiz.stats.totalQuestions}
+          correctAnswers={quiz.stats.correctAnswers}
+          accuracy={quiz.stats.accuracy}
+          onRestart={quiz.restart}
+          onExit={() => router.push('/study')}
+        />
       </div>
     );
   }
