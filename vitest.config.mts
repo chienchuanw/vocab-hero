@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
+    environment: 'node',
     globals: true,
     exclude: ['**/node_modules/**', '**/e2e/**', '**/.git/**'],
     // Run tests sequentially to avoid database conflicts
@@ -19,7 +19,7 @@ export default defineConfig({
       DATABASE_URL:
         'postgresql://postgres:postgres@localhost:5432/db_vocab_hero_test?schema=public',
     },
-    setupFiles: ['./tests/setup.ts'],
+    setupFiles: ['./tests/setup-db.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
