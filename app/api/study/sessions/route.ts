@@ -1,18 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
 import { successResponse, ApiErrors } from '@/lib/api/response';
-import { createStudySessionSchema } from '@/lib/validations';
+import { createStudySessionSchema, createQuizSessionSchema } from '@/lib/validations';
 
 /**
  * POST /api/study/sessions
- * 建立新的學習 session
+ * Create a new study session (flashcard or quiz)
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // 驗證輸入
-    const validationResult = createStudySessionSchema.safeParse(body);
+    // Determine if this is a quiz session based on presence of studyMode field
+    const isQuizSession = 'studyMode' in body;
+
+    // Validate input using appropriate schema
+    const validationResult = isQuizSession
+      ? createQuizSessionSchema.safeParse(body)
+      : createStudySessionSchema.safeParse(body);
 
     if (!validationResult.success) {
       return ApiErrors.VALIDATION_ERROR('Invalid input data', validationResult.error.flatten());
@@ -20,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     const { userId, mode } = validationResult.data;
 
-    // 檢查使用者是否存在
+    // Check if user exists
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });
@@ -29,12 +34,24 @@ export async function POST(request: NextRequest) {
       return ApiErrors.NOT_FOUND('User not found');
     }
 
-    // 建立 study session
+    // Prepare session data
+    const sessionData: any = {
+      userId,
+      mode,
+    };
+
+    // Add quiz-specific fields if present
+    if (isQuizSession) {
+      const quizData = validationResult.data as any;
+      if (quizData.studyMode) sessionData.studyMode = quizData.studyMode;
+      if (quizData.quizType) sessionData.quizType = quizData.quizType;
+      if (quizData.questionCount) sessionData.questionCount = quizData.questionCount;
+      if (quizData.groupId) sessionData.groupId = quizData.groupId;
+    }
+
+    // Create study session
     const session = await prisma.studySession.create({
-      data: {
-        userId,
-        mode,
-      },
+      data: sessionData,
     });
 
     return successResponse(session, 201);

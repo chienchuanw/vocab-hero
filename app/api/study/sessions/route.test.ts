@@ -143,3 +143,99 @@ describe('GET /api/study/sessions', () => {
   });
 });
 
+describe('POST /api/study/sessions - Quiz Sessions', () => {
+  beforeEach(async () => {
+    await cleanDatabase();
+  });
+
+  it('should create a quiz session with quiz-specific fields', async () => {
+    const user = await prisma.user.create({
+      data: {
+        email: 'quiz@example.com',
+        name: 'Quiz User',
+      },
+    });
+
+    const group = await prisma.vocabularyGroup.create({
+      data: {
+        name: 'Test Group',
+        userId: user.id,
+      },
+    });
+
+    const request = new Request('http://localhost:3000/api/study/sessions', {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: user.id,
+        mode: 'quiz',
+        studyMode: 'MULTIPLE_CHOICE',
+        quizType: 'WORD_TO_MEANING',
+        questionCount: 10,
+        groupId: group.id,
+      }),
+    });
+
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.success).toBe(true);
+    expect(data.data.studyMode).toBe('MULTIPLE_CHOICE');
+    expect(data.data.quizType).toBe('WORD_TO_MEANING');
+    expect(data.data.questionCount).toBe(10);
+    expect(data.data.groupId).toBe(group.id);
+  });
+
+  it('should create a spelling quiz session', async () => {
+    const user = await prisma.user.create({
+      data: {
+        email: 'spelling@example.com',
+        name: 'Spelling User',
+      },
+    });
+
+    const request = new Request('http://localhost:3000/api/study/sessions', {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: user.id,
+        mode: 'quiz',
+        studyMode: 'SPELLING',
+        questionCount: 5,
+      }),
+    });
+
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.success).toBe(true);
+    expect(data.data.studyMode).toBe('SPELLING');
+    expect(data.data.questionCount).toBe(5);
+  });
+
+  it('should create a matching game session', async () => {
+    const user = await prisma.user.create({
+      data: {
+        email: 'matching@example.com',
+        name: 'Matching User',
+      },
+    });
+
+    const request = new Request('http://localhost:3000/api/study/sessions', {
+      method: 'POST',
+      body: JSON.stringify({
+        userId: user.id,
+        mode: 'quiz',
+        studyMode: 'MATCHING',
+        questionCount: 5,
+      }),
+    });
+
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.success).toBe(true);
+    expect(data.data.studyMode).toBe('MATCHING');
+  });
+});
