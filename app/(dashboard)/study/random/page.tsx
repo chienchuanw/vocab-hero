@@ -8,7 +8,7 @@ import {
   type RandomQuizConfig,
 } from '@/components/features/random-quiz/RandomQuizConfig';
 import { RandomQuizSummary } from '@/components/features/random-quiz/RandomQuizSummary';
-import { MultipleChoiceQuestion } from '@/components/features/quiz/MultipleChoiceQuestion';
+import { MultipleChoiceCard } from '@/components/features/random-quiz/MultipleChoiceCard';
 import { SpellingInput } from '@/components/features/spelling/SpellingInput';
 import { useRandomQuiz } from '@/hooks/useRandomQuiz';
 import { generateMixedQuestions, type VocabularyItem } from '@/lib/random-quiz/question-generator';
@@ -218,12 +218,12 @@ export default function RandomQuizPage() {
       {quiz.currentQuestion && (
         <div>
           {quiz.currentQuestion.type === 'multiple-choice' ? (
-            <MultipleChoiceQuestion
+            <MultipleChoiceCard
               question={quiz.currentQuestion.question}
               options={quiz.currentQuestion.options || []}
+              correctAnswer={quiz.currentQuestion.correctAnswer}
               onAnswer={handleMultipleChoiceAnswer}
               userAnswer={quiz.currentResult?.userAnswer}
-              correctAnswer={quiz.currentQuestion.correctAnswer}
             />
           ) : (
             <SpellingInput

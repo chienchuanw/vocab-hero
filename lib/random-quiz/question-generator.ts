@@ -1,5 +1,5 @@
 import { selectRandomVocabulary } from './vocabulary-selector';
-import { generateDistractors } from '../quiz/distractor-generator';
+import { generateDistractors, shuffleArray } from '../quiz/quiz-utils';
 
 /**
  * Vocabulary Item
@@ -72,7 +72,7 @@ export function generateMixedQuestions(
   }
 
   // 洗牌題目順序
-  return shuffleQuestions(questions);
+  return shuffleArray(questions);
 }
 
 /**
@@ -92,12 +92,8 @@ function generateMultipleChoiceQuestion(
   const correctAnswer = isWordToMeaning ? vocab.meaning : vocab.word;
 
   // 生成干擾選項
-  const distractors = generateDistractors(
-    vocab,
-    allVocabulary,
-    3,
-    isWordToMeaning ? 'meaning' : 'word'
-  );
+  const distractorItems = generateDistractors(vocab, allVocabulary, 3);
+  const distractors = distractorItems.map((item) => (isWordToMeaning ? item.meaning : item.word));
 
   // 組合選項並洗牌
   const options = [correctAnswer, ...distractors];
@@ -125,28 +121,3 @@ function generateSpellingQuestion(vocab: VocabularyItem): QuizQuestion {
     correctAnswer: vocab.reading,
   };
 }
-
-/**
- * 洗牌題目
- */
-function shuffleQuestions(questions: QuizQuestion[]): QuizQuestion[] {
-  const shuffled = [...questions];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
-
-/**
- * 洗牌陣列
- */
-function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
-
