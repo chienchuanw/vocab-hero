@@ -86,15 +86,18 @@ export default function FlashcardStudyPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Session Complete!</h2>
-          <p className="text-muted-foreground mb-4">
-            You reviewed {vocabulary.length} cards
-          </p>
+          <p className="text-muted-foreground mb-4">You reviewed {vocabulary.length} cards</p>
         </div>
       </div>
     );
   }
 
   const currentVocab = vocabulary[currentIndex];
+
+  // 確保 currentVocab 存在才渲染
+  if (!currentVocab) {
+    return null;
+  }
 
   return (
     <div className="container max-w-4xl mx-auto py-8 px-4">
@@ -104,9 +107,7 @@ export default function FlashcardStudyPage() {
           <span className="text-sm text-muted-foreground">
             Card {currentIndex + 1} / {vocabulary.length}
           </span>
-          <span className="text-sm text-muted-foreground">
-            {Object.keys(ratings).length} rated
-          </span>
+          <span className="text-sm text-muted-foreground">{Object.keys(ratings).length} rated</span>
         </div>
         <div className="w-full bg-muted rounded-full h-2">
           <div
@@ -139,4 +140,3 @@ export default function FlashcardStudyPage() {
     </div>
   );
 }
-
