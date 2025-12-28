@@ -23,6 +23,12 @@ export interface VocabularyItem {
   mastery: number;
   createdAt: string;
   updatedAt: string;
+  reviewSchedule?: {
+    easinessFactor: number;
+    interval: number;
+    repetitions: number;
+    nextReviewDate: string;
+  } | null;
 }
 
 /**

@@ -1,3 +1,8 @@
+/**
+ * @vitest-environment happy-dom
+ */
+
+import '@testing-library/jest-dom/vitest';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@/tests/test-utils';
 import userEvent from '@testing-library/user-event';
@@ -14,6 +19,12 @@ describe('VocabularyCard', () => {
     mastery: 3,
     createdAt: '2024-01-01T00:00:00.000Z',
     updatedAt: '2024-01-01T00:00:00.000Z',
+    reviewSchedule: {
+      easinessFactor: 2.5,
+      interval: 6,
+      repetitions: 3,
+      nextReviewDate: '2024-01-07T00:00:00.000Z',
+    },
   };
 
   it('should render vocabulary word', () => {
@@ -42,25 +53,41 @@ describe('VocabularyCard', () => {
     expect(screen.queryByText('Common verb for studying')).not.toBeInTheDocument();
   });
 
-  it('should display mastery badge', () => {
+  it('should display mastery indicator', () => {
     render(<VocabularyCard vocabulary={mockVocabulary} />);
+    expect(screen.getByText('Familiar')).toBeInTheDocument();
+  });
+
+  it('should display NEW level for vocabulary without review schedule', () => {
+    const newVocab = { ...mockVocabulary, reviewSchedule: null };
+    render(<VocabularyCard vocabulary={newVocab} />);
+    expect(screen.getByText('New')).toBeInTheDocument();
+  });
+
+  it('should display LEARNING level for low repetitions', () => {
+    const learningVocab = {
+      ...mockVocabulary,
+      reviewSchedule: {
+        easinessFactor: 2.5,
+        interval: 1,
+        repetitions: 1,
+        nextReviewDate: '2024-01-02T00:00:00.000Z',
+      },
+    };
+    render(<VocabularyCard vocabulary={learningVocab} />);
     expect(screen.getByText('Learning')).toBeInTheDocument();
   });
 
-  it('should display correct mastery level for beginner', () => {
-    const beginnerVocab = { ...mockVocabulary, mastery: 1 };
-    render(<VocabularyCard vocabulary={beginnerVocab} />);
-    expect(screen.getByText('Beginner')).toBeInTheDocument();
-  });
-
-  it('should display correct mastery level for proficient', () => {
-    const proficientVocab = { ...mockVocabulary, mastery: 4 };
-    render(<VocabularyCard vocabulary={proficientVocab} />);
-    expect(screen.getByText('Proficient')).toBeInTheDocument();
-  });
-
-  it('should display correct mastery level for mastered', () => {
-    const masteredVocab = { ...mockVocabulary, mastery: 5 };
+  it('should display MASTERED level for high repetitions and interval', () => {
+    const masteredVocab = {
+      ...mockVocabulary,
+      reviewSchedule: {
+        easinessFactor: 2.5,
+        interval: 30,
+        repetitions: 10,
+        nextReviewDate: '2024-02-01T00:00:00.000Z',
+      },
+    };
     render(<VocabularyCard vocabulary={masteredVocab} />);
     expect(screen.getByText('Mastered')).toBeInTheDocument();
   });

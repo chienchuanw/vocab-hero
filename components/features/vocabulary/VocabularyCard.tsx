@@ -1,8 +1,9 @@
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
+import { MasteryIndicator } from './MasteryIndicator';
+import { calculateMasteryLevel } from '@/lib/srs/mastery';
 
 /**
  * VocabularyCard component props
@@ -14,32 +15,21 @@ export interface VocabularyCardProps {
 }
 
 /**
- * Get mastery level color based on score
- */
-function getMasteryColor(mastery: number): string {
-  if (mastery >= 80) return 'bg-green-500';
-  if (mastery >= 60) return 'bg-blue-500';
-  if (mastery >= 40) return 'bg-yellow-500';
-  if (mastery >= 20) return 'bg-orange-500';
-  return 'bg-red-500';
-}
-
-/**
- * Get mastery level label based on score
- */
-function getMasteryLabel(mastery: number): string {
-  if (mastery >= 80) return 'Mastered';
-  if (mastery >= 60) return 'Familiar';
-  if (mastery >= 40) return 'Learning';
-  if (mastery >= 20) return 'Beginner';
-  return 'Not Started';
-}
-
-/**
  * VocabularyCard component
  * Displays a single vocabulary item card with word, reading, meaning, and mastery level
  */
 export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardProps) {
+  // 計算精熟程度等級
+  const masteryLevel = calculateMasteryLevel(
+    vocabulary.reviewSchedule
+      ? {
+          easinessFactor: vocabulary.reviewSchedule.easinessFactor,
+          interval: vocabulary.reviewSchedule.interval,
+          repetitions: vocabulary.reviewSchedule.repetitions,
+        }
+      : null
+  );
+
   return (
     <Card className="hover:shadow-lg transition-shadow duration-200">
       <CardHeader className="pb-3">
@@ -53,10 +43,8 @@ export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardP
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{vocabulary.reading}</p>
           </div>
 
-          {/* Mastery Badge */}
-          <Badge className={`${getMasteryColor(vocabulary.mastery)} text-white`}>
-            {getMasteryLabel(vocabulary.mastery)}
-          </Badge>
+          {/* Mastery Indicator */}
+          <MasteryIndicator level={masteryLevel} showDescription />
         </div>
       </CardHeader>
 
