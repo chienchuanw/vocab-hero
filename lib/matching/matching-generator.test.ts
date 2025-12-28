@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   generateMatchingPairs,
   shuffleCards,
+  isMatchingPair,
   type VocabularyItem,
   type MatchingCard,
 } from './matching-generator';
@@ -150,5 +151,85 @@ describe('matching-generator', () => {
       expect(hasChanged).toBe(true);
     });
   });
-});
 
+  describe('isMatchingPair', () => {
+    it('should return true for matching pair', () => {
+      const card1: MatchingCard = {
+        id: '1',
+        pairId: 'p1',
+        type: 'word',
+        content: '勉強',
+      };
+      const card2: MatchingCard = {
+        id: '2',
+        pairId: 'p1',
+        type: 'meaning',
+        content: 'study',
+      };
+
+      expect(isMatchingPair(card1, card2)).toBe(true);
+    });
+
+    it('should return false for different pairId', () => {
+      const card1: MatchingCard = {
+        id: '1',
+        pairId: 'p1',
+        type: 'word',
+        content: '勉強',
+      };
+      const card2: MatchingCard = {
+        id: '2',
+        pairId: 'p2',
+        type: 'meaning',
+        content: 'school',
+      };
+
+      expect(isMatchingPair(card1, card2)).toBe(false);
+    });
+
+    it('should return false for same type', () => {
+      const card1: MatchingCard = {
+        id: '1',
+        pairId: 'p1',
+        type: 'word',
+        content: '勉強',
+      };
+      const card2: MatchingCard = {
+        id: '2',
+        pairId: 'p1',
+        type: 'word',
+        content: '勉強',
+      };
+
+      expect(isMatchingPair(card1, card2)).toBe(false);
+    });
+
+    it('should work with reversed order', () => {
+      const card1: MatchingCard = {
+        id: '1',
+        pairId: 'p1',
+        type: 'meaning',
+        content: 'study',
+      };
+      const card2: MatchingCard = {
+        id: '2',
+        pairId: 'p1',
+        type: 'word',
+        content: '勉強',
+      };
+
+      expect(isMatchingPair(card1, card2)).toBe(true);
+    });
+
+    it('should return false for same card', () => {
+      const card: MatchingCard = {
+        id: '1',
+        pairId: 'p1',
+        type: 'word',
+        content: '勉強',
+      };
+
+      expect(isMatchingPair(card, card)).toBe(false);
+    });
+  });
+});
