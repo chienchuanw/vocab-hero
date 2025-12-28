@@ -79,7 +79,49 @@
   - Continue/End session flow implemented
 - Last updated: 2025-12-28
 
-**Current Status**: Phase 5 fully complete. Ready for Phase 6 (Quiz Study Modes).
+**Phase 6: Study Modes - Quiz** ✅ **COMPLETED** (100%)
+
+- ✅ Phase 6.0: Schema Expansion and Base Setup (100%)
+  - Extended Prisma schema with StudyMode enum and Quiz-specific fields
+  - Created shared quiz utilities (distractor generator, question shuffler)
+  - Extended validation schemas for quiz data
+  - Updated API routes to support quiz modes
+  - Extended useStudySession hook for quiz support
+- ✅ Phase 6.1: Multiple Choice Quiz (100%)
+  - QuizStudy page with configuration and progress tracking
+  - MultipleChoiceQuestion component with 4 options
+  - Question generation with word→meaning and meaning→word directions
+  - Distractor generation from vocabulary pool
+  - Answer feedback animations (correct/incorrect)
+  - QuizSummary component with statistics
+  - E2E tests for quiz flow (8 test scenarios)
+- ✅ Phase 6.2: Spelling Quiz (100%)
+  - SpellingQuiz page with configuration
+  - SpellingInput component with IME support
+  - Hiragana/Katakana conversion utilities
+  - Answer validation with kana interchange support
+  - Character-level visual feedback
+  - Hint system (show first character)
+  - E2E tests for spelling quiz
+- ✅ Phase 6.3: Matching Game (100%)
+  - MatchingGame page with 5 pairs (10 cards)
+  - MatchingCard component with flip animations
+  - Pair generation logic (word ↔ meaning)
+  - Match detection and success animation
+  - Game state management with timer
+  - GameComplete screen with performance rating
+  - E2E tests for matching game
+- ✅ Phase 6.4: Random Quiz Mode (100%)
+  - RandomQuiz page with configuration
+  - Vocabulary selector for cross-group random selection
+  - Mixed question type generation (50/50 multiple-choice and spelling)
+  - Difficulty-based vocabulary filtering
+  - RandomQuizSummary with detailed statistics
+  - Performance rating based on accuracy
+  - E2E tests for random quiz
+- Last updated: 2025-12-28
+
+**Current Status**: Phase 6 fully complete. Ready for Phase 7 (Audio and Pronunciation).
 
 ---
 
@@ -336,51 +378,61 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 6: Study Modes - Quiz
+## Phase 6: Study Modes - Quiz ✅ COMPLETED
 
-### 6.1 Multiple Choice Quiz
+### 6.0 Schema Expansion and Base Setup ✅ COMPLETED
 
-- [ ] Create QuizStudy page
-- [ ] Create MultipleChoiceQuestion component
-- [ ] Implement question generation (word -> meaning)
-- [ ] Implement reverse question (meaning -> word)
-- [ ] Generate distractor options from vocabulary pool
-- [ ] Create answer feedback animation (correct/incorrect)
-- [ ] Implement score tracking
-- [ ] Create quiz summary screen
-- [ ] Write component and integration tests
+- [x] Extend Prisma schema with StudyMode enum
+- [x] Add Quiz-specific fields to StudySession
+- [x] Create shared quiz utilities (distractor generator, question shuffler)
+- [x] Extend validation schemas for quiz data
+- [x] Update API routes to support quiz modes
+- [x] Extend useStudySession hook for quiz support
 
-### 6.2 Spelling Quiz
+### 6.1 Multiple Choice Quiz ✅ COMPLETED
 
-- [ ] Create SpellingQuiz component
-- [ ] Display meaning/reading, user types Japanese word
-- [ ] Implement hiragana/katakana input support
-- [ ] Create character-by-character validation
-- [ ] Implement hint system (show first character)
-- [ ] Create visual feedback for correct/incorrect characters
-- [ ] Write tests for spelling validation
+- [x] Create QuizStudy page with configuration
+- [x] Create MultipleChoiceQuestion component
+- [x] Implement question generation (word -> meaning)
+- [x] Implement reverse question (meaning -> word)
+- [x] Generate distractor options from vocabulary pool
+- [x] Create answer feedback animation (correct/incorrect)
+- [x] Implement score tracking
+- [x] Create QuizSummary screen with statistics
+- [x] Write component and integration tests (8 test scenarios)
 
-### 6.3 Matching Game
+### 6.2 Spelling Quiz ✅ COMPLETED
 
-- [ ] Create MatchingGame page
-- [ ] Create MatchingCard component
-- [ ] Implement card pair generation (word <-> meaning)
-- [ ] Create card flip and match animation
-- [ ] Implement match detection logic
-- [ ] Add timer for gamification
-- [ ] Track moves and time for scoring
-- [ ] Create game completion screen
-- [ ] Write E2E tests for matching game
+- [x] Create SpellingQuiz page with configuration
+- [x] Create SpellingInput component with IME support
+- [x] Display meaning/reading, user types Japanese word
+- [x] Implement hiragana/katakana input support
+- [x] Create character-by-character validation
+- [x] Implement hint system (show first character)
+- [x] Create visual feedback for correct/incorrect characters
+- [x] Write tests for spelling validation (8 test scenarios)
 
-### 6.4 Random Quiz Mode
+### 6.3 Matching Game ✅ COMPLETED
 
-- [ ] Create RandomQuiz page
-- [ ] Implement vocabulary selection across all groups
-- [ ] Create quiz configuration (number of questions, difficulty)
-- [ ] Mix different question types in single quiz
-- [ ] Implement adaptive difficulty based on performance
-- [ ] Create comprehensive quiz results
-- [ ] Write tests for random selection logic
+- [x] Create MatchingGame page with 5 pairs
+- [x] Create MatchingCard component with animations
+- [x] Implement card pair generation (word <-> meaning)
+- [x] Create card flip and match animation
+- [x] Implement match detection logic
+- [x] Add timer for gamification
+- [x] Track moves and time for scoring
+- [x] Create GameComplete screen with performance rating
+- [x] Write E2E tests for matching game (8 test scenarios)
+
+### 6.4 Random Quiz Mode ✅ COMPLETED
+
+- [x] Create RandomQuiz page with configuration
+- [x] Implement vocabulary selection across all groups
+- [x] Create quiz configuration (number of questions, difficulty)
+- [x] Mix different question types in single quiz (50/50 split)
+- [x] Implement difficulty-based vocabulary filtering
+- [x] Create comprehensive quiz results with statistics
+- [x] Write tests for random selection logic (8 test scenarios)
 
 ---
 
@@ -785,7 +837,11 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - **Milestone 1**: Basic vocabulary management working (Phase 2 complete ✅)
 - **Milestone 2**: Frontend components integrated (Phase 3 complete ✅)
 - **Milestone 3**: Flashcard study mode working (Phase 5 complete ✅)
-- **Milestone 4**: All study modes working (Phase 7 in progress)
+- **Milestone 4**: All study modes working (Phase 6 complete ✅)
+  - Multiple Choice Quiz ✅
+  - Spelling Quiz ✅
+  - Matching Game ✅
+  - Random Quiz Mode ✅
 - **Milestone 5**: Full progress tracking (Phase 8 planned)
 - **Milestone 6**: Production-ready web app (Phase 16 planned)
 - **Milestone 7**: Mobile app available (Phase 17/18 planned)
