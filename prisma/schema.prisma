@@ -96,21 +96,45 @@ model ReviewSchedule {
   @@map("review_schedules")
 }
 
+// StudyMode enum - Different study modes available
+enum StudyMode {
+  FLASHCARD
+  MULTIPLE_CHOICE
+  SPELLING
+  MATCHING
+  RANDOM
+}
+
+// QuizType enum - Different quiz question types
+enum QuizType {
+  WORD_TO_MEANING    // Japanese word to meaning
+  MEANING_TO_WORD    // Meaning to Japanese word
+  MIXED              // Mix of both types
+}
+
 // StudySession model - Study session records
 model StudySession {
-  id               String    @id @default(cuid())
-  userId           String    @map("user_id")
+  id               String     @id @default(cuid())
+  userId           String     @map("user_id")
   mode             String
-  cardsReviewed    Int       @default(0) @map("cards_reviewed")
-  correctAnswers   Int       @default(0) @map("correct_answers")
-  timeSpentMinutes Int       @default(0) @map("time_spent_minutes")
-  startedAt        DateTime  @default(now()) @map("started_at")
-  completedAt      DateTime? @map("completed_at")
-  createdAt        DateTime  @default(now()) @map("created_at")
-  updatedAt        DateTime  @updatedAt @map("updated_at")
+  studyMode        StudyMode? @map("study_mode")
+  cardsReviewed    Int        @default(0) @map("cards_reviewed")
+  correctAnswers   Int        @default(0) @map("correct_answers")
+  timeSpentMinutes Int        @default(0) @map("time_spent_minutes")
+  startedAt        DateTime   @default(now()) @map("started_at")
+  completedAt      DateTime?  @map("completed_at")
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+
+  // Quiz-specific fields
+  quizType      QuizType? @map("quiz_type")
+  questionCount Int?      @map("question_count")
+  groupId       String?   @map("group_id")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([studyMode])
+  @@index([groupId])
   @@map("study_sessions")
 }
 
