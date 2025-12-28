@@ -122,3 +122,26 @@ export function useVocabularyItem(id: string | undefined) {
     enabled: !!id,
   });
 }
+
+/**
+ * useDueVocabulary Hook
+ * 取得需要複習的單字列表
+ *
+ * @param limit - 最大回傳數量（預設 20）
+ * @returns TanStack Query 的 query 結果
+ */
+export function useDueVocabulary(limit: number = 20) {
+  return useQuery({
+    queryKey: ['vocabulary', 'due', limit],
+    queryFn: async () => {
+      const response = await fetch(`/api/vocabulary/due?limit=${limit}`);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch due vocabulary');
+      }
+
+      const result = await response.json();
+      return result.data as VocabularyItem[];
+    },
+  });
+}
