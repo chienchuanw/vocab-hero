@@ -3,13 +3,29 @@
  */
 
 import '@testing-library/jest-dom/vitest';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@/tests/test-utils';
 import userEvent from '@testing-library/user-event';
 import { VocabularyCard } from './VocabularyCard';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
+import * as ttsModule from '@/lib/tts';
+
+vi.mock('@/lib/tts', () => ({
+  ttsEngine: {
+    isSupported: vi.fn(() => true),
+    speak: vi.fn(() => Promise.resolve()),
+    stop: vi.fn(),
+    getState: vi.fn(() => 'idle'),
+  },
+}));
 
 describe('VocabularyCard', () => {
+  const mockTTSEngine = ttsModule.ttsEngine;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   const mockVocabulary: VocabularyItem = {
     id: '1',
     word: '勉強',
@@ -131,5 +147,31 @@ describe('VocabularyCard', () => {
     // Date format is locale-dependent, just check it exists
     const dateElement = screen.getByText(/1\/1\/2024/);
     expect(dateElement).toBeInTheDocument();
+  });
+
+  describe('TTS Integration', () => {
+    it('should render speaker button for pronunciation', () => {
+      render(<VocabularyCard vocabulary={mockVocabulary} />);
+      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
+      expect(speakerButton).toBeInTheDocument();
+    });
+
+    it('should call TTS engine when speaker button is clicked', async () => {
+      const user = userEvent.setup();
+      render(<VocabularyCard vocabulary={mockVocabulary} />);
+
+      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
+      await user.click(speakerButton);
+
+      expect(mockTTSEngine.speak).toHaveBeenCalledWith('勉強', undefined);
+    });
+
+    it('should not render speaker button when TTS is not supported', () => {
+      vi.mocked(mockTTSEngine.isSupported).mockReturnValue(false);
+      render(<VocabularyCard vocabulary={mockVocabulary} />);
+
+      const speakerButton = screen.queryByRole('button', { name: /play pronunciation/i });
+      expect(speakerButton).not.toBeInTheDocument();
+    });
   });
 });

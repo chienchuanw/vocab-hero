@@ -4,6 +4,7 @@ import { Edit, Trash2 } from 'lucide-react';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
 import { MasteryIndicator } from './MasteryIndicator';
 import { calculateMasteryLevel } from '@/lib/srs/mastery';
+import { SpeakerButton } from '@/components/features/audio';
 
 /**
  * VocabularyCard component props
@@ -35,10 +36,13 @@ export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardP
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            {/* Word */}
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              {vocabulary.word}
-            </h3>
+            {/* Word with pronunciation button */}
+            <div className="flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                {vocabulary.word}
+              </h3>
+              <SpeakerButton text={vocabulary.word} />
+            </div>
             {/* Reading */}
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{vocabulary.reading}</p>
           </div>
