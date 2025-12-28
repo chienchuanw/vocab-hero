@@ -31,6 +31,13 @@ export interface VocabularyItem {
     repetitions: number;
     nextReviewDate: string;
   } | null;
+  exampleSentences?: Array<{
+    id: string;
+    sentence: string;
+    reading: string;
+    meaning: string;
+    order: number;
+  }>;
 }
 
 /**

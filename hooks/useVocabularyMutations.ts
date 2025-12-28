@@ -25,6 +25,12 @@ export interface UpdateVocabularyInput {
   reading?: string;
   meaning?: string;
   notes?: string;
+  exampleSentences?: Array<{
+    sentence: string;
+    reading: string;
+    meaning: string;
+    order: number;
+  }>;
 }
 
 /**
@@ -116,4 +122,3 @@ export function useDeleteVocabulary() {
     },
   });
 }
-

@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { ExampleSentenceInput } from './ExampleSentenceInput';
 import type { CreateVocabularyInput } from '@/hooks/useVocabularyMutations';
+import type { ExampleSentenceData } from './ExampleSentence.types';
 
 /**
  * AddVocabularyForm component props
@@ -32,6 +34,7 @@ export function AddVocabularyForm({
     notes: '',
   });
 
+  const [exampleSentences, setExampleSentences] = useState<ExampleSentenceData[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Validate form
@@ -57,7 +60,20 @@ export function AddVocabularyForm({
     e.preventDefault();
 
     if (validateForm()) {
-      onSubmit(formData);
+      // Convert example sentences to API format
+      const exampleSentencesData = exampleSentences
+        .filter((s) => s.sentence.trim() && s.meaning.trim())
+        .map((s, index) => ({
+          sentence: s.sentence,
+          reading: s.reading,
+          meaning: s.meaning,
+          order: index,
+        }));
+
+      onSubmit({
+        ...formData,
+        exampleSentences: exampleSentencesData.length > 0 ? exampleSentencesData : undefined,
+      });
     }
   };
 
@@ -115,6 +131,9 @@ export function AddVocabularyForm({
           rows={3}
         />
       </div>
+
+      {/* Example Sentences */}
+      <ExampleSentenceInput sentences={exampleSentences} onChange={setExampleSentences} />
 
       {/* Buttons */}
       <div className="flex justify-end gap-2 pt-4">

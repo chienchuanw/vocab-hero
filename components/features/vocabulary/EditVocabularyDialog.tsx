@@ -12,9 +12,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { ExampleSentenceInput } from './ExampleSentenceInput';
 import { useUpdateVocabulary } from '@/hooks/useVocabularyMutations';
 import { toast } from 'sonner';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
+import type { ExampleSentenceData } from './ExampleSentence.types';
 
 /**
  * EditVocabularyDialog component props
@@ -41,6 +43,7 @@ export function EditVocabularyDialog({
     meaning: '',
     notes: '',
   });
+  const [exampleSentences, setExampleSentences] = useState<ExampleSentenceData[]>([]);
 
   // Update form data when vocabulary changes
   useEffect(() => {
@@ -51,6 +54,17 @@ export function EditVocabularyDialog({
         meaning: vocabulary.meaning,
         notes: vocabulary.notes || '',
       });
+
+      // Convert example sentences to editable format
+      const sentences: ExampleSentenceData[] =
+        vocabulary.exampleSentences?.map((s) => ({
+          id: s.id,
+          sentence: s.sentence,
+          reading: s.reading,
+          meaning: s.meaning,
+          order: s.order,
+        })) || [];
+      setExampleSentences(sentences);
     }
   }, [vocabulary]);
 
@@ -60,9 +74,22 @@ export function EditVocabularyDialog({
     if (!vocabulary) return;
 
     try {
+      // Convert example sentences to API format
+      const exampleSentencesData = exampleSentences
+        .filter((s) => s.sentence.trim() && s.meaning.trim())
+        .map((s, index) => ({
+          sentence: s.sentence,
+          reading: s.reading,
+          meaning: s.meaning,
+          order: index,
+        }));
+
       await updateMutation.mutateAsync({
         id: vocabulary.id,
-        data: formData,
+        data: {
+          ...formData,
+          exampleSentences: exampleSentencesData.length > 0 ? exampleSentencesData : undefined,
+        },
       });
       toast.success('Word updated successfully!');
       onOpenChange(false);
@@ -117,6 +144,10 @@ export function EditVocabularyDialog({
               rows={3}
             />
           </div>
+
+          {/* Example Sentences */}
+          <ExampleSentenceInput sentences={exampleSentences} onChange={setExampleSentences} />
+
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
