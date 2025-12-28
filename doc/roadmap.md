@@ -41,18 +41,19 @@
 - 📋 Component unit tests deferred (E2E coverage sufficient)
 - Last updated: 2025-12-28
 
-**Phase 4: Spaced Repetition System (SM-2)** 🔄 **IN PROGRESS** (60%)
+**Phase 4: Spaced Repetition System (SM-2)** ✅ **COMPLETED** (100%)
 
 - ✅ SM-2 algorithm implementation complete with comprehensive tests
 - ✅ Mastery level calculation system implemented (5 levels: NEW, LEARNING, FAMILIAR, LEARNED, MASTERED)
 - ✅ MasteryIndicator component created with color-coded badges
 - ✅ Mastery level filtering in vocabulary list implemented
 - ✅ API support for mastery level filtering added
-- 📋 Review schedule management API endpoints (in progress)
-- 📋 Due vocabulary query functionality (pending)
+- ✅ Review schedule management API endpoints (POST /api/vocabulary/:id/review)
+- ✅ Due vocabulary query functionality (GET /api/vocabulary/due)
+- ✅ Review stats API (GET /api/review/stats)
 - Last updated: 2025-12-28
 
-**Current Status**: Mastery level system fully functional. Vocabulary filtering by mastery level working. Ready for review schedule management and study session integration.
+**Current Status**: Phase 4 fully complete. Ready for Phase 5 (Flashcard Study Mode).
 
 ---
 
@@ -243,7 +244,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 4: Spaced Repetition System (SM-2) 🔄 IN PROGRESS (60%)
+## Phase 4: Spaced Repetition System (SM-2) ✅ COMPLETED
 
 ### 4.1 SM-2 Algorithm Implementation ✅ COMPLETED
 
@@ -266,7 +267,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [x] Implement API support for masteryLevel query parameter
 - [x] Add mastery level filtering tests to API route tests
 
-### 4.3 Review Schedule Management
+### 4.3 Review Schedule Management ✅ COMPLETED
 
 - [x] Create ReviewSchedule database operations (CRUD)
 - [x] Implement due vocabulary query (find items due for review)
@@ -277,7 +278,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 5: Study Modes - Flashcard
+## Phase 5: Study Modes - Flashcard 🔄 IN PROGRESS
 
 ### 5.1 Flashcard Mode - Core
 
