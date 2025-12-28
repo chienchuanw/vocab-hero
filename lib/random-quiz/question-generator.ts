@@ -60,6 +60,7 @@ export function generateMixedQuestions(
   // 生成選擇題
   for (let i = 0; i < multipleChoiceCount; i++) {
     const vocab = selectedVocabulary[i];
+    if (!vocab) continue;
     const question = generateMultipleChoiceQuestion(vocab, vocabulary);
     questions.push(question);
   }
@@ -67,6 +68,7 @@ export function generateMixedQuestions(
   // 生成拼寫題
   for (let i = multipleChoiceCount; i < count; i++) {
     const vocab = selectedVocabulary[i];
+    if (!vocab) continue;
     const question = generateSpellingQuestion(vocab);
     questions.push(question);
   }

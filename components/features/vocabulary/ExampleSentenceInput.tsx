@@ -33,9 +33,7 @@ export function ExampleSentenceInput({ sentences, onChange }: ExampleSentenceInp
 
   // Update sentence field
   const handleUpdate = (index: number, field: keyof ExampleSentenceData, value: string) => {
-    const updated = sentences.map((s, i) =>
-      i === index ? { ...s, [field]: value } : s
-    );
+    const updated = sentences.map((s, i) => (i === index ? { ...s, [field]: value } : s));
     onChange(updated);
   };
 
@@ -92,7 +90,7 @@ export function ExampleSentenceInput({ sentences, onChange }: ExampleSentenceInp
             <Label htmlFor={`reading-${sentence.id}`}>Reading (Furigana)</Label>
             <Input
               id={`reading-${sentence.id}`}
-              value={sentence.reading}
+              value={sentence.reading || ''}
               onChange={(e) => handleUpdate(index, 'reading', e.target.value)}
               placeholder="e.g., わたしはまいにちべんきょうします"
             />
@@ -112,4 +110,3 @@ export function ExampleSentenceInput({ sentences, onChange }: ExampleSentenceInp
     </div>
   );
 }
-

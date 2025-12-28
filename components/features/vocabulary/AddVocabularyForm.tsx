@@ -65,7 +65,7 @@ export function AddVocabularyForm({
         .filter((s) => s.sentence.trim() && s.meaning.trim())
         .map((s, index) => ({
           sentence: s.sentence,
-          reading: s.reading,
+          reading: s.reading || '',
           meaning: s.meaning,
           order: index,
         }));

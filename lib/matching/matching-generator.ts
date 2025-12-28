@@ -85,7 +85,9 @@ export function shuffleCards<T>(cards: T[]): T[] {
   // Fisher-Yates 洗牌演算法
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const temp = shuffled[i];
+    shuffled[i] = shuffled[j]!;
+    shuffled[j] = temp!;
   }
 
   return shuffled;
@@ -134,4 +136,3 @@ export function generateShuffledPairs(
   const pairs = generateMatchingPairs(vocabulary, pairCount);
   return shuffleCards(pairs);
 }
-

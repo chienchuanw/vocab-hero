@@ -19,17 +19,17 @@ export function MatchAnimation({ show, onComplete }: MatchAnimationProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (show) {
-      setIsVisible(true);
+    if (!show) return;
 
-      // 動畫持續 1 秒後消失
-      const timer = setTimeout(() => {
-        setIsVisible(false);
-        onComplete?.();
-      }, 1000);
+    setIsVisible(true);
 
-      return () => clearTimeout(timer);
-    }
+    // 動畫持續 1 秒後消失
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      onComplete?.();
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [show, onComplete]);
 
   if (!isVisible) return null;
@@ -60,12 +60,7 @@ export function MatchAnimation({ show, onComplete }: MatchAnimationProps) {
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={3}
-            d="M5 13l4 4L19 7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
         </svg>
       </div>
 
@@ -82,4 +77,3 @@ export function MatchAnimation({ show, onComplete }: MatchAnimationProps) {
     </div>
   );
 }
-

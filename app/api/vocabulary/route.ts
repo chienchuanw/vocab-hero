@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Cursor-based 分頁
-    const queryOptions: Prisma.VocabularyItemFindManyArgs = {
+    const queryOptions: any = {
       where,
       take: limit + 1, // 多取一筆來判斷是否有下一頁
       orderBy: {
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
 
     // 依精熟程度篩選（在記憶體中進行，因為精熟程度是計算出來的）
     if (masteryLevel) {
-      items = items.filter((item) => {
+      items = items.filter((item: any) => {
         const level = calculateMasteryLevel(
           item.reviewSchedule
             ? {

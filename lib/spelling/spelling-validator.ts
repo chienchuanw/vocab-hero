@@ -66,25 +66,25 @@ export function calculateSimilarity(str1: string, str2: string): number {
 
   // 初始化第一行和第一列
   for (let i = 0; i <= len1; i++) {
-    matrix[i][0] = i;
+    matrix[i]![0] = i;
   }
   for (let j = 0; j <= len2; j++) {
-    matrix[0][j] = j;
+    matrix[0]![j] = j;
   }
 
   // 計算編輯距離
   for (let i = 1; i <= len1; i++) {
     for (let j = 1; j <= len2; j++) {
       const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1, // 刪除
-        matrix[i][j - 1] + 1, // 插入
-        matrix[i - 1][j - 1] + cost // 替換
+      matrix[i]![j] = Math.min(
+        matrix[i - 1]![j]! + 1, // 刪除
+        matrix[i]![j - 1]! + 1, // 插入
+        matrix[i - 1]![j - 1]! + cost // 替換
       );
     }
   }
 
-  const distance = matrix[len1][len2];
+  const distance = matrix[len1]![len2]!;
   const maxLength = Math.max(len1, len2);
 
   // 返回相似度百分比（0-100）
@@ -146,4 +146,3 @@ export function getDetailedFeedback(
     feedback,
   };
 }
-

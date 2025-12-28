@@ -37,7 +37,9 @@ export function selectRandomVocabulary(
   const shuffled = [...vocabulary];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const temp = shuffled[i];
+    shuffled[i] = shuffled[j]!;
+    shuffled[j] = temp!;
   }
 
   // 取前 count 個項目
@@ -183,4 +185,3 @@ export function selectMixedDifficulty(
 
   return selectRandomVocabulary(selected, selected.length);
 }
-
