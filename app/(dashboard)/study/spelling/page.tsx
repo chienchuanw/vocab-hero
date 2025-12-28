@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { SpellingInput } from '@/components/features/spelling/SpellingInput';
 import { useSpellingSession, type SpellingQuestion } from '@/hooks/useSpellingSession';
@@ -58,57 +59,63 @@ export default function SpellingQuizPage() {
   // 顯示完成畫面
   if (spelling.isComplete) {
     return (
-      <div className="container mx-auto max-w-2xl py-8">
-        <div className="rounded-lg border bg-card p-8 text-center">
-          <h2 className="text-2xl font-bold">Spelling Quiz Complete!</h2>
-          <div className="mt-6 space-y-2">
-            <p className="text-lg">
-              Score: {spelling.stats.correctAnswers} / {spelling.stats.totalQuestions}
-            </p>
-            <p className="text-muted-foreground">Accuracy: {spelling.stats.accuracy.toFixed(1)}%</p>
-          </div>
+      <Layout streak={0}>
+        <div className="max-w-2xl mx-auto">
+          <div className="rounded-lg border bg-card p-8 text-center">
+            <h2 className="text-2xl font-bold">Spelling Quiz Complete!</h2>
+            <div className="mt-6 space-y-2">
+              <p className="text-lg">
+                Score: {spelling.stats.correctAnswers} / {spelling.stats.totalQuestions}
+              </p>
+              <p className="text-muted-foreground">
+                Accuracy: {spelling.stats.accuracy.toFixed(1)}%
+              </p>
+            </div>
 
-          <div className="mt-8 flex gap-4 justify-center">
-            <Button onClick={spelling.restart}>Try Again</Button>
-            <Button variant="outline" onClick={() => router.push('/study')}>
-              Back to Study
-            </Button>
+            <div className="mt-8 flex gap-4 justify-center">
+              <Button onClick={spelling.restart}>Try Again</Button>
+              <Button variant="outline" onClick={() => router.push('/study')}>
+                Back to Study
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="container mx-auto max-w-3xl py-8">
-      <div className="mb-8">
-        <div className="mb-4 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Spelling Quiz</h1>
-          <Button variant="ghost" onClick={() => router.push('/study')}>
-            ← Back to Study
-          </Button>
+    <Layout streak={0}>
+      <div className="max-w-3xl mx-auto">
+        <div className="mb-8">
+          <div className="mb-4 flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Spelling Quiz</h1>
+            <Button variant="ghost" onClick={() => router.push('/study')}>
+              ← Back to Study
+            </Button>
+          </div>
+          <p className="text-muted-foreground">
+            Test your spelling by typing the Japanese reading of vocabulary words
+          </p>
         </div>
-        <p className="text-muted-foreground">
-          Test your spelling by typing the Japanese reading of vocabulary words
-        </p>
-      </div>
 
-      {/* 進度指示 */}
-      <div className="mb-6 text-center text-sm text-muted-foreground">
-        Question {spelling.currentQuestionNumber} of {spelling.totalQuestions}
-      </div>
+        {/* 進度指示 */}
+        <div className="mb-6 text-center text-sm text-muted-foreground">
+          Question {spelling.currentQuestionNumber} of {spelling.totalQuestions}
+        </div>
 
-      {/* 拼寫輸入 */}
-      {spelling.currentQuestion && (
-        <SpellingInput
-          word={spelling.currentQuestion.word}
-          meaning={spelling.currentQuestion.meaning}
-          correctReading={spelling.currentQuestion.correctReading}
-          onSubmit={handleAnswer}
-          userAnswer={spelling.currentAnswer?.userAnswer}
-          isCorrect={spelling.currentAnswer?.isCorrect}
-        />
-      )}
-    </div>
+        {/* 拼寫輸入 */}
+        {spelling.currentQuestion && (
+          <SpellingInput
+            word={spelling.currentQuestion.word}
+            meaning={spelling.currentQuestion.meaning}
+            correctReading={spelling.currentQuestion.correctReading}
+            onSubmit={handleAnswer}
+            userAnswer={spelling.currentAnswer?.userAnswer}
+            isCorrect={spelling.currentAnswer?.isCorrect}
+          />
+        )}
+      </div>
+    </Layout>
   );
 }

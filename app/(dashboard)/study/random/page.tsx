@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import {
   RandomQuizConfigForm,
@@ -165,7 +166,46 @@ export default function RandomQuizPage() {
   // 顯示配置頁面
   if (!quizStarted) {
     return (
-      <div className="container mx-auto max-w-2xl py-8">
+      <Layout streak={0}>
+        <div className="max-w-2xl mx-auto">
+          <div className="mb-8">
+            <div className="mb-4 flex items-center justify-between">
+              <h1 className="text-3xl font-bold">Random Quiz</h1>
+              <Button variant="ghost" onClick={() => router.push('/study')}>
+                ← Back to Study
+              </Button>
+            </div>
+            <p className="text-muted-foreground">
+              Test your knowledge with a mix of question types from all your vocabulary
+            </p>
+          </div>
+
+          <RandomQuizConfigForm onStart={handleStartQuiz} />
+        </div>
+      </Layout>
+    );
+  }
+
+  // 顯示完成畫面
+  if (quiz.isComplete) {
+    return (
+      <Layout streak={0}>
+        <div className="max-w-2xl mx-auto">
+          <RandomQuizSummary
+            results={quiz.results}
+            totalQuestions={quiz.totalQuestions}
+            onRestart={handleRestart}
+            onBackToStudy={() => router.push('/study')}
+          />
+        </div>
+      </Layout>
+    );
+  }
+
+  // 顯示測驗題目
+  return (
+    <Layout streak={0}>
+      <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <div className="mb-4 flex items-center justify-between">
             <h1 className="text-3xl font-bold">Random Quiz</h1>
@@ -173,70 +213,37 @@ export default function RandomQuizPage() {
               ← Back to Study
             </Button>
           </div>
-          <p className="text-muted-foreground">
-            Test your knowledge with a mix of question types from all your vocabulary
-          </p>
         </div>
 
-        <RandomQuizConfigForm onStart={handleStartQuiz} />
-      </div>
-    );
-  }
-
-  // 顯示完成畫面
-  if (quiz.isComplete) {
-    return (
-      <div className="container mx-auto max-w-2xl py-8">
-        <RandomQuizSummary
-          results={quiz.results}
-          totalQuestions={quiz.totalQuestions}
-          onRestart={handleRestart}
-          onBackToStudy={() => router.push('/study')}
-        />
-      </div>
-    );
-  }
-
-  // 顯示測驗題目
-  return (
-    <div className="container mx-auto max-w-3xl py-8">
-      <div className="mb-8">
-        <div className="mb-4 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Random Quiz</h1>
-          <Button variant="ghost" onClick={() => router.push('/study')}>
-            ← Back to Study
-          </Button>
+        {/* 進度指示 */}
+        <div className="mb-6 text-center text-sm text-muted-foreground">
+          Question {quiz.currentQuestionNumber} of {quiz.totalQuestions}
         </div>
-      </div>
 
-      {/* 進度指示 */}
-      <div className="mb-6 text-center text-sm text-muted-foreground">
-        Question {quiz.currentQuestionNumber} of {quiz.totalQuestions}
+        {/* 題目 */}
+        {quiz.currentQuestion && (
+          <div>
+            {quiz.currentQuestion.type === 'multiple-choice' ? (
+              <MultipleChoiceCard
+                question={quiz.currentQuestion.question}
+                options={quiz.currentQuestion.options || []}
+                correctAnswer={quiz.currentQuestion.correctAnswer}
+                onAnswer={handleMultipleChoiceAnswer}
+                userAnswer={quiz.currentResult?.userAnswer}
+              />
+            ) : (
+              <SpellingInput
+                word={quiz.currentQuestion.question.split('"')[1] || ''}
+                meaning={quiz.currentQuestion.question.split('(')[1]?.split(')')[0] || ''}
+                correctReading={quiz.currentQuestion.correctAnswer}
+                onSubmit={handleSpellingAnswer}
+                userAnswer={quiz.currentResult?.userAnswer}
+                isCorrect={quiz.currentResult?.isCorrect}
+              />
+            )}
+          </div>
+        )}
       </div>
-
-      {/* 題目 */}
-      {quiz.currentQuestion && (
-        <div>
-          {quiz.currentQuestion.type === 'multiple-choice' ? (
-            <MultipleChoiceCard
-              question={quiz.currentQuestion.question}
-              options={quiz.currentQuestion.options || []}
-              correctAnswer={quiz.currentQuestion.correctAnswer}
-              onAnswer={handleMultipleChoiceAnswer}
-              userAnswer={quiz.currentResult?.userAnswer}
-            />
-          ) : (
-            <SpellingInput
-              word={quiz.currentQuestion.question.split('"')[1] || ''}
-              meaning={quiz.currentQuestion.question.split('(')[1]?.split(')')[0] || ''}
-              correctReading={quiz.currentQuestion.correctAnswer}
-              onSubmit={handleSpellingAnswer}
-              userAnswer={quiz.currentResult?.userAnswer}
-              isCorrect={quiz.currentResult?.isCorrect}
-            />
-          )}
-        </div>
-      )}
-    </div>
+    </Layout>
   );
 }

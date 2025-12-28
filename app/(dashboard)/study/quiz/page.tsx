@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Layout } from '@/components/shared';
 import { QuizConfigForm, type QuizConfig } from '@/components/features/quiz/QuizConfigForm';
 import { MultipleChoiceQuestion } from '@/components/features/quiz/MultipleChoiceQuestion';
 import { QuizSummary, type QuizAnswerRecord } from '@/components/features/quiz/QuizSummary';
@@ -78,20 +79,22 @@ export default function QuizStudyPage() {
   // 顯示配置表單
   if (!config || questions.length === 0) {
     return (
-      <div className="container mx-auto max-w-2xl py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Quiz Mode</h1>
-          <p className="mt-2 text-muted-foreground">
-            Test your knowledge with multiple choice questions
-          </p>
-        </div>
+      <Layout streak={0}>
+        <div className="max-w-2xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold">Quiz Mode</h1>
+            <p className="mt-2 text-muted-foreground">
+              Test your knowledge with multiple choice questions
+            </p>
+          </div>
 
-        <QuizConfigForm
-          groups={[]} // TODO: Fetch groups from API
-          onSubmit={handleConfigSubmit}
-          isLoading={isLoading}
-        />
-      </div>
+          <QuizConfigForm
+            groups={[]} // TODO: Fetch groups from API
+            onSubmit={handleConfigSubmit}
+            isLoading={isLoading}
+          />
+        </div>
+      </Layout>
     );
   }
 
@@ -111,41 +114,45 @@ export default function QuizStudyPage() {
     });
 
     return (
-      <div className="container mx-auto max-w-3xl py-8">
-        <QuizSummary
-          answers={answerRecords}
-          totalQuestions={quiz.stats.totalQuestions}
-          correctAnswers={quiz.stats.correctAnswers}
-          accuracy={quiz.stats.accuracy}
-          onRestart={quiz.restart}
-          onExit={() => router.push('/study')}
-        />
-      </div>
+      <Layout streak={0}>
+        <div className="max-w-3xl mx-auto">
+          <QuizSummary
+            answers={answerRecords}
+            totalQuestions={quiz.stats.totalQuestions}
+            correctAnswers={quiz.stats.correctAnswers}
+            accuracy={quiz.stats.accuracy}
+            onRestart={quiz.restart}
+            onExit={() => router.push('/study')}
+          />
+        </div>
+      </Layout>
     );
   }
 
   // 顯示當前題目
   return (
-    <div className="container mx-auto max-w-3xl py-8">
-      <div className="mb-4 flex items-center justify-between">
-        <Button variant="ghost" onClick={() => router.push('/study')}>
-          ← Exit Quiz
-        </Button>
-        <div className="text-sm text-muted-foreground">
-          {quiz.currentQuestionNumber} / {quiz.totalQuestions}
+    <Layout streak={0}>
+      <div className="max-w-3xl mx-auto">
+        <div className="mb-4 flex items-center justify-between">
+          <Button variant="ghost" onClick={() => router.push('/study')}>
+            ← Exit Quiz
+          </Button>
+          <div className="text-sm text-muted-foreground">
+            {quiz.currentQuestionNumber} / {quiz.totalQuestions}
+          </div>
         </div>
-      </div>
 
-      {quiz.currentQuestion && (
-        <MultipleChoiceQuestion
-          question={quiz.currentQuestion}
-          onAnswer={handleAnswer}
-          currentQuestionNumber={quiz.currentQuestionNumber}
-          totalQuestions={quiz.totalQuestions}
-          selectedAnswer={quiz.currentAnswer?.selectedAnswer}
-          isCorrect={quiz.currentAnswer?.isCorrect}
-        />
-      )}
-    </div>
+        {quiz.currentQuestion && (
+          <MultipleChoiceQuestion
+            question={quiz.currentQuestion}
+            onAnswer={handleAnswer}
+            currentQuestionNumber={quiz.currentQuestionNumber}
+            totalQuestions={quiz.totalQuestions}
+            selectedAnswer={quiz.currentAnswer?.selectedAnswer}
+            isCorrect={quiz.currentAnswer?.isCorrect}
+          />
+        )}
+      </div>
+    </Layout>
   );
 }

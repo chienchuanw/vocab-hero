@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Layout } from '@/components/shared';
 import { useDueVocabulary } from '@/hooks/useVocabulary';
 import { Flashcard } from '@/components/features/study/Flashcard';
 import { QualityRatingButtons } from '@/components/features/study/QualityRatingButtons';
@@ -47,48 +48,56 @@ export default function FlashcardStudyPage() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading vocabulary...</p>
+      <Layout streak={0}>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading vocabulary...</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <p className="text-destructive text-lg mb-4">Error loading vocabulary</p>
-          <p className="text-muted-foreground">{error.message}</p>
+      <Layout streak={0}>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <p className="text-destructive text-lg mb-4">Error loading vocabulary</p>
+            <p className="text-muted-foreground">{error.message}</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   // No vocabulary state
   if (!vocabulary || vocabulary.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <p className="text-lg mb-4">No vocabulary items due for review</p>
-          <p className="text-muted-foreground">Great job! Check back later.</p>
+      <Layout streak={0}>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <p className="text-lg mb-4">No vocabulary items due for review</p>
+            <p className="text-muted-foreground">Great job! Check back later.</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   // Session complete state
   if (currentIndex >= vocabulary.length) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Session Complete!</h2>
-          <p className="text-muted-foreground mb-4">You reviewed {vocabulary.length} cards</p>
+      <Layout streak={0}>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4">Session Complete!</h2>
+            <p className="text-muted-foreground mb-4">You reviewed {vocabulary.length} cards</p>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
@@ -100,43 +109,47 @@ export default function FlashcardStudyPage() {
   }
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4">
-      {/* Progress indicator */}
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-muted-foreground">
-            Card {currentIndex + 1} / {vocabulary.length}
-          </span>
-          <span className="text-sm text-muted-foreground">{Object.keys(ratings).length} rated</span>
+    <Layout streak={0}>
+      <div className="max-w-4xl mx-auto">
+        {/* Progress indicator */}
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-muted-foreground">
+              Card {currentIndex + 1} / {vocabulary.length}
+            </span>
+            <span className="text-sm text-muted-foreground">
+              {Object.keys(ratings).length} rated
+            </span>
+          </div>
+          <div className="w-full bg-muted rounded-full h-2">
+            <div
+              className="bg-primary h-2 rounded-full transition-all duration-300"
+              style={{
+                width: `${((currentIndex + 1) / vocabulary.length) * 100}%`,
+              }}
+            />
+          </div>
         </div>
-        <div className="w-full bg-muted rounded-full h-2">
-          <div
-            className="bg-primary h-2 rounded-full transition-all duration-300"
-            style={{
-              width: `${((currentIndex + 1) / vocabulary.length) * 100}%`,
-            }}
-          />
+
+        {/* Flashcard */}
+        <div className="mb-8">
+          <Flashcard vocabulary={currentVocab} onFlip={handleFlip} />
         </div>
+
+        {/* Rating buttons - only show when card is flipped */}
+        {isFlipped && (
+          <div className="mt-8">
+            <QualityRatingButtons onRate={handleRate} />
+          </div>
+        )}
+
+        {/* Instructions */}
+        {!isFlipped && (
+          <div className="text-center text-sm text-muted-foreground mt-4">
+            <p>Press Space or Click to flip the card</p>
+          </div>
+        )}
       </div>
-
-      {/* Flashcard */}
-      <div className="mb-8">
-        <Flashcard vocabulary={currentVocab} onFlip={handleFlip} />
-      </div>
-
-      {/* Rating buttons - only show when card is flipped */}
-      {isFlipped && (
-        <div className="mt-8">
-          <QualityRatingButtons onRate={handleRate} />
-        </div>
-      )}
-
-      {/* Instructions */}
-      {!isFlipped && (
-        <div className="text-center text-sm text-muted-foreground mt-4">
-          <p>Press Space or Click to flip the card</p>
-        </div>
-      )}
-    </div>
+    </Layout>
   );
 }

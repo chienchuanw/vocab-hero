@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ListeningQuestion } from '@/components/features/listening';
@@ -137,56 +138,60 @@ export default function ListeningQuizPage() {
 
   if (isConfiguring) {
     return (
-      <div className="container max-w-2xl mx-auto py-8">
-        <Card className="p-6">
-          <h1 className="text-3xl font-bold mb-6">Listening Quiz</h1>
+      <Layout streak={0}>
+        <div className="max-w-2xl mx-auto">
+          <Card className="p-6">
+            <h1 className="text-3xl font-bold mb-6">Listening Quiz</h1>
 
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium mb-2">Question Type</label>
-              <div className="flex gap-4">
-                <Button
-                  variant={questionType === 'multiple-choice' ? 'default' : 'outline'}
-                  onClick={() => setQuestionType('multiple-choice')}
-                >
-                  Multiple Choice
-                </Button>
-                <Button
-                  variant={questionType === 'typing' ? 'default' : 'outline'}
-                  onClick={() => setQuestionType('typing')}
-                >
-                  Typing
-                </Button>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium mb-2">Question Type</label>
+                <div className="flex gap-4">
+                  <Button
+                    variant={questionType === 'multiple-choice' ? 'default' : 'outline'}
+                    onClick={() => setQuestionType('multiple-choice')}
+                  >
+                    Multiple Choice
+                  </Button>
+                  <Button
+                    variant={questionType === 'typing' ? 'default' : 'outline'}
+                    onClick={() => setQuestionType('typing')}
+                  >
+                    Typing
+                  </Button>
+                </div>
               </div>
-            </div>
 
-            <Button onClick={handleStartQuiz} className="w-full" size="lg">
-              Start Quiz
-            </Button>
-          </div>
-        </Card>
-      </div>
+              <Button onClick={handleStartQuiz} className="w-full" size="lg">
+                Start Quiz
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </Layout>
     );
   }
 
   if (isComplete) {
     const stats = calculateListeningStats(answers);
     return (
-      <div className="container max-w-2xl mx-auto py-8">
-        <Card className="p-6">
-          <h2 className="text-2xl font-bold mb-4">Quiz Complete!</h2>
-          <div className="space-y-2">
-            <p>Accuracy: {stats.accuracy.toFixed(1)}%</p>
-            <p>
-              Correct: {stats.correctAnswers}/{stats.totalQuestions}
-            </p>
-            <p>Total Replays: {stats.totalReplays}</p>
-          </div>
-          <Button onClick={() => router.push('/study')} className="mt-6">
-            Back to Study
-          </Button>
-        </Card>
-      </div>
+      <Layout streak={0}>
+        <div className="max-w-2xl mx-auto">
+          <Card className="p-6">
+            <h2 className="text-2xl font-bold mb-4">Quiz Complete!</h2>
+            <div className="space-y-2">
+              <p>Accuracy: {stats.accuracy.toFixed(1)}%</p>
+              <p>
+                Correct: {stats.correctAnswers}/{stats.totalQuestions}
+              </p>
+              <p>Total Replays: {stats.totalReplays}</p>
+            </div>
+            <Button onClick={() => router.push('/study')} className="mt-6">
+              Back to Study
+            </Button>
+          </Card>
+        </div>
+      </Layout>
     );
   }
 
@@ -195,28 +200,32 @@ export default function ListeningQuizPage() {
   // 如果沒有當前問題，顯示載入中
   if (!currentQuestion) {
     return (
-      <div className="container max-w-2xl mx-auto py-8">
-        <Card className="p-6">
-          <p className="text-center text-gray-600">Loading question...</p>
-        </Card>
-      </div>
+      <Layout streak={0}>
+        <div className="max-w-2xl mx-auto">
+          <Card className="p-6">
+            <p className="text-center text-gray-600">Loading question...</p>
+          </Card>
+        </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="container max-w-2xl mx-auto py-8">
-      <div className="mb-4">
-        <p className="text-sm text-gray-600">
-          Question {currentIndex + 1} of {questions.length}
-        </p>
-      </div>
+    <Layout streak={0}>
+      <div className="max-w-2xl mx-auto">
+        <div className="mb-4">
+          <p className="text-sm text-gray-600">
+            Question {currentIndex + 1} of {questions.length}
+          </p>
+        </div>
 
-      <ListeningQuestion
-        question={currentQuestion}
-        onAnswer={handleAnswer}
-        maxReplays={maxReplays}
-        onReplay={handleReplay}
-      />
-    </div>
+        <ListeningQuestion
+          question={currentQuestion}
+          onAnswer={handleAnswer}
+          maxReplays={maxReplays}
+          onReplay={handleReplay}
+        />
+      </div>
+    </Layout>
   );
 }

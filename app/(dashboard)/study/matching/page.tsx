@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { MatchingCard } from '@/components/features/matching/MatchingCard';
 import { MatchAnimation } from '@/components/features/matching/MatchAnimation';
@@ -62,65 +63,69 @@ export default function MatchingGamePage() {
   // 顯示完成畫面
   if (game.isComplete) {
     return (
-      <div className="container mx-auto max-w-2xl py-8">
-        <GameComplete
-          elapsedTime={game.elapsedTime}
-          attempts={game.attempts}
-          onRestart={game.restart}
-          onBackToStudy={() => router.push('/study')}
-        />
-      </div>
+      <Layout streak={0}>
+        <div className="max-w-2xl mx-auto">
+          <GameComplete
+            elapsedTime={game.elapsedTime}
+            attempts={game.attempts}
+            onRestart={game.restart}
+            onBackToStudy={() => router.push('/study')}
+          />
+        </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="container mx-auto max-w-4xl py-8">
-      <div className="mb-8">
-        <div className="mb-4 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Matching Game</h1>
-          <Button variant="ghost" onClick={() => router.push('/study')}>
-            ← Back to Study
-          </Button>
+    <Layout streak={0}>
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <div className="mb-4 flex items-center justify-between">
+            <h1 className="text-3xl font-bold">Matching Game</h1>
+            <Button variant="ghost" onClick={() => router.push('/study')}>
+              ← Back to Study
+            </Button>
+          </div>
+          <p className="text-muted-foreground">
+            Match Japanese words with their meanings. Find all 5 pairs as quickly as you can!
+          </p>
         </div>
-        <p className="text-muted-foreground">
-          Match Japanese words with their meanings. Find all 5 pairs as quickly as you can!
-        </p>
-      </div>
 
-      {/* 遊戲統計 */}
-      <div className="mb-6 flex gap-4 justify-center text-sm text-muted-foreground">
-        <div>Matched: {game.matchedPairs.length} / 5</div>
-        <div>•</div>
-        <div>Attempts: {game.attempts}</div>
-        {game.elapsedTime > 0 && (
-          <>
-            <div>•</div>
-            <div>
-              Time: {Math.floor(game.elapsedTime / 60)}:
-              {(game.elapsedTime % 60).toString().padStart(2, '0')}
-            </div>
-          </>
-        )}
-      </div>
+        {/* 遊戲統計 */}
+        <div className="mb-6 flex gap-4 justify-center text-sm text-muted-foreground">
+          <div>Matched: {game.matchedPairs.length} / 5</div>
+          <div>•</div>
+          <div>Attempts: {game.attempts}</div>
+          {game.elapsedTime > 0 && (
+            <>
+              <div>•</div>
+              <div>
+                Time: {Math.floor(game.elapsedTime / 60)}:
+                {(game.elapsedTime % 60).toString().padStart(2, '0')}
+              </div>
+            </>
+          )}
+        </div>
 
-      {/* 配對卡片網格 */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {game.cards.map((card) => (
-          <MatchingCard
-            key={card.id}
-            content={card.content}
-            type={card.type}
-            onClick={() => game.selectCard(card.id)}
-            isSelected={isCardSelected(card.id)}
-            isMatched={isCardMatched(card.pairId)}
-            isError={isCardError(card.id)}
-            disabled={game.selectedCards.length >= 2 && !isCardSelected(card.id)}
-          />
-        ))}
-      </div>
+        {/* 配對卡片網格 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {game.cards.map((card) => (
+            <MatchingCard
+              key={card.id}
+              content={card.content}
+              type={card.type}
+              onClick={() => game.selectCard(card.id)}
+              isSelected={isCardSelected(card.id)}
+              isMatched={isCardMatched(card.pairId)}
+              isError={isCardError(card.id)}
+              disabled={game.selectedCards.length >= 2 && !isCardSelected(card.id)}
+            />
+          ))}
+        </div>
 
-      {/* 配對成功動畫 */}
-      <MatchAnimation show={game.showMatchAnimation} />
-    </div>
+        {/* 配對成功動畫 */}
+        <MatchAnimation show={game.showMatchAnimation} />
+      </div>
+    </Layout>
   );
 }
