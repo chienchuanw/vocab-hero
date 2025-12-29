@@ -10,13 +10,15 @@ import type { ListeningQuestion as ListeningQuestionType } from '@/lib/listening
  */
 
 // Mock TTS engine
-vi.mock('@/lib/tts', () => ({
-  TTSEngine: vi.fn().mockImplementation(() => ({
-    speak: vi.fn().mockResolvedValue(undefined),
-    stop: vi.fn(),
-    isSupported: vi.fn().mockReturnValue(true),
-  })),
-}));
+vi.mock('@/lib/tts', () => {
+  return {
+    TTSEngine: class MockTTSEngine {
+      speak = vi.fn().mockResolvedValue(undefined);
+      stop = vi.fn();
+      isSupported = vi.fn().mockReturnValue(true);
+    },
+  };
+});
 
 describe('ListeningQuestion', () => {
   const mockMultipleChoiceQuestion: ListeningQuestionType = {
@@ -54,10 +56,10 @@ describe('ListeningQuestion', () => {
         />
       );
 
-      expect(screen.getByText(/study/i)).toBeInTheDocument();
-      expect(screen.getByText(/work/i)).toBeInTheDocument();
-      expect(screen.getByText(/play/i)).toBeInTheDocument();
-      expect(screen.getByText(/sleep/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /study/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /work/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^play$/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /sleep/i })).toBeInTheDocument();
     });
 
     it('should call onAnswer when option is selected', async () => {
@@ -98,13 +100,7 @@ describe('ListeningQuestion', () => {
 
   describe('Typing Mode', () => {
     it('should render input field for typing', () => {
-      render(
-        <ListeningQuestion
-          question={mockTypingQuestion}
-          onAnswer={vi.fn()}
-          maxReplays={3}
-        />
-      );
+      render(<ListeningQuestion question={mockTypingQuestion} onAnswer={vi.fn()} maxReplays={3} />);
 
       const input = screen.getByRole('textbox');
       expect(input).toBeInTheDocument();
@@ -115,11 +111,7 @@ describe('ListeningQuestion', () => {
       const handleAnswer = vi.fn();
 
       render(
-        <ListeningQuestion
-          question={mockTypingQuestion}
-          onAnswer={handleAnswer}
-          maxReplays={3}
-        />
+        <ListeningQuestion question={mockTypingQuestion} onAnswer={handleAnswer} maxReplays={3} />
       );
 
       const input = screen.getByRole('textbox');
@@ -136,11 +128,7 @@ describe('ListeningQuestion', () => {
       const handleAnswer = vi.fn();
 
       render(
-        <ListeningQuestion
-          question={mockTypingQuestion}
-          onAnswer={handleAnswer}
-          maxReplays={3}
-        />
+        <ListeningQuestion question={mockTypingQuestion} onAnswer={handleAnswer} maxReplays={3} />
       );
 
       const submitButton = screen.getByRole('button', { name: /submit/i });
@@ -167,13 +155,7 @@ describe('ListeningQuestion', () => {
     it('should disable replay when limit reached', () => {
       const questionAtLimit = { ...mockMultipleChoiceQuestion, replaysUsed: 3 };
 
-      render(
-        <ListeningQuestion
-          question={questionAtLimit}
-          onAnswer={vi.fn()}
-          maxReplays={3}
-        />
-      );
+      render(<ListeningQuestion question={questionAtLimit} onAnswer={vi.fn()} maxReplays={3} />);
 
       const replayButton = screen.getByRole('button', { name: /replay/i });
       expect(replayButton).toBeDisabled();
@@ -183,15 +165,10 @@ describe('ListeningQuestion', () => {
       const questionWithReplays = { ...mockMultipleChoiceQuestion, replaysUsed: 2 };
 
       render(
-        <ListeningQuestion
-          question={questionWithReplays}
-          onAnswer={vi.fn()}
-          maxReplays={3}
-        />
+        <ListeningQuestion question={questionWithReplays} onAnswer={vi.fn()} maxReplays={3} />
       );
 
       expect(screen.getByText(/2.*3/)).toBeInTheDocument();
     });
   });
 });
-
