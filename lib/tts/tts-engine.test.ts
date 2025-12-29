@@ -43,9 +43,36 @@ describe('TTSEngine', () => {
       onvoiceschanged: null,
     } as unknown as SpeechSynthesis;
 
-    // Mock global objects
-    global.speechSynthesis = mockSpeechSynthesis;
-    global.SpeechSynthesisUtterance = vi.fn(() => mockUtterance) as unknown as typeof SpeechSynthesisUtterance;
+    // Override the global speechSynthesis from setup.ts
+    (window as any).speechSynthesis = mockSpeechSynthesis;
+
+    // Mock SpeechSynthesisUtterance constructor
+    global.SpeechSynthesisUtterance = class MockSpeechSynthesisUtterance {
+      text = '';
+      lang = '';
+      voice = null;
+      volume = 1;
+      rate = 1;
+      pitch = 1;
+      onend: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisEvent) => any) | null = null;
+      onerror: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisErrorEvent) => any) | null =
+        null;
+      onstart: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisEvent) => any) | null = null;
+      onpause: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisEvent) => any) | null = null;
+      onresume: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisEvent) => any) | null = null;
+      onmark: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisEvent) => any) | null = null;
+      onboundary: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisEvent) => any) | null = null;
+
+      constructor(text?: string) {
+        if (text) this.text = text;
+      }
+
+      addEventListener() {}
+      removeEventListener() {}
+      dispatchEvent() {
+        return true;
+      }
+    } as any;
 
     ttsEngine = new TTSEngine();
   });
@@ -56,7 +83,8 @@ describe('TTSEngine', () => {
     });
 
     it('should return false when Web Speech API is not available', () => {
-      global.speechSynthesis = undefined as unknown as SpeechSynthesis;
+      // Set speechSynthesis to undefined
+      (window as any).speechSynthesis = undefined;
       const engine = new TTSEngine();
       expect(engine.isSupported()).toBe(false);
     });
@@ -87,15 +115,27 @@ describe('TTSEngine', () => {
     it('should return only Japanese voices', () => {
       const mockVoices = [
         { name: 'English Voice', lang: 'en-US', default: true, localService: true, voiceURI: 'en' },
-        { name: 'Japanese Voice 1', lang: 'ja-JP', default: false, localService: true, voiceURI: 'ja1' },
-        { name: 'Japanese Voice 2', lang: 'ja-JP', default: false, localService: true, voiceURI: 'ja2' },
+        {
+          name: 'Japanese Voice 1',
+          lang: 'ja-JP',
+          default: false,
+          localService: true,
+          voiceURI: 'ja1',
+        },
+        {
+          name: 'Japanese Voice 2',
+          lang: 'ja-JP',
+          default: false,
+          localService: true,
+          voiceURI: 'ja2',
+        },
       ] as SpeechSynthesisVoice[];
 
       vi.mocked(mockSpeechSynthesis.getVoices).mockReturnValue(mockVoices);
 
       const japaneseVoices = ttsEngine.getJapaneseVoices();
       expect(japaneseVoices).toHaveLength(2);
-      expect(japaneseVoices.every(v => v.lang === 'ja-JP')).toBe(true);
+      expect(japaneseVoices.every((v) => v.lang === 'ja-JP')).toBe(true);
     });
 
     it('should return empty array when no Japanese voices available', () => {
@@ -112,24 +152,27 @@ describe('TTSEngine', () => {
 
   describe('speak', () => {
     it('should throw error when TTS is not supported', async () => {
-      global.speechSynthesis = undefined as unknown as SpeechSynthesis;
+      (window as any).speechSynthesis = undefined;
       const engine = new TTSEngine();
 
-      await expect(engine.speak('test')).rejects.toThrow('NOT_SUPPORTED');
+      await expect(engine.speak('test')).rejects.toThrow('Web Speech API is not supported');
     });
 
     it('should call speechSynthesis.speak with correct text', async () => {
       const speakPromise = ttsEngine.speak('こんにちは');
-      
+
+      // Get the utterance that was created
+      const utterance = mockSpeechSynthesis.speak.mock.calls[0]?.[0] as any;
+
       // Simulate successful speech
-      if (mockUtterance.onend) {
-        mockUtterance.onend(new Event('end') as SpeechSynthesisEvent);
+      if (utterance?.onend) {
+        utterance.onend(new Event('end') as SpeechSynthesisEvent);
       }
 
       await speakPromise;
 
       expect(mockSpeechSynthesis.speak).toHaveBeenCalled();
-      expect(mockUtterance.text).toBe('こんにちは');
+      expect(utterance.text).toBe('こんにちは');
     });
 
     it('should apply custom configuration', async () => {
@@ -141,18 +184,21 @@ describe('TTSEngine', () => {
       };
 
       const speakPromise = ttsEngine.speak('test', config);
-      
-      if (mockUtterance.onend) {
-        mockUtterance.onend(new Event('end') as SpeechSynthesisEvent);
+
+      // Get the utterance that was created
+      const utterance = mockSpeechSynthesis.speak.mock.calls[0]?.[0] as any;
+
+      // Simulate successful speech
+      if (utterance?.onend) {
+        utterance.onend(new Event('end') as SpeechSynthesisEvent);
       }
 
       await speakPromise;
 
-      expect(mockUtterance.rate).toBe(1.5);
-      expect(mockUtterance.volume).toBe(0.8);
-      expect(mockUtterance.pitch).toBe(1.2);
-      expect(mockUtterance.lang).toBe('ja-JP');
+      expect(utterance.rate).toBe(1.5);
+      expect(utterance.volume).toBe(0.8);
+      expect(utterance.pitch).toBe(1.2);
+      expect(utterance.lang).toBe('ja-JP');
     });
   });
 });
-

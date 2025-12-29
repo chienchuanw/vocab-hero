@@ -1,17 +1,11 @@
 /**
  * Text-to-Speech Engine Implementation
- * 
+ *
  * This file implements a wrapper around the Web Speech API for Japanese pronunciation.
  * Provides a clean interface for TTS functionality with error handling and configuration.
  */
 
-import type {
-  TTSConfig,
-  TTSState,
-  TTSVoice,
-  TTSError,
-  TTSEngine as ITTSEngine,
-} from './tts.types';
+import type { TTSConfig, TTSState, TTSVoice, TTSError, TTSEngine as ITTSEngine } from './tts.types';
 import { DEFAULT_TTS_CONFIG } from './tts.types';
 
 /**
@@ -26,7 +20,11 @@ export class TTSEngine implements ITTSEngine {
    * Check if Web Speech API is supported in the current browser
    */
   isSupported(): boolean {
-    return typeof window !== 'undefined' && 'speechSynthesis' in window;
+    return (
+      typeof window !== 'undefined' &&
+      'speechSynthesis' in window &&
+      window.speechSynthesis !== undefined
+    );
   }
 
   /**
@@ -38,7 +36,7 @@ export class TTSEngine implements ITTSEngine {
     }
 
     const voices = window.speechSynthesis.getVoices();
-    return voices.map(voice => ({
+    return voices.map((voice) => ({
       name: voice.name,
       lang: voice.lang,
       default: voice.default,
@@ -51,12 +49,12 @@ export class TTSEngine implements ITTSEngine {
    * Get Japanese voices only
    */
   getJapaneseVoices(): TTSVoice[] {
-    return this.getVoices().filter(voice => voice.lang.startsWith('ja'));
+    return this.getVoices().filter((voice) => voice.lang.startsWith('ja'));
   }
 
   /**
    * Speak the given text with optional configuration
-   * 
+   *
    * @param text - Text to speak
    * @param config - Optional TTS configuration
    * @returns Promise that resolves when speech completes
@@ -82,7 +80,7 @@ export class TTSEngine implements ITTSEngine {
     // Set voice if specified
     if (finalConfig.voiceName) {
       const voices = window.speechSynthesis.getVoices();
-      const selectedVoice = voices.find(v => v.name === finalConfig.voiceName);
+      const selectedVoice = voices.find((v) => v.name === finalConfig.voiceName);
       if (selectedVoice) {
         utterance.voice = selectedVoice;
       }
@@ -91,7 +89,7 @@ export class TTSEngine implements ITTSEngine {
       const japaneseVoices = this.getJapaneseVoices();
       if (japaneseVoices.length > 0) {
         const voices = window.speechSynthesis.getVoices();
-        const selectedVoice = voices.find(v => v.lang.startsWith('ja'));
+        const selectedVoice = voices.find((v) => v.lang.startsWith('ja'));
         if (selectedVoice) {
           utterance.voice = selectedVoice;
         }
@@ -123,7 +121,9 @@ export class TTSEngine implements ITTSEngine {
       } catch (error) {
         this.state = 'error';
         this.currentUtterance = null;
-        reject(this.createError('PLAYBACK_ERROR', 'Failed to start speech synthesis', error as Error));
+        reject(
+          this.createError('PLAYBACK_ERROR', 'Failed to start speech synthesis', error as Error)
+        );
       }
     });
   }
@@ -182,4 +182,3 @@ export class TTSEngine implements ITTSEngine {
  * Create a singleton instance of TTSEngine
  */
 export const ttsEngine = new TTSEngine();
-
