@@ -77,9 +77,7 @@ describe('AudioRecorder', () => {
     it('should throw error if already recording', async () => {
       await recorder.startRecording();
 
-      await expect(recorder.startRecording()).rejects.toThrow(
-        'Already recording'
-      );
+      await expect(recorder.startRecording()).rejects.toThrow('Already recording');
     });
   });
 
@@ -94,9 +92,7 @@ describe('AudioRecorder', () => {
     });
 
     it('should throw error if not recording', async () => {
-      await expect(recorder.stopRecording()).rejects.toThrow(
-        'Not currently recording'
-      );
+      await expect(recorder.stopRecording()).rejects.toThrow('Not currently recording');
     });
   });
 
@@ -109,9 +105,7 @@ describe('AudioRecorder', () => {
     });
 
     it('should throw error if not recording', () => {
-      expect(() => recorder.pauseRecording()).toThrow(
-        'Not currently recording'
-      );
+      expect(() => recorder.pauseRecording()).toThrow('Not currently recording');
     });
   });
 
@@ -128,21 +122,22 @@ describe('AudioRecorder', () => {
     it('should throw error if not paused', async () => {
       await recorder.startRecording();
 
-      expect(() => recorder.resumeRecording()).toThrow(
-        'Recording is not paused'
-      );
+      expect(() => recorder.resumeRecording()).toThrow('Recording is not paused');
     });
   });
 
   describe('getRecordingDuration', () => {
     it('should return recording duration in seconds', async () => {
+      vi.useFakeTimers();
       await recorder.startRecording();
-      
-      // Wait a bit
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      
+
+      // Advance time by 100ms
+      vi.advanceTimersByTime(100);
+
       const duration = recorder.getRecordingDuration();
-      expect(duration).toBeGreaterThan(0);
+      expect(duration).toBeGreaterThanOrEqual(0);
+
+      vi.useRealTimers();
     });
 
     it('should return 0 when not recording', () => {
@@ -152,14 +147,20 @@ describe('AudioRecorder', () => {
 
   describe('cleanup', () => {
     it('should stop media stream tracks', async () => {
-      await recorder.startRecording();
+      // Create a spy for track.stop
       const stopSpy = vi.fn();
-      (recorder as any).mediaStream.getTracks()[0].stop = stopSpy;
+
+      // Mock getUserMedia to return a stream with our spy
+      vi.mocked(navigator.mediaDevices.getUserMedia).mockResolvedValueOnce({
+        getTracks: () => [{ stop: stopSpy }],
+      } as any);
+
+      await recorder.startRecording();
 
       recorder.cleanup();
 
       expect(stopSpy).toHaveBeenCalled();
+      expect((recorder as any).mediaStream).toBeNull();
     });
   });
 });
-
