@@ -138,16 +138,16 @@ describe('Flashcard', () => {
   describe('TTS Integration', () => {
     it('should render speaker button on front side', () => {
       render(<Flashcard vocabulary={mockVocabulary} />);
-      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
-      expect(speakerButton).toBeInTheDocument();
+      const speakerButtons = screen.getAllByRole('button', { name: /play pronunciation/i });
+      expect(speakerButtons.length).toBeGreaterThan(0);
     });
 
     it('should call TTS engine when speaker button is clicked', async () => {
       const user = userEvent.setup();
       render(<Flashcard vocabulary={mockVocabulary} />);
 
-      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
-      await user.click(speakerButton);
+      const speakerButtons = screen.getAllByRole('button', { name: /play pronunciation/i });
+      await user.click(speakerButtons[0]);
 
       expect(mockTTSEngine.speak).toHaveBeenCalledWith('勉強', undefined);
     });
@@ -157,8 +157,8 @@ describe('Flashcard', () => {
       const handleFlip = vi.fn();
       const { container } = render(<Flashcard vocabulary={mockVocabulary} onFlip={handleFlip} />);
 
-      const speakerButton = screen.getByRole('button', { name: /play pronunciation/i });
-      await user.click(speakerButton);
+      const speakerButtons = screen.getAllByRole('button', { name: /play pronunciation/i });
+      await user.click(speakerButtons[0]);
 
       const cardInner = container.querySelector('.flashcard-inner');
       expect(cardInner).toHaveStyle({ transform: 'rotateY(0deg)' });
