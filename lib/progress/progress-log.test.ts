@@ -12,6 +12,11 @@ describe('ProgressLog Database Operations', () => {
   let testUserId: string;
 
   beforeEach(async () => {
+    // Clean up any existing test user first
+    await prisma.user.deleteMany({
+      where: { email: 'test-progress@example.com' },
+    });
+
     // Create test user
     const user = await prisma.user.create({
       data: {
@@ -24,12 +29,18 @@ describe('ProgressLog Database Operations', () => {
 
   afterEach(async () => {
     // Clean up test data
-    await prisma.progressLog.deleteMany({
-      where: { userId: testUserId },
-    });
-    await prisma.user.delete({
-      where: { id: testUserId },
-    });
+    if (testUserId) {
+      await prisma.progressLog.deleteMany({
+        where: { userId: testUserId },
+      });
+      await prisma.user
+        .delete({
+          where: { id: testUserId },
+        })
+        .catch(() => {
+          // Ignore error if user already deleted
+        });
+    }
   });
 
   describe('getOrCreateDailyLog', () => {
