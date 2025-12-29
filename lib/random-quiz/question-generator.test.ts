@@ -14,6 +14,11 @@ describe('question-generator', () => {
     { id: '5', word: '本', meaning: 'book', reading: 'ほん', groupId: 'g3' },
     { id: '6', word: '友達', meaning: 'friend', reading: 'ともだち', groupId: 'g3' },
     { id: '7', word: '家', meaning: 'house', reading: 'いえ', groupId: 'g3' },
+    { id: '8', word: '食べる', meaning: 'to eat', reading: 'たべる', groupId: 'g4' },
+    { id: '9', word: '飲む', meaning: 'to drink', reading: 'のむ', groupId: 'g4' },
+    { id: '10', word: '見る', meaning: 'to see', reading: 'みる', groupId: 'g4' },
+    { id: '11', word: '聞く', meaning: 'to listen', reading: 'きく', groupId: 'g5' },
+    { id: '12', word: '話す', meaning: 'to speak', reading: 'はなす', groupId: 'g5' },
   ];
 
   describe('generateMixedQuestions', () => {
@@ -124,4 +129,3 @@ describe('question-generator', () => {
     });
   });
 });
-
