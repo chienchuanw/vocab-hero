@@ -22,6 +22,7 @@ model User {
   studySessions    StudySession[]
   progressLogs     ProgressLog[]
   dailyGoals       DailyGoal[]
+  userStreak       UserStreak?
 
   @@map("users")
 }
@@ -143,18 +144,22 @@ model StudySession {
 model ProgressLog {
   id                String   @id @default(cuid())
   userId            String   @map("user_id")
-  date              DateTime @unique
+  date              DateTime
   wordsStudied      Int      @default(0) @map("words_studied")
   newWords          Int      @default(0) @map("new_words")
   reviewWords       Int      @default(0) @map("review_words")
   timeSpentMinutes  Int      @default(0) @map("time_spent_minutes")
   sessionsCompleted Int      @default(0) @map("sessions_completed")
+  correctAnswers    Int      @default(0) @map("correct_answers")
+  totalAnswers      Int      @default(0) @map("total_answers")
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, date])
   @@index([userId])
+  @@index([date])
   @@map("progress_logs")
 }
 
@@ -170,4 +175,21 @@ model DailyGoal {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("daily_goals")
+}
+
+// UserStreak model - Streak tracking for continuous learning
+model UserStreak {
+  id               String    @id @default(cuid())
+  userId           String    @unique @map("user_id")
+  currentStreak    Int       @default(0) @map("current_streak")
+  longestStreak    Int       @default(0) @map("longest_streak")
+  lastStudyDate    DateTime? @map("last_study_date")
+  freezesRemaining Int       @default(0) @map("freezes_remaining")
+  freezeUsedAt     DateTime? @map("freeze_used_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_streaks")
 }
