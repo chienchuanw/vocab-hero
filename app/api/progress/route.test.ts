@@ -30,7 +30,7 @@ describe('GET /api/progress', () => {
 
   it('should return progress logs for a user', async () => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     await prisma.progressLog.create({
       data: {
@@ -58,7 +58,7 @@ describe('GET /api/progress', () => {
 
   it('should filter progress logs by date range', async () => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     for (let i = 0; i < 7; i++) {
       await prisma.progressLog.create({
@@ -86,7 +86,7 @@ describe('GET /api/progress', () => {
 
   it('should limit results when limit parameter is provided', async () => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     for (let i = 0; i < 10; i++) {
       await prisma.progressLog.create({
@@ -134,7 +134,7 @@ describe('POST /api/progress', () => {
 
   it('should create a new progress log', async () => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     const request = new Request('http://localhost:3000/api/progress', {
       method: 'POST',
@@ -165,7 +165,7 @@ describe('POST /api/progress', () => {
 
   it('should update existing progress log with incremental values', async () => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     await prisma.progressLog.create({
       data: {
