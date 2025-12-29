@@ -63,9 +63,9 @@ describe('Streak Calculation', () => {
 
     it('should maintain streak for same day study', () => {
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      today.setUTCHours(0, 0, 0, 0);
 
-      const result = calculateStreak(today, today, 5);
+      const result = calculateStreak(today, today, 5, 5);
 
       expect(result.currentStreak).toBe(5);
       expect(result.longestStreak).toBe(5);
@@ -74,13 +74,13 @@ describe('Streak Calculation', () => {
 
     it('should reset streak if gap is more than 1 day without freeze', () => {
       const threeDaysAgo = new Date();
-      threeDaysAgo.setHours(0, 0, 0, 0);
-      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+      threeDaysAgo.setUTCHours(0, 0, 0, 0);
+      threeDaysAgo.setUTCDate(threeDaysAgo.getUTCDate() - 3);
 
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      today.setUTCHours(0, 0, 0, 0);
 
-      const result = calculateStreak(threeDaysAgo, today, 10);
+      const result = calculateStreak(threeDaysAgo, today, 10, 10);
 
       expect(result.currentStreak).toBe(1);
       expect(result.longestStreak).toBe(10);
