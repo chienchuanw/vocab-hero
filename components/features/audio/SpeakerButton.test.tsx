@@ -9,12 +9,17 @@ import * as ttsModule from '@/lib/tts';
  * Tests for TTS speaker button functionality
  */
 
+// Mock the ttsEngine module - must be defined inline due to hoisting
 vi.mock('@/lib/tts', () => ({
   ttsEngine: {
     isSupported: vi.fn(() => true),
     speak: vi.fn(() => Promise.resolve()),
     stop: vi.fn(),
     getState: vi.fn(() => 'idle'),
+    pause: vi.fn(),
+    resume: vi.fn(),
+    getVoices: vi.fn(() => []),
+    getJapaneseVoices: vi.fn(() => []),
   },
 }));
 
@@ -23,34 +28,37 @@ describe('SpeakerButton', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    // Reset mock implementations
+    vi.mocked(mockTTSEngine.isSupported).mockReturnValue(true);
+    vi.mocked(mockTTSEngine.speak).mockResolvedValue(undefined);
   });
 
   describe('Rendering', () => {
     it('should render speaker button', () => {
       render(<SpeakerButton text="こんにちは" />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       expect(button).toBeInTheDocument();
     });
 
     it('should not render when TTS is not supported', () => {
       vi.mocked(mockTTSEngine.isSupported).mockReturnValue(false);
-      
+
       const { container } = render(<SpeakerButton text="こんにちは" />);
-      
+
       expect(container.firstChild).toBeNull();
     });
 
     it('should render with custom aria label', () => {
       render(<SpeakerButton text="こんにちは" ariaLabel="Custom label" />);
-      
+
       const button = screen.getByRole('button', { name: /custom label/i });
       expect(button).toBeInTheDocument();
     });
 
     it('should apply custom className', () => {
       render(<SpeakerButton text="こんにちは" className="custom-class" />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       expect(button).toHaveClass('custom-class');
     });
@@ -60,32 +68,32 @@ describe('SpeakerButton', () => {
     it('should call ttsEngine.speak when clicked', async () => {
       const user = userEvent.setup();
       render(<SpeakerButton text="こんにちは" />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       await user.click(button);
-      
+
       expect(mockTTSEngine.speak).toHaveBeenCalledWith('こんにちは', undefined);
     });
 
     it('should pass custom TTS config', async () => {
       const user = userEvent.setup();
       const config = { speed: 0.8, volume: 0.9 };
-      
+
       render(<SpeakerButton text="こんにちは" config={config} />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       await user.click(button);
-      
+
       expect(mockTTSEngine.speak).toHaveBeenCalledWith('こんにちは', config);
     });
 
     it('should stop current speech before starting new one', async () => {
       const user = userEvent.setup();
       render(<SpeakerButton text="こんにちは" />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       await user.click(button);
-      
+
       expect(mockTTSEngine.stop).toHaveBeenCalled();
       expect(mockTTSEngine.speak).toHaveBeenCalled();
     });
@@ -93,14 +101,14 @@ describe('SpeakerButton', () => {
     it('should handle TTS errors gracefully', async () => {
       const user = userEvent.setup();
       const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
+
       vi.mocked(mockTTSEngine.speak).mockRejectedValue(new Error('TTS error'));
-      
+
       render(<SpeakerButton text="こんにちは" />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       await user.click(button);
-      
+
       expect(consoleError).toHaveBeenCalled();
       consoleError.mockRestore();
     });
@@ -109,7 +117,7 @@ describe('SpeakerButton', () => {
   describe('Button States', () => {
     it('should be disabled when disabled prop is true', () => {
       render(<SpeakerButton text="こんにちは" disabled />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       expect(button).toBeDisabled();
     });
@@ -117,10 +125,10 @@ describe('SpeakerButton', () => {
     it('should not call TTS when disabled', async () => {
       const user = userEvent.setup();
       render(<SpeakerButton text="こんにちは" disabled />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       await user.click(button);
-      
+
       expect(mockTTSEngine.speak).not.toHaveBeenCalled();
     });
 
@@ -130,17 +138,17 @@ describe('SpeakerButton', () => {
       const speakPromise = new Promise<void>((resolve) => {
         resolveSpeech = resolve;
       });
-      
+
       vi.mocked(mockTTSEngine.speak).mockReturnValue(speakPromise);
       vi.mocked(mockTTSEngine.getState).mockReturnValue('speaking');
-      
+
       render(<SpeakerButton text="こんにちは" />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       await user.click(button);
-      
+
       expect(button).toBeDisabled();
-      
+
       resolveSpeech!();
       await speakPromise;
     });
@@ -149,17 +157,16 @@ describe('SpeakerButton', () => {
   describe('Variants', () => {
     it('should render with default variant', () => {
       render(<SpeakerButton text="こんにちは" />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       expect(button).toBeInTheDocument();
     });
 
     it('should render with ghost variant', () => {
       render(<SpeakerButton text="こんにちは" variant="ghost" />);
-      
+
       const button = screen.getByRole('button', { name: /play pronunciation/i });
       expect(button).toBeInTheDocument();
     });
   });
 });
-
