@@ -21,6 +21,11 @@ export default defineConfig({
         'postgresql://postgres:postgres@localhost:5432/db_vocab_hero_test?schema=public',
     },
     setupFiles: ['./tests/setup.ts'],
+    server: {
+      deps: {
+        inline: ['@exodus/bytes', 'html-encoding-sniffer'],
+      },
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
