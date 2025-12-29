@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ContributionWall } from './ContributionWall';
 
 describe('ContributionWall', () => {
@@ -29,9 +30,7 @@ describe('ContributionWall', () => {
   });
 
   it('should display activity levels based on words studied', () => {
-    const { container } = render(
-      <ContributionWall progressData={mockProgressData} year={2024} />
-    );
+    const { container } = render(<ContributionWall progressData={mockProgressData} year={2024} />);
 
     const cells = container.querySelectorAll('[data-testid^="contribution-cell"]');
     expect(cells.length).toBeGreaterThan(0);
@@ -72,5 +71,41 @@ describe('ContributionWall', () => {
     const cells = container.querySelectorAll('[data-testid^="contribution-cell"]');
     expect(cells.length).toBeGreaterThan(0);
   });
-});
 
+  it('should display tooltip on hover', async () => {
+    const user = userEvent.setup();
+    render(<ContributionWall progressData={mockProgressData} year={2024} />);
+
+    const cells = screen.getAllByTestId(/contribution-cell/);
+    const cellWithData = cells.find((cell) => cell.getAttribute('data-date') === '2024-01-15');
+
+    if (cellWithData) {
+      await user.hover(cellWithData);
+
+      expect(await screen.findByText(/10 words/i)).toBeInTheDocument();
+      expect(await screen.findByText(/30 min/i)).toBeInTheDocument();
+    }
+  });
+
+  it('should show correct date format in tooltip', async () => {
+    const user = userEvent.setup();
+    const testData = [
+      {
+        date: new Date('2024-06-15'),
+        wordsStudied: 15,
+        timeSpentMinutes: 45,
+      },
+    ];
+
+    render(<ContributionWall progressData={testData} year={2024} />);
+
+    const cells = screen.getAllByTestId(/contribution-cell/);
+    const cellWithData = cells.find((cell) => cell.getAttribute('data-date') === '2024-06-15');
+
+    if (cellWithData) {
+      await user.hover(cellWithData);
+
+      expect(await screen.findByText(/Jun 15, 2024/i)).toBeInTheDocument();
+    }
+  });
+});
