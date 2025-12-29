@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ContributionWall } from './ContributionWall';
@@ -107,5 +107,43 @@ describe('ContributionWall', () => {
 
       expect(await screen.findByText(/Jun 15, 2024/i)).toBeInTheDocument();
     }
+  });
+
+  it('should display year navigation controls', () => {
+    render(<ContributionWall progressData={[]} year={2024} />);
+
+    expect(screen.getByText('2024')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /previous year/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /next year/i })).toBeInTheDocument();
+  });
+
+  it('should call onYearChange when clicking previous year', async () => {
+    const user = userEvent.setup();
+    const handleYearChange = vi.fn();
+
+    render(<ContributionWall progressData={[]} year={2024} onYearChange={handleYearChange} />);
+
+    await user.click(screen.getByRole('button', { name: /previous year/i }));
+
+    expect(handleYearChange).toHaveBeenCalledWith(2023);
+  });
+
+  it('should call onYearChange when clicking next year', async () => {
+    const user = userEvent.setup();
+    const handleYearChange = vi.fn();
+
+    render(<ContributionWall progressData={[]} year={2024} onYearChange={handleYearChange} />);
+
+    await user.click(screen.getByRole('button', { name: /next year/i }));
+
+    expect(handleYearChange).toHaveBeenCalledWith(2025);
+  });
+
+  it('should disable next year button for current year', () => {
+    const currentYear = new Date().getFullYear();
+    render(<ContributionWall progressData={[]} year={currentYear} />);
+
+    const nextButton = screen.getByRole('button', { name: /next year/i });
+    expect(nextButton).toBeDisabled();
   });
 });

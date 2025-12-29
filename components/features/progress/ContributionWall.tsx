@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ProgressData {
   date: Date;
@@ -10,6 +12,7 @@ interface ProgressData {
 interface ContributionWallProps {
   progressData: ProgressData[];
   year: number;
+  onYearChange?: (year: number) => void;
 }
 
 const WEEKDAYS = ['Mon', 'Wed', 'Fri'];
@@ -34,7 +37,21 @@ function getIntensityColor(level: number): string {
   return colors[level] ?? colors[0] ?? 'bg-muted';
 }
 
-export function ContributionWall({ progressData, year }: ContributionWallProps) {
+export function ContributionWall({ progressData, year, onYearChange }: ContributionWallProps) {
+  const currentYear = new Date().getFullYear();
+  const canGoNext = year < currentYear;
+
+  const handlePreviousYear = () => {
+    if (onYearChange) {
+      onYearChange(year - 1);
+    }
+  };
+
+  const handleNextYear = () => {
+    if (onYearChange && canGoNext) {
+      onYearChange(year + 1);
+    }
+  };
   const { cells, monthPositions } = useMemo(() => {
     const dataMap = new Map<string, ProgressData>();
     progressData.forEach((data) => {
@@ -115,7 +132,30 @@ export function ContributionWall({ progressData, year }: ContributionWallProps) 
 
   return (
     <TooltipProvider>
-      <div className="space-y-2">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handlePreviousYear}
+              aria-label="Previous year"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-lg font-semibold">{year}</span>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleNextYear}
+              disabled={!canGoNext}
+              aria-label="Next year"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
         <div className="relative">
           <div className="flex gap-1">
             <div className="flex flex-col justify-around text-xs text-muted-foreground w-8">
