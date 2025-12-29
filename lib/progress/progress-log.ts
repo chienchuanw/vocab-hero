@@ -1,17 +1,13 @@
 import { prisma } from '@/lib/db/prisma';
-import type {
-  DailyProgressLog,
-  UpdateProgressInput,
-  ProgressDateRange,
-} from './progress.types';
+import type { DailyProgressLog, UpdateProgressInput, ProgressDateRange } from './progress.types';
 
 /**
- * Normalize date to start of day (00:00:00.000)
+ * Normalize date to start of day (00:00:00.000) in UTC
  * This ensures consistent date comparison across timezones
  */
 function normalizeDate(date: Date): Date {
   const normalized = new Date(date);
-  normalized.setHours(0, 0, 0, 0);
+  normalized.setUTCHours(0, 0, 0, 0);
   return normalized;
 }
 
@@ -23,10 +19,7 @@ function normalizeDate(date: Date): Date {
  * @param date - Date for the log (will be normalized to start of day)
  * @returns Daily progress log
  */
-export async function getOrCreateDailyLog(
-  userId: string,
-  date: Date
-): Promise<DailyProgressLog> {
+export async function getOrCreateDailyLog(userId: string, date: Date): Promise<DailyProgressLog> {
   const normalizedDate = normalizeDate(date);
 
   // Try to find existing log
@@ -66,9 +59,7 @@ export async function getOrCreateDailyLog(
  * @param input - Update progress input data
  * @returns Updated daily progress log
  */
-export async function updateDailyLog(
-  input: UpdateProgressInput
-): Promise<DailyProgressLog> {
+export async function updateDailyLog(input: UpdateProgressInput): Promise<DailyProgressLog> {
   const normalizedDate = normalizeDate(input.date);
 
   // Get or create the log first
@@ -117,10 +108,7 @@ export async function updateDailyLog(
  * @param limit - Maximum number of logs to return (optional)
  * @returns Array of daily progress logs
  */
-export async function getDailyLogs(
-  userId: string,
-  limit?: number
-): Promise<DailyProgressLog[]> {
+export async function getDailyLogs(userId: string, limit?: number): Promise<DailyProgressLog[]> {
   const logs = await prisma.progressLog.findMany({
     where: {
       userId,
@@ -163,4 +151,3 @@ export async function getProgressRange(
 
   return logs as DailyProgressLog[];
 }
-

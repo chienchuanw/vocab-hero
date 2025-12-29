@@ -35,7 +35,7 @@ describe('ProgressLog Database Operations', () => {
   describe('getOrCreateDailyLog', () => {
     it('should create a new daily log if it does not exist', async () => {
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      today.setUTCHours(0, 0, 0, 0);
 
       const log = await getOrCreateDailyLog(testUserId, today);
 
@@ -245,9 +245,9 @@ describe('ProgressLog Database Operations', () => {
 
     it('should include boundary dates', async () => {
       const startDate = new Date('2024-01-15');
-      startDate.setHours(0, 0, 0, 0);
+      startDate.setUTCHours(0, 0, 0, 0);
       const endDate = new Date('2024-01-17');
-      endDate.setHours(0, 0, 0, 0);
+      endDate.setUTCHours(0, 0, 0, 0);
 
       await updateDailyLog({
         userId: testUserId,
