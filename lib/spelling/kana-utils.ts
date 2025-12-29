@@ -40,6 +40,13 @@ export function katakanaToHiragana(text: string): string {
     .split('')
     .map((char) => {
       const code = char.charCodeAt(0);
+
+      // 片假名長音符號「ー」(U+30FC) 保持不變
+      // 在平假名中也使用相同的長音符號
+      if (char === 'ー') {
+        return char;
+      }
+
       // 檢查是否為片假名
       if (code >= KATAKANA_START && code <= KATAKANA_END) {
         return String.fromCharCode(code - KANA_OFFSET);
@@ -141,4 +148,3 @@ export function removeKana(text: string): string {
     .filter((char) => !isKana(char))
     .join('');
 }
-
