@@ -80,7 +80,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     // 如果 session 被標記為完成，自動記錄進度
     if (validationResult.data.completedAt !== undefined) {
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      today.setUTCHours(0, 0, 0, 0);
 
       await updateDailyLog({
         userId: existingSession.userId,

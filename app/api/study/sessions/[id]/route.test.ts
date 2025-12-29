@@ -181,7 +181,7 @@ describe('PUT /api/study/sessions/:id', () => {
     expect(data.success).toBe(true);
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
 
     const progressLog = await prisma.progressLog.findUnique({
       where: {
