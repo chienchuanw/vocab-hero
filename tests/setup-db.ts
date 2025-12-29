@@ -19,6 +19,7 @@ export async function cleanDatabase() {
   await prisma.$executeRaw`TRUNCATE TABLE "vocabulary_groups" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "study_sessions" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "progress_logs" RESTART IDENTITY CASCADE`;
+  await prisma.$executeRaw`TRUNCATE TABLE "user_streaks" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "daily_goals" RESTART IDENTITY CASCADE`;
   await prisma.$executeRaw`TRUNCATE TABLE "users" RESTART IDENTITY CASCADE`;
 }
