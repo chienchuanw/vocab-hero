@@ -146,4 +146,62 @@ describe('ContributionWall', () => {
     const nextButton = screen.getByRole('button', { name: /next year/i });
     expect(nextButton).toBeDisabled();
   });
+
+  it('should handle leap year correctly', () => {
+    const { container } = render(<ContributionWall progressData={[]} year={2024} />);
+
+    const cells = container.querySelectorAll('[data-testid^="contribution-cell"]');
+    expect(cells.length).toBeGreaterThanOrEqual(366);
+  });
+
+  it('should handle non-leap year correctly', () => {
+    const { container } = render(<ContributionWall progressData={[]} year={2023} />);
+
+    const cells = container.querySelectorAll('[data-testid^="contribution-cell"]');
+    expect(cells.length).toBeGreaterThanOrEqual(365);
+  });
+
+  it('should apply correct color classes for different intensity levels', () => {
+    const dataWithAllLevels = [
+      { date: new Date('2024-01-01'), wordsStudied: 0, timeSpentMinutes: 0 },
+      { date: new Date('2024-01-02'), wordsStudied: 3, timeSpentMinutes: 10 },
+      { date: new Date('2024-01-03'), wordsStudied: 10, timeSpentMinutes: 30 },
+      { date: new Date('2024-01-04'), wordsStudied: 20, timeSpentMinutes: 60 },
+      { date: new Date('2024-01-05'), wordsStudied: 35, timeSpentMinutes: 90 },
+    ];
+
+    const { container } = render(<ContributionWall progressData={dataWithAllLevels} year={2024} />);
+
+    const cells = container.querySelectorAll('[data-testid^="contribution-cell"]');
+    const cellsArray = Array.from(cells);
+
+    const hasMutedCell = cellsArray.some((cell) => cell.className.includes('bg-muted'));
+    const hasGreenCells = cellsArray.some((cell) => cell.className.includes('bg-green'));
+
+    expect(hasMutedCell).toBe(true);
+    expect(hasGreenCells).toBe(true);
+  });
+
+  it('should render correctly with data spanning entire year', () => {
+    const yearData = Array.from({ length: 365 }, (_, i) => ({
+      date: new Date(2024, 0, i + 1),
+      wordsStudied: Math.floor(Math.random() * 40),
+      timeSpentMinutes: Math.floor(Math.random() * 120),
+    }));
+
+    const { container } = render(<ContributionWall progressData={yearData} year={2024} />);
+
+    const cells = container.querySelectorAll('[data-testid^="contribution-cell"]');
+    expect(cells.length).toBeGreaterThan(0);
+  });
+
+  it('should not call onYearChange when prop is not provided', async () => {
+    const user = userEvent.setup();
+    render(<ContributionWall progressData={[]} year={2024} />);
+
+    const prevButton = screen.getByRole('button', { name: /previous year/i });
+    await user.click(prevButton);
+
+    expect(screen.getByText('2024')).toBeInTheDocument();
+  });
 });
