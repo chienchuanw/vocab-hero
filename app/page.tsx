@@ -1,9 +1,23 @@
+'use client';
+
 import { Layout } from '@/components/shared';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, GraduationCap, TrendingUp } from 'lucide-react';
+import { GoalProgressBar } from '@/components/features/goals/GoalProgressBar';
+import { useDailyGoal } from '@/hooks/useDailyGoal';
+import { BookOpen, GraduationCap, TrendingUp, Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
+  const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
+  const { data: goal, isLoading: isLoadingGoal } = useDailyGoal(DEFAULT_USER_ID);
+
+  // TODO: 從 API 取得今日實際進度
+  const todayProgress = {
+    wordsStudied: 0,
+    minutesStudied: 0,
+  };
+
   return (
     <Layout streak={0}>
       <div className="space-y-6">
@@ -54,22 +68,45 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Daily Goal */}
-        <Card className="p-6">
-          <h2 className="mb-4 text-xl font-semibold">Daily Goal</h2>
-          <div className="space-y-4">
-            <div>
-              <div className="mb-2 flex items-center justify-between text-sm">
-                <span>Words studied today</span>
-                <span className="font-medium">0 / 10</span>
-              </div>
-              <div className="h-2 overflow-hidden rounded-full bg-secondary">
-                <div className="h-full w-0 bg-primary transition-all" />
-              </div>
-            </div>
-            <Button className="w-full">Start Studying</Button>
+        {/* Daily Goal Progress */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">Daily Goal</h2>
+            <Link href="/settings/goals">
+              <Button variant="outline" size="sm">
+                Settings
+              </Button>
+            </Link>
           </div>
-        </Card>
+
+          {isLoadingGoal ? (
+            <Card className="p-6">
+              <div className="flex items-center justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            </Card>
+          ) : goal ? (
+            <GoalProgressBar
+              wordsProgress={todayProgress.wordsStudied}
+              wordsGoal={goal.wordsPerDay}
+              minutesProgress={todayProgress.minutesStudied}
+              minutesGoal={goal.minutesPerDay}
+              variant="default"
+            />
+          ) : (
+            <Card className="p-6">
+              <p className="text-center text-muted-foreground">
+                No daily goal set. Go to settings to create one.
+              </p>
+            </Card>
+          )}
+
+          <Link href="/study">
+            <Button className="w-full" size="lg">
+              Start Studying
+            </Button>
+          </Link>
+        </div>
       </div>
     </Layout>
   );
