@@ -18,11 +18,13 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  vocabularyGroups VocabularyGroup[]
-  studySessions    StudySession[]
-  progressLogs     ProgressLog[]
-  dailyGoals       DailyGoal[]
-  userStreak       UserStreak?
+  vocabularyGroups       VocabularyGroup[]
+  studySessions          StudySession[]
+  progressLogs           ProgressLog[]
+  dailyGoals             DailyGoal[]
+  userStreak             UserStreak?
+  notifications          Notification[]
+  notificationPreference NotificationPreference?
 
   @@map("users")
 }
@@ -168,7 +170,9 @@ model DailyGoal {
   id            String   @id @default(cuid())
   userId        String   @unique @map("user_id")
   wordsPerDay   Int      @default(10) @map("words_per_day")
-  minutesPerDay Int      @default(15) @map("minutes_per_day")
+  minutesPerDay Int      @default(30) @map("minutes_per_day")
+  reminderTime  String   @default("10:00") @map("reminder_time")
+  pushEnabled   Boolean  @default(false) @map("push_enabled")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
@@ -192,4 +196,57 @@ model UserStreak {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_streaks")
+}
+
+// NotificationType enum - Different types of notifications
+enum NotificationType {
+  GOAL_ACHIEVED
+  STREAK_WARNING
+  STUDY_REMINDER
+  MILESTONE_REACHED
+  FREEZE_USED
+}
+
+// NotificationPriority enum - Priority levels for notifications
+enum NotificationPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// Notification model - In-app notifications and push notification history
+model Notification {
+  id        String               @id @default(cuid())
+  userId    String               @map("user_id")
+  type      NotificationType
+  title     String
+  message   String
+  priority  NotificationPriority @default(MEDIUM)
+  isRead    Boolean              @default(false) @map("is_read")
+  createdAt DateTime             @default(now()) @map("created_at")
+  updatedAt DateTime             @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+// NotificationPreference model - User preferences for notifications
+model NotificationPreference {
+  id                    String   @id @default(cuid())
+  userId                String   @unique @map("user_id")
+  goalAchievementEnabled Boolean  @default(true) @map("goal_achievement_enabled")
+  streakWarningEnabled  Boolean  @default(true) @map("streak_warning_enabled")
+  studyReminderEnabled  Boolean  @default(true) @map("study_reminder_enabled")
+  milestoneEnabled      Boolean  @default(true) @map("milestone_enabled")
+  pushEnabled           Boolean  @default(false) @map("push_enabled")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
 }

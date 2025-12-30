@@ -144,16 +144,47 @@ async function main() {
 
   console.log('Created review schedules');
 
-  // Create daily goal for user
-  await prisma.dailyGoal.create({
-    data: {
+  // Create or update daily goal for user
+  await prisma.dailyGoal.upsert({
+    where: { userId: user.id },
+    update: {
+      wordsPerDay: 10,
+      minutesPerDay: 30,
+      reminderTime: '10:00',
+      pushEnabled: false,
+    },
+    create: {
       userId: user.id,
       wordsPerDay: 10,
-      minutesPerDay: 15,
+      minutesPerDay: 30,
+      reminderTime: '10:00',
+      pushEnabled: false,
     },
   });
 
-  console.log('Created daily goal');
+  console.log('Created/updated daily goal');
+
+  // Create or update notification preferences for user
+  await prisma.notificationPreference.upsert({
+    where: { userId: user.id },
+    update: {
+      goalAchievementEnabled: true,
+      streakWarningEnabled: true,
+      studyReminderEnabled: true,
+      milestoneEnabled: true,
+      pushEnabled: false,
+    },
+    create: {
+      userId: user.id,
+      goalAchievementEnabled: true,
+      streakWarningEnabled: true,
+      studyReminderEnabled: true,
+      milestoneEnabled: true,
+      pushEnabled: false,
+    },
+  });
+
+  console.log('Created/updated notification preferences');
 
   console.log('Database seeding completed successfully!');
 }
@@ -166,4 +197,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
