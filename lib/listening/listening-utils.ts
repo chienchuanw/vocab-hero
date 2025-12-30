@@ -17,7 +17,7 @@ interface VocabularyItem {
 
 /**
  * Generate a listening question from vocabulary item
- * 
+ *
  * @param vocabulary - Vocabulary item to create question from
  * @param type - Type of question (multiple-choice or typing)
  * @param distractors - Wrong answer options for multiple choice
@@ -49,13 +49,11 @@ export function generateListeningQuestion(
 
 /**
  * Calculate statistics from listening quiz answers
- * 
+ *
  * @param answers - List of user answers
  * @returns Calculated statistics
  */
-export function calculateListeningStats(
-  answers: ListeningAnswer[]
-): ListeningQuizStats {
+export function calculateListeningStats(answers: ListeningAnswer[]): ListeningQuizStats {
   if (answers.length === 0) {
     return {
       totalQuestions: 0,
@@ -83,15 +81,12 @@ export function calculateListeningStats(
 
 /**
  * Check if audio can be replayed for a question
- * 
+ *
  * @param question - The listening question
  * @param maxReplays - Maximum allowed replays (0 for unlimited)
  * @returns Whether replay is allowed
  */
-export function canReplayAudio(
-  question: ListeningQuestion,
-  maxReplays: number
-): boolean {
+export function canReplayAudio(question: ListeningQuestion, maxReplays: number): boolean {
   // Allow unlimited replays if maxReplays is 0
   if (maxReplays === 0) {
     return true;
@@ -102,7 +97,7 @@ export function canReplayAudio(
 
 /**
  * Shuffle array using Fisher-Yates algorithm
- * 
+ *
  * @param array - Array to shuffle
  * @returns Shuffled array
  */
@@ -110,22 +105,21 @@ function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    const temp = shuffled[i];
+    shuffled[i] = shuffled[j]!;
+    shuffled[j] = temp!;
   }
   return shuffled;
 }
 
 /**
  * Validate user answer against correct answer
- * 
+ *
  * @param userAnswer - User's answer
  * @param correctAnswer - Correct answer
  * @returns Whether the answer is correct
  */
-export function validateListeningAnswer(
-  userAnswer: string,
-  correctAnswer: string
-): boolean {
+export function validateListeningAnswer(userAnswer: string, correctAnswer: string): boolean {
   // Normalize both answers for comparison
   const normalizedUser = userAnswer.trim().toLowerCase();
   const normalizedCorrect = correctAnswer.trim().toLowerCase();
@@ -135,7 +129,7 @@ export function validateListeningAnswer(
 
 /**
  * Generate distractor options from vocabulary pool
- * 
+ *
  * @param vocabularyPool - Pool of vocabulary items
  * @param correctAnswer - The correct answer to exclude
  * @param count - Number of distractors to generate
@@ -154,4 +148,3 @@ export function generateDistractors(
   const shuffled = shuffleArray(distractors);
   return shuffled.slice(0, count);
 }
-

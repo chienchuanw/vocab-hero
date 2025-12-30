@@ -5,7 +5,7 @@ import { Volume2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ttsEngine } from '@/lib/tts';
 import type { TTSConfig } from '@/lib/tts';
-import type { ButtonProps } from '@/components/ui/button';
+import type { ComponentProps } from 'react';
 
 /**
  * SpeakerButton component props
@@ -24,12 +24,12 @@ export interface SpeakerButtonProps {
   /**
    * Button variant
    */
-  variant?: ButtonProps['variant'];
+  variant?: ComponentProps<typeof Button>['variant'];
 
   /**
    * Button size
    */
-  size?: ButtonProps['size'];
+  size?: ComponentProps<typeof Button>['size'];
 
   /**
    * Whether the button is disabled
@@ -64,10 +64,10 @@ export interface SpeakerButtonProps {
 
 /**
  * SpeakerButton Component
- * 
+ *
  * A button component that plays text-to-speech pronunciation using Web Speech API.
  * Automatically hides when TTS is not supported in the browser.
- * 
+ *
  * Features:
  * - Japanese voice support
  * - Loading state during playback
@@ -130,12 +130,7 @@ export function SpeakerButton({
       aria-label={ariaLabel}
       type="button"
     >
-      {isSpeaking ? (
-        <Loader2 className="h-4 w-4 animate-spin" />
-      ) : (
-        <Volume2 className="h-4 w-4" />
-      )}
+      {isSpeaking ? <Loader2 className="h-4 w-4 animate-spin" /> : <Volume2 className="h-4 w-4" />}
     </Button>
   );
 }
-

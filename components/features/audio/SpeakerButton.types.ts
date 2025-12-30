@@ -1,5 +1,6 @@
 import type { TTSConfig } from '@/lib/tts';
-import type { ButtonProps } from '@/components/ui/button';
+import type { ComponentProps } from 'react';
+import type { Button } from '@/components/ui/button';
 
 /**
  * SpeakerButton component props
@@ -18,12 +19,12 @@ export interface SpeakerButtonProps {
   /**
    * Button variant
    */
-  variant?: ButtonProps['variant'];
+  variant?: ComponentProps<typeof Button>['variant'];
 
   /**
    * Button size
    */
-  size?: ButtonProps['size'];
+  size?: ComponentProps<typeof Button>['size'];
 
   /**
    * Whether the button is disabled
@@ -55,4 +56,3 @@ export interface SpeakerButtonProps {
    */
   onSpeakError?: (error: unknown) => void;
 }
-

@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     const validationResult = updateProgressSchema.safeParse(body);
 
     if (!validationResult.success) {
-      return ApiErrors.VALIDATION_ERROR('Invalid progress data', validationResult.error.errors);
+      return ApiErrors.VALIDATION_ERROR('Invalid progress data', validationResult.error.issues);
     }
 
     const { userId, date, ...progressData } = validationResult.data;

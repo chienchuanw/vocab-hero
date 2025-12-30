@@ -63,10 +63,7 @@ export async function PUT(request: NextRequest) {
     const validationResult = updateDailyGoalSchema.safeParse(body);
 
     if (!validationResult.success) {
-      return ApiErrors.VALIDATION_ERROR(
-        'Invalid daily goal data',
-        validationResult.error.errors
-      );
+      return ApiErrors.VALIDATION_ERROR('Invalid daily goal data', validationResult.error.issues);
     }
 
     const updateData = validationResult.data;
@@ -89,10 +86,9 @@ export async function PUT(request: NextRequest) {
     console.error('Error updating daily goal:', error);
 
     if (error instanceof z.ZodError) {
-      return ApiErrors.VALIDATION_ERROR('Invalid request data', error.errors);
+      return ApiErrors.VALIDATION_ERROR('Invalid request data', error.issues);
     }
 
     return ApiErrors.INTERNAL_ERROR('Failed to update daily goal');
   }
 }
-
