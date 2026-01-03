@@ -595,11 +595,11 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [x] Add visual achievement indicators with checkmarks
 - [x] Display percentage completion
 - [x] Implement responsive design
-- [ ] Display progress on dashboard and home page (deferred)
-- [ ] Create goal completion celebration animation (deferred)
+- [ ] Display progress on dashboard and home page
+- [ ] Create goal completion celebration animation
 - [ ] Implement goal reset at midnight (handled by existing streak system)
 
-### 9.3 In-App Notifications ⏭️ DEFERRED
+### 9.3 In-App Notifications
 
 **Reason**: Notification system requires more comprehensive planning and design
 
@@ -610,7 +610,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Implement notification preferences
 - [ ] Write tests for notification logic
 
-### 9.4 Browser Push Notifications ⏭️ DEFERRED
+### 9.4 Browser Push Notifications
 
 **Reason**: Requires Service Worker setup and additional infrastructure
 
@@ -621,7 +621,7 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Create notification settings UI
 - [ ] Write E2E tests for notifications
 
-### 9.5 E2E Testing and Integration ⏭️ DEFERRED
+### 9.5 E2E Testing and Integration
 
 **Reason**: Will be added in future iteration with comprehensive test coverage
 
