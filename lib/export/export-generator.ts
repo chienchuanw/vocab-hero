@@ -4,6 +4,7 @@ import type {
   ExampleSentence,
   ReviewSchedule,
 } from '@prisma/client';
+import Papa from 'papaparse';
 
 export type VocabularyWithRelations = VocabularyItem & {
   groups: Pick<VocabularyGroup, 'id' | 'name'>[];
@@ -79,6 +80,29 @@ export function flattenVocabularyItem(item: VocabularyWithRelations): FlattenedV
     nextReviewDate: item.reviewSchedule?.nextReviewDate.toISOString() ?? '',
     lastReviewDate: item.reviewSchedule?.lastReviewDate?.toISOString() ?? '',
   };
+}
+
+export function generateCsvExport(vocabularyItems: VocabularyWithRelations[]): string {
+  const flattenedItems = vocabularyItems.map((item) => flattenVocabularyItem(item));
+
+  const csv = Papa.unparse(flattenedItems, {
+    header: true,
+    columns: [
+      'word',
+      'reading',
+      'meaning',
+      'notes',
+      'groups',
+      'exampleSentences',
+      'easinessFactor',
+      'interval',
+      'repetitions',
+      'nextReviewDate',
+      'lastReviewDate',
+    ],
+  });
+
+  return '\uFEFF' + csv;
 }
 
 export function generateJsonExport(vocabularyItems: VocabularyWithRelations[]): JsonExportData {

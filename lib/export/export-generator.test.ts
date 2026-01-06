@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { generateJsonExport, flattenVocabularyItem } from './export-generator';
+import { generateJsonExport, flattenVocabularyItem, generateCsvExport } from './export-generator';
 import type {
   VocabularyItem,
   VocabularyGroup,
@@ -491,6 +491,84 @@ describe('generateJsonExport', () => {
       const result = flattenVocabularyItem(vocab);
 
       expect(result.exampleSentences).toBe('');
+    });
+  });
+
+  describe('generateCsvExport', () => {
+    it('should generate valid CSV string', () => {
+      const result = generateCsvExport(mockVocabularyData);
+
+      expect(typeof result).toBe('string');
+      expect(result.length).toBeGreaterThan(0);
+    });
+
+    it('should start with UTF-8 BOM for Excel compatibility', () => {
+      const result = generateCsvExport(mockVocabularyData);
+
+      expect(result.charCodeAt(0)).toBe(0xfeff);
+    });
+
+    it('should include CSV header row', () => {
+      const result = generateCsvExport(mockVocabularyData);
+      const lines = result.split('\n');
+
+      expect(lines[0]).toContain('word');
+      expect(lines[0]).toContain('reading');
+      expect(lines[0]).toContain('meaning');
+      expect(lines[0]).toContain('notes');
+      expect(lines[0]).toContain('groups');
+      expect(lines[0]).toContain('exampleSentences');
+      expect(lines[0]).toContain('easinessFactor');
+      expect(lines[0]).toContain('interval');
+      expect(lines[0]).toContain('repetitions');
+      expect(lines[0]).toContain('nextReviewDate');
+      expect(lines[0]).toContain('lastReviewDate');
+    });
+
+    it('should include all vocabulary items as rows', () => {
+      const result = generateCsvExport(mockVocabularyData);
+      const lines = result.split('\n').filter((line: string) => line.trim());
+
+      expect(lines.length).toBe(3);
+      expect(lines[1]).toContain('こんにちは');
+      expect(lines[2]).toContain('ありがとう');
+    });
+
+    it('should properly quote fields containing commas', () => {
+      const vocabWithComma: VocabularyWithRelations[] = [
+        {
+          id: 'vocab1',
+          word: 'test,word',
+          reading: 'tesuto',
+          meaning: 'test, meaning',
+          notes: null,
+          createdAt: new Date('2026-01-01'),
+          updatedAt: new Date('2026-01-01'),
+          groups: [],
+          exampleSentences: [],
+          reviewSchedule: null,
+        },
+      ];
+
+      const result = generateCsvExport(vocabWithComma);
+
+      expect(result).toContain('"test,word"');
+      expect(result).toContain('"test, meaning"');
+    });
+
+    it('should handle empty vocabulary array', () => {
+      const result = generateCsvExport([]);
+
+      expect(result).toBeTruthy();
+      expect(result.charCodeAt(0)).toBe(0xfeff);
+    });
+
+    it('should be round-trip compatible (can be parsed back)', () => {
+      const result = generateCsvExport(mockVocabularyData);
+
+      const lines = result.split('\n').filter((line: string) => line.trim());
+      expect(lines.length).toBeGreaterThan(1);
+      expect(lines[0]).toContain('word,reading,meaning');
     });
   });
 });
