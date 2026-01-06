@@ -8,3 +8,4 @@ export * from './group';
 export * from './example-sentence';
 export * from './study-session';
 export * from './progress';
+export * from './export';
