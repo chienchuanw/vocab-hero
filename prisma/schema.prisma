@@ -25,6 +25,7 @@ model User {
   userStreak             UserStreak?
   notifications          Notification[]
   notificationPreference NotificationPreference?
+  userSettings           UserSettings?
 
   @@map("users")
 }
@@ -249,4 +250,42 @@ model NotificationPreference {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("notification_preferences")
+}
+
+// ThemePreference enum - Theme mode options
+enum ThemePreference {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+// UserSettings model - User preferences for theme, TTS, and study settings
+model UserSettings {
+  id     String @id @default(cuid())
+  userId String @unique @map("user_id")
+
+  // Theme Settings
+  theme ThemePreference @default(SYSTEM)
+
+  // TTS (Text-to-Speech) Settings
+  ttsSpeed  Float   @default(1.0) @map("tts_speed") // 0.1 to 10.0
+  ttsVolume Float   @default(1.0) @map("tts_volume") // 0.0 to 1.0
+  ttsPitch  Float   @default(1.0) @map("tts_pitch") // 0.0 to 2.0
+  ttsVoice  String? @map("tts_voice") // Preferred voice name (optional)
+
+  // Study Settings
+  cardsPerSession  Int       @default(20) @map("cards_per_session") // 5 to 100
+  defaultStudyMode StudyMode @default(FLASHCARD) @map("default_study_mode")
+  autoAdvance      Boolean   @default(false) @map("auto_advance") // Auto-advance after answer
+  showReading      Boolean   @default(true) @map("show_reading") // Show reading by default
+
+  // Language Settings (placeholder for future i18n)
+  language String @default("en") // "en" | "zh-TW" (future)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
 }

@@ -186,6 +186,38 @@ async function main() {
 
   console.log('Created/updated notification preferences');
 
+  // Create or update user settings for user
+  await prisma.userSettings.upsert({
+    where: { userId: user.id },
+    update: {
+      theme: 'SYSTEM',
+      ttsSpeed: 1.0,
+      ttsVolume: 1.0,
+      ttsPitch: 1.0,
+      ttsVoice: null,
+      cardsPerSession: 20,
+      defaultStudyMode: 'FLASHCARD',
+      autoAdvance: false,
+      showReading: true,
+      language: 'en',
+    },
+    create: {
+      userId: user.id,
+      theme: 'SYSTEM',
+      ttsSpeed: 1.0,
+      ttsVolume: 1.0,
+      ttsPitch: 1.0,
+      ttsVoice: null,
+      cardsPerSession: 20,
+      defaultStudyMode: 'FLASHCARD',
+      autoAdvance: false,
+      showReading: true,
+      language: 'en',
+    },
+  });
+
+  console.log('Created/updated user settings');
+
   console.log('Database seeding completed successfully!');
 }
 
