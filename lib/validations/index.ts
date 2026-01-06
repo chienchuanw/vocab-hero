@@ -9,3 +9,4 @@ export * from './example-sentence';
 export * from './study-session';
 export * from './progress';
 export * from './export';
+export * from './import';
