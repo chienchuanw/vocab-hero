@@ -190,7 +190,25 @@
 - **Tests**: 125 new tests (all passing), Total: 822 tests passing (4 skipped)
 - Last updated: 2026-01-06
 
-**Current Status**: Phase 10 backend fully complete (import/export APIs ready). Frontend UI components and E2E tests pending.
+**Phase 11.1: User Preferences** ✅ **COMPLETED** (100%)
+
+- ✅ UserSettings Prisma model with theme, TTS, and study preferences
+- ✅ Validation schemas with Zod (24 tests passing)
+- ✅ GET/PUT /api/settings endpoints (12 tests passing)
+- ✅ useUserSettings and useUpdateUserSettings hooks (6 tests passing)
+- ✅ ThemeProvider using next-themes added to root layout
+- ✅ Settings hub page at /settings with navigation
+- ✅ Theme settings page (/settings/theme) with light/dark/system toggle
+- ✅ Language settings page (/settings/language) - placeholder for future i18n
+- ✅ Study settings page (/settings/study) - cards per session, default mode, toggles
+- ✅ Audio settings page (/settings/audio) - TTS speed, volume, pitch, voice
+- ✅ Notifications settings page (/settings/notifications) - reusing existing component
+- ✅ TTS integration - SpeakerButton now uses persisted settings
+- ✅ Study integration - Flashcard page uses persisted cardsPerSession
+- ✅ E2E tests for settings pages (user-settings.spec.ts)
+- Last updated: 2026-01-06
+
+**Current Status**: Phase 11.1 complete. Phase 10 backend complete (frontend pending).
 
 ---
 
@@ -704,19 +722,20 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ## Phase 11: Settings and Preferences
 
-> **Note**: TTS settings persistence (speed, volume, voice selection) will be implemented in this phase.
-> Phase 7 implements TTS as a frontend-only feature with default settings.
+> **Note**: TTS settings persistence was implemented in Phase 11.1.
 
-### 11.1 User Preferences
+### 11.1 User Preferences ✅ COMPLETED
 
-- [ ] Create Settings page
-- [ ] Implement theme settings (light/dark mode)
-- [ ] Implement language preferences
-- [ ] Create study preferences (cards per session, etc.)
-- [ ] Implement TTS voice preferences (speed, volume, voice selection)
-- [ ] Persist TTS settings to database (deferred from Phase 7)
-- [ ] Store preferences in database
-- [ ] Write tests for settings
+- [x] Create Settings hub page with navigation to sub-pages
+- [x] Implement theme settings (light/dark/system mode with next-themes)
+- [x] Implement language preferences (placeholder for future i18n)
+- [x] Create study preferences (cards per session, default mode, auto-advance, show reading)
+- [x] Implement TTS voice preferences (speed, volume, pitch, voice selection)
+- [x] Persist TTS settings to database with UserSettings model
+- [x] Create useUserSettings and useTTSConfig hooks
+- [x] Integrate persisted settings with SpeakerButton and study pages
+- [x] Write unit tests (42 tests passing)
+- [x] Write E2E tests (user-settings.spec.ts)
 
 ### 11.2 Data Management
 
