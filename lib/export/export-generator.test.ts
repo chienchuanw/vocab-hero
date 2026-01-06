@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { generateJsonExport } from './export-generator';
+import { generateJsonExport, flattenVocabularyItem } from './export-generator';
 import type {
   VocabularyItem,
   VocabularyGroup,
@@ -235,6 +235,262 @@ describe('generateJsonExport', () => {
       expect(parsed).toEqual(result);
       expect(parsed.version).toBe('1.0');
       expect(parsed.items).toHaveLength(2);
+    });
+  });
+
+  describe('flattenVocabularyItem', () => {
+    it('should flatten vocabulary with single group', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'こんにちは',
+        reading: 'konnichiwa',
+        meaning: 'Hello',
+        notes: 'Common greeting',
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-05'),
+        groups: [{ id: 'group1', name: 'JLPT N5' }],
+        exampleSentences: [],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.word).toBe('こんにちは');
+      expect(result.reading).toBe('konnichiwa');
+      expect(result.meaning).toBe('Hello');
+      expect(result.notes).toBe('Common greeting');
+      expect(result.groups).toBe('JLPT N5');
+      expect(result.exampleSentences).toBe('');
+    });
+
+    it('should flatten multiple groups with semicolon delimiter', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'こんにちは',
+        reading: 'konnichiwa',
+        meaning: 'Hello',
+        notes: null,
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [
+          { id: 'group1', name: 'JLPT N5' },
+          { id: 'group2', name: 'Daily Phrases' },
+          { id: 'group3', name: 'Greetings' },
+        ],
+        exampleSentences: [],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.groups).toBe('JLPT N5;Daily Phrases;Greetings');
+    });
+
+    it('should flatten multiple example sentences with pipe delimiter', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'こんにちは',
+        reading: 'konnichiwa',
+        meaning: 'Hello',
+        notes: null,
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [],
+        exampleSentences: [
+          {
+            id: 'ex1',
+            vocabularyItemId: 'vocab1',
+            sentence: 'こんにちは、元気ですか？',
+            reading: 'konnichiwa, genki desu ka?',
+            meaning: 'Hello, how are you?',
+            order: 0,
+            createdAt: new Date('2026-01-01'),
+            updatedAt: new Date('2026-01-01'),
+          },
+          {
+            id: 'ex2',
+            vocabularyItemId: 'vocab1',
+            sentence: 'こんにちは、田中さん',
+            reading: 'konnichiwa, Tanaka-san',
+            meaning: 'Hello, Mr. Tanaka',
+            order: 1,
+            createdAt: new Date('2026-01-01'),
+            updatedAt: new Date('2026-01-01'),
+          },
+        ],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.exampleSentences).toBe(
+        'こんにちは、元気ですか？|konnichiwa, genki desu ka?|Hello, how are you?##こんにちは、田中さん|konnichiwa, Tanaka-san|Hello, Mr. Tanaka'
+      );
+    });
+
+    it('should handle example sentences with null reading', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'test',
+        reading: 'tesuto',
+        meaning: 'test',
+        notes: null,
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [],
+        exampleSentences: [
+          {
+            id: 'ex1',
+            vocabularyItemId: 'vocab1',
+            sentence: 'Test sentence',
+            reading: null,
+            meaning: 'Test meaning',
+            order: 0,
+            createdAt: new Date('2026-01-01'),
+            updatedAt: new Date('2026-01-01'),
+          },
+        ],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.exampleSentences).toBe('Test sentence||Test meaning');
+    });
+
+    it('should escape special characters in fields', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'test,word',
+        reading: 'test"reading',
+        meaning: 'test\nmeaning',
+        notes: 'test;note|with#special',
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [],
+        exampleSentences: [],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.word).toBe('test,word');
+      expect(result.reading).toBe('test"reading');
+      expect(result.meaning).toBe('test\nmeaning');
+      expect(result.notes).toBe('test;note|with#special');
+    });
+
+    it('should handle null notes field', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'test',
+        reading: 'tesuto',
+        meaning: 'test',
+        notes: null,
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [],
+        exampleSentences: [],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.notes).toBe('');
+    });
+
+    it('should map ReviewSchedule fields to flat structure', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'test',
+        reading: 'tesuto',
+        meaning: 'test',
+        notes: null,
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [],
+        exampleSentences: [],
+        reviewSchedule: {
+          id: 'review1',
+          vocabularyItemId: 'vocab1',
+          easinessFactor: 2.5,
+          interval: 3,
+          repetitions: 2,
+          nextReviewDate: new Date('2026-01-10T00:00:00.000Z'),
+          lastReviewDate: new Date('2026-01-07T00:00:00.000Z'),
+          createdAt: new Date('2026-01-01'),
+          updatedAt: new Date('2026-01-07'),
+        },
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.easinessFactor).toBe('2.5');
+      expect(result.interval).toBe('3');
+      expect(result.repetitions).toBe('2');
+      expect(result.nextReviewDate).toBe('2026-01-10T00:00:00.000Z');
+      expect(result.lastReviewDate).toBe('2026-01-07T00:00:00.000Z');
+    });
+
+    it('should handle null ReviewSchedule', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'test',
+        reading: 'tesuto',
+        meaning: 'test',
+        notes: null,
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [],
+        exampleSentences: [],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.easinessFactor).toBe('');
+      expect(result.interval).toBe('');
+      expect(result.repetitions).toBe('');
+      expect(result.nextReviewDate).toBe('');
+      expect(result.lastReviewDate).toBe('');
+    });
+
+    it('should handle empty groups array', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'test',
+        reading: 'tesuto',
+        meaning: 'test',
+        notes: null,
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [],
+        exampleSentences: [],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.groups).toBe('');
+    });
+
+    it('should handle empty exampleSentences array', () => {
+      const vocab: VocabularyWithRelations = {
+        id: 'vocab1',
+        word: 'test',
+        reading: 'tesuto',
+        meaning: 'test',
+        notes: null,
+        createdAt: new Date('2026-01-01'),
+        updatedAt: new Date('2026-01-01'),
+        groups: [],
+        exampleSentences: [],
+        reviewSchedule: null,
+      };
+
+      const result = flattenVocabularyItem(vocab);
+
+      expect(result.exampleSentences).toBe('');
     });
   });
 });

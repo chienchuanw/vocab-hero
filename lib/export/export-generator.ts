@@ -42,6 +42,45 @@ export interface ExportVocabularyItem {
   } | null;
 }
 
+export interface FlattenedVocabularyItem {
+  word: string;
+  reading: string;
+  meaning: string;
+  notes: string;
+  groups: string;
+  exampleSentences: string;
+  easinessFactor: string;
+  interval: string;
+  repetitions: string;
+  nextReviewDate: string;
+  lastReviewDate: string;
+}
+
+export function flattenVocabularyItem(item: VocabularyWithRelations): FlattenedVocabularyItem {
+  const groupNames = item.groups.map((group) => group.name).join(';');
+
+  const exampleSentencesStr = item.exampleSentences
+    .map((sentence) => {
+      const reading = sentence.reading ?? '';
+      return `${sentence.sentence}|${reading}|${sentence.meaning}`;
+    })
+    .join('##');
+
+  return {
+    word: item.word,
+    reading: item.reading,
+    meaning: item.meaning,
+    notes: item.notes ?? '',
+    groups: groupNames,
+    exampleSentences: exampleSentencesStr,
+    easinessFactor: item.reviewSchedule?.easinessFactor.toString() ?? '',
+    interval: item.reviewSchedule?.interval.toString() ?? '',
+    repetitions: item.reviewSchedule?.repetitions.toString() ?? '',
+    nextReviewDate: item.reviewSchedule?.nextReviewDate.toISOString() ?? '',
+    lastReviewDate: item.reviewSchedule?.lastReviewDate?.toISOString() ?? '',
+  };
+}
+
 export function generateJsonExport(vocabularyItems: VocabularyWithRelations[]): JsonExportData {
   return {
     version: '1.0',
