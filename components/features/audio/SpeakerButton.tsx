@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Volume2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ttsEngine } from '@/lib/tts';
+import { useTTSConfig } from '@/hooks/useTTSConfig';
 import type { TTSConfig } from '@/lib/tts';
 import type { ComponentProps } from 'react';
 
@@ -87,15 +88,14 @@ export function SpeakerButton({
   onSpeakError,
 }: SpeakerButtonProps) {
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const { ttsConfig: persistedConfig } = useTTSConfig();
+  const effectiveConfig = config ?? persistedConfig;
 
   // Hide button if TTS is not supported
   if (!ttsEngine.isSupported()) {
     return null;
   }
 
-  /**
-   * Handle button click to play TTS
-   */
   const handleClick = async () => {
     if (disabled || isSpeaking) {
       return;
@@ -108,8 +108,7 @@ export function SpeakerButton({
       // Stop any ongoing speech before starting new one
       ttsEngine.stop();
 
-      // Speak the text
-      await ttsEngine.speak(text, config);
+      await ttsEngine.speak(text, effectiveConfig);
 
       onSpeakEnd?.();
     } catch (error) {

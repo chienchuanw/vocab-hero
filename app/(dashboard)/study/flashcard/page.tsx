@@ -3,22 +3,23 @@
 import { useState } from 'react';
 import { Layout } from '@/components/shared';
 import { useDueVocabulary } from '@/hooks/useVocabulary';
+import { useUserSettings } from '@/hooks/useUserSettings';
 import { Flashcard } from '@/components/features/study/Flashcard';
 import { QualityRatingButtons } from '@/components/features/study/QualityRatingButtons';
 import type { QualityRating } from '@/components/features/study/QualityRatingButtons.types';
 
-/**
- * FlashcardStudy Page
- * 單字卡學習頁面
- * 支援翻卡、評分、鍵盤快捷鍵
- */
+const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
+const DEFAULT_CARDS_PER_SESSION = 20;
+
 export default function FlashcardStudyPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [ratings, setRatings] = useState<Record<string, QualityRating>>({});
 
-  // 取得需要複習的單字
-  const { data: vocabulary, isLoading, error } = useDueVocabulary(20);
+  const { data: settings } = useUserSettings(DEFAULT_USER_ID);
+  const cardsPerSession = settings?.cardsPerSession ?? DEFAULT_CARDS_PER_SESSION;
+
+  const { data: vocabulary, isLoading, error } = useDueVocabulary(cardsPerSession);
 
   // 處理評分
   const handleRate = (quality: QualityRating) => {
