@@ -1,11 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { Layout } from '@/components/shared';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, Upload, Trash2, AlertTriangle } from 'lucide-react';
+import { Download, Upload, Trash2, AlertTriangle, Loader2 } from 'lucide-react';
+import { DeleteAllDataDialog } from '@/components/features/settings/DeleteAllDataDialog';
+import { useBackup } from '@/hooks/useDataManagement';
+import { ExportFormat } from '@/lib/validations/export';
 
 export default function DataManagementPage() {
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const backup = useBackup();
   return (
     <Layout>
       <div className="container max-w-4xl py-8">
@@ -32,9 +38,21 @@ export default function DataManagementPage() {
                 Creates a backup of all your vocabulary items, groups, and example sentences.
                 Progress data like review schedules and study sessions are not included.
               </p>
-              <Button>
-                <Download className="h-4 w-4 mr-2" />
-                Download Backup
+              <Button
+                onClick={() => backup.mutate({ format: ExportFormat.JSON })}
+                disabled={backup.isPending}
+              >
+                {backup.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Creating Backup...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Backup
+                  </>
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -89,7 +107,7 @@ export default function DataManagementPage() {
                   Removes all vocabulary items, groups, example sentences, study sessions, progress
                   logs, and review schedules. This action cannot be undone.
                 </p>
-                <Button variant="destructive">
+                <Button variant="destructive" onClick={() => setShowDeleteDialog(true)}>
                   <Trash2 className="h-4 w-4 mr-2" />
                   Delete All Data
                 </Button>
@@ -97,6 +115,8 @@ export default function DataManagementPage() {
             </CardContent>
           </Card>
         </div>
+
+        <DeleteAllDataDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog} />
       </div>
     </Layout>
   );
