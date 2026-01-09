@@ -6,11 +6,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Download, Upload, Trash2, AlertTriangle, Loader2 } from 'lucide-react';
 import { DeleteAllDataDialog } from '@/components/features/settings/DeleteAllDataDialog';
+import { RestoreDialog } from '@/components/features/settings/RestoreDialog';
 import { useBackup } from '@/hooks/useDataManagement';
 import { ExportFormat } from '@/lib/validations/export';
 
 export default function DataManagementPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showRestoreDialog, setShowRestoreDialog] = useState(false);
   const backup = useBackup();
   return (
     <Layout>
@@ -72,7 +74,7 @@ export default function DataManagementPage() {
                 Upload a previously downloaded backup file. You can choose how to handle duplicate
                 vocabulary items.
               </p>
-              <Button>
+              <Button onClick={() => setShowRestoreDialog(true)}>
                 <Upload className="h-4 w-4 mr-2" />
                 Upload Backup File
               </Button>
@@ -117,6 +119,7 @@ export default function DataManagementPage() {
         </div>
 
         <DeleteAllDataDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog} />
+        <RestoreDialog open={showRestoreDialog} onOpenChange={setShowRestoreDialog} />
       </div>
     </Layout>
   );
