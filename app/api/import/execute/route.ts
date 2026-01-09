@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db/prisma';
 import { ExportFormat } from '@/lib/validations/export';
@@ -10,6 +10,7 @@ import {
   applyDuplicateStrategy,
   type ExistingVocabularyItem,
 } from '@/lib/import/import-parser';
+import { successResponse, ApiErrors } from '@/lib/api/response';
 
 const importExecuteSchema = z.object({
   format: z.nativeEnum(ExportFormat),
@@ -114,15 +115,9 @@ export async function POST(request: NextRequest) {
     const validationResult = importExecuteSchema.safeParse(body);
 
     if (!validationResult.success) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: validationResult.error.issues[0]?.message ?? 'Validation failed',
-          },
-        },
-        { status: 400 }
+      return ApiErrors.VALIDATION_ERROR(
+        validationResult.error.issues[0]?.message ?? 'Validation failed',
+        validationResult.error.issues
       );
     }
 
@@ -132,16 +127,9 @@ export async function POST(request: NextRequest) {
       format === ExportFormat.JSON ? parseJsonImport(content) : parseCsvImport(content);
 
     if (!parseResult.success) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'PARSE_ERROR',
-            message: parseResult.errors[0]?.message ?? 'Parse failed',
-            details: parseResult.errors,
-          },
-        },
-        { status: 400 }
+      return ApiErrors.BAD_REQUEST(
+        parseResult.errors[0]?.message ?? 'Parse failed',
+        parseResult.errors
       );
     }
 
@@ -193,26 +181,14 @@ export async function POST(request: NextRequest) {
       updated++;
     }
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        created,
-        updated,
-        skipped,
-        total: parseResult.data.length,
-      },
+    return successResponse({
+      created,
+      updated,
+      skipped,
+      total: parseResult.data.length,
     });
   } catch (error) {
     console.error('Import execute error:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: 'INTERNAL_ERROR',
-          message: 'An unexpected error occurred',
-        },
-      },
-      { status: 500 }
-    );
+    return ApiErrors.INTERNAL_ERROR('An unexpected error occurred');
   }
 }

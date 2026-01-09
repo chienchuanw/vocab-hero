@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
 import {
   updateNotificationPreferenceSchema,
   notificationPreferenceQuerySchema,
 } from '@/lib/validations/notification-preference';
+import { successResponse, ApiErrors } from '@/lib/api/response';
 
 /**
  * GET /api/notification-preferences
@@ -18,16 +19,9 @@ export async function GET(request: NextRequest) {
     const validation = notificationPreferenceQuerySchema.safeParse({ userId });
 
     if (!validation.success) {
-      const firstError = validation.error.errors?.[0];
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: firstError?.message || 'Invalid query parameters',
-          },
-        },
-        { status: 400 }
+      return ApiErrors.VALIDATION_ERROR(
+        validation.error.issues[0]?.message ?? 'Invalid query parameters',
+        validation.error.issues
       );
     }
 
@@ -38,22 +32,10 @@ export async function GET(request: NextRequest) {
       where: { userId: validatedUserId },
     });
 
-    return NextResponse.json({
-      success: true,
-      data: preferences,
-    });
+    return successResponse(preferences);
   } catch (error) {
     console.error('Error fetching notification preferences:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: 'INTERNAL_ERROR',
-          message: 'Failed to fetch notification preferences',
-        },
-      },
-      { status: 500 }
-    );
+    return ApiErrors.INTERNAL_ERROR('Failed to fetch notification preferences');
   }
 }
 
@@ -70,32 +52,16 @@ export async function PUT(request: NextRequest) {
 
     // Validate userId
     if (!userId || typeof userId !== 'string') {
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: 'User ID is required',
-          },
-        },
-        { status: 400 }
-      );
+      return ApiErrors.VALIDATION_ERROR('User ID is required');
     }
 
     // Validate preferences
     const validation = updateNotificationPreferenceSchema.safeParse(preferences);
 
     if (!validation.success) {
-      const firstError = validation.error.errors?.[0];
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: firstError?.message || 'Invalid preference data',
-          },
-        },
-        { status: 400 }
+      return ApiErrors.VALIDATION_ERROR(
+        validation.error.issues[0]?.message ?? 'Invalid preference data',
+        validation.error.issues
       );
     }
 
@@ -109,22 +75,9 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({
-      success: true,
-      data: updatedPreferences,
-    });
+    return successResponse(updatedPreferences);
   } catch (error) {
     console.error('Error updating notification preferences:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: 'INTERNAL_ERROR',
-          message: 'Failed to update notification preferences',
-        },
-      },
-      { status: 500 }
-    );
+    return ApiErrors.INTERNAL_ERROR('Failed to update notification preferences');
   }
 }
-

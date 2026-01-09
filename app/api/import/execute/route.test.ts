@@ -283,7 +283,7 @@ describe('POST /api/import/execute', () => {
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
-      expect(data.error.code).toBe('PARSE_ERROR');
+      expect(data.error.code).toBe('BAD_REQUEST');
     });
 
     it('should return error for missing strategy', async () => {

@@ -168,7 +168,7 @@ describe('POST /api/import/preview', () => {
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
-      expect(data.error.code).toBe('PARSE_ERROR');
+      expect(data.error.code).toBe('BAD_REQUEST');
     });
 
     it('should return error for empty CSV', async () => {
@@ -235,7 +235,7 @@ describe('POST /api/import/preview', () => {
 
       expect(response.status).toBe(400);
       expect(data.success).toBe(false);
-      expect(data.error.code).toBe('PARSE_ERROR');
+      expect(data.error.code).toBe('BAD_REQUEST');
       expect(data.error.details).toBeDefined();
     });
   });
