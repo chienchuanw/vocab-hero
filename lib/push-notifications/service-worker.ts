@@ -9,11 +9,7 @@ import type { NotificationPermissionState, PushSubscriptionData } from './types'
  * 檢查瀏覽器是否支援 Service Worker 和推送通知
  */
 export function isPushNotificationSupported(): boolean {
-  return (
-    'serviceWorker' in navigator &&
-    'PushManager' in window &&
-    'Notification' in window
-  );
+  return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
 }
 
 /**
@@ -120,7 +116,7 @@ export async function subscribeToPushNotifications(
 
   try {
     const registration = await navigator.serviceWorker.ready;
-    
+
     // 檢查是否已有訂閱
     let subscription = await registration.pushManager.getSubscription();
 
@@ -175,7 +171,7 @@ export async function unsubscribeFromPushNotifications(): Promise<boolean> {
 
 // Helper functions
 
-function urlBase64ToUint8Array(base64String: string): Uint8Array {
+function urlBase64ToUint8Array(base64String: string): Uint8Array<ArrayBuffer> {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
   const rawData = window.atob(base64);
@@ -185,15 +181,14 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
     outputArray[i] = rawData.charCodeAt(i);
   }
 
-  return outputArray;
+  return outputArray as Uint8Array<ArrayBuffer>;
 }
 
 function arrayBufferToBase64(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer);
   let binary = '';
   for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
+    binary += String.fromCharCode(bytes[i]!);
   }
   return window.btoa(binary);
 }
-
