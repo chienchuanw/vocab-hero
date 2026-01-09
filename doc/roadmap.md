@@ -208,7 +208,26 @@
 - ✅ E2E tests for settings pages (user-settings.spec.ts)
 - Last updated: 2026-01-06
 
-**Current Status**: Phase 11.1 complete. Phase 10 backend complete (frontend pending).
+**Phase 11.2: Data Management** ✅ **COMPLETED** (100%)
+
+- ✅ Default user management utilities (lib/db/default-user.ts) - 6 tests passing
+- ✅ DELETE /api/data/delete-all endpoint with typed confirmation - 3 tests passing
+- ✅ POST /api/backup endpoint for content-only export - 4 tests passing
+- ✅ POST /api/restore/preview endpoint with duplicate detection - 6 tests passing
+- ✅ POST /api/restore/execute with 3 strategies (skip/overwrite/merge) - 5 tests passing
+- ✅ useDataManagement hooks (4 hooks with TanStack Query) - 8 tests passing
+- ✅ Data management settings page (/settings/data)
+- ✅ DeleteAllDataDialog component with typed confirmation "DELETE ALL"
+- ✅ RestoreDialog component with 3-step flow (upload → preview → execute)
+- ✅ Backup download button with auto-filename
+- ✅ Auto-create ReviewSchedule for restored vocabulary
+- ✅ API standardization - refactored 5 legacy endpoints to use ApiErrors
+- ✅ E2E tests for data management (18 test scenarios)
+- ✅ Production build passing with all TypeScript errors resolved
+- **Tests**: 32 new tests (all passing), Total API tests: 220 passing
+- Last updated: 2026-01-09
+
+**Current Status**: Phase 11 complete. Phase 10 backend complete (frontend pending).
 
 ---
 
@@ -737,14 +756,22 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [x] Write unit tests (42 tests passing)
 - [x] Write E2E tests (user-settings.spec.ts)
 
-### 11.2 Data Management
+### 11.2 Data Management ✅ COMPLETED
 
-- [ ] Create data management section in settings
-- [ ] Implement "Reset Progress" functionality
-- [ ] Implement "Delete All Data" functionality
-- [ ] Create backup/restore functionality
-- [ ] Add confirmation dialogs for destructive actions
-- [ ] Write tests for data management
+- [x] Create data management section in settings (/settings/data page)
+- [x] Implement default user management (getOrCreateDefaultUser utility)
+- [x] Implement "Delete All Data" functionality with atomic transactions
+- [x] Create backup functionality (content-only JSON export)
+- [x] Create restore functionality with 3 duplicate strategies
+- [x] Implement restore preview (upload → preview statistics)
+- [x] Implement restore execute with typed confirmation "RESTORE"
+- [x] Add confirmation dialogs for destructive actions (typed "DELETE ALL")
+- [x] Create DeleteAllDataDialog and RestoreDialog components
+- [x] Create useDataManagement hooks (4 hooks with TanStack Query)
+- [x] Auto-create ReviewSchedule for restored vocabulary items
+- [x] Refactor legacy APIs to use standardized ApiErrors
+- [x] Write comprehensive tests (32 tests: 18 API + 6 default-user + 8 hooks)
+- [x] Write E2E tests (18 test scenarios covering all flows)
 
 ---
 
