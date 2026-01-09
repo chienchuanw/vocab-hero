@@ -18,7 +18,7 @@ export interface GoalCelebrationProps {
 /**
  * GoalCelebration Component
  * Displays celebration animation when daily goals are achieved
- * 
+ *
  * Uses canvas-confetti for visual celebration effect
  */
 export function GoalCelebration({
@@ -30,40 +30,40 @@ export function GoalCelebration({
   const isBothGoalsAchieved = isWordsGoalAchieved && isMinutesGoalAchieved;
 
   useEffect(() => {
-    if (show && isBothGoalsAchieved) {
-      // Trigger confetti animation
-      const duration = 3000;
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    if (!show || !isBothGoalsAchieved) {
+      return;
+    }
 
-      function randomInRange(min: number, max: number) {
-        return Math.random() * (max - min) + min;
+    const duration = 3000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min: number, max: number) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(function () {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        return clearInterval(interval);
       }
 
-      const interval = setInterval(function () {
-        const timeLeft = animationEnd - Date.now();
+      const particleCount = 50 * (timeLeft / duration);
 
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      });
+    }, 250);
 
-        const particleCount = 50 * (timeLeft / duration);
-
-        // Fire confetti from two different origins
-        confetti({
-          ...defaults,
-          particleCount,
-          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-        });
-        confetti({
-          ...defaults,
-          particleCount,
-          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-        });
-      }, 250);
-
-      return () => clearInterval(interval);
-    }
+    return () => clearInterval(interval);
   }, [show, isBothGoalsAchieved]);
 
   if (!show || !isBothGoalsAchieved) {
@@ -90,4 +90,3 @@ export function GoalCelebration({
     </Card>
   );
 }
-

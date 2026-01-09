@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
 import { createNotificationSchema, notificationQuerySchema } from '@/lib/validations/notification';
+import { successResponse, ApiErrors } from '@/lib/api/response';
 
 /**
  * GET /api/notifications
@@ -21,16 +22,9 @@ export async function GET(request: NextRequest) {
     });
 
     if (!validation.success) {
-      const firstError = validation.error.errors?.[0];
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: firstError?.message || 'Invalid query parameters',
-          },
-        },
-        { status: 400 }
+      return ApiErrors.VALIDATION_ERROR(
+        validation.error.issues[0]?.message ?? 'Invalid query parameters',
+        validation.error.issues
       );
     }
 
@@ -61,22 +55,10 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({
-      success: true,
-      data: notifications,
-    });
+    return successResponse(notifications);
   } catch (error) {
     console.error('Error fetching notifications:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: 'INTERNAL_ERROR',
-          message: 'Failed to fetch notifications',
-        },
-      },
-      { status: 500 }
-    );
+    return ApiErrors.INTERNAL_ERROR('Failed to fetch notifications');
   }
 }
 
@@ -92,22 +74,14 @@ export async function POST(request: NextRequest) {
     const validation = createNotificationSchema.safeParse(body);
 
     if (!validation.success) {
-      const firstError = validation.error.errors?.[0];
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: firstError?.message || 'Invalid notification data',
-          },
-        },
-        { status: 400 }
+      return ApiErrors.VALIDATION_ERROR(
+        validation.error.issues[0]?.message ?? 'Invalid notification data',
+        validation.error.issues
       );
     }
 
     const { userId, type, title, message, priority } = validation.data;
 
-    // Create notification
     const notification = await prisma.notification.create({
       data: {
         userId,
@@ -118,24 +92,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(
-      {
-        success: true,
-        data: notification,
-      },
-      { status: 201 }
-    );
+    return successResponse(notification, 201);
   } catch (error) {
     console.error('Error creating notification:', error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: {
-          code: 'INTERNAL_ERROR',
-          message: 'Failed to create notification',
-        },
-      },
-      { status: 500 }
-    );
+    return ApiErrors.INTERNAL_ERROR('Failed to create notification');
   }
 }
