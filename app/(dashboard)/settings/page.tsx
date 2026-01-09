@@ -4,7 +4,16 @@ import Link from 'next/link';
 import { Layout } from '@/components/shared';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/features/settings';
-import { Palette, Volume2, GraduationCap, Target, Bell, Globe, ChevronRight } from 'lucide-react';
+import {
+  Palette,
+  Volume2,
+  GraduationCap,
+  Target,
+  Bell,
+  Globe,
+  Database,
+  ChevronRight,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SettingsLinkProps {
@@ -69,6 +78,12 @@ const settingsLinks: SettingsLinkProps[] = [
     icon: Globe,
     title: 'Language',
     description: 'App language settings',
+  },
+  {
+    href: '/settings/data',
+    icon: Database,
+    title: 'Data Management',
+    description: 'Backup, restore, or delete all data',
   },
 ];
 
