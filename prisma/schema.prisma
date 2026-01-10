@@ -46,6 +46,7 @@ model VocabularyItem {
 
   @@index([word])
   @@index([reading])
+  @@index([createdAt])
   @@map("vocabulary_items")
 }
 
@@ -79,6 +80,9 @@ model VocabularyGroup {
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   vocabularyItems VocabularyItem[]
 
+  @@index([userId])
+  @@index([name])
+  @@index([createdAt])
   @@map("vocabulary_groups")
 }
 
@@ -138,8 +142,11 @@ model StudySession {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@index([studyMode])
   @@index([groupId])
+  @@index([startedAt])
+  @@index([completedAt])
   @@map("study_sessions")
 }
 
