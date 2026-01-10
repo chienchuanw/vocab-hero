@@ -95,7 +95,7 @@
   --popover-foreground: oklch(0.25 0.01 240);
 
   /* 主色調 - Duolingo 綠色 (#58CC02) */
-  --primary: oklch(0.72 0.19 142);
+  --primary: oklch(0.64 0.19 142);
   --primary-foreground: oklch(1 0 0);
 
   /* 次要色 - 淺綠色背景 */

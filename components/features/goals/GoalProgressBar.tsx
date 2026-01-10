@@ -27,7 +27,7 @@ export function GoalProgressBar({
 }: GoalProgressBarProps) {
   const wordsPercentage = Math.min(Math.round((wordsProgress / wordsGoal) * 100), 100);
   const minutesPercentage = Math.min(Math.round((minutesProgress / minutesGoal) * 100), 100);
-  
+
   const isWordsComplete = wordsProgress >= wordsGoal;
   const isMinutesComplete = minutesProgress >= minutesGoal;
 
@@ -45,7 +45,11 @@ export function GoalProgressBar({
               {isWordsComplete && <CheckCircle2 className="inline ml-1 h-4 w-4" />}
             </span>
           </div>
-          <Progress value={wordsPercentage} className="h-2" />
+          <Progress
+            value={wordsPercentage}
+            className="h-2"
+            aria-label={`Words progress: ${wordsProgress} of ${wordsGoal} (${wordsPercentage}%)`}
+          />
         </div>
 
         <div className="space-y-1">
@@ -59,7 +63,11 @@ export function GoalProgressBar({
               {isMinutesComplete && <CheckCircle2 className="inline ml-1 h-4 w-4" />}
             </span>
           </div>
-          <Progress value={minutesPercentage} className="h-2" />
+          <Progress
+            value={minutesPercentage}
+            className="h-2"
+            aria-label={`Minutes progress: ${minutesProgress} of ${minutesGoal} (${minutesPercentage}%)`}
+          />
         </div>
       </div>
     );
@@ -79,7 +87,11 @@ export function GoalProgressBar({
                 {wordsProgress} / {wordsGoal}
               </span>
             </div>
-            <Progress value={wordsPercentage} className="h-3" />
+            <Progress
+              value={wordsPercentage}
+              className="h-3"
+              aria-label={`Words progress: ${wordsProgress} of ${wordsGoal} (${wordsPercentage}%)`}
+            />
             <p className="text-sm text-muted-foreground mt-1">{wordsPercentage}% complete</p>
           </div>
 
@@ -93,7 +105,11 @@ export function GoalProgressBar({
                 {minutesProgress} / {minutesGoal} min
               </span>
             </div>
-            <Progress value={minutesPercentage} className="h-3" />
+            <Progress
+              value={minutesPercentage}
+              className="h-3"
+              aria-label={`Minutes progress: ${minutesProgress} of ${minutesGoal} minutes (${minutesPercentage}%)`}
+            />
             <p className="text-sm text-muted-foreground mt-1">{minutesPercentage}% complete</p>
           </div>
 
@@ -108,4 +124,3 @@ export function GoalProgressBar({
     </Card>
   );
 }
-
