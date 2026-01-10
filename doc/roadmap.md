@@ -169,26 +169,35 @@
 - **Tests**: 98 new tests (all passing), Total: 674 tests passing
 - Last updated: 2026-01-03
 
-**Phase 10: Data Import/Export** 🚧 **IN PROGRESS** (Backend 100%, Frontend 0%)
+**Phase 10: Data Import/Export** ✅ **COMPLETED** (100%)
 
-- ✅ Phase 10.1: Export Functionality - Backend Complete (100%)
+- ✅ Phase 10.1: Export Functionality - Complete (100%)
   - JSON/CSV export generators with metadata and relations
   - Export API endpoint with filtering (by group, date range)
   - Export hook (useExportVocabulary) with automatic file download
+  - Export UI integrated in Data Management page (/settings/data)
+  - Download Backup button with auto-generated filename
   - 70 tests passing (16 validation, 32 generator, 14 API, 8 hook)
-- ✅ Phase 10.2: Import Functionality - Backend Complete (100%)
+- ✅ Phase 10.2: Import Functionality - Complete (100%)
   - JSON/CSV import parsers with validation
   - Duplicate detection (word + reading matching)
   - Duplicate strategies (SKIP, OVERWRITE, MERGE)
   - Import Preview API endpoint
   - Import Execute API endpoint
+  - RestoreDialog component with 3-step wizard (upload → preview → execute)
+  - Duplicate strategy selection UI (skip/overwrite/merge)
+  - Typed confirmation requirement ("RESTORE")
   - 55 tests passing (36 parser, 10 preview API, 9 execute API)
-- 📋 Phase 10.1-10.2: Frontend UI (Pending)
-  - Export dialog component with format selection
-  - Import dialog component with file upload and preview
-  - E2E tests for complete import/export workflow
-- **Tests**: 125 new tests (all passing), Total: 822 tests passing (4 skipped)
-- Last updated: 2026-01-06
+- ✅ Phase 10.3: Frontend UI - Complete (100%)
+  - Data Management page at /settings/data
+  - Export/Import/Delete All Data sections with proper UI
+  - RestoreDialog with file upload, preview statistics, and confirmation
+  - DeleteAllDataDialog with typed confirmation
+  - E2E tests for complete import/export workflow (18 scenarios, 364 lines)
+  - Backup download, restore with all 3 strategies, delete all data flows tested
+- **Tests**: 125 backend + 18 E2E tests (all passing)
+- **Components**: RestoreDialog (356 lines), DeleteAllDataDialog, Data Management Page (127 lines)
+- Last updated: 2026-01-10
 
 **Phase 11.1: User Preferences** ✅ **COMPLETED** (100%)
 
@@ -288,7 +297,7 @@
 - **Standards**: WCAG 2.1 Level AA compliant
 - Last updated: 2026-01-10
 
-**Current Status**: Phase 13 (Performance Optimization) partially complete - core optimizations done. Phase 10 backend complete (frontend pending). Phase 14 next.
+**Current Status**: Phase 10 (Data Import/Export) ✅ COMPLETED. Phase 13 (Performance Optimization) core tasks complete. Phase 14 (Testing and Quality Assurance) IN PROGRESS.
 
 ---
 
