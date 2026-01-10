@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ExampleSentence } from '@/components/features/vocabulary/ExampleSentence';
 import { SpeakerButton } from '@/components/features/audio';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 import type { FlashcardProps } from './Flashcard.types';
 import type { ExampleSentenceData } from '@/components/features/vocabulary/ExampleSentence.types';
 
@@ -12,15 +13,22 @@ import type { ExampleSentenceData } from '@/components/features/vocabulary/Examp
  * Front: word + reading
  * Back: meaning + example sentences
  */
-export function Flashcard({ vocabulary, onFlip }: FlashcardProps) {
+export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const cardRef = useRef<HTMLButtonElement>(null);
 
-  // Handle flip
   const handleFlip = () => {
     const newFlippedState = !isFlipped;
     setIsFlipped(newFlippedState);
     onFlip?.(newFlippedState);
   };
+
+  useSwipeGesture({
+    elementRef: cardRef,
+    onSwipeLeft: onNext,
+    onSwipeRight: onPrevious,
+    threshold: 50,
+  });
 
   // Handle keyboard events
   useEffect(() => {
@@ -48,6 +56,7 @@ export function Flashcard({ vocabulary, onFlip }: FlashcardProps) {
   return (
     <div className="flashcard-container perspective-1000">
       <button
+        ref={cardRef}
         onClick={handleFlip}
         className="flashcard-inner relative w-full h-96 transition-transform duration-500 transform-style-3d focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
         style={{

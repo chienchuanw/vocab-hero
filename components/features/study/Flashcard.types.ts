@@ -6,5 +6,6 @@ import type { VocabularyItem } from '@/hooks/useVocabulary';
 export interface FlashcardProps {
   vocabulary: VocabularyItem;
   onFlip?: (isFlipped: boolean) => void;
+  onNext?: () => void;
+  onPrevious?: () => void;
 }
-

@@ -1,5 +1,6 @@
 import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /**
  * 自訂 render 函式，包裝所有必要的 Provider
@@ -8,10 +9,20 @@ import { ReactElement, ReactNode } from 'react';
  * @param options - 渲染選項
  * @returns 渲染結果
  */
-function customRender(ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>): ReturnType<typeof render> {
-  // 未來可以在這裡加入 Provider，例如 TanStack Query Provider
+function customRender(
+  ui: ReactElement,
+  options?: Omit<RenderOptions, 'wrapper'>
+): ReturnType<typeof render> {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
   const AllTheProviders = ({ children }: { children: ReactNode }): ReactElement => {
-    return <>{children}</>;
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
   };
 
   return render(ui, { wrapper: AllTheProviders, ...options });
@@ -19,4 +30,3 @@ function customRender(ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>
 
 export * from '@testing-library/react';
 export { customRender as render };
-

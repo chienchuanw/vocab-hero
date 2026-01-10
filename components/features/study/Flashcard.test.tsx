@@ -147,7 +147,9 @@ describe('Flashcard', () => {
       render(<Flashcard vocabulary={mockVocabulary} />);
 
       const speakerButtons = screen.getAllByRole('button', { name: /play pronunciation/i });
-      await user.click(speakerButtons[0]);
+      const firstSpeakerButton = speakerButtons[0];
+      if (!firstSpeakerButton) throw new Error('Speaker button not found');
+      await user.click(firstSpeakerButton);
 
       expect(mockTTSEngine.speak).toHaveBeenCalledWith('勉強', undefined);
     });
@@ -158,7 +160,9 @@ describe('Flashcard', () => {
       const { container } = render(<Flashcard vocabulary={mockVocabulary} onFlip={handleFlip} />);
 
       const speakerButtons = screen.getAllByRole('button', { name: /play pronunciation/i });
-      await user.click(speakerButtons[0]);
+      const firstSpeakerButton = speakerButtons[0];
+      if (!firstSpeakerButton) throw new Error('Speaker button not found');
+      await user.click(firstSpeakerButton);
 
       const cardInner = container.querySelector('.flashcard-inner');
       expect(cardInner).toHaveStyle({ transform: 'rotateY(0deg)' });
@@ -171,6 +175,93 @@ describe('Flashcard', () => {
 
       const speakerButton = screen.queryByRole('button', { name: /play pronunciation/i });
       expect(speakerButton).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Swipe Gestures', () => {
+    it('should call onNext when swiping left', () => {
+      const onNext = vi.fn();
+      const { container } = render(<Flashcard vocabulary={mockVocabulary} onNext={onNext} />);
+
+      const card = container.querySelector('.flashcard-inner');
+      if (!card) throw new Error('Card not found');
+
+      const touchStart = new TouchEvent('touchstart', {
+        touches: [{ clientX: 100, clientY: 50 } as Touch],
+      });
+      const touchEnd = new TouchEvent('touchend', {
+        changedTouches: [{ clientX: 20, clientY: 50 } as Touch],
+      });
+
+      card.dispatchEvent(touchStart);
+      card.dispatchEvent(touchEnd);
+
+      expect(onNext).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call onPrevious when swiping right', () => {
+      const onPrevious = vi.fn();
+      const { container } = render(
+        <Flashcard vocabulary={mockVocabulary} onPrevious={onPrevious} />
+      );
+
+      const card = container.querySelector('.flashcard-inner');
+      if (!card) throw new Error('Card not found');
+
+      const touchStart = new TouchEvent('touchstart', {
+        touches: [{ clientX: 20, clientY: 50 } as Touch],
+      });
+      const touchEnd = new TouchEvent('touchend', {
+        changedTouches: [{ clientX: 100, clientY: 50 } as Touch],
+      });
+
+      card.dispatchEvent(touchStart);
+      card.dispatchEvent(touchEnd);
+
+      expect(onPrevious).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not trigger navigation on short swipes', () => {
+      const onNext = vi.fn();
+      const onPrevious = vi.fn();
+      const { container } = render(
+        <Flashcard vocabulary={mockVocabulary} onNext={onNext} onPrevious={onPrevious} />
+      );
+
+      const card = container.querySelector('.flashcard-inner');
+      if (!card) throw new Error('Card not found');
+
+      const touchStart = new TouchEvent('touchstart', {
+        touches: [{ clientX: 100, clientY: 50 } as Touch],
+      });
+      const touchEnd = new TouchEvent('touchend', {
+        changedTouches: [{ clientX: 80, clientY: 50 } as Touch],
+      });
+
+      card.dispatchEvent(touchStart);
+      card.dispatchEvent(touchEnd);
+
+      expect(onNext).not.toHaveBeenCalled();
+      expect(onPrevious).not.toHaveBeenCalled();
+    });
+
+    it('should work without navigation callbacks', () => {
+      const { container } = render(<Flashcard vocabulary={mockVocabulary} />);
+
+      const card = container.querySelector('.flashcard-inner');
+      if (!card) throw new Error('Card not found');
+
+      const touchStart = new TouchEvent('touchstart', {
+        touches: [{ clientX: 100, clientY: 50 } as Touch],
+      });
+      const touchEnd = new TouchEvent('touchend', {
+        changedTouches: [{ clientX: 20, clientY: 50 } as Touch],
+      });
+
+      expect(() => {
+        card.dispatchEvent(touchStart);
+        card.dispatchEvent(touchEnd);
+      }).not.toThrow();
     });
   });
 });
