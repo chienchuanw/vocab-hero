@@ -21,29 +21,40 @@ export default function FlashcardStudyPage() {
 
   const { data: vocabulary, isLoading, error } = useDueVocabulary(cardsPerSession);
 
-  // 處理評分
   const handleRate = (quality: QualityRating) => {
     if (!vocabulary || currentIndex >= vocabulary.length) return;
 
     const currentVocab = vocabulary[currentIndex];
     if (!currentVocab) return;
 
-    // 記錄評分
     setRatings((prev) => ({
       ...prev,
       [currentVocab.id]: quality,
     }));
 
-    // 移動到下一張卡片
     if (currentIndex < vocabulary.length - 1) {
       setCurrentIndex((prev) => prev + 1);
       setIsFlipped(false);
     }
   };
 
-  // 處理翻卡
   const handleFlip = (flipped: boolean) => {
     setIsFlipped(flipped);
+  };
+
+  const handleNext = () => {
+    if (!vocabulary) return;
+    if (currentIndex < vocabulary.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+      setIsFlipped(false);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+      setIsFlipped(false);
+    }
   };
 
   // Loading state
@@ -134,7 +145,12 @@ export default function FlashcardStudyPage() {
 
         {/* Flashcard */}
         <div className="mb-8">
-          <Flashcard vocabulary={currentVocab} onFlip={handleFlip} />
+          <Flashcard
+            vocabulary={currentVocab}
+            onFlip={handleFlip}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+          />
         </div>
 
         {/* Rating buttons - only show when card is flipped */}
