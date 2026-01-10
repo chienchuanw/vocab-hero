@@ -297,7 +297,7 @@
 - **Standards**: WCAG 2.1 Level AA compliant
 - Last updated: 2026-01-10
 
-**Current Status**: Phase 10 (Data Import/Export) ✅ COMPLETED. Phase 13 (Performance Optimization) core tasks complete. Phase 14 (Testing and Quality Assurance) IN PROGRESS.
+**Current Status**: Phase 10 (Data Import/Export) ✅ COMPLETED. Phase 13 (Performance Optimization) core tasks complete. Phase 14 (Testing and Quality Assurance) IN PROGRESS - 1031 tests passing, 83.15% coverage achieved.
 
 ---
 
@@ -935,22 +935,27 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 
 ---
 
-## Phase 14: Testing and Quality Assurance 🚧 IN PROGRESS (Test Health: 939 passing)
+## Phase 14: Testing and Quality Assurance 🚧 IN PROGRESS (Test Health: 1031 passing ✅)
 
-### 14.1 Test Coverage ✅ EXCELLENT (939 tests passing, 4 skipped)
+### 14.1 Test Coverage ✅ EXCELLENT (1031 tests passing, 4 skipped)
 
 - [x] 100% coverage for SM-2 algorithm (17 tests passing in lib/srs/)
 - [x] 100% coverage for data import/export (125 tests - 36 parser, 32 generator, 14 API, 8 hook, 18 E2E)
 - [x] Full E2E coverage for critical paths (28 E2E test suites with 100+ scenarios)
 - [x] Integration tests for all API routes (220+ API tests passing)
 - [x] Fixed all failing tests (SpeakerButton QueryClient issue resolved)
-- [ ] Achieve 80% overall code coverage (assessment needed - run coverage report)
+- [x] **Achieved 83.15% statement coverage, 85.33% function coverage** ✅
+  - Added 92 new tests for lib/api (errors, response, fetch) and lib/study modules
+  - lib/api coverage: 12.9% → 100% ✅
+  - lib/study coverage: 20% → 100% ✅
+  - **Branch coverage**: 78.95% (target 80% - close but slightly below threshold)
 
-**Test Breakdown**:
+**Test Breakdown** (Updated):
 
-- **Unit Tests**: 719 tests (hooks, utils, validations, components)
+- **Unit Tests**: 811 tests (+92 from coverage improvements)
 - **Integration Tests**: 220 tests (API routes, database operations)
 - **E2E Tests**: 28 test files (vocabulary, groups, study modes, settings, notifications, data management)
+- **Total**: 1031 tests passing (up from 939)
 
 ### 14.2 Cross-Browser Testing ✅ INFRASTRUCTURE COMPLETE
 
@@ -964,15 +969,18 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 **Documentation**: `doc/CROSS_BROWSER_TESTING.md` (comprehensive report)
 **Known Issues**: 2 color contrast issues (WCAG 2 AA) - fixable in 15 minutes
 
-### 14.3 Manual QA
+### 14.3 Manual QA ✅ DOCUMENTATION COMPLETE
 
-- [ ] Create QA test cases document
-- [ ] Perform full application walkthrough
-- [ ] Test all study modes thoroughly
-- [ ] Verify data persistence
-- [ ] Test import/export with various file formats
+- [x] Create QA test cases document (QA_TEST_CASES.md created with 200+ test scenarios)
+- [ ] Perform full application walkthrough (ready to execute)
+- [ ] Test all study modes thoroughly (test cases documented)
+- [ ] Verify data persistence (test scenarios ready)
+- [ ] Test import/export with various file formats (edge cases documented)
 
-**Current Status**: 939 passing tests (4 skipped). Test infrastructure excellent. Next: Coverage analysis and cross-browser E2E verification.
+**Documentation**: `doc/QA_TEST_CASES.md` (comprehensive manual testing guide)
+**Test Cases**: 200+ manual test scenarios covering critical paths, features, edge cases, accessibility, and performance
+
+**Current Status**: 1031 passing tests (4 skipped). Test infrastructure excellent. Coverage at 83.15% statements (✅ target met), 78.95% branches (⚠️ slightly below 80% target). Manual QA test cases ready for execution.
 **Last updated**: 2026-01-10
 
 ---
