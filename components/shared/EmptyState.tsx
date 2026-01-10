@@ -1,11 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { LucideIcon } from 'lucide-react';
 
-/**
- * EmptyState component - Display when no data is available
- * Provides helpful message and optional action button
- */
-
 interface EmptyStateProps {
   icon?: LucideIcon;
   title: string;
@@ -36,4 +31,3 @@ export function EmptyState({
     </div>
   );
 }
-
