@@ -11,7 +11,6 @@ describe('Test Data Generator', () => {
     it('should generate a vocabulary item with required fields', () => {
       const item = generateVocabularyItem();
 
-      expect(item).toHaveProperty('id');
       expect(item).toHaveProperty('word');
       expect(item).toHaveProperty('reading');
       expect(item).toHaveProperty('meaning');
@@ -20,11 +19,11 @@ describe('Test Data Generator', () => {
       expect(item.notes).toBeNull();
     });
 
-    it('should generate unique IDs for different items', () => {
-      const item1 = generateVocabularyItem();
-      const item2 = generateVocabularyItem();
+    it('should generate unique words for different items with different indices', () => {
+      const item1 = generateVocabularyItem({ index: 1 });
+      const item2 = generateVocabularyItem({ index: 2 });
 
-      expect(item1.id).not.toBe(item2.id);
+      expect(item1.word).not.toBe(item2.word);
     });
 
     it('should allow overriding default values', () => {
@@ -62,16 +61,16 @@ describe('Test Data Generator', () => {
       const items = generateVocabularyItems(1000);
 
       expect(items).toHaveLength(1000);
-      expect(items[0]?.id).toBeDefined();
-      expect(items[999]?.id).toBeDefined();
+      expect(items[0]?.word).toBeDefined();
+      expect(items[999]?.word).toBeDefined();
     });
 
     it('should generate unique items', () => {
       const items = generateVocabularyItems(100);
-      const ids = items.map((item) => item.id);
-      const uniqueIds = new Set(ids);
+      const words = items.map((item) => item.word);
+      const uniqueWords = new Set(words);
 
-      expect(uniqueIds.size).toBe(100);
+      expect(uniqueWords.size).toBe(100);
     });
 
     it('should assign sequential indices to items', () => {
@@ -106,7 +105,6 @@ describe('Test Data Generator', () => {
     it('should generate a group with required fields', () => {
       const group = generateGroup();
 
-      expect(group).toHaveProperty('id');
       expect(group).toHaveProperty('name');
       expect(group).toHaveProperty('userId');
       expect(group).toHaveProperty('createdAt');
@@ -130,7 +128,6 @@ describe('Test Data Generator', () => {
     it('should generate a review schedule with SM-2 data', () => {
       const schedule = generateReviewSchedule('vocab-1');
 
-      expect(schedule).toHaveProperty('id');
       expect(schedule).toHaveProperty('vocabularyItemId');
       expect(schedule.vocabularyItemId).toBe('vocab-1');
       expect(schedule).toHaveProperty('easinessFactor');

@@ -1,7 +1,6 @@
 import type { VocabularyItem, VocabularyGroup, ReviewSchedule } from '@prisma/client';
 
 interface VocabularyItemOverrides {
-  id?: string;
   word?: string;
   reading?: string;
   meaning?: string;
@@ -10,14 +9,12 @@ interface VocabularyItemOverrides {
 }
 
 interface GroupOverrides {
-  id?: string;
   name?: string;
   description?: string | null;
   userId?: string;
 }
 
 interface ReviewScheduleOverrides {
-  id?: string;
   easinessFactor?: number;
   interval?: number;
   repetitions?: number;
@@ -43,15 +40,15 @@ const JAPANESE_WORDS = [
   { word: '椅子', reading: 'いす', meaning: 'chair' },
 ];
 
-export function generateVocabularyItem(overrides: VocabularyItemOverrides = {}): VocabularyItem {
+export function generateVocabularyItem(
+  overrides: VocabularyItemOverrides = {}
+): Omit<VocabularyItem, 'id'> {
   const index = overrides.index ?? Math.floor(Math.random() * 10000);
   const baseWord = JAPANESE_WORDS[index % JAPANESE_WORDS.length]!;
-  const id = overrides.id ?? `vocab-${index}-${Date.now()}`;
 
   const now = new Date();
 
   return {
-    id,
     word: overrides.word ?? `${baseWord.word}-${index}`,
     reading: overrides.reading ?? `${baseWord.reading}`,
     meaning: overrides.meaning ?? `${baseWord.meaning} ${index}`,
@@ -64,7 +61,7 @@ export function generateVocabularyItem(overrides: VocabularyItemOverrides = {}):
 export function generateVocabularyItems(
   count: number,
   commonOverrides: Omit<VocabularyItemOverrides, 'index'> = {}
-): VocabularyItem[] {
+): Omit<VocabularyItem, 'id'>[] {
   return Array.from({ length: count }, (_, index) =>
     generateVocabularyItem({
       ...commonOverrides,
@@ -73,13 +70,11 @@ export function generateVocabularyItems(
   );
 }
 
-export function generateGroup(overrides: GroupOverrides = {}): VocabularyGroup {
+export function generateGroup(overrides: GroupOverrides = {}): Omit<VocabularyGroup, 'id'> {
   const index = Math.floor(Math.random() * 1000);
-  const id = overrides.id ?? `group-${index}-${Date.now()}`;
   const now = new Date();
 
   return {
-    id,
     name: overrides.name ?? `Test Group ${index}`,
     description: overrides.description ?? null,
     userId: overrides.userId ?? 'default-user',
@@ -91,8 +86,7 @@ export function generateGroup(overrides: GroupOverrides = {}): VocabularyGroup {
 export function generateReviewSchedule(
   vocabularyId: string,
   overrides: ReviewScheduleOverrides = {}
-): ReviewSchedule {
-  const id = overrides.id ?? `schedule-${vocabularyId}-${Date.now()}`;
+): Omit<ReviewSchedule, 'id'> {
   const now = new Date();
 
   let nextReviewDate = overrides.nextReviewDate;
@@ -104,7 +98,6 @@ export function generateReviewSchedule(
   }
 
   return {
-    id,
     vocabularyItemId: vocabularyId,
     easinessFactor: overrides.easinessFactor ?? 2.5,
     interval: overrides.interval ?? 1,
