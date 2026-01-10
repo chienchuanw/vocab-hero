@@ -288,7 +288,7 @@
 - **Standards**: WCAG 2.1 Level AA compliant
 - Last updated: 2026-01-10
 
-**Current Status**: Phase 12.4 complete. Phase 10 backend complete (frontend pending). Phase 12.5 next.
+**Current Status**: Phase 12.5 complete. Phase 10 backend complete (frontend pending). Phase 13 next.
 
 ---
 
@@ -881,14 +881,14 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [ ] Add skip links (deferred - future enhancement)
 - [ ] Implement focus trap for modals (deferred - using Radix UI defaults)
 
-### 12.5 Error Handling and Edge Cases
+### 12.5 Error Handling and Edge Cases ✅ COMPLETED
 
-- [ ] Implement global error boundary
-- [ ] Create user-friendly error pages (404, 500)
-- [ ] Add offline detection and handling
-- [ ] Implement retry logic for failed requests
-- [ ] Create empty state components
-- [ ] Write tests for error scenarios
+- [x] Implement global error boundary (app/error.tsx, app/global-error.tsx)
+- [x] Create user-friendly error pages (404 not-found.tsx)
+- [x] Add offline detection and handling (useOnlineStatus hook, OfflineBanner)
+- [x] Implement retry logic for failed requests (TanStack Query exponential backoff)
+- [x] Create empty state components (EmptyState component exists, audited)
+- [x] Write tests for error scenarios (error-boundary.spec.ts, not-found.spec.ts, error-scenarios.spec.ts)
 
 ---
 
