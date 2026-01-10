@@ -254,7 +254,25 @@
 - **Breakpoints**: Mobile <768px, Tablet 768-1023px, Desktop ≥1024px
 - Last updated: 2026-01-10
 
-**Current Status**: Phase 12.2 complete. Phase 10 backend complete (frontend pending). Phase 12.3 next.
+**Phase 12.3: Drag-and-Drop Functionality** ✅ **COMPLETED** (100%)
+
+- ✅ @dnd-kit library integration (core v6.3.1, sortable v10.0.0, utilities v3.2.2)
+- ✅ VocabularyCard made draggable with useDraggable hook
+- ✅ GroupCard made droppable with useDroppable hook
+- ✅ DndContext provider with multi-sensor support (mouse, touch, keyboard)
+- ✅ Drag visual feedback (50% opacity, drag overlay)
+- ✅ Drop zone highlighting (ring-2 ring-primary on hover)
+- ✅ Backend integration via PUT /api/groups/:id/vocabulary
+- ✅ Touch activation constraints (250ms delay, 5px tolerance)
+- ✅ Mouse activation constraint (10px distance)
+- ✅ Playwright webServer config enabled for E2E tests
+- ✅ E2E test suite for drag-and-drop (vocabulary-drag-drop.spec.ts)
+- **Tests**: 5 E2E test scenarios created
+- **Dependencies**: @dnd-kit packages (~10KB minified)
+- **Bundle Size**: ~10KB for drag-and-drop functionality
+- Last updated: 2026-01-10
+
+**Current Status**: Phase 12.3 complete. Phase 10 backend complete (frontend pending). Phase 12.4 next.
 
 ---
 
@@ -822,16 +840,17 @@ This document outlines the complete development roadmap for Vocab Hero, a gamifi
 - [x] Test on various screen sizes (E2E tests: iPhone 12, Pixel 5, iPad)
 - [x] Create RESPONSIVE_DESIGN.md documentation
 
-### 12.3 Drag-and-Drop Functionality 🚧 IN PROGRESS
+### 12.3 Drag-and-Drop Functionality ✅ COMPLETED
 
 > **Note**: Deferred from Phase 2 for better UX polish
 
-- [ ] Research drag-and-drop libraries (dnd-kit, react-beautiful-dnd)
-- [ ] Implement drag-and-drop vocabulary to groups
-- [ ] Create visual feedback during drag operations
-- [ ] Implement reordering vocabulary within groups
-- [ ] Add touch support for mobile drag-and-drop
-- [ ] Write tests for drag-and-drop functionality
+- [x] Research drag-and-drop libraries (chose @dnd-kit over react-beautiful-dnd)
+- [x] Implement drag-and-drop vocabulary to groups
+- [x] Create visual feedback during drag operations (overlay + drop zone highlighting)
+- [x] Add touch support for mobile drag-and-drop (TouchSensor with activation constraints)
+- [x] Add keyboard support for drag-and-drop (KeyboardSensor built-in)
+- [x] Write tests for drag-and-drop functionality (5 E2E test scenarios)
+- [ ] Implement reordering vocabulary within groups (deferred to future phase)
 
 ### 12.4 Accessibility
 
