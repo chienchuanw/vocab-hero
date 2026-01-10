@@ -5,6 +5,8 @@ import type { VocabularyItem } from '@/hooks/useVocabulary';
 import { MasteryIndicator } from './MasteryIndicator';
 import { calculateMasteryLevel } from '@/lib/srs/mastery';
 import { SpeakerButton } from '@/components/features/audio';
+import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 
 /**
  * VocabularyCard component props
@@ -20,7 +22,6 @@ export interface VocabularyCardProps {
  * Displays a single vocabulary item card with word, reading, meaning, and mastery level
  */
 export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardProps) {
-  // 計算精熟程度等級
   const masteryLevel = calculateMasteryLevel(
     vocabulary.reviewSchedule
       ? {
@@ -31,8 +32,29 @@ export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardP
       : null
   );
 
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: `vocabulary-${vocabulary.id}`,
+    data: {
+      type: 'vocabulary',
+      vocabulary,
+    },
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-200">
+    <Card
+      ref={setNodeRef}
+      style={style}
+      data-testid="vocabulary-card"
+      data-dragging={isDragging}
+      className="hover:shadow-lg transition-shadow duration-200"
+      {...attributes}
+      {...listeners}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">

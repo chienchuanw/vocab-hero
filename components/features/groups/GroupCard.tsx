@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit, Trash2, BookOpen } from 'lucide-react';
 import type { Group } from '@/hooks/useGroups';
+import { useDroppable } from '@dnd-kit/core';
 
 /**
  * GroupCard component props
@@ -19,9 +20,20 @@ export interface GroupCardProps {
  * Displays a single group card with name, description, and vocabulary count
  */
 export function GroupCard({ group, onEdit, onDelete, onClick }: GroupCardProps) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: `group-${group.id}`,
+    data: {
+      type: 'group',
+      group,
+    },
+  });
+
   return (
     <Card
-      className="hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+      ref={setNodeRef}
+      data-testid="group-drop-zone"
+      data-drag-over={isOver}
+      className={`hover:shadow-lg transition-all duration-200 cursor-pointer ${isOver ? 'ring-2 ring-primary bg-primary/5' : ''}`}
       onClick={() => onClick?.(group)}
     >
       <CardHeader className="pb-3">
