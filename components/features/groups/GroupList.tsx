@@ -47,7 +47,7 @@ export function GroupList({ query, onEdit, onDelete, onClick }: GroupListProps) 
       <div className="text-center py-12">
         <p className="text-gray-500">No groups yet</p>
         <p className="text-sm text-gray-400 mt-2">
-          Click "Add Group" to start organizing your vocabulary
+          Click &ldquo;Add Group&rdquo; to start organizing your vocabulary
         </p>
       </div>
     );

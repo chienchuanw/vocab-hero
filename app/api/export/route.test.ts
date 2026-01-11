@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -48,7 +49,7 @@ describe('POST /api/export', () => {
         },
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json' }),
@@ -97,7 +98,7 @@ describe('POST /api/export', () => {
         },
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json' }),
@@ -129,7 +130,7 @@ describe('POST /api/export', () => {
         },
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'csv' }),
@@ -148,7 +149,7 @@ describe('POST /api/export', () => {
     });
 
     it('should include proper filename in Content-Disposition header', async () => {
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'csv' }),
@@ -176,7 +177,7 @@ describe('POST /api/export', () => {
         data: { groups: { connect: [{ id: mockGroupId1 }] } },
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -213,7 +214,7 @@ describe('POST /api/export', () => {
         data: { groups: { connect: [{ id: mockGroupId2 }] } },
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -249,7 +250,7 @@ describe('POST /api/export', () => {
         },
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -284,7 +285,7 @@ describe('POST /api/export', () => {
         },
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -324,7 +325,7 @@ describe('POST /api/export', () => {
         ],
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -344,7 +345,7 @@ describe('POST /api/export', () => {
 
   describe('validation errors', () => {
     it('should reject missing format field', async () => {
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({}),
@@ -359,7 +360,7 @@ describe('POST /api/export', () => {
     });
 
     it('should reject invalid format value', async () => {
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'xml' }),
@@ -373,7 +374,7 @@ describe('POST /api/export', () => {
     });
 
     it('should reject invalid date format', async () => {
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -392,7 +393,7 @@ describe('POST /api/export', () => {
 
   describe('edge cases', () => {
     it('should handle empty vocabulary database', async () => {
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json' }),
@@ -417,7 +418,7 @@ describe('POST /api/export', () => {
         },
       });
 
-      const request = new Request('http://localhost:3000/api/export', {
+      const request = new NextRequest('http://localhost:3000/api/export', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

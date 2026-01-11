@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Layout } from '@/components/shared';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/features/settings';
 import {
   Palette,
@@ -14,7 +14,6 @@ import {
   Database,
   ChevronRight,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 interface SettingsLinkProps {
   href: string;

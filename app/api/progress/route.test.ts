@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -19,7 +20,7 @@ describe('GET /api/progress', () => {
   });
 
   it('should return empty array when no progress logs exist', async () => {
-    const request = new Request(`http://localhost:3000/api/progress?userId=${testUserId}`);
+    const request = new NextRequest(`http://localhost:3000/api/progress?userId=${testUserId}`);
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -46,7 +47,7 @@ describe('GET /api/progress', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/progress?userId=${testUserId}`);
+    const request = new NextRequest(`http://localhost:3000/api/progress?userId=${testUserId}`);
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -73,7 +74,7 @@ describe('GET /api/progress', () => {
     const startDate = new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000);
     const endDate = today;
 
-    const request = new Request(
+    const request = new NextRequest(
       `http://localhost:3000/api/progress?userId=${testUserId}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
     );
     const response = await GET(request as any);
@@ -98,7 +99,7 @@ describe('GET /api/progress', () => {
       });
     }
 
-    const request = new Request(`http://localhost:3000/api/progress?userId=${testUserId}&limit=5`);
+    const request = new NextRequest(`http://localhost:3000/api/progress?userId=${testUserId}&limit=5`);
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -108,7 +109,7 @@ describe('GET /api/progress', () => {
   });
 
   it('should return 400 if userId is missing', async () => {
-    const request = new Request('http://localhost:3000/api/progress');
+    const request = new NextRequest('http://localhost:3000/api/progress');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -136,7 +137,7 @@ describe('POST /api/progress', () => {
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
 
-    const request = new Request('http://localhost:3000/api/progress', {
+    const request = new NextRequest('http://localhost:3000/api/progress', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -177,7 +178,7 @@ describe('POST /api/progress', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/progress', {
+    const request = new NextRequest('http://localhost:3000/api/progress', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -202,7 +203,7 @@ describe('POST /api/progress', () => {
   });
 
   it('should return 400 if userId is missing', async () => {
-    const request = new Request('http://localhost:3000/api/progress', {
+    const request = new NextRequest('http://localhost:3000/api/progress', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -221,7 +222,7 @@ describe('POST /api/progress', () => {
   });
 
   it('should return 400 if date is missing', async () => {
-    const request = new Request('http://localhost:3000/api/progress', {
+    const request = new NextRequest('http://localhost:3000/api/progress', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

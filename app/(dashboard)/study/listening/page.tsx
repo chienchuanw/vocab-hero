@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
@@ -32,8 +32,8 @@ export default function ListeningQuizPage() {
   const { startQuizSession, endSession, session } = useStudySession();
 
   const [questionType, setQuestionType] = useState<QuestionType>('multiple-choice');
-  const [questionCount, setQuestionCount] = useState(10);
-  const [maxReplays, setMaxReplays] = useState(3);
+  const questionCount = 10;
+  const maxReplays = 3;
   const [isConfiguring, setIsConfiguring] = useState(true);
   const [questions, setQuestions] = useState<ListeningQuestionType[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);

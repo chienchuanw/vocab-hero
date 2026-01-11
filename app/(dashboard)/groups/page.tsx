@@ -38,8 +38,7 @@ export default function GroupsPage() {
 
   // Handle group click - navigate to group detail (future implementation)
   const handleGroupClick = (group: Group) => {
-    // TODO: Navigate to group detail page in future phase
-    console.log('Group clicked:', group.id);
+    void group;
   };
 
   return (

@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -47,7 +48,7 @@ describe('POST /api/backup', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/backup', {
+    const request = new NextRequest('http://localhost:3000/api/backup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ format: 'json' }),
@@ -108,7 +109,7 @@ describe('POST /api/backup', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/backup', {
+    const request = new NextRequest('http://localhost:3000/api/backup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ format: 'json', groupIds: [group1.id] }),
@@ -124,7 +125,7 @@ describe('POST /api/backup', () => {
   });
 
   it('should return error for invalid format', async () => {
-    const request = new Request('http://localhost:3000/api/backup', {
+    const request = new NextRequest('http://localhost:3000/api/backup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ format: 'invalid' }),
@@ -139,7 +140,7 @@ describe('POST /api/backup', () => {
   });
 
   it('should return empty backup if no vocabulary exists', async () => {
-    const request = new Request('http://localhost:3000/api/backup', {
+    const request = new NextRequest('http://localhost:3000/api/backup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ format: 'json' }),

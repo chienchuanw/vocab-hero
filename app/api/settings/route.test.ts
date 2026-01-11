@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, PUT } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -19,7 +20,7 @@ describe('GET /api/settings', () => {
   });
 
   it('should return 404 when no settings exist for user', async () => {
-    const request = new Request(`http://localhost:3000/api/settings?userId=${testUserId}`);
+    const request = new NextRequest(`http://localhost:3000/api/settings?userId=${testUserId}`);
     const response = await GET(request as never);
     const data = await response.json();
 
@@ -43,7 +44,7 @@ describe('GET /api/settings', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/settings?userId=${testUserId}`);
+    const request = new NextRequest(`http://localhost:3000/api/settings?userId=${testUserId}`);
     const response = await GET(request as never);
     const data = await response.json();
 
@@ -59,7 +60,7 @@ describe('GET /api/settings', () => {
   });
 
   it('should return 400 when userId is missing', async () => {
-    const request = new Request('http://localhost:3000/api/settings');
+    const request = new NextRequest('http://localhost:3000/api/settings');
     const response = await GET(request as never);
     const data = await response.json();
 
@@ -84,7 +85,7 @@ describe('PUT /api/settings', () => {
   });
 
   it('should create settings when they do not exist', async () => {
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -115,7 +116,7 @@ describe('PUT /api/settings', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -142,7 +143,7 @@ describe('PUT /api/settings', () => {
   });
 
   it('should return 400 for invalid theme value', async () => {
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -158,7 +159,7 @@ describe('PUT /api/settings', () => {
   });
 
   it('should return 400 for ttsSpeed out of range', async () => {
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -174,7 +175,7 @@ describe('PUT /api/settings', () => {
   });
 
   it('should return 400 for cardsPerSession out of range', async () => {
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -190,7 +191,7 @@ describe('PUT /api/settings', () => {
   });
 
   it('should return 400 for invalid defaultStudyMode', async () => {
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -206,7 +207,7 @@ describe('PUT /api/settings', () => {
   });
 
   it('should return 400 when userId is missing', async () => {
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         theme: 'DARK',
@@ -228,7 +229,7 @@ describe('PUT /api/settings', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -252,7 +253,7 @@ describe('PUT /api/settings', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/settings', {
+    const request = new NextRequest('http://localhost:3000/api/settings', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,

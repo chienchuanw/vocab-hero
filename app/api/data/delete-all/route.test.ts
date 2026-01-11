@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -41,7 +42,7 @@ describe('POST /api/data/delete-all', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/data/delete-all', {
+    const request = new NextRequest('http://localhost:3000/api/data/delete-all', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ confirm: 'DELETE ALL' }),
@@ -86,7 +87,7 @@ describe('POST /api/data/delete-all', () => {
   });
 
   it('should return error if confirm phrase is incorrect', async () => {
-    const request = new Request('http://localhost:3000/api/data/delete-all', {
+    const request = new NextRequest('http://localhost:3000/api/data/delete-all', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ confirm: 'wrong phrase' }),
@@ -101,7 +102,7 @@ describe('POST /api/data/delete-all', () => {
   });
 
   it('should return error if confirm phrase is missing', async () => {
-    const request = new Request('http://localhost:3000/api/data/delete-all', {
+    const request = new NextRequest('http://localhost:3000/api/data/delete-all', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({}),

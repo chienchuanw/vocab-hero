@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -33,7 +34,7 @@ describe('POST /api/restore/preview', () => {
       ],
     };
 
-    const request = new Request('http://localhost:3000/api/restore/preview', {
+    const request = new NextRequest('http://localhost:3000/api/restore/preview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -90,7 +91,7 @@ describe('POST /api/restore/preview', () => {
       ],
     };
 
-    const request = new Request('http://localhost:3000/api/restore/preview', {
+    const request = new NextRequest('http://localhost:3000/api/restore/preview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -130,7 +131,7 @@ describe('POST /api/restore/preview', () => {
       ],
     };
 
-    const request = new Request('http://localhost:3000/api/restore/preview', {
+    const request = new NextRequest('http://localhost:3000/api/restore/preview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -154,7 +155,7 @@ describe('POST /api/restore/preview', () => {
 勉強,べんきょう,study,,JLPT N5,
 図書館,としょかん,library,,,`;
 
-    const request = new Request('http://localhost:3000/api/restore/preview', {
+    const request = new NextRequest('http://localhost:3000/api/restore/preview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -173,7 +174,7 @@ describe('POST /api/restore/preview', () => {
   });
 
   it('should return ApiErrors format on parse failure', async () => {
-    const request = new Request('http://localhost:3000/api/restore/preview', {
+    const request = new NextRequest('http://localhost:3000/api/restore/preview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -193,7 +194,7 @@ describe('POST /api/restore/preview', () => {
   });
 
   it('should return validation error for missing required fields', async () => {
-    const request = new Request('http://localhost:3000/api/restore/preview', {
+    const request = new NextRequest('http://localhost:3000/api/restore/preview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

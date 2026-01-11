@@ -1,19 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const dynamic = 'force-dynamic';
 
 export default function TestErrorPage() {
-  const [shouldThrow, setShouldThrow] = useState(false);
+  const hasThrown = useRef(false);
 
   useEffect(() => {
-    setShouldThrow(true);
-  }, []);
+    const timer = setTimeout(() => {
+      if (!hasThrown.current) {
+        hasThrown.current = true;
+        throw new Error('Test error for error boundary');
+      }
+    }, 0);
 
-  if (shouldThrow) {
-    throw new Error('Test error for error boundary');
-  }
+    return () => clearTimeout(timer);
+  }, []);
 
   return <div>Loading...</div>;
 }

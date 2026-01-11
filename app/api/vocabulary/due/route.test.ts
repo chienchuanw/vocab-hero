@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -14,7 +15,7 @@ describe('GET /api/vocabulary/due', () => {
   });
 
   it('should return empty array when no vocabulary items are due', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary/due');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -46,7 +47,7 @@ describe('GET /api/vocabulary/due', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary/due');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -78,7 +79,7 @@ describe('GET /api/vocabulary/due', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary/due');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -96,7 +97,7 @@ describe('GET /api/vocabulary/due', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary/due');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -125,7 +126,7 @@ describe('GET /api/vocabulary/due', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary/due');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -147,7 +148,7 @@ describe('GET /api/vocabulary/due', () => {
       });
     }
 
-    const request = new Request('http://localhost:3000/api/vocabulary/due?limit=3');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary/due?limit=3');
     const response = await GET(request as any);
     const data = await response.json();
 

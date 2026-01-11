@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, PUT } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -31,7 +32,7 @@ describe('GET /api/study/sessions/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/study/sessions/${session.id}`);
+    const request = new NextRequest(`http://localhost:3000/api/study/sessions/${session.id}`);
     const response = await GET(request, { params: Promise.resolve({ id: session.id }) });
     const data = await response.json();
 
@@ -42,7 +43,7 @@ describe('GET /api/study/sessions/:id', () => {
   });
 
   it('should return 404 if session not found', async () => {
-    const request = new Request('http://localhost:3000/api/study/sessions/non-existent-id');
+    const request = new NextRequest('http://localhost:3000/api/study/sessions/non-existent-id');
     const response = await GET(request, { params: Promise.resolve({ id: 'non-existent-id' }) });
     const data = await response.json();
 
@@ -71,7 +72,7 @@ describe('PUT /api/study/sessions/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/study/sessions/${session.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/study/sessions/${session.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         cardsReviewed: 10,
@@ -107,7 +108,7 @@ describe('PUT /api/study/sessions/:id', () => {
     });
 
     const completedAt = new Date();
-    const request = new Request(`http://localhost:3000/api/study/sessions/${session.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/study/sessions/${session.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         cardsReviewed: 20,
@@ -127,7 +128,7 @@ describe('PUT /api/study/sessions/:id', () => {
   });
 
   it('should return 404 if session not found', async () => {
-    const request = new Request('http://localhost:3000/api/study/sessions/non-existent-id', {
+    const request = new NextRequest('http://localhost:3000/api/study/sessions/non-existent-id', {
       method: 'PUT',
       body: JSON.stringify({
         cardsReviewed: 10,
@@ -161,7 +162,7 @@ describe('PUT /api/study/sessions/:id', () => {
 
     const completedAt = new Date().toISOString();
 
-    const request = new Request(`http://localhost:3000/api/study/sessions/${session.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/study/sessions/${session.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

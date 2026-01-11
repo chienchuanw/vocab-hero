@@ -19,11 +19,16 @@ export function MatchAnimation({ show, onComplete }: MatchAnimationProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (!show) return;
+    if (!show) {
+      setIsVisible(false);
+      return;
+    }
 
-    setIsVisible(true);
+    setIsVisible((prev) => {
+      if (prev === true) return prev;
+      return true;
+    });
 
-    // 動畫持續 1 秒後消失
     const timer = setTimeout(() => {
       setIsVisible(false);
       onComplete?.();

@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, PUT, DELETE } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -35,7 +36,7 @@ describe('GET /api/groups/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/groups/${group.id}`);
+    const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`);
     const response = await GET(request as any, { params: Promise.resolve({ id: group.id }) });
     const data = await response.json();
 
@@ -49,7 +50,7 @@ describe('GET /api/groups/:id', () => {
   });
 
   it('should return 404 for non-existent group', async () => {
-    const request = new Request('http://localhost:3000/api/groups/non-existent-id');
+    const request = new NextRequest('http://localhost:3000/api/groups/non-existent-id');
     const response = await GET(request as any, {
       params: Promise.resolve({ id: 'non-existent-id' }),
     });
@@ -89,7 +90,7 @@ describe('GET /api/groups/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/groups/${group.id}`);
+    const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`);
     const response = await GET(request as any, { params: Promise.resolve({ id: group.id }) });
     const data = await response.json();
 
@@ -113,7 +114,7 @@ describe('PUT /api/groups/:id', () => {
       data: { name: 'Old Name', userId: user.id },
     });
 
-    const request = new Request(`http://localhost:3000/api/groups/${group.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         name: 'New Name',
@@ -137,7 +138,7 @@ describe('PUT /api/groups/:id', () => {
       data: { name: 'Test Group', userId: user.id },
     });
 
-    const request = new Request(`http://localhost:3000/api/groups/${group.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         description: 'Updated description',
@@ -152,7 +153,7 @@ describe('PUT /api/groups/:id', () => {
   });
 
   it('should return 404 when updating non-existent group', async () => {
-    const request = new Request('http://localhost:3000/api/groups/non-existent-id', {
+    const request = new NextRequest('http://localhost:3000/api/groups/non-existent-id', {
       method: 'PUT',
       body: JSON.stringify({
         name: 'New Name',
@@ -177,7 +178,7 @@ describe('PUT /api/groups/:id', () => {
       data: { name: 'Test Group', userId: user.id },
     });
 
-    const request = new Request(`http://localhost:3000/api/groups/${group.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         name: 123, // should be string
@@ -206,7 +207,7 @@ describe('DELETE /api/groups/:id', () => {
       data: { name: 'Test Group', userId: user.id },
     });
 
-    const request = new Request(`http://localhost:3000/api/groups/${group.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`, {
       method: 'DELETE',
     });
 
@@ -224,7 +225,7 @@ describe('DELETE /api/groups/:id', () => {
   });
 
   it('should return 404 when deleting non-existent group', async () => {
-    const request = new Request('http://localhost:3000/api/groups/non-existent-id', {
+    const request = new NextRequest('http://localhost:3000/api/groups/non-existent-id', {
       method: 'DELETE',
     });
 
@@ -255,7 +256,7 @@ describe('DELETE /api/groups/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/groups/${group.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`, {
       method: 'DELETE',
     });
 

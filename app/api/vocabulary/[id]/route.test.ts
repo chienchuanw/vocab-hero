@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, PUT, DELETE } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -43,7 +44,7 @@ describe('GET /api/vocabulary/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
     const response = await GET(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
@@ -61,7 +62,7 @@ describe('GET /api/vocabulary/:id', () => {
 
   it('should return 404 for non-existent vocabulary item', async () => {
     const fakeId = 'clxyz1234567890abcdefgh';
-    const request = new Request(`http://localhost:3000/api/vocabulary/${fakeId}`);
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${fakeId}`);
     const response = await GET(request as any, { params: Promise.resolve({ id: fakeId }) });
     const data = await response.json();
 
@@ -87,7 +88,7 @@ describe('GET /api/vocabulary/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
     const response = await GET(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
@@ -113,7 +114,7 @@ describe('GET /api/vocabulary/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
     const response = await GET(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
@@ -144,7 +145,7 @@ describe('PUT /api/vocabulary/:id', () => {
       meaning: 'informal greeting',
     };
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
       method: 'PUT',
       body: JSON.stringify(updateData),
     });
@@ -161,7 +162,7 @@ describe('PUT /api/vocabulary/:id', () => {
 
   it('should return 404 when updating non-existent vocabulary', async () => {
     const fakeId = 'clxyz1234567890abcdefgh';
-    const request = new Request(`http://localhost:3000/api/vocabulary/${fakeId}`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${fakeId}`, {
       method: 'PUT',
       body: JSON.stringify({ word: 'test' }),
     });
@@ -186,7 +187,7 @@ describe('PUT /api/vocabulary/:id', () => {
       word: '', // Empty word should fail validation
     };
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
       method: 'PUT',
       body: JSON.stringify(invalidData),
     });
@@ -212,7 +213,7 @@ describe('PUT /api/vocabulary/:id', () => {
       notes: 'Updated notes',
     };
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
       method: 'PUT',
       body: JSON.stringify(partialUpdate),
     });
@@ -242,7 +243,7 @@ describe('DELETE /api/vocabulary/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
       method: 'DELETE',
     });
 
@@ -264,7 +265,7 @@ describe('DELETE /api/vocabulary/:id', () => {
 
   it('should return 404 when deleting non-existent vocabulary', async () => {
     const fakeId = 'clxyz1234567890abcdefgh';
-    const request = new Request(`http://localhost:3000/api/vocabulary/${fakeId}`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${fakeId}`, {
       method: 'DELETE',
     });
 
@@ -290,7 +291,7 @@ describe('DELETE /api/vocabulary/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
       method: 'DELETE',
     });
 
@@ -320,7 +321,7 @@ describe('DELETE /api/vocabulary/:id', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`, {
       method: 'DELETE',
     });
 

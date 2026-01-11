@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -15,7 +16,7 @@ describe('GET /api/vocabulary', () => {
   });
 
   it('should return empty array when no vocabulary items exist', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -36,7 +37,7 @@ describe('GET /api/vocabulary', () => {
       ],
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -55,7 +56,7 @@ describe('GET /api/vocabulary', () => {
       ],
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary?search=hello');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary?search=hello');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -73,7 +74,7 @@ describe('GET /api/vocabulary', () => {
       ],
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary?search=greeting');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary?search=greeting');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -91,7 +92,7 @@ describe('GET /api/vocabulary', () => {
       ],
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary?sortBy=word&sortOrder=asc');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary?sortBy=word&sortOrder=asc');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -111,7 +112,7 @@ describe('GET /api/vocabulary', () => {
       })),
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary?limit=5');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary?limit=5');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -122,7 +123,7 @@ describe('GET /api/vocabulary', () => {
   });
 
   it('should return 400 for invalid limit parameter', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary?limit=150');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary?limit=150');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -131,7 +132,7 @@ describe('GET /api/vocabulary', () => {
   });
 
   it('should return 400 for invalid sortBy parameter', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary?sortBy=invalid');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary?sortBy=invalid');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -173,7 +174,7 @@ describe('GET /api/vocabulary', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary?groupId=${group1.id}`);
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary?groupId=${group1.id}`);
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -199,7 +200,7 @@ describe('GET /api/vocabulary', () => {
     }
 
     // First page
-    const request1 = new Request(
+    const request1 = new NextRequest(
       'http://localhost:3000/api/vocabulary?limit=2&sortBy=createdAt&sortOrder=asc'
     );
     const response1 = await GET(request1 as any);
@@ -211,7 +212,7 @@ describe('GET /api/vocabulary', () => {
 
     // Second page using cursor
     const cursor = data1.data.nextCursor;
-    const request2 = new Request(
+    const request2 = new NextRequest(
       `http://localhost:3000/api/vocabulary?limit=2&cursor=${cursor}&sortBy=createdAt&sortOrder=asc`
     );
     const response2 = await GET(request2 as any);
@@ -240,7 +241,7 @@ describe('GET /api/vocabulary', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -298,7 +299,7 @@ describe('GET /api/vocabulary', () => {
     });
 
     // Filter by NEW level
-    const requestNew = new Request('http://localhost:3000/api/vocabulary?masteryLevel=NEW');
+    const requestNew = new NextRequest('http://localhost:3000/api/vocabulary?masteryLevel=NEW');
     const responseNew = await GET(requestNew as any);
     const dataNew = await responseNew.json();
 
@@ -307,7 +308,7 @@ describe('GET /api/vocabulary', () => {
     expect(dataNew.data.items[0].word).toBe('new');
 
     // Filter by LEARNING level
-    const requestLearning = new Request(
+    const requestLearning = new NextRequest(
       'http://localhost:3000/api/vocabulary?masteryLevel=LEARNING'
     );
     const responseLearning = await GET(requestLearning as any);
@@ -318,7 +319,7 @@ describe('GET /api/vocabulary', () => {
     expect(dataLearning.data.items[0].word).toBe('learning');
 
     // Filter by MASTERED level
-    const requestMastered = new Request(
+    const requestMastered = new NextRequest(
       'http://localhost:3000/api/vocabulary?masteryLevel=MASTERED'
     );
     const responseMastered = await GET(requestMastered as any);
@@ -330,7 +331,7 @@ describe('GET /api/vocabulary', () => {
   });
 
   it('should return 400 for invalid masteryLevel parameter', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary?masteryLevel=INVALID');
+    const request = new NextRequest('http://localhost:3000/api/vocabulary?masteryLevel=INVALID');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -345,7 +346,7 @@ describe('POST /api/vocabulary', () => {
   });
 
   it('should create new vocabulary item with required fields only', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary', {
+    const request = new NextRequest('http://localhost:3000/api/vocabulary', {
       method: 'POST',
       body: JSON.stringify({
         word: 'konnichiwa',
@@ -366,7 +367,7 @@ describe('POST /api/vocabulary', () => {
   });
 
   it('should create vocabulary item with all optional fields', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary', {
+    const request = new NextRequest('http://localhost:3000/api/vocabulary', {
       method: 'POST',
       body: JSON.stringify({
         word: 'arigatou',
@@ -384,7 +385,7 @@ describe('POST /api/vocabulary', () => {
   });
 
   it('should create vocabulary item with example sentences', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary', {
+    const request = new NextRequest('http://localhost:3000/api/vocabulary', {
       method: 'POST',
       body: JSON.stringify({
         word: 'taberu',
@@ -418,7 +419,7 @@ describe('POST /api/vocabulary', () => {
       data: { name: 'JLPT N5', userId: user.id },
     });
 
-    const request = new Request('http://localhost:3000/api/vocabulary', {
+    const request = new NextRequest('http://localhost:3000/api/vocabulary', {
       method: 'POST',
       body: JSON.stringify({
         word: 'neko',
@@ -437,7 +438,7 @@ describe('POST /api/vocabulary', () => {
   });
 
   it('should return 400 for missing required fields', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary', {
+    const request = new NextRequest('http://localhost:3000/api/vocabulary', {
       method: 'POST',
       body: JSON.stringify({
         word: 'test',
@@ -454,7 +455,7 @@ describe('POST /api/vocabulary', () => {
   });
 
   it('should return 400 for invalid data types', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary', {
+    const request = new NextRequest('http://localhost:3000/api/vocabulary', {
       method: 'POST',
       body: JSON.stringify({
         word: 123, // should be string
@@ -471,7 +472,7 @@ describe('POST /api/vocabulary', () => {
   });
 
   it('should return 400 for invalid group ID', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary', {
+    const request = new NextRequest('http://localhost:3000/api/vocabulary', {
       method: 'POST',
       body: JSON.stringify({
         word: 'test',

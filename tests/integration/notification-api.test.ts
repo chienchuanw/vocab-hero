@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GET, POST } from '@/app/api/notifications/route';
 import { PATCH } from '@/app/api/notifications/[id]/route';
@@ -57,7 +58,7 @@ describe('Notification API Integration Tests', () => {
 
       (prisma.notification.findMany as any).mockResolvedValue(mockNotifications);
 
-      const request = new Request('http://localhost:3000/api/notifications?userId=user-1');
+      const request = new NextRequest('http://localhost:3000/api/notifications?userId=user-1');
       const response = await GET(request);
       const data = await response.json();
 
@@ -87,7 +88,7 @@ describe('Notification API Integration Tests', () => {
 
       (prisma.notification.findMany as any).mockResolvedValue(mockUnreadNotifications);
 
-      const request = new Request(
+      const request = new NextRequest(
         'http://localhost:3000/api/notifications?userId=user-1&isRead=false'
       );
       const response = await GET(request);
@@ -116,7 +117,7 @@ describe('Notification API Integration Tests', () => {
 
       (prisma.notification.findMany as any).mockResolvedValue(mockGoalNotifications);
 
-      const request = new Request(
+      const request = new NextRequest(
         'http://localhost:3000/api/notifications?userId=user-1&type=GOAL_ACHIEVED'
       );
       const response = await GET(request);
@@ -129,7 +130,7 @@ describe('Notification API Integration Tests', () => {
     });
 
     it('should return 400 for missing userId', async () => {
-      const request = new Request('http://localhost:3000/api/notifications');
+      const request = new NextRequest('http://localhost:3000/api/notifications');
       const response = await GET(request);
       const data = await response.json();
 
@@ -141,7 +142,7 @@ describe('Notification API Integration Tests', () => {
     it('should handle database errors', async () => {
       (prisma.notification.findMany as any).mockRejectedValue(new Error('Database error'));
 
-      const request = new Request('http://localhost:3000/api/notifications?userId=user-1');
+      const request = new NextRequest('http://localhost:3000/api/notifications?userId=user-1');
       const response = await GET(request);
       const data = await response.json();
 
@@ -167,7 +168,7 @@ describe('Notification API Integration Tests', () => {
 
       (prisma.notification.create as any).mockResolvedValue(mockNotification);
 
-      const request = new Request('http://localhost:3000/api/notifications', {
+      const request = new NextRequest('http://localhost:3000/api/notifications', {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
@@ -210,7 +211,7 @@ describe('Notification API Integration Tests', () => {
 
       (prisma.notification.create as any).mockResolvedValue(mockNotification);
 
-      const request = new Request('http://localhost:3000/api/notifications', {
+      const request = new NextRequest('http://localhost:3000/api/notifications', {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
@@ -228,7 +229,7 @@ describe('Notification API Integration Tests', () => {
     });
 
     it('should return 400 for invalid notification type', async () => {
-      const request = new Request('http://localhost:3000/api/notifications', {
+      const request = new NextRequest('http://localhost:3000/api/notifications', {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
@@ -247,7 +248,7 @@ describe('Notification API Integration Tests', () => {
     });
 
     it('should return 400 for missing required fields', async () => {
-      const request = new Request('http://localhost:3000/api/notifications', {
+      const request = new NextRequest('http://localhost:3000/api/notifications', {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
@@ -265,7 +266,7 @@ describe('Notification API Integration Tests', () => {
     it('should handle database errors during creation', async () => {
       (prisma.notification.create as any).mockRejectedValue(new Error('Database error'));
 
-      const request = new Request('http://localhost:3000/api/notifications', {
+      const request = new NextRequest('http://localhost:3000/api/notifications', {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
@@ -301,7 +302,7 @@ describe('Notification API Integration Tests', () => {
 
       (prisma.notification.update as any).mockResolvedValue(mockNotification);
 
-      const request = new Request('http://localhost:3000/api/notifications/notif-1', {
+      const request = new NextRequest('http://localhost:3000/api/notifications/notif-1', {
         method: 'PATCH',
         body: JSON.stringify({ isRead: true }),
       });
@@ -319,7 +320,7 @@ describe('Notification API Integration Tests', () => {
     });
 
     it('should return 400 for invalid data', async () => {
-      const request = new Request('http://localhost:3000/api/notifications/notif-1', {
+      const request = new NextRequest('http://localhost:3000/api/notifications/notif-1', {
         method: 'PATCH',
         body: JSON.stringify({ isRead: 'invalid' }),
       });
@@ -335,7 +336,7 @@ describe('Notification API Integration Tests', () => {
     it('should handle database errors during update', async () => {
       (prisma.notification.update as any).mockRejectedValue(new Error('Database error'));
 
-      const request = new Request('http://localhost:3000/api/notifications/notif-1', {
+      const request = new NextRequest('http://localhost:3000/api/notifications/notif-1', {
         method: 'PATCH',
         body: JSON.stringify({ isRead: true }),
       });

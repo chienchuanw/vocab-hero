@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -47,7 +48,7 @@ describe('POST /api/restore/execute', () => {
       ],
     };
 
-    const request = new Request('http://localhost:3000/api/restore/execute', {
+    const request = new NextRequest('http://localhost:3000/api/restore/execute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -100,7 +101,7 @@ describe('POST /api/restore/execute', () => {
       ],
     };
 
-    const request = new Request('http://localhost:3000/api/restore/execute', {
+    const request = new NextRequest('http://localhost:3000/api/restore/execute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -158,7 +159,7 @@ describe('POST /api/restore/execute', () => {
       ],
     };
 
-    const request = new Request('http://localhost:3000/api/restore/execute', {
+    const request = new NextRequest('http://localhost:3000/api/restore/execute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -202,7 +203,7 @@ describe('POST /api/restore/execute', () => {
       ],
     };
 
-    const request = new Request('http://localhost:3000/api/restore/execute', {
+    const request = new NextRequest('http://localhost:3000/api/restore/execute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -241,7 +242,7 @@ describe('POST /api/restore/execute', () => {
       ],
     };
 
-    const request = new Request('http://localhost:3000/api/restore/execute', {
+    const request = new NextRequest('http://localhost:3000/api/restore/execute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

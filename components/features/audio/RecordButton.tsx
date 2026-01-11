@@ -38,7 +38,7 @@ export interface RecordButtonProps {
 
 /**
  * RecordButton Component
- * 
+ *
  * Button for recording audio with visual feedback and duration display.
  * Handles microphone permissions and recording state.
  */
@@ -54,23 +54,6 @@ export function RecordButton({
   const [isPaused, setIsPaused] = useState(false);
   const [duration, setDuration] = useState(0);
   const [isSupported] = useState(() => AudioRecorder.isSupported());
-
-  // Update duration while recording
-  useEffect(() => {
-    if (!isRecording || isPaused) return;
-
-    const interval = setInterval(() => {
-      const currentDuration = recorder.getRecordingDuration();
-      setDuration(currentDuration);
-
-      // Auto-stop if max duration reached
-      if (maxDuration > 0 && currentDuration >= maxDuration) {
-        handleStop();
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [isRecording, isPaused, maxDuration]);
 
   const handleStart = async () => {
     try {
@@ -114,12 +97,26 @@ export function RecordButton({
     }
   };
 
-  // Cleanup on unmount
+  useEffect(() => {
+    if (!isRecording || isPaused) return;
+
+    const interval = setInterval(() => {
+      const currentDuration = recorder.getRecordingDuration();
+      setDuration(currentDuration);
+
+      if (maxDuration > 0 && currentDuration >= maxDuration) {
+        handleStop();
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [isRecording, isPaused, maxDuration, handleStop, recorder]);
+
   useEffect(() => {
     return () => {
       recorder.cleanup();
     };
-  }, []);
+  }, [recorder]);
 
   if (!isSupported) {
     return null;
@@ -140,12 +137,7 @@ export function RecordButton({
         </Button>
       ) : (
         <>
-          <Button
-            onClick={handleStop}
-            variant="destructive"
-            size="lg"
-            aria-label="Stop recording"
-          >
+          <Button onClick={handleStop} variant="destructive" size="lg" aria-label="Stop recording">
             <Square className="h-5 w-5 mr-2" />
             Stop
           </Button>
@@ -161,12 +153,7 @@ export function RecordButton({
               Resume
             </Button>
           ) : (
-            <Button
-              onClick={handlePause}
-              variant="outline"
-              size="lg"
-              aria-label="Pause recording"
-            >
+            <Button onClick={handlePause} variant="outline" size="lg" aria-label="Pause recording">
               <Pause className="h-5 w-5 mr-2" />
               Pause
             </Button>
@@ -180,4 +167,3 @@ export function RecordButton({
     </div>
   );
 }
-

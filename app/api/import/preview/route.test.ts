@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -30,7 +31,7 @@ describe('POST /api/import/preview', () => {
         items: [{ word: 'test', reading: 'tesuto', meaning: 'test' }],
       };
 
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json', content: JSON.stringify(importData) }),
@@ -66,7 +67,7 @@ describe('POST /api/import/preview', () => {
         ],
       };
 
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json', content: JSON.stringify(importData) }),
@@ -92,7 +93,7 @@ describe('POST /api/import/preview', () => {
         items: [{ word: 'test', reading: 'tesuto', meaning: 'test' }],
       };
 
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json', content: JSON.stringify(importData) }),
@@ -114,7 +115,7 @@ describe('POST /api/import/preview', () => {
     it('should preview valid CSV import', async () => {
       const csvContent = 'word,reading,meaning\ntest,tesuto,test meaning';
 
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'csv', content: csvContent }),
@@ -140,7 +141,7 @@ describe('POST /api/import/preview', () => {
 
       const csvContent = 'word,reading,meaning\nexisting,sonzai,Updated\nnew,atarashii,New word';
 
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'csv', content: csvContent }),
@@ -157,7 +158,7 @@ describe('POST /api/import/preview', () => {
 
   describe('validation errors', () => {
     it('should return error for invalid JSON', async () => {
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json', content: '{ invalid json }' }),
@@ -172,7 +173,7 @@ describe('POST /api/import/preview', () => {
     });
 
     it('should return error for empty CSV', async () => {
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'csv', content: '' }),
@@ -187,7 +188,7 @@ describe('POST /api/import/preview', () => {
     });
 
     it('should return error for missing content', async () => {
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json' }),
@@ -202,7 +203,7 @@ describe('POST /api/import/preview', () => {
     });
 
     it('should return error for invalid format', async () => {
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'xml', content: '<data></data>' }),
@@ -224,7 +225,7 @@ describe('POST /api/import/preview', () => {
         items: [{ word: '', reading: 'tesuto', meaning: 'test' }],
       };
 
-      const request = new Request('http://localhost:3000/api/import/preview', {
+      const request = new NextRequest('http://localhost:3000/api/import/preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ format: 'json', content: JSON.stringify(importData) }),

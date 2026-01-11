@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -39,7 +40,7 @@ describe('POST /api/import/execute', () => {
         ],
       };
 
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -65,7 +66,7 @@ describe('POST /api/import/execute', () => {
     it('should import new vocabulary items from CSV', async () => {
       const csvContent = 'word,reading,meaning\ntest1,tesuto1,meaning1\ntest2,tesuto2,meaning2';
 
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -100,7 +101,7 @@ describe('POST /api/import/execute', () => {
         ],
       };
 
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -142,7 +143,7 @@ describe('POST /api/import/execute', () => {
         ],
       };
 
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -192,7 +193,7 @@ describe('POST /api/import/execute', () => {
         ],
       };
 
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -242,7 +243,7 @@ describe('POST /api/import/execute', () => {
         ],
       };
 
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -268,7 +269,7 @@ describe('POST /api/import/execute', () => {
 
   describe('validation errors', () => {
     it('should return error for invalid JSON', async () => {
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -294,7 +295,7 @@ describe('POST /api/import/execute', () => {
         items: [{ word: 'test', reading: 'tesuto', meaning: 'test' }],
       };
 
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -319,7 +320,7 @@ describe('POST /api/import/execute', () => {
         items: [{ word: 'test', reading: 'tesuto', meaning: 'test' }],
       };
 
-      const request = new Request('http://localhost:3000/api/import/execute', {
+      const request = new NextRequest('http://localhost:3000/api/import/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

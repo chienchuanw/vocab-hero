@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -14,7 +15,7 @@ describe('GET /api/groups', () => {
   });
 
   it('should return empty array when no groups exist', async () => {
-    const request = new Request('http://localhost:3000/api/groups');
+    const request = new NextRequest('http://localhost:3000/api/groups');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -36,7 +37,7 @@ describe('GET /api/groups', () => {
       data: { name: 'JLPT N4', userId: user.id },
     });
 
-    const request = new Request('http://localhost:3000/api/groups');
+    const request = new NextRequest('http://localhost:3000/api/groups');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -61,7 +62,7 @@ describe('GET /api/groups', () => {
       data: { name: 'Second Group', userId: user.id },
     });
 
-    const request = new Request('http://localhost:3000/api/groups');
+    const request = new NextRequest('http://localhost:3000/api/groups');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -96,7 +97,7 @@ describe('GET /api/groups', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/groups');
+    const request = new NextRequest('http://localhost:3000/api/groups');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -111,7 +112,7 @@ describe('POST /api/groups', () => {
   });
 
   it('should create new group with required fields only', async () => {
-    const request = new Request('http://localhost:3000/api/groups', {
+    const request = new NextRequest('http://localhost:3000/api/groups', {
       method: 'POST',
       body: JSON.stringify({
         name: 'JLPT N5',
@@ -129,7 +130,7 @@ describe('POST /api/groups', () => {
   });
 
   it('should create group with description', async () => {
-    const request = new Request('http://localhost:3000/api/groups', {
+    const request = new NextRequest('http://localhost:3000/api/groups', {
       method: 'POST',
       body: JSON.stringify({
         name: 'JLPT N4',
@@ -148,7 +149,7 @@ describe('POST /api/groups', () => {
     const usersBefore = await prisma.user.count();
     expect(usersBefore).toBe(0);
 
-    const request = new Request('http://localhost:3000/api/groups', {
+    const request = new NextRequest('http://localhost:3000/api/groups', {
       method: 'POST',
       body: JSON.stringify({
         name: 'Test Group',
@@ -166,7 +167,7 @@ describe('POST /api/groups', () => {
   });
 
   it('should return 400 for missing required fields', async () => {
-    const request = new Request('http://localhost:3000/api/groups', {
+    const request = new NextRequest('http://localhost:3000/api/groups', {
       method: 'POST',
       body: JSON.stringify({}),
     });
@@ -180,7 +181,7 @@ describe('POST /api/groups', () => {
   });
 
   it('should return 400 for invalid data types', async () => {
-    const request = new Request('http://localhost:3000/api/groups', {
+    const request = new NextRequest('http://localhost:3000/api/groups', {
       method: 'POST',
       body: JSON.stringify({
         name: 123, // should be string

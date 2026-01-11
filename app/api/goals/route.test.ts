@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, PUT } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -25,7 +26,7 @@ describe('GET /api/goals', () => {
   });
 
   it('should return 404 when no daily goal exists for user', async () => {
-    const request = new Request(
+    const request = new NextRequest(
       `http://localhost:3000/api/goals?userId=${testUserId}`
     );
     const response = await GET(request as any);
@@ -47,7 +48,7 @@ describe('GET /api/goals', () => {
       },
     });
 
-    const request = new Request(
+    const request = new NextRequest(
       `http://localhost:3000/api/goals?userId=${testUserId}`
     );
     const response = await GET(request as any);
@@ -62,7 +63,7 @@ describe('GET /api/goals', () => {
   });
 
   it('should return 400 when userId is missing', async () => {
-    const request = new Request('http://localhost:3000/api/goals');
+    const request = new NextRequest('http://localhost:3000/api/goals');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -87,7 +88,7 @@ describe('PUT /api/goals', () => {
   });
 
   it('should create daily goal when it does not exist', async () => {
-    const request = new Request('http://localhost:3000/api/goals', {
+    const request = new NextRequest('http://localhost:3000/api/goals', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -115,7 +116,7 @@ describe('PUT /api/goals', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/goals', {
+    const request = new NextRequest('http://localhost:3000/api/goals', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,
@@ -138,7 +139,7 @@ describe('PUT /api/goals', () => {
   });
 
   it('should return 400 for invalid wordsPerDay', async () => {
-    const request = new Request('http://localhost:3000/api/goals', {
+    const request = new NextRequest('http://localhost:3000/api/goals', {
       method: 'PUT',
       body: JSON.stringify({
         userId: testUserId,

@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -14,7 +15,7 @@ describe('GET /api/review/stats', () => {
   });
 
   it('should return zero stats when no vocabulary items exist', async () => {
-    const request = new Request('http://localhost:3000/api/review/stats');
+    const request = new NextRequest('http://localhost:3000/api/review/stats');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -36,7 +37,7 @@ describe('GET /api/review/stats', () => {
       ],
     });
 
-    const request = new Request('http://localhost:3000/api/review/stats');
+    const request = new NextRequest('http://localhost:3000/api/review/stats');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -76,7 +77,7 @@ describe('GET /api/review/stats', () => {
       ],
     });
 
-    const request = new Request('http://localhost:3000/api/review/stats');
+    const request = new NextRequest('http://localhost:3000/api/review/stats');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -106,7 +107,7 @@ describe('GET /api/review/stats', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/review/stats');
+    const request = new NextRequest('http://localhost:3000/api/review/stats');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -142,7 +143,7 @@ describe('GET /api/review/stats', () => {
       ],
     });
 
-    const request = new Request('http://localhost:3000/api/review/stats');
+    const request = new NextRequest('http://localhost:3000/api/review/stats');
     const response = await GET(request as any);
     const data = await response.json();
 
@@ -165,7 +166,7 @@ describe('GET /api/review/stats', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/review/stats');
+    const request = new NextRequest('http://localhost:3000/api/review/stats');
     const response = await GET(request as any);
     const data = await response.json();
 

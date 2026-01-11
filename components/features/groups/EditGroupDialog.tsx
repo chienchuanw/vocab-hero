@@ -38,9 +38,15 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
 
   useEffect(() => {
     if (group) {
-      setFormData({
-        name: group.name,
-        description: group.description || '',
+      setFormData((prev) => {
+        const newDescription = group.description || '';
+        if (prev.name === group.name && prev.description === newDescription) {
+          return prev;
+        }
+        return {
+          name: group.name,
+          description: newDescription,
+        };
       });
     }
   }, [group]);

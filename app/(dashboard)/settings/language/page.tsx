@@ -31,8 +31,8 @@ export default function LanguageSettingsPage() {
               </div>
               <h3 className="font-medium text-lg mb-2">Multi-language Support</h3>
               <p className="text-muted-foreground max-w-md">
-                We're working on adding support for multiple interface languages. Currently, the app
-                is available in English.
+                We&apos;re working on adding support for multiple interface languages. Currently,
+                the app is available in English.
               </p>
             </div>
 

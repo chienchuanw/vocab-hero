@@ -27,11 +27,7 @@ export interface DeleteGroupDialogProps {
  * DeleteGroupDialog component
  * Confirmation dialog for deleting group
  */
-export function DeleteGroupDialog({
-  open,
-  onOpenChange,
-  group,
-}: DeleteGroupDialogProps) {
+export function DeleteGroupDialog({ open, onOpenChange, group }: DeleteGroupDialogProps) {
   const deleteMutation = useDeleteGroup();
 
   const handleDelete = async () => {
@@ -52,11 +48,12 @@ export function DeleteGroupDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "{group?.name}"? 
+            Are you sure you want to delete &ldquo;{group?.name}&rdquo;?
             {group && group.vocabularyCount > 0 && (
               <span className="block mt-2 text-amber-600 dark:text-amber-500 font-medium">
-                This group contains {group.vocabularyCount} vocabulary {group.vocabularyCount === 1 ? 'item' : 'items'}. 
-                The vocabulary items will not be deleted, only removed from this group.
+                This group contains {group.vocabularyCount} vocabulary{' '}
+                {group.vocabularyCount === 1 ? 'item' : 'items'}. The vocabulary items will not be
+                deleted, only removed from this group.
               </span>
             )}
             This action cannot be undone.
@@ -76,4 +73,3 @@ export function DeleteGroupDialog({
     </AlertDialog>
   );
 }
-

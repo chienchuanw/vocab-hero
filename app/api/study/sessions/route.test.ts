@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { POST, GET } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -22,7 +23,7 @@ describe('POST /api/study/sessions', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/study/sessions', {
+    const request = new NextRequest('http://localhost:3000/api/study/sessions', {
       method: 'POST',
       body: JSON.stringify({
         userId: user.id,
@@ -46,7 +47,7 @@ describe('POST /api/study/sessions', () => {
   });
 
   it('should return 400 if userId is missing', async () => {
-    const request = new Request('http://localhost:3000/api/study/sessions', {
+    const request = new NextRequest('http://localhost:3000/api/study/sessions', {
       method: 'POST',
       body: JSON.stringify({
         mode: 'flashcard',
@@ -68,7 +69,7 @@ describe('POST /api/study/sessions', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/study/sessions', {
+    const request = new NextRequest('http://localhost:3000/api/study/sessions', {
       method: 'POST',
       body: JSON.stringify({
         userId: user.id,
@@ -83,7 +84,7 @@ describe('POST /api/study/sessions', () => {
   });
 
   it('should return 404 if user does not exist', async () => {
-    const request = new Request('http://localhost:3000/api/study/sessions', {
+    const request = new NextRequest('http://localhost:3000/api/study/sessions', {
       method: 'POST',
       body: JSON.stringify({
         userId: 'non-existent-user-id',
@@ -105,7 +106,7 @@ describe('GET /api/study/sessions', () => {
   });
 
   it('should return empty array when no sessions exist', async () => {
-    const request = new Request('http://localhost:3000/api/study/sessions');
+    const request = new NextRequest('http://localhost:3000/api/study/sessions');
     const response = await GET(request);
     const data = await response.json();
 
@@ -131,7 +132,7 @@ describe('GET /api/study/sessions', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/study/sessions');
+    const request = new NextRequest('http://localhost:3000/api/study/sessions');
     const response = await GET(request);
     const data = await response.json();
 
@@ -163,7 +164,7 @@ describe('POST /api/study/sessions - Quiz Sessions', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/study/sessions', {
+    const request = new NextRequest('http://localhost:3000/api/study/sessions', {
       method: 'POST',
       body: JSON.stringify({
         userId: user.id,
@@ -194,7 +195,7 @@ describe('POST /api/study/sessions - Quiz Sessions', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/study/sessions', {
+    const request = new NextRequest('http://localhost:3000/api/study/sessions', {
       method: 'POST',
       body: JSON.stringify({
         userId: user.id,
@@ -221,7 +222,7 @@ describe('POST /api/study/sessions - Quiz Sessions', () => {
       },
     });
 
-    const request = new Request('http://localhost:3000/api/study/sessions', {
+    const request = new NextRequest('http://localhost:3000/api/study/sessions', {
       method: 'POST',
       body: JSON.stringify({
         userId: user.id,

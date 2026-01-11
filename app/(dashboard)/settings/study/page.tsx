@@ -43,11 +43,21 @@ export default function StudySettingsPage() {
 
   useEffect(() => {
     if (settings) {
-      setFormData({
-        cardsPerSession: settings.cardsPerSession,
-        defaultStudyMode: settings.defaultStudyMode,
-        autoAdvance: settings.autoAdvance,
-        showReading: settings.showReading,
+      setFormData((prev) => {
+        if (
+          prev.cardsPerSession === settings.cardsPerSession &&
+          prev.defaultStudyMode === settings.defaultStudyMode &&
+          prev.autoAdvance === settings.autoAdvance &&
+          prev.showReading === settings.showReading
+        ) {
+          return prev;
+        }
+        return {
+          cardsPerSession: settings.cardsPerSession,
+          defaultStudyMode: settings.defaultStudyMode,
+          autoAdvance: settings.autoAdvance,
+          showReading: settings.showReading,
+        };
       });
     }
   }, [settings]);

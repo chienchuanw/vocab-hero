@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { describe, it, expect, beforeEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -14,7 +15,7 @@ describe('POST /api/vocabulary/:id/review', () => {
   });
 
   it('should return 404 when vocabulary item does not exist', async () => {
-    const request = new Request('http://localhost:3000/api/vocabulary/invalid-id/review', {
+    const request = new NextRequest('http://localhost:3000/api/vocabulary/invalid-id/review', {
       method: 'POST',
       body: JSON.stringify({ quality: 4 }),
     });
@@ -37,7 +38,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
       method: 'POST',
       body: JSON.stringify({}),
     });
@@ -60,7 +61,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
       method: 'POST',
       body: JSON.stringify({ quality: 6 }),
     });
@@ -83,7 +84,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
       method: 'POST',
       body: JSON.stringify({ quality: 4 }),
     });
@@ -124,7 +125,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
       method: 'POST',
       body: JSON.stringify({ quality: 4 }),
     });
@@ -159,7 +160,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       },
     });
 
-    const request = new Request(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
+    const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocab.id}/review`, {
       method: 'POST',
       body: JSON.stringify({ quality: 2 }),
     });
