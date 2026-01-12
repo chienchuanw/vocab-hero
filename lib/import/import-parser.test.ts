@@ -314,8 +314,8 @@ describe('findDuplicates', () => {
       const result = findDuplicates(importItems, existingItems);
 
       expect(result).toHaveLength(1);
-      expect(result[0].importItem.word).toBe('test');
-      expect(result[0].existingItem.id).toBe('1');
+      expect(result[0]!.importItem.word).toBe('test');
+      expect(result[0]!.existingItem.id).toBe('1');
     });
 
     it('should return empty array when no duplicates exist', () => {
@@ -389,7 +389,7 @@ describe('findDuplicates', () => {
       const result = findDuplicates(importItems, existingItems);
 
       expect(result).toHaveLength(1);
-      expect(result[0].importIndex).toBe(1);
+      expect(result[0]!.importIndex).toBe(1);
     });
   });
 });
@@ -425,7 +425,7 @@ describe('applyDuplicateStrategy', () => {
       ];
       const duplicates = [
         {
-          importItem: importItems[0],
+          importItem: importItems[0]!,
           existingItem: createExistingItem('1', 'word1', 'reading1', 'old meaning'),
           importIndex: 0,
         },
@@ -434,7 +434,7 @@ describe('applyDuplicateStrategy', () => {
       const result = applyDuplicateStrategy(importItems, duplicates, DuplicateStrategy.SKIP);
 
       expect(result.itemsToCreate).toHaveLength(1);
-      expect(result.itemsToCreate[0].word).toBe('word2');
+      expect(result.itemsToCreate[0]!.word).toBe('word2');
       expect(result.itemsToUpdate).toHaveLength(0);
     });
 
@@ -446,8 +446,8 @@ describe('applyDuplicateStrategy', () => {
       const existingItem1 = createExistingItem('1', 'word1', 'reading1', 'old1');
       const existingItem2 = createExistingItem('2', 'word2', 'reading2', 'old2');
       const duplicates = [
-        { importItem: importItems[0], existingItem: existingItem1, importIndex: 0 },
-        { importItem: importItems[1], existingItem: existingItem2, importIndex: 1 },
+        { importItem: importItems[0]!, existingItem: existingItem1, importIndex: 0 },
+        { importItem: importItems[1]!, existingItem: existingItem2, importIndex: 1 },
       ];
 
       const result = applyDuplicateStrategy(importItems, duplicates, DuplicateStrategy.SKIP);
@@ -464,14 +464,14 @@ describe('applyDuplicateStrategy', () => {
         createImportItem('word2', 'reading2', 'meaning2'),
       ];
       const existingItem = createExistingItem('1', 'word1', 'reading1', 'old meaning');
-      const duplicates = [{ importItem: importItems[0], existingItem, importIndex: 0 }];
+      const duplicates = [{ importItem: importItems[0]!, existingItem, importIndex: 0 }];
 
       const result = applyDuplicateStrategy(importItems, duplicates, DuplicateStrategy.OVERWRITE);
 
       expect(result.itemsToCreate).toHaveLength(1);
       expect(result.itemsToUpdate).toHaveLength(1);
-      expect(result.itemsToUpdate[0].id).toBe('1');
-      expect(result.itemsToUpdate[0].data.meaning).toBe('new meaning');
+      expect(result.itemsToUpdate[0]!.id).toBe('1');
+      expect(result.itemsToUpdate[0]!.data.meaning).toBe('new meaning');
     });
   });
 
@@ -481,23 +481,23 @@ describe('applyDuplicateStrategy', () => {
         { ...createImportItem('word1', 'reading1', 'meaning'), notes: 'new notes' },
       ];
       const existingItem = { ...createExistingItem('1', 'word1', 'reading1', 'meaning') };
-      const duplicates = [{ importItem: importItems[0], existingItem, importIndex: 0 }];
+      const duplicates = [{ importItem: importItems[0]!, existingItem, importIndex: 0 }];
 
       const result = applyDuplicateStrategy(importItems, duplicates, DuplicateStrategy.MERGE);
 
       expect(result.itemsToUpdate).toHaveLength(1);
-      expect(result.itemsToUpdate[0].data.notes).toBe('new notes');
+      expect(result.itemsToUpdate[0]!.data.notes).toBe('new notes');
     });
 
     it('should keep existing meaning when not empty', () => {
       const importItems = [createImportItem('word1', 'reading1', 'new meaning')];
       const existingItem = createExistingItem('1', 'word1', 'reading1', 'existing meaning');
-      const duplicates = [{ importItem: importItems[0], existingItem, importIndex: 0 }];
+      const duplicates = [{ importItem: importItems[0]!, existingItem, importIndex: 0 }];
 
       const result = applyDuplicateStrategy(importItems, duplicates, DuplicateStrategy.MERGE);
 
       expect(result.itemsToUpdate).toHaveLength(1);
-      expect(result.itemsToUpdate[0].data.meaning).toBe('existing meaning');
+      expect(result.itemsToUpdate[0]!.data.meaning).toBe('existing meaning');
     });
 
     it('should merge groups from both sources', () => {
@@ -511,12 +511,12 @@ describe('applyDuplicateStrategy', () => {
         ...createExistingItem('1', 'word1', 'reading1', 'meaning'),
         groups: [{ id: 'g1', name: 'group1' }],
       };
-      const duplicates = [{ importItem: importItems[0], existingItem, importIndex: 0 }];
+      const duplicates = [{ importItem: importItems[0]!, existingItem, importIndex: 0 }];
 
       const result = applyDuplicateStrategy(importItems, duplicates, DuplicateStrategy.MERGE);
 
       expect(result.itemsToUpdate).toHaveLength(1);
-      expect(result.itemsToUpdate[0].data.groups).toHaveLength(2);
+      expect(result.itemsToUpdate[0]!.data.groups).toHaveLength(2);
     });
   });
 
@@ -533,7 +533,7 @@ describe('applyDuplicateStrategy', () => {
     it('should handle all items being duplicates with SKIP', () => {
       const importItems = [createImportItem('word1', 'reading1', 'meaning')];
       const existingItem = createExistingItem('1', 'word1', 'reading1', 'old');
-      const duplicates = [{ importItem: importItems[0], existingItem, importIndex: 0 }];
+      const duplicates = [{ importItem: importItems[0]!, existingItem, importIndex: 0 }];
 
       const result = applyDuplicateStrategy(importItems, duplicates, DuplicateStrategy.SKIP);
 
