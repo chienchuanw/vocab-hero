@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
 import { successResponse, ApiErrors } from '@/lib/api/response';
 import { createStudySessionSchema, createQuizSessionSchema } from '@/lib/validations';
+import type { Prisma } from '@prisma/client';
 
 /**
  * POST /api/study/sessions
@@ -35,14 +36,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare session data
-    const sessionData: any = {
+    const sessionData: Prisma.StudySessionCreateInput = {
       userId,
       mode,
     };
 
     // Add quiz-specific fields if present
     if (isQuizSession) {
-      const quizData = validationResult.data as any;
+      const quizData = validationResult.data as Partial<
+        typeof validationResult.data & {
+          studyMode?: string;
+          quizType?: string;
+          questionCount?: number;
+          groupId?: string;
+        }
+      >;
       if (quizData.studyMode) sessionData.studyMode = quizData.studyMode;
       if (quizData.quizType) sessionData.quizType = quizData.quizType;
       if (quizData.questionCount) sessionData.questionCount = quizData.questionCount;

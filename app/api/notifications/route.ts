@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
-import { createNotificationSchema, notificationQuerySchema } from '@/lib/validations/notification';
 import { successResponse, ApiErrors } from '@/lib/api/response';
+import type { Prisma } from '@prisma/client';
 
 /**
  * GET /api/notifications
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     } = validation.data;
 
     // Build where clause
-    const where: any = {
+    const where: Prisma.NotificationWhereInput = {
       userId: validatedUserId,
     };
 
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (validatedType) {
-      where.type = validatedType;
+      where.type = validatedType as Prisma.NotificationWhereInput['type'];
     }
 
     // Fetch notifications

@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db/prisma';
 import { successResponse, ApiErrors } from '@/lib/api/response';
 import { updateStudySessionSchema } from '@/lib/validations';
 import { updateDailyLog } from '@/lib/progress/progress-log';
+import type { Prisma } from '@prisma/client';
 
 /**
  * GET /api/study/sessions/:id
@@ -53,7 +54,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     // 準備更新資料
-    const updateData: any = {};
+    const updateData: Prisma.StudySessionUpdateInput = {};
 
     if (validationResult.data.cardsReviewed !== undefined) {
       updateData.cardsReviewed = validationResult.data.cardsReviewed;
