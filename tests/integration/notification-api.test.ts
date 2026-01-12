@@ -47,7 +47,7 @@ describe('Notification API Integration Tests', () => {
         {
           id: 'notif-2',
           userId: 'user-1',
-          type: 'STREAK_WARNING',
+          type: 'STREAK_WARNING' as NotificationType,
           title: 'Streak Warning',
           message: 'Your streak is at risk',
           priority: 'MEDIUM' as NotificationPriority,

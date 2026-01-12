@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NotificationCenter } from '@/components/features/notifications/NotificationCenter';
+import type { NotificationType, NotificationPriority } from '@prisma/client';
 
 /**
  * Notification Flow Integration Tests
@@ -68,7 +69,7 @@ describe('Notification Flow Integration Tests', () => {
     it('should create, fetch, and display notifications', async () => {
       // Mock API responses
       vi.mocked(global.fetch)
-        .mockResolvedValueOnce({
+        .mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
           ok: true,
           json: async () => ({
             success: true,
@@ -85,7 +86,7 @@ describe('Notification Flow Integration Tests', () => {
             },
           }),
         })
-        .mockResolvedValueOnce({
+        .mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
           ok: true,
           json: async () => ({
             success: true,
@@ -120,7 +121,7 @@ describe('Notification Flow Integration Tests', () => {
       const user = userEvent.setup();
       const handleMarkAsRead = vi.fn();
 
-      vi.mocked(global.fetch).mockResolvedValueOnce({
+      vi.mocked(global.fetch).mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
         ok: true,
         json: async () => ({ success: true }),
       });
@@ -139,7 +140,7 @@ describe('Notification Flow Integration Tests', () => {
     });
 
     it('should filter notifications by type', async () => {
-      vi.mocked(global.fetch).mockResolvedValueOnce({
+      vi.mocked(global.fetch).mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
         ok: true,
         json: async () => ({
           success: true,
@@ -163,7 +164,7 @@ describe('Notification Flow Integration Tests', () => {
     });
 
     it('should filter notifications by read status', async () => {
-      vi.mocked(global.fetch).mockResolvedValueOnce({
+      vi.mocked(global.fetch).mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
         ok: true,
         json: async () => ({
           success: true,
