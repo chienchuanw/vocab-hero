@@ -33,7 +33,7 @@ describe('parseJsonImport', () => {
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toHaveLength(1);
-        expect(result.data[0].word).toBe('こんにちは');
+        expect(result.data[0]!.word).toBe('こんにちは');
       }
     });
 
@@ -86,7 +86,7 @@ describe('parseJsonImport', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.errors).toHaveLength(1);
-        expect(result.errors[0].message).toContain('JSON');
+        expect(result.errors[0]!.message).toContain('JSON');
       }
     });
 
@@ -121,7 +121,7 @@ describe('parseJsonImport', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.errors[0].message).toContain('At least one item required');
+        expect(result.errors[0]!.message).toContain('At least one item required');
       }
     });
 
@@ -138,7 +138,7 @@ describe('parseJsonImport', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.errors).toHaveLength(1);
-        expect(result.errors[0].message).toContain('Word cannot be empty');
+        expect(result.errors[0]!.message).toContain('Word cannot be empty');
       }
     });
 
@@ -174,7 +174,7 @@ describe('parseCsvImport', () => {
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toHaveLength(1);
-        expect(result.data[0].word).toBe('こんにちは');
+        expect(result.data[0]!.word).toBe('こんにちは');
       }
     });
 
@@ -209,8 +209,8 @@ describe('parseCsvImport', () => {
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data[0].word).toBe('test,word');
-        expect(result.data[0].meaning).toBe('test, meaning');
+        expect(result.data[0]!.word).toBe('test,word');
+        expect(result.data[0]!.meaning).toBe('test, meaning');
       }
     });
 
@@ -242,7 +242,7 @@ describe('parseCsvImport', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.errors[0].message).toContain('required');
+        expect(result.errors[0]!.message).toContain('required');
       }
     });
 
@@ -261,7 +261,7 @@ describe('parseCsvImport', () => {
 
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.errors[0].message).toContain('At least one item required');
+        expect(result.errors[0]!.message).toContain('At least one item required');
       }
     });
 
@@ -273,8 +273,8 @@ describe('parseCsvImport', () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.errors).toHaveLength(2);
-        expect(result.errors[0]).toHaveProperty('line', 2);
-        expect(result.errors[1]).toHaveProperty('line', 3);
+        expect(result.errors[0]!).toHaveProperty('line', 2);
+        expect(result.errors[1]!).toHaveProperty('line', 3);
       }
     });
 
