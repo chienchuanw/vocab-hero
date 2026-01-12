@@ -128,7 +128,7 @@ export async function updateStreakOnStudy(
     streak.freezesRemaining
   );
 
-  const updateData: any = {
+  const updateData: Record<string, unknown> = {
     currentStreak: calculation.currentStreak,
     longestStreak: calculation.longestStreak,
     lastStudyDate: calculation.lastStudyDate,

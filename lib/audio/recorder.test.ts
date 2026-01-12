@@ -9,9 +9,9 @@ import { AudioRecorder } from './recorder';
 // Mock MediaRecorder
 class MockMediaRecorder {
   state: string = 'inactive';
-  ondataavailable: ((event: any) => void) | null = null;
+  ondataavailable: ((event: { data: Blob }) => void) | null = null;
   onstop: (() => void) | null = null;
-  onerror: ((error: any) => void) | null = null;
+  onerror: ((error: Error) => void) | null = null;
 
   start() {
     this.state = 'recording';
@@ -36,14 +36,18 @@ class MockMediaRecorder {
   }
 }
 
-global.MediaRecorder = MockMediaRecorder as any;
+global.MediaRecorder = MockMediaRecorder as unknown as typeof MediaRecorder;
 
 // Mock getUserMedia
-global.navigator.mediaDevices = {
-  getUserMedia: vi.fn().mockResolvedValue({
-    getTracks: () => [{ stop: vi.fn() }],
-  }),
-} as any;
+Object.defineProperty(global.navigator, 'mediaDevices', {
+  value: {
+    getUserMedia: vi.fn().mockResolvedValue({
+      getTracks: () => [{ stop: vi.fn() }],
+    }),
+  },
+  writable: true,
+  configurable: true,
+});
 
 describe('AudioRecorder', () => {
   let recorder: AudioRecorder;
@@ -153,14 +157,14 @@ describe('AudioRecorder', () => {
       // Mock getUserMedia to return a stream with our spy
       vi.mocked(navigator.mediaDevices.getUserMedia).mockResolvedValueOnce({
         getTracks: () => [{ stop: stopSpy }],
-      } as any);
+      } as unknown as MediaStream);
 
       await recorder.startRecording();
 
       recorder.cleanup();
 
       expect(stopSpy).toHaveBeenCalled();
-      expect((recorder as any).mediaStream).toBeNull();
+      expect((recorder as unknown as { mediaStream: MediaStream | null }).mediaStream).toBeNull();
     });
   });
 });

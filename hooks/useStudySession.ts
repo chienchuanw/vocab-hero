@@ -160,7 +160,7 @@ export function useStudySession() {
       userId,
       mode: 'quiz',
       ...config,
-    } as any);
+    } as { userId: string; mode: string });
   };
 
   // Record review progress

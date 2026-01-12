@@ -67,7 +67,7 @@ describe('Notification Flow Integration Tests', () => {
   describe('Complete notification lifecycle', () => {
     it('should create, fetch, and display notifications', async () => {
       // Mock API responses
-      (global.fetch as any)
+      vi.mocked(global.fetch)
         .mockResolvedValueOnce({
           ok: true,
           json: async () => ({
@@ -120,7 +120,7 @@ describe('Notification Flow Integration Tests', () => {
       const user = userEvent.setup();
       const handleMarkAsRead = vi.fn();
 
-      (global.fetch as any).mockResolvedValueOnce({
+      vi.mocked(global.fetch).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true }),
       });
@@ -139,7 +139,7 @@ describe('Notification Flow Integration Tests', () => {
     });
 
     it('should filter notifications by type', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      vi.mocked(global.fetch).mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           success: true,
@@ -163,7 +163,7 @@ describe('Notification Flow Integration Tests', () => {
     });
 
     it('should filter notifications by read status', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      vi.mocked(global.fetch).mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           success: true,
@@ -264,7 +264,7 @@ describe('Notification Flow Integration Tests', () => {
 
   describe('Error handling', () => {
     it('should handle API errors gracefully', async () => {
-      (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+      vi.mocked(global.fetch).mockRejectedValueOnce(new Error('Network error'));
 
       render(
         <TestWrapper>
