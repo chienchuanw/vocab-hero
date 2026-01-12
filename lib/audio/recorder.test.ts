@@ -38,22 +38,16 @@ class MockMediaRecorder {
 
 global.MediaRecorder = MockMediaRecorder as unknown as typeof MediaRecorder;
 
-// Mock getUserMedia
-Object.defineProperty(global.navigator, 'mediaDevices', {
-  value: {
-    getUserMedia: vi.fn().mockResolvedValue({
-      getTracks: () => [{ stop: vi.fn() }],
-    }),
-  },
-  writable: true,
-  configurable: true,
-});
-
 describe('AudioRecorder', () => {
   let recorder: AudioRecorder;
 
   beforeEach(() => {
     vi.clearAllMocks();
+
+    vi.mocked(navigator.mediaDevices.getUserMedia).mockResolvedValue({
+      getTracks: () => [{ stop: vi.fn() }],
+    } as unknown as MediaStream);
+
     recorder = new AudioRecorder();
   });
 

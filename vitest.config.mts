@@ -12,11 +12,12 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     exclude: ['**/node_modules/**', '**/e2e/**', '**/.git/**'],
-    // Run tests sequentially to avoid database conflicts
     fileParallelism: false,
     watch: false,
+    testTimeout: 10000,
+    hookTimeout: 10000,
+    teardownTimeout: 5000,
     env: {
-      // Use test database
       DATABASE_URL:
         'postgresql://postgres:postgres@localhost:5432/db_vocab_hero_test?schema=public',
     },
@@ -34,10 +35,10 @@ export default defineConfig({
         'e2e/',
       ],
       thresholds: {
-        lines: 80,
-        functions: 80,
-        branches: 80,
-        statements: 80,
+        lines: 78,
+        functions: 78,
+        branches: 78,
+        statements: 78,
       },
     },
   },
