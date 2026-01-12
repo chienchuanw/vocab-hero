@@ -25,8 +25,10 @@ const createQueryClient = () =>
 
 function createWrapper() {
   const queryClient = createQueryClient();
-  return ({ children }: { children: ReactNode }) =>
+  const TestWrapper = ({ children }: { children: ReactNode }) =>
     createElement(QueryClientProvider, { client: queryClient }, children);
+  TestWrapper.displayName = 'TestWrapper';
+  return TestWrapper;
 }
 
 global.fetch = vi.fn();

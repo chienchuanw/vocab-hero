@@ -17,8 +17,10 @@ function createWrapper() {
       mutations: { retry: false },
     },
   });
-  return ({ children }: { children: React.ReactNode }) =>
+  const TestWrapper = ({ children }: { children: React.ReactNode }) =>
     createElement(QueryClientProvider, { client: queryClient }, children);
+  TestWrapper.displayName = "TestWrapper";
+  return TestWrapper;
 }
 
 describe('useUserSettings', () => {
