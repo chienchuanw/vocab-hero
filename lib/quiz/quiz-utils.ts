@@ -101,15 +101,12 @@ export function generateQuizQuestions(
 
     // Create options based on question type
     let options: string[];
-    let question: string;
 
     if (questionType === 'WORD_TO_MEANING') {
       // Question shows Japanese word, options are meanings
-      question = `What is the meaning of "${item.word}" (${item.reading})?`;
       options = [item.meaning, ...distractors.map((d) => d.meaning)];
     } else {
       // Question shows meaning, options are Japanese words
-      question = `Which word means "${item.meaning}"?`;
       options = [item.word, ...distractors.map((d) => d.word)];
     }
 
