@@ -47,7 +47,7 @@ describe('FlashcardStudyPage', () => {
       data: undefined,
       isLoading: true,
       error: null,
-    } as any);
+    } as unknown as ReturnType<typeof useVocabularyModule.useDueVocabulary>);
 
     render(<FlashcardStudyPage />);
 
@@ -59,7 +59,7 @@ describe('FlashcardStudyPage', () => {
       data: undefined,
       isLoading: false,
       error: new Error('Failed to fetch'),
-    } as any);
+    } as unknown as ReturnType<typeof useVocabularyModule.useDueVocabulary>);
 
     render(<FlashcardStudyPage />);
 
@@ -71,7 +71,7 @@ describe('FlashcardStudyPage', () => {
       data: [],
       isLoading: false,
       error: null,
-    } as any);
+    } as unknown as ReturnType<typeof useVocabularyModule.useDueVocabulary>);
 
     render(<FlashcardStudyPage />);
 
@@ -83,7 +83,7 @@ describe('FlashcardStudyPage', () => {
       data: mockVocabulary,
       isLoading: false,
       error: null,
-    } as any);
+    } as unknown as ReturnType<typeof useVocabularyModule.useDueVocabulary>);
 
     render(<FlashcardStudyPage />);
 
@@ -96,7 +96,7 @@ describe('FlashcardStudyPage', () => {
       data: mockVocabulary,
       isLoading: false,
       error: null,
-    } as any);
+    } as unknown as ReturnType<typeof useVocabularyModule.useDueVocabulary>);
 
     render(<FlashcardStudyPage />);
 
@@ -109,7 +109,7 @@ describe('FlashcardStudyPage', () => {
       data: mockVocabulary,
       isLoading: false,
       error: null,
-    } as any);
+    } as unknown as ReturnType<typeof useVocabularyModule.useDueVocabulary>);
 
     render(<FlashcardStudyPage />);
 
@@ -127,7 +127,7 @@ describe('FlashcardStudyPage', () => {
       data: mockVocabulary,
       isLoading: false,
       error: null,
-    } as any);
+    } as unknown as ReturnType<typeof useVocabularyModule.useDueVocabulary>);
 
     render(<FlashcardStudyPage />);
 

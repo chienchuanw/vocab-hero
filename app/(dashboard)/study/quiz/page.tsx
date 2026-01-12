@@ -17,7 +17,7 @@ import { generateQuizQuestions } from '@/lib/quiz/quiz-utils';
 export default function QuizStudyPage() {
   const router = useRouter();
   const [config, setConfig] = useState<QuizConfig | null>(null);
-  const [questions, setQuestions] = useState<any[]>([]);
+  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const quiz = useQuizSession(questions);
