@@ -1,8 +1,9 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GET, POST } from '@/app/api/notifications/route';
 import { PATCH } from '@/app/api/notifications/[id]/route';
 import { prisma } from '@/lib/db/prisma';
+import type { NotificationType, NotificationPriority } from '@prisma/client';
 
 /**
  * Notification API Integration Tests
@@ -35,10 +36,10 @@ describe('Notification API Integration Tests', () => {
         {
           id: 'notif-1',
           userId: 'user-1',
-          type: 'GOAL_ACHIEVED',
+          type: 'GOAL_ACHIEVED' as NotificationType,
           title: 'Goal Achieved!',
           message: 'You completed your daily goal',
-          priority: 'HIGH',
+          priority: 'HIGH' as NotificationPriority,
           isRead: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -49,7 +50,7 @@ describe('Notification API Integration Tests', () => {
           type: 'STREAK_WARNING',
           title: 'Streak Warning',
           message: 'Your streak is at risk',
-          priority: 'MEDIUM',
+          priority: 'MEDIUM' as NotificationPriority,
           isRead: true,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -76,10 +77,10 @@ describe('Notification API Integration Tests', () => {
         {
           id: 'notif-1',
           userId: 'user-1',
-          type: 'GOAL_ACHIEVED',
+          type: 'GOAL_ACHIEVED' as NotificationType,
           title: 'Goal Achieved!',
           message: 'You completed your daily goal',
-          priority: 'HIGH',
+          priority: 'HIGH' as NotificationPriority,
           isRead: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -105,10 +106,10 @@ describe('Notification API Integration Tests', () => {
         {
           id: 'notif-1',
           userId: 'user-1',
-          type: 'GOAL_ACHIEVED',
+          type: 'GOAL_ACHIEVED' as NotificationType,
           title: 'Goal Achieved!',
           message: 'You completed your daily goal',
-          priority: 'HIGH',
+          priority: 'HIGH' as NotificationPriority,
           isRead: false,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -157,10 +158,10 @@ describe('Notification API Integration Tests', () => {
       const mockNotification = {
         id: 'notif-new',
         userId: 'user-1',
-        type: 'GOAL_ACHIEVED',
+        type: 'GOAL_ACHIEVED' as NotificationType,
         title: 'Goal Achieved!',
         message: 'You completed your daily goal',
-        priority: 'HIGH',
+        priority: 'HIGH' as NotificationPriority,
         isRead: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -172,10 +173,10 @@ describe('Notification API Integration Tests', () => {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
-          type: 'GOAL_ACHIEVED',
+          type: 'GOAL_ACHIEVED' as NotificationType,
           title: 'Goal Achieved!',
           message: 'You completed your daily goal',
-          priority: 'HIGH',
+          priority: 'HIGH' as NotificationPriority,
         }),
       });
 
@@ -188,10 +189,10 @@ describe('Notification API Integration Tests', () => {
       expect(prisma.notification.create).toHaveBeenCalledWith({
         data: {
           userId: 'user-1',
-          type: 'GOAL_ACHIEVED',
+          type: 'GOAL_ACHIEVED' as NotificationType,
           title: 'Goal Achieved!',
           message: 'You completed your daily goal',
-          priority: 'HIGH',
+          priority: 'HIGH' as NotificationPriority,
         },
       });
     });
@@ -200,10 +201,10 @@ describe('Notification API Integration Tests', () => {
       const mockNotification = {
         id: 'notif-new',
         userId: 'user-1',
-        type: 'STUDY_REMINDER',
+        type: 'STUDY_REMINDER' as NotificationType,
         title: 'Study Reminder',
         message: 'Time to study',
-        priority: 'LOW',
+        priority: 'LOW' as NotificationPriority,
         isRead: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -215,7 +216,7 @@ describe('Notification API Integration Tests', () => {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
-          type: 'STUDY_REMINDER',
+          type: 'STUDY_REMINDER' as NotificationType,
           title: 'Study Reminder',
           message: 'Time to study',
         }),
@@ -252,7 +253,7 @@ describe('Notification API Integration Tests', () => {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
-          type: 'GOAL_ACHIEVED',
+          type: 'GOAL_ACHIEVED' as NotificationType,
         }),
       });
 
@@ -270,10 +271,10 @@ describe('Notification API Integration Tests', () => {
         method: 'POST',
         body: JSON.stringify({
           userId: 'user-1',
-          type: 'GOAL_ACHIEVED',
+          type: 'GOAL_ACHIEVED' as NotificationType,
           title: 'Goal Achieved!',
           message: 'You completed your daily goal',
-          priority: 'HIGH',
+          priority: 'HIGH' as NotificationPriority,
         }),
       });
 
@@ -291,10 +292,10 @@ describe('Notification API Integration Tests', () => {
       const mockNotification = {
         id: 'notif-1',
         userId: 'user-1',
-        type: 'GOAL_ACHIEVED',
+        type: 'GOAL_ACHIEVED' as NotificationType,
         title: 'Goal Achieved!',
         message: 'You completed your daily goal',
-        priority: 'HIGH',
+        priority: 'HIGH' as NotificationPriority,
         isRead: true,
         createdAt: new Date(),
         updatedAt: new Date(),

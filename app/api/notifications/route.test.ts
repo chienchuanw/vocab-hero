@@ -1,7 +1,8 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/db/prisma';
+import type { NotificationType, NotificationPriority } from '@prisma/client';
 
 /**
  * Notifications API Route Tests
@@ -32,10 +33,10 @@ describe('GET /api/notifications', () => {
       {
         id: 'notif-1',
         userId: 'user-1',
-        type: 'GOAL_ACHIEVED',
+        type: 'GOAL_ACHIEVED' as NotificationType,
         title: 'Goal Achieved!',
         message: 'You completed your daily goal',
-        priority: 'HIGH',
+        priority: 'HIGH' as NotificationPriority,
         isRead: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -59,10 +60,10 @@ describe('GET /api/notifications', () => {
       {
         id: 'notif-1',
         userId: 'user-1',
-        type: 'GOAL_ACHIEVED',
+        type: 'GOAL_ACHIEVED' as NotificationType,
         title: 'Goal Achieved!',
         message: 'You completed your daily goal',
-        priority: 'HIGH',
+        priority: 'HIGH' as NotificationPriority,
         isRead: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -71,7 +72,9 @@ describe('GET /api/notifications', () => {
 
     vi.mocked(prisma.notification.findMany).mockResolvedValue(mockNotifications);
 
-    const request = new NextRequest('http://localhost:3000/api/notifications?userId=user-1&isRead=false');
+    const request = new NextRequest(
+      'http://localhost:3000/api/notifications?userId=user-1&isRead=false'
+    );
     const response = await GET(request);
     const data = await response.json();
 
@@ -120,10 +123,10 @@ describe('POST /api/notifications', () => {
     const mockNotification = {
       id: 'notif-1',
       userId: 'user-1',
-      type: 'GOAL_ACHIEVED',
+      type: 'GOAL_ACHIEVED' as NotificationType,
       title: 'Goal Achieved!',
       message: 'You completed your daily goal',
-      priority: 'HIGH',
+      priority: 'HIGH' as NotificationPriority,
       isRead: false,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -168,4 +171,3 @@ describe('POST /api/notifications', () => {
     expect(data.success).toBe(false);
   });
 });
-

@@ -75,10 +75,10 @@ describe('Notification Flow Integration Tests', () => {
             data: {
               id: 'notif-new',
               userId: 'user-1',
-              type: 'GOAL_ACHIEVED',
+              type: 'GOAL_ACHIEVED' as NotificationType,
               title: 'New Achievement!',
               message: 'You reached a milestone',
-              priority: 'HIGH',
+              priority: 'HIGH' as NotificationPriority,
               isRead: false,
               createdAt: new Date().toISOString(),
               updatedAt: new Date().toISOString(),
