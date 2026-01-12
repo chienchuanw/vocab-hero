@@ -98,7 +98,6 @@ describe('MultipleChoiceQuestion', () => {
   });
 
   it('should disable all options after answer is selected', async () => {
-    const user = userEvent.setup();
     const onAnswer = vi.fn();
     render(
       <MultipleChoiceQuestion

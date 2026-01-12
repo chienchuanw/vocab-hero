@@ -29,7 +29,7 @@ describe('GET /api/goals', () => {
     const request = new NextRequest(
       `http://localhost:3000/api/goals?userId=${testUserId}`
     );
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(404);
@@ -51,7 +51,7 @@ describe('GET /api/goals', () => {
     const request = new NextRequest(
       `http://localhost:3000/api/goals?userId=${testUserId}`
     );
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -64,7 +64,7 @@ describe('GET /api/goals', () => {
 
   it('should return 400 when userId is missing', async () => {
     const request = new NextRequest('http://localhost:3000/api/goals');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -97,7 +97,7 @@ describe('PUT /api/goals', () => {
       }),
     });
 
-    const response = await PUT(request as any);
+    const response = await PUT(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -127,7 +127,7 @@ describe('PUT /api/goals', () => {
       }),
     });
 
-    const response = await PUT(request as any);
+    const response = await PUT(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -147,7 +147,7 @@ describe('PUT /api/goals', () => {
       }),
     });
 
-    const response = await PUT(request as any);
+    const response = await PUT(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);

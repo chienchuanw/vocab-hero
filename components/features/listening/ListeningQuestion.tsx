@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Volume2 } from 'lucide-react';
@@ -35,7 +35,7 @@ export interface ListeningQuestionProps {
 
 /**
  * ListeningQuestion Component
- * 
+ *
  * Displays a listening question with audio playback and answer input.
  * Supports both multiple choice and typing modes.
  */
@@ -50,12 +50,7 @@ export function ListeningQuestion({
   const [isPlaying, setIsPlaying] = useState(false);
   const [ttsEngine] = useState(() => new TTSEngine());
 
-  // Auto-play audio when question changes
-  useEffect(() => {
-    playAudio();
-  }, [question.id]);
-
-  const playAudio = async () => {
+  const playAudio = useCallback(async () => {
     setIsPlaying(true);
     try {
       await ttsEngine.speak(question.word);
@@ -64,7 +59,12 @@ export function ListeningQuestion({
     } finally {
       setIsPlaying(false);
     }
-  };
+  }, [ttsEngine, question.word]);
+
+  // Auto-play audio when question changes
+  useEffect(() => {
+    playAudio();
+  }, [playAudio]);
 
   const handleReplay = () => {
     if (canReplayAudio(question, maxReplays)) {
@@ -95,7 +95,7 @@ export function ListeningQuestion({
         <p className="text-lg text-gray-600 dark:text-gray-400">
           Listen and select the correct meaning
         </p>
-        
+
         <Button
           onClick={handleReplay}
           disabled={!canReplay || isPlaying}
@@ -115,9 +115,7 @@ export function ListeningQuestion({
               key={option}
               onClick={() => handleMultipleChoiceSelect(option)}
               variant={selectedAnswer === option ? 'default' : 'outline'}
-              className={`h-auto py-4 text-lg ${
-                selectedAnswer === option ? 'bg-primary' : ''
-              }`}
+              className={`h-auto py-4 text-lg ${selectedAnswer === option ? 'bg-primary' : ''}`}
               aria-label={option}
             >
               {option}
@@ -149,4 +147,3 @@ export function ListeningQuestion({
     </div>
   );
 }
-

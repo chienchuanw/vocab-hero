@@ -107,7 +107,7 @@ export function selectVocabularyFromGroups(
 
   // 從每個 group 中選取
   let groupIndex = 0;
-  for (const [groupId, items] of groups) {
+  for (const [_groupId, items] of groups) {
     // 前幾個 group 多選一個（處理餘數）
     const selectCount = itemsPerGroup + (groupIndex < remainder ? 1 : 0);
 
@@ -147,7 +147,7 @@ export function selectMixedDifficulty(
   count: number,
   easyRatio: number = 0.4,
   mediumRatio: number = 0.4,
-  hardRatio: number = 0.2
+  _hardRatio: number = 0.2
 ): VocabularyItem[] {
   const easyCount = Math.floor(count * easyRatio);
   const mediumCount = Math.floor(count * mediumRatio);

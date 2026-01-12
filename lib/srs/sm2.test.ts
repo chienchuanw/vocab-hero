@@ -1,12 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calculateSM2, convertDifficultyToQuality } from './sm2';
-import {
-  DEFAULT_SM2_DATA,
-  MIN_EASINESS_FACTOR,
-  type SM2Data,
-  type QualityRating,
-  type DifficultyRating,
-} from './sm2.types';
+import { DEFAULT_SM2_DATA, MIN_EASINESS_FACTOR, type SM2Data } from './sm2.types';
 
 /**
  * Unit tests for SM-2 algorithm implementation

@@ -3,7 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NotificationCenter } from '@/components/features/notifications/NotificationCenter';
-import { useNotifications, useMarkAsRead, useCreateNotification } from '@/hooks/useNotifications';
 
 /**
  * Notification Flow Integration Tests

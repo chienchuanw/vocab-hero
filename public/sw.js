@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Service Worker for Vocab Hero
  * 處理推送通知、快取策略、離線支援
@@ -7,11 +8,7 @@ const CACHE_NAME = 'vocab-hero-v1';
 const STATIC_CACHE = 'vocab-hero-static-v1';
 
 // 需要快取的靜態資源
-const STATIC_ASSETS = [
-  '/',
-  '/globals.css',
-  '/favicon.ico',
-];
+const STATIC_ASSETS = ['/', '/globals.css', '/favicon.ico'];
 
 /**
  * Install Event
@@ -21,13 +18,16 @@ self.addEventListener('install', (event) => {
   console.log('[Service Worker] Installing...');
 
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => {
-      console.log('[Service Worker] Caching static assets');
-      return cache.addAll(STATIC_ASSETS);
-    }).then(() => {
-      // 強制啟用新的 Service Worker
-      return self.skipWaiting();
-    })
+    caches
+      .open(STATIC_CACHE)
+      .then((cache) => {
+        console.log('[Service Worker] Caching static assets');
+        return cache.addAll(STATIC_ASSETS);
+      })
+      .then(() => {
+        // 強制啟用新的 Service Worker
+        return self.skipWaiting();
+      })
   );
 });
 
@@ -39,20 +39,23 @@ self.addEventListener('activate', (event) => {
   console.log('[Service Worker] Activating...');
 
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          // 刪除舊版本的快取
-          if (cacheName !== CACHE_NAME && cacheName !== STATIC_CACHE) {
-            console.log('[Service Worker] Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => {
-      // 立即控制所有頁面
-      return self.clients.claim();
-    })
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            // 刪除舊版本的快取
+            if (cacheName !== CACHE_NAME && cacheName !== STATIC_CACHE) {
+              console.log('[Service Worker] Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        // 立即控制所有頁面
+        return self.clients.claim();
+      })
   );
 });
 
@@ -205,4 +208,3 @@ self.addEventListener('notificationclick', (event) => {
     })
   );
 });
-

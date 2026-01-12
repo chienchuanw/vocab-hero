@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -16,7 +16,7 @@ describe('GET /api/groups', () => {
 
   it('should return empty array when no groups exist', async () => {
     const request = new NextRequest('http://localhost:3000/api/groups');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -38,7 +38,7 @@ describe('GET /api/groups', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/groups');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -52,18 +52,18 @@ describe('GET /api/groups', () => {
       data: { email: 'test@example.com', name: 'Test User' },
     });
 
-    const group1 = await prisma.vocabularyGroup.create({
+    await prisma.vocabularyGroup.create({
       data: { name: 'First Group', userId: user.id },
     });
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const group2 = await prisma.vocabularyGroup.create({
+    await prisma.vocabularyGroup.create({
       data: { name: 'Second Group', userId: user.id },
     });
 
     const request = new NextRequest('http://localhost:3000/api/groups');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -98,7 +98,7 @@ describe('GET /api/groups', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/groups');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -119,7 +119,7 @@ describe('POST /api/groups', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(201);
@@ -138,7 +138,7 @@ describe('POST /api/groups', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(201);
@@ -156,7 +156,7 @@ describe('POST /api/groups', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(201);
@@ -172,7 +172,7 @@ describe('POST /api/groups', () => {
       body: JSON.stringify({}),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -188,7 +188,7 @@ describe('POST /api/groups', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);

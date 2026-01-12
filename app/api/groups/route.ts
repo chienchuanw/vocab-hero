@@ -7,7 +7,7 @@ import { prisma } from '@/lib/db/prisma';
  * 取得所有群組列表
  * 包含每個群組的單字數量統計
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // 查詢所有群組，包含單字數量統計
     const groups = await prisma.vocabularyGroup.findMany({

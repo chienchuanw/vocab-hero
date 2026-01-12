@@ -3,20 +3,26 @@ import { cleanup } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';
 
 // Mock ResizeObserver (required by Radix UI components)
-class ResizeObserverMock {
+class ResizeObserverMock implements ResizeObserver {
   observe() {}
   unobserve() {}
   disconnect() {}
 }
-global.ResizeObserver = ResizeObserverMock as any;
+global.ResizeObserver = ResizeObserverMock as unknown as typeof ResizeObserver;
 
 // Mock IntersectionObserver (required by some UI components)
-class IntersectionObserverMock {
+class IntersectionObserverMock implements IntersectionObserver {
+  readonly root: Element | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
   observe() {}
   unobserve() {}
   disconnect() {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
 }
-global.IntersectionObserver = IntersectionObserverMock as any;
+global.IntersectionObserver = IntersectionObserverMock as unknown as typeof IntersectionObserver;
 
 // Mock matchMedia (required for responsive components)
 Object.defineProperty(window, 'matchMedia', {
@@ -34,7 +40,19 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock Web Speech API (required for TTS features)
-const mockSpeechSynthesisUtterance = vi.fn().mockImplementation(function (this: any, text: string) {
+interface MockSpeechSynthesisUtteranceInstance {
+  text: string;
+  lang: string;
+  rate: number;
+  pitch: number;
+  volume: number;
+  onend: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisEvent) => unknown) | null;
+  onerror: ((this: SpeechSynthesisUtterance, ev: SpeechSynthesisErrorEvent) => unknown) | null;
+}
+const mockSpeechSynthesisUtterance = vi.fn().mockImplementation(function (
+  this: MockSpeechSynthesisUtteranceInstance,
+  text: string
+) {
   this.text = text;
   this.lang = 'ja-JP';
   this.rate = 1;
@@ -55,18 +73,22 @@ const mockSpeechSynthesis = {
   paused: false,
 };
 
-global.SpeechSynthesisUtterance = mockSpeechSynthesisUtterance as any;
+global.SpeechSynthesisUtterance =
+  mockSpeechSynthesisUtterance as unknown as typeof SpeechSynthesisUtterance;
 Object.defineProperty(window, 'speechSynthesis', {
   writable: true,
   value: mockSpeechSynthesis,
 });
 
 // Mock MediaRecorder (required for audio recording)
+interface BlobEvent {
+  data: Blob;
+}
 class MediaRecorderMock {
   state = 'inactive';
-  ondataavailable: ((event: any) => void) | null = null;
+  ondataavailable: ((event: BlobEvent) => void) | null = null;
   onstop: (() => void) | null = null;
-  onerror: ((event: any) => void) | null = null;
+  onerror: ((event: Event) => void) | null = null;
 
   start() {
     this.state = 'recording';
@@ -92,8 +114,10 @@ class MediaRecorderMock {
   }
 }
 
-global.MediaRecorder = MediaRecorderMock as any;
-(global.MediaRecorder as any).isTypeSupported = vi.fn(() => true);
+global.MediaRecorder = MediaRecorderMock as unknown as typeof MediaRecorder;
+(
+  global.MediaRecorder as unknown as { isTypeSupported: (type: string) => boolean }
+).isTypeSupported = vi.fn(() => true);
 
 // Mock getUserMedia (required for microphone access)
 Object.defineProperty(navigator, 'mediaDevices', {

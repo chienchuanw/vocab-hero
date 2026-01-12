@@ -67,14 +67,14 @@ test.describe('Matching Game', () => {
     await expect(cards.nth(1)).toHaveClass(/ring-2/);
   });
 
-  test('should show match animation on correct match', async ({ page }) => {
+  test('should show match animation on correct match', async ({ page: _page }) => {
     // 此測試需要知道哪些卡片是配對的
     // 由於卡片是隨機洗牌的，這個測試比較困難
     // 可以考慮在測試環境中固定隨機種子
     test.skip();
   });
 
-  test('should show error state on wrong match', async ({ page }) => {
+  test('should show error state on wrong match', async ({ page: _page }) => {
     // 此測試需要知道哪些卡片不是配對的
     // 由於卡片是隨機洗牌的，這個測試比較困難
     test.skip();
@@ -113,23 +113,20 @@ test.describe('Matching Game', () => {
     await expect(page.getByText(/time:/i)).toBeVisible();
   });
 
-  test.skip('should show completion screen when all pairs matched', async ({ page }) => {
+  test.skip('should show completion screen when all pairs matched', async ({ page: _page }) => {
     // 此測試需要實際完成遊戲
     // 由於需要知道正確的配對，這個測試比較困難
     // 可以考慮在測試環境中使用固定的資料
-
     // 完成所有配對後應該顯示完成畫面
     // await expect(page.getByText(/perfect|excellent|well done|completed/i)).toBeVisible();
-
     // 應該顯示時間和嘗試次數
     // await expect(page.getByText(/time:/i)).toBeVisible();
     // await expect(page.getByText(/attempts:/i)).toBeVisible();
-
     // 應該有重新開始按鈕
     // await expect(page.getByRole('button', { name: /play again/i })).toBeVisible();
   });
 
-  test.skip('should restart game when clicking play again', async ({ page }) => {
+  test.skip('should restart game when clicking play again', async ({ page: _page }) => {
     // 此測試需要先完成遊戲
     test.skip();
   });
@@ -145,7 +142,7 @@ test.describe('Matching Game', () => {
     await expect(cards.nth(2)).toBeDisabled();
   });
 
-  test('should not allow selecting matched cards', async ({ page }) => {
+  test('should not allow selecting matched cards', async ({ page: _page }) => {
     // 此測試需要先配對成功
     test.skip();
   });
@@ -160,4 +157,3 @@ test.describe('Matching Game', () => {
     await expect(grid).toHaveClass(/grid-cols-2/);
   });
 });
-

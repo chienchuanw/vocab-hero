@@ -16,7 +16,7 @@ describe('GET /api/review/stats', () => {
 
   it('should return zero stats when no vocabulary items exist', async () => {
     const request = new NextRequest('http://localhost:3000/api/review/stats');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -38,7 +38,7 @@ describe('GET /api/review/stats', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/review/stats');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -78,7 +78,7 @@ describe('GET /api/review/stats', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/review/stats');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -108,7 +108,7 @@ describe('GET /api/review/stats', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/review/stats');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -144,7 +144,7 @@ describe('GET /api/review/stats', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/review/stats');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -167,7 +167,7 @@ describe('GET /api/review/stats', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/review/stats');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);

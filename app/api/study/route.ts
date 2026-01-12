@@ -5,7 +5,7 @@ import { successResponse, ApiErrors } from '@/lib/api';
  * GET /api/study
  * Get study session data
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // TODO: Implement study session retrieval logic
     return successResponse([]);
@@ -22,11 +22,10 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // TODO: Implement study session creation logic
-    const body = await request.json();
+    await request.json();
     return successResponse({ id: 'placeholder' }, 201);
   } catch (error) {
     console.error('Error creating study session:', error);
     return ApiErrors.INTERNAL_ERROR('Failed to create study session');
   }
 }
-

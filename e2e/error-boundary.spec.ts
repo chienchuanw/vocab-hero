@@ -47,7 +47,7 @@ test.describe('Error Boundary', () => {
 });
 
 test.describe('Global Error Handling', () => {
-  test('should catch errors in layout components', async ({ page }) => {
+  test('should catch errors in layout components', async ({ page: _page }) => {
     test.skip();
   });
 });

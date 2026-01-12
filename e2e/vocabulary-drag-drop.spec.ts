@@ -11,14 +11,14 @@ test.describe('Vocabulary Drag and Drop', () => {
     await page.waitForSelector('[data-slot="card"]', { timeout: 15000 });
 
     const vocabCard = page.locator('[data-testid="vocabulary-card"]').first();
-    const vocabWord = await vocabCard.locator('h3').textContent();
+    await vocabCard.locator('h3').textContent();
 
     await page.goto('/groups');
     await page.waitForLoadState('networkidle');
     await page.waitForSelector('[data-testid="group-card"]', { timeout: 10000 });
 
     const groupCard = page.locator('[data-testid="group-card"]').first();
-    const groupName = await groupCard.locator('h3').textContent();
+    await groupCard.locator('h3').textContent();
 
     await page.goto('/vocabulary');
     await page.waitForLoadState('networkidle');

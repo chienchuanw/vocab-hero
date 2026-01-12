@@ -42,7 +42,7 @@ test.describe('Quiz Mode', () => {
     await expect(questionCountInput).toHaveValue('15');
   });
 
-  test.skip('should complete full quiz flow', async ({ page }) => {
+  test.skip('should complete full quiz flow', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -67,7 +67,7 @@ test.describe('Quiz Mode', () => {
     // await expect(page.getByText(/accuracy:/i)).toBeVisible();
   });
 
-  test.skip('should display quiz summary after completion', async ({ page }) => {
+  test.skip('should display quiz summary after completion', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -87,7 +87,7 @@ test.describe('Quiz Mode', () => {
     // await expect(page.getByRole('button', { name: /back to study/i })).toBeVisible();
   });
 
-  test.skip('should allow restarting quiz from summary', async ({ page }) => {
+  test.skip('should allow restarting quiz from summary', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -98,7 +98,7 @@ test.describe('Quiz Mode', () => {
     // await expect(page.getByRole('heading', { name: /quiz mode/i })).toBeVisible();
   });
 
-  test.skip('should navigate back to study page from summary', async ({ page }) => {
+  test.skip('should navigate back to study page from summary', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -109,7 +109,7 @@ test.describe('Quiz Mode', () => {
     // await expect(page).toHaveURL('/study');
   });
 
-  test.skip('should exit quiz during session', async ({ page }) => {
+  test.skip('should exit quiz during session', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 

@@ -4,7 +4,6 @@ import {
   shuffleArray,
   generateQuizQuestions,
   type VocabularyItem,
-  type QuizQuestion,
 } from './quiz-utils';
 
 /**
@@ -140,4 +139,3 @@ describe('generateQuizQuestions', () => {
     expect(questions.length).toBeLessThanOrEqual(vocabularyPool.length);
   });
 });
-

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { test, expect } from '@playwright/test';
 import { prisma } from '@/lib/db/prisma';
 import { generateVocabularyItems } from '@/tests/helpers/test-data-generator';

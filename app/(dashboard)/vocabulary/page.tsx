@@ -109,7 +109,7 @@ export default function VocabularyPage() {
 
         toast.success(`"${vocabulary.word}" added to group "${group.name}"`);
         vocabularyQuery.refetch();
-      } catch (error) {
+      } catch {
         toast.error('Failed to add vocabulary to group');
       }
     }

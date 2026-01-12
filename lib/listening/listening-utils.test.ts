@@ -22,11 +22,7 @@ describe('generateListeningQuestion', () => {
   const mockDistractors = ['work', 'play', 'sleep'];
 
   it('should generate multiple choice question', () => {
-    const question = generateListeningQuestion(
-      mockVocabulary,
-      'multiple-choice',
-      mockDistractors
-    );
+    const question = generateListeningQuestion(mockVocabulary, 'multiple-choice', mockDistractors);
 
     expect(question.id).toBeDefined();
     expect(question.vocabularyId).toBe('vocab-1');
@@ -48,20 +44,10 @@ describe('generateListeningQuestion', () => {
   });
 
   it('should shuffle options for multiple choice', () => {
-    const question1 = generateListeningQuestion(
-      mockVocabulary,
-      'multiple-choice',
-      mockDistractors
-    );
-    const question2 = generateListeningQuestion(
-      mockVocabulary,
-      'multiple-choice',
-      mockDistractors
-    );
+    const question1 = generateListeningQuestion(mockVocabulary, 'multiple-choice', mockDistractors);
+    const question2 = generateListeningQuestion(mockVocabulary, 'multiple-choice', mockDistractors);
 
-    // Options should be shuffled (may occasionally fail due to randomness)
-    const sameOrder =
-      JSON.stringify(question1.options) === JSON.stringify(question2.options);
+    // Options should be shuffled
     // This test is probabilistic, so we just check structure
     expect(question1.options).toHaveLength(4);
     expect(question2.options).toHaveLength(4);
@@ -173,4 +159,3 @@ describe('canReplayAudio', () => {
     expect(canReplay).toBe(true);
   });
 });
-

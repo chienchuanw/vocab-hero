@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  generateMixedQuestions,
-  type VocabularyItem,
-  type QuizQuestion,
-} from './question-generator';
+import { generateMixedQuestions, type VocabularyItem } from './question-generator';
 
 describe('question-generator', () => {
   const mockVocabulary: VocabularyItem[] = [

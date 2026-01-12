@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import StudyPage from './page';
 
 // Mock next/navigation
@@ -47,7 +46,6 @@ describe('StudyPage', () => {
   });
 
   it('should navigate to flashcard mode when clicked', async () => {
-    const user = userEvent.setup();
     render(<StudyPage />);
 
     const flashcardLink = screen.getByRole('link', { name: /flashcard/i });
@@ -55,7 +53,6 @@ describe('StudyPage', () => {
   });
 
   it('should navigate to quiz mode when clicked', async () => {
-    const user = userEvent.setup();
     render(<StudyPage />);
 
     const quizLink = screen.getByRole('link', { name: /quiz/i });
@@ -63,7 +60,6 @@ describe('StudyPage', () => {
   });
 
   it('should navigate to spelling mode when clicked', async () => {
-    const user = userEvent.setup();
     render(<StudyPage />);
 
     const spellingLink = screen.getByRole('link', { name: /spelling/i });
@@ -71,7 +67,6 @@ describe('StudyPage', () => {
   });
 
   it('should navigate to matching mode when clicked', async () => {
-    const user = userEvent.setup();
     render(<StudyPage />);
 
     const matchingLink = screen.getByRole('link', { name: /matching/i });
@@ -79,7 +74,6 @@ describe('StudyPage', () => {
   });
 
   it('should navigate to listening mode when clicked', async () => {
-    const user = userEvent.setup();
     render(<StudyPage />);
 
     const listeningLink = screen.getByRole('link', { name: /listening/i });
@@ -87,7 +81,6 @@ describe('StudyPage', () => {
   });
 
   it('should navigate to random mode when clicked', async () => {
-    const user = userEvent.setup();
     render(<StudyPage />);
 
     const randomLink = screen.getByRole('link', { name: /random/i });

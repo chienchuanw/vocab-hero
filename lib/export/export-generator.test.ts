@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { generateJsonExport, flattenVocabularyItem, generateCsvExport } from './export-generator';
 import type {
   VocabularyItem,

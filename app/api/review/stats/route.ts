@@ -4,7 +4,7 @@ import { successResponse, ApiErrors } from '@/lib/api';
 
 /**
  * GET /api/review/stats
- * 
+ *
  * Retrieves review statistics including:
  * - Total vocabulary items
  * - Items due today
@@ -12,7 +12,7 @@ import { successResponse, ApiErrors } from '@/lib/api';
  * - Learning items (repetitions < 3)
  * - Mastered items (repetitions > 8 and interval > 21)
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const today = new Date();
     today.setHours(23, 59, 59, 999);
@@ -83,4 +83,3 @@ export async function GET(request: NextRequest) {
     return ApiErrors.INTERNAL_ERROR('Failed to fetch review stats');
   }
 }
-

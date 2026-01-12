@@ -45,7 +45,7 @@ describe('GET /api/vocabulary/:id', () => {
     });
 
     const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
-    const response = await GET(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
+    const response = await GET(request, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -63,7 +63,7 @@ describe('GET /api/vocabulary/:id', () => {
   it('should return 404 for non-existent vocabulary item', async () => {
     const fakeId = 'clxyz1234567890abcdefgh';
     const request = new NextRequest(`http://localhost:3000/api/vocabulary/${fakeId}`);
-    const response = await GET(request as any, { params: Promise.resolve({ id: fakeId }) });
+    const response = await GET(request, { params: Promise.resolve({ id: fakeId }) });
     const data = await response.json();
 
     expect(response.status).toBe(404);
@@ -89,7 +89,7 @@ describe('GET /api/vocabulary/:id', () => {
     });
 
     const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
-    const response = await GET(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
+    const response = await GET(request, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -115,7 +115,7 @@ describe('GET /api/vocabulary/:id', () => {
     });
 
     const request = new NextRequest(`http://localhost:3000/api/vocabulary/${vocabulary.id}`);
-    const response = await GET(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
+    const response = await GET(request, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -150,7 +150,7 @@ describe('PUT /api/vocabulary/:id', () => {
       body: JSON.stringify(updateData),
     });
 
-    const response = await PUT(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
+    const response = await PUT(request, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -167,7 +167,7 @@ describe('PUT /api/vocabulary/:id', () => {
       body: JSON.stringify({ word: 'test' }),
     });
 
-    const response = await PUT(request as any, { params: Promise.resolve({ id: fakeId }) });
+    const response = await PUT(request, { params: Promise.resolve({ id: fakeId }) });
     const data = await response.json();
 
     expect(response.status).toBe(404);
@@ -192,7 +192,7 @@ describe('PUT /api/vocabulary/:id', () => {
       body: JSON.stringify(invalidData),
     });
 
-    const response = await PUT(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
+    const response = await PUT(request, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -218,7 +218,7 @@ describe('PUT /api/vocabulary/:id', () => {
       body: JSON.stringify(partialUpdate),
     });
 
-    const response = await PUT(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
+    const response = await PUT(request, { params: Promise.resolve({ id: vocabulary.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -247,7 +247,7 @@ describe('DELETE /api/vocabulary/:id', () => {
       method: 'DELETE',
     });
 
-    const response = await DELETE(request as any, {
+    const response = await DELETE(request, {
       params: Promise.resolve({ id: vocabulary.id }),
     });
     const data = await response.json();
@@ -269,7 +269,7 @@ describe('DELETE /api/vocabulary/:id', () => {
       method: 'DELETE',
     });
 
-    const response = await DELETE(request as any, { params: Promise.resolve({ id: fakeId }) });
+    const response = await DELETE(request, { params: Promise.resolve({ id: fakeId }) });
     const data = await response.json();
 
     expect(response.status).toBe(404);
@@ -295,7 +295,7 @@ describe('DELETE /api/vocabulary/:id', () => {
       method: 'DELETE',
     });
 
-    await DELETE(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
+    await DELETE(request, { params: Promise.resolve({ id: vocabulary.id }) });
 
     // Verify example sentences are also deleted
     const sentences = await prisma.exampleSentence.findMany({
@@ -325,7 +325,7 @@ describe('DELETE /api/vocabulary/:id', () => {
       method: 'DELETE',
     });
 
-    await DELETE(request as any, { params: Promise.resolve({ id: vocabulary.id }) });
+    await DELETE(request, { params: Promise.resolve({ id: vocabulary.id }) });
 
     // Verify review schedule is also deleted
     const schedule = await prisma.reviewSchedule.findUnique({

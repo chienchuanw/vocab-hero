@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { ExampleSentence } from '@/components/features/vocabulary/ExampleSentence';
 import { SpeakerButton } from '@/components/features/audio';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
@@ -17,11 +17,11 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
   const [isFlipped, setIsFlipped] = useState(false);
   const cardRef = useRef<HTMLButtonElement>(null);
 
-  const handleFlip = () => {
+  const handleFlip = useCallback(() => {
     const newFlippedState = !isFlipped;
     setIsFlipped(newFlippedState);
     onFlip?.(newFlippedState);
-  };
+  }, [isFlipped, onFlip]);
 
   useSwipeGesture({
     elementRef: cardRef,
@@ -41,7 +41,7 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isFlipped]);
+  }, [handleFlip]);
 
   // Convert example sentences to display format
   const exampleSentences: ExampleSentenceData[] =

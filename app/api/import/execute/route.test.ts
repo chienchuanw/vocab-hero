@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -112,7 +112,7 @@ describe('POST /api/import/execute', () => {
       });
 
       const response = await POST(request);
-      const data = await response.json();
+      await response.json();
 
       expect(response.status).toBe(200);
 

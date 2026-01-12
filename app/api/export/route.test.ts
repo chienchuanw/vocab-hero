@@ -1,13 +1,7 @@
-import { NextRequest } from "next/server";
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { NextRequest } from 'next/server';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
-import type {
-  VocabularyItem,
-  VocabularyGroup,
-  ExampleSentence,
-  ReviewSchedule,
-} from '@prisma/client';
 
 describe('POST /api/export', () => {
   const mockUserId = 'cltest1234567890abcdef';
@@ -39,7 +33,7 @@ describe('POST /api/export', () => {
 
   describe('JSON format export', () => {
     it('should export all vocabulary as JSON', async () => {
-      const vocab = await prisma.vocabularyItem.create({
+      await prisma.vocabularyItem.create({
         data: {
           word: 'こんにちは',
           reading: 'konnichiwa',
@@ -72,7 +66,7 @@ describe('POST /api/export', () => {
     });
 
     it('should include all relations in JSON export', async () => {
-      const vocab = await prisma.vocabularyItem.create({
+      await prisma.vocabularyItem.create({
         data: {
           word: 'こんにちは',
           reading: 'konnichiwa',

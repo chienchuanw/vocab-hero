@@ -53,7 +53,7 @@ export function generateMixedQuestions(
 
   // 計算每種題型的數量（大致平衡）
   const multipleChoiceCount = Math.floor(count / 2);
-  const spellingCount = count - multipleChoiceCount;
+  const _spellingCount = count - multipleChoiceCount;
 
   const questions: QuizQuestion[] = [];
 

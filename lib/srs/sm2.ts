@@ -1,16 +1,15 @@
 /**
  * SM-2 Algorithm Implementation
- * 
+ *
  * This file implements the SM-2 (SuperMemo 2) spaced repetition algorithm
  * for calculating optimal review intervals based on user performance.
- * 
+ *
  * Reference: https://www.supermemo.com/en/archives1990-2015/english/ol/sm2
  */
 
 import {
   type SM2Input,
   type ReviewResult,
-  type SM2Data,
   type QualityRating,
   type DifficultyRating,
   MIN_EASINESS_FACTOR,
@@ -19,12 +18,12 @@ import {
 
 /**
  * Calculate next review schedule using SM-2 algorithm
- * 
+ *
  * The SM-2 algorithm calculates the next review interval based on:
  * - Current easiness factor (EF)
  * - Number of consecutive successful reviews (repetitions)
  * - User's quality rating (0-5)
- * 
+ *
  * @param input - SM-2 calculation input parameters
  * @returns Review result with updated SM-2 data and next review date
  */
@@ -79,21 +78,17 @@ export function calculateSM2(input: SM2Input): ReviewResult {
 
 /**
  * Calculate new easiness factor based on quality rating
- * 
+ *
  * Formula: EF' = EF + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
- * 
+ *
  * The result is clamped between MIN_EASINESS_FACTOR and MAX_EASINESS_FACTOR
- * 
+ *
  * @param currentEF - Current easiness factor
  * @param quality - Quality rating (0-5)
  * @returns New easiness factor
  */
-function calculateEasinessFactor(
-  currentEF: number,
-  quality: QualityRating
-): number {
-  const newEF =
-    currentEF + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+function calculateEasinessFactor(currentEF: number, quality: QualityRating): number {
+  const newEF = currentEF + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
 
   // Clamp EF between minimum and maximum values
   return Math.max(MIN_EASINESS_FACTOR, Math.min(MAX_EASINESS_FACTOR, newEF));
@@ -101,18 +96,16 @@ function calculateEasinessFactor(
 
 /**
  * Convert simplified difficulty rating to SM-2 quality rating
- * 
+ *
  * Maps 3-button interface to SM-2's 0-5 scale:
  * - HARD: 3 (correct with difficulty)
  * - GOOD: 4 (correct with some hesitation)
  * - EASY: 5 (perfect response)
- * 
+ *
  * @param difficulty - User's difficulty rating
  * @returns Corresponding quality rating
  */
-export function convertDifficultyToQuality(
-  difficulty: DifficultyRating
-): QualityRating {
+export function convertDifficultyToQuality(difficulty: DifficultyRating): QualityRating {
   const mapping: Record<DifficultyRating, QualityRating> = {
     HARD: 3,
     GOOD: 4,
@@ -121,4 +114,3 @@ export function convertDifficultyToQuality(
 
   return mapping[difficulty];
 }
-

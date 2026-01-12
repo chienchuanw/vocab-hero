@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Service Worker Registration and Management
  * 處理 Service Worker 的註冊、更新和管理

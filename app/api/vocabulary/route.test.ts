@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -17,7 +17,7 @@ describe('GET /api/vocabulary', () => {
 
   it('should return empty array when no vocabulary items exist', async () => {
     const request = new NextRequest('http://localhost:3000/api/vocabulary');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -38,7 +38,7 @@ describe('GET /api/vocabulary', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -57,7 +57,7 @@ describe('GET /api/vocabulary', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary?search=hello');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -75,7 +75,7 @@ describe('GET /api/vocabulary', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary?search=greeting');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -92,8 +92,10 @@ describe('GET /api/vocabulary', () => {
       ],
     });
 
-    const request = new NextRequest('http://localhost:3000/api/vocabulary?sortBy=word&sortOrder=asc');
-    const response = await GET(request as any);
+    const request = new NextRequest(
+      'http://localhost:3000/api/vocabulary?sortBy=word&sortOrder=asc'
+    );
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -113,7 +115,7 @@ describe('GET /api/vocabulary', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary?limit=5');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -124,7 +126,7 @@ describe('GET /api/vocabulary', () => {
 
   it('should return 400 for invalid limit parameter', async () => {
     const request = new NextRequest('http://localhost:3000/api/vocabulary?limit=150');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -133,7 +135,7 @@ describe('GET /api/vocabulary', () => {
 
   it('should return 400 for invalid sortBy parameter', async () => {
     const request = new NextRequest('http://localhost:3000/api/vocabulary?sortBy=invalid');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -175,7 +177,7 @@ describe('GET /api/vocabulary', () => {
     });
 
     const request = new NextRequest(`http://localhost:3000/api/vocabulary?groupId=${group1.id}`);
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -203,7 +205,7 @@ describe('GET /api/vocabulary', () => {
     const request1 = new NextRequest(
       'http://localhost:3000/api/vocabulary?limit=2&sortBy=createdAt&sortOrder=asc'
     );
-    const response1 = await GET(request1 as any);
+    const response1 = await GET(request1);
     const data1 = await response1.json();
 
     expect(data1.data.items).toHaveLength(2);
@@ -215,7 +217,7 @@ describe('GET /api/vocabulary', () => {
     const request2 = new NextRequest(
       `http://localhost:3000/api/vocabulary?limit=2&cursor=${cursor}&sortBy=createdAt&sortOrder=asc`
     );
-    const response2 = await GET(request2 as any);
+    const response2 = await GET(request1);
     const data2 = await response2.json();
 
     expect(data2.data.items.length).toBeGreaterThan(0);
@@ -242,7 +244,7 @@ describe('GET /api/vocabulary', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -253,7 +255,7 @@ describe('GET /api/vocabulary', () => {
 
   it('should filter vocabulary by mastery level', async () => {
     // Create vocabulary items with different mastery levels
-    const vocab1 = await prisma.vocabularyItem.create({
+    await prisma.vocabularyItem.create({
       data: {
         word: 'new',
         reading: 'njuː',
@@ -300,7 +302,7 @@ describe('GET /api/vocabulary', () => {
 
     // Filter by NEW level
     const requestNew = new NextRequest('http://localhost:3000/api/vocabulary?masteryLevel=NEW');
-    const responseNew = await GET(requestNew as any);
+    const responseNew = await GET(requestNew);
     const dataNew = await responseNew.json();
 
     expect(responseNew.status).toBe(200);
@@ -311,7 +313,7 @@ describe('GET /api/vocabulary', () => {
     const requestLearning = new NextRequest(
       'http://localhost:3000/api/vocabulary?masteryLevel=LEARNING'
     );
-    const responseLearning = await GET(requestLearning as any);
+    const responseLearning = await GET(requestLearning);
     const dataLearning = await responseLearning.json();
 
     expect(responseLearning.status).toBe(200);
@@ -322,7 +324,7 @@ describe('GET /api/vocabulary', () => {
     const requestMastered = new NextRequest(
       'http://localhost:3000/api/vocabulary?masteryLevel=MASTERED'
     );
-    const responseMastered = await GET(requestMastered as any);
+    const responseMastered = await GET(requestMastered);
     const dataMastered = await responseMastered.json();
 
     expect(responseMastered.status).toBe(200);
@@ -332,7 +334,7 @@ describe('GET /api/vocabulary', () => {
 
   it('should return 400 for invalid masteryLevel parameter', async () => {
     const request = new NextRequest('http://localhost:3000/api/vocabulary?masteryLevel=INVALID');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -355,7 +357,7 @@ describe('POST /api/vocabulary', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(201);
@@ -377,7 +379,7 @@ describe('POST /api/vocabulary', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(201);
@@ -402,7 +404,7 @@ describe('POST /api/vocabulary', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(201);
@@ -429,7 +431,7 @@ describe('POST /api/vocabulary', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(201);
@@ -446,7 +448,7 @@ describe('POST /api/vocabulary', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -464,7 +466,7 @@ describe('POST /api/vocabulary', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -482,7 +484,7 @@ describe('POST /api/vocabulary', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);

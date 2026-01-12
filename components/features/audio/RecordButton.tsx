@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, Square, Pause, Play } from 'lucide-react';
 import { AudioRecorder } from '@/lib/audio';
@@ -67,7 +67,7 @@ export function RecordButton({
     }
   };
 
-  const handleStop = async () => {
+  const handleStop = useCallback(async () => {
     try {
       const audioBlob = await recorder.stopRecording();
       setIsRecording(false);
@@ -77,7 +77,7 @@ export function RecordButton({
     } catch (error) {
       onError?.(error as Error);
     }
-  };
+  }, [recorder, onRecordingComplete, onError]);
 
   const handlePause = () => {
     try {

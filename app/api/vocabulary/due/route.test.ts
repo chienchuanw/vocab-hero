@@ -16,7 +16,7 @@ describe('GET /api/vocabulary/due', () => {
 
   it('should return empty array when no vocabulary items are due', async () => {
     const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -48,7 +48,7 @@ describe('GET /api/vocabulary/due', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -80,7 +80,7 @@ describe('GET /api/vocabulary/due', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -98,7 +98,7 @@ describe('GET /api/vocabulary/due', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -127,7 +127,7 @@ describe('GET /api/vocabulary/due', () => {
     });
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary/due');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -149,7 +149,7 @@ describe('GET /api/vocabulary/due', () => {
     }
 
     const request = new NextRequest('http://localhost:3000/api/vocabulary/due?limit=3');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);

@@ -72,7 +72,7 @@ export default function QuizStudyPage() {
   /**
    * 處理測驗完成
    */
-  const handleComplete = () => {
+  const _handleComplete = () => {
     router.push('/study/quiz/summary');
   };
 

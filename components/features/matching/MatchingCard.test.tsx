@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MatchingCard } from './MatchingCard';
@@ -46,18 +46,14 @@ describe('MatchingCard', () => {
 
   describe('states', () => {
     it('should show selected state', () => {
-      const { container } = render(
-        <MatchingCard content="勉強" onClick={mockOnClick} isSelected />
-      );
+      render(<MatchingCard content="勉強" onClick={mockOnClick} isSelected />);
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('ring-2');
     });
 
     it('should show matched state', () => {
-      const { container } = render(
-        <MatchingCard content="勉強" onClick={mockOnClick} isMatched />
-      );
+      render(<MatchingCard content="勉強" onClick={mockOnClick} isMatched />);
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('bg-green-100');
@@ -145,4 +141,3 @@ describe('MatchingCard', () => {
     });
   });
 });
-

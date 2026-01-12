@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateSpelling, SpellingValidationResult } from './spelling-validator';
+import { validateSpelling } from './spelling-validator';
 
 describe('spelling-validator', () => {
   describe('validateSpelling', () => {
@@ -112,4 +112,3 @@ describe('spelling-validator', () => {
     });
   });
 });
-

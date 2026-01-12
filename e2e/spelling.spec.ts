@@ -30,7 +30,7 @@ test.describe('Spelling Quiz', () => {
     await expect(page).toHaveURL('/study');
   });
 
-  test.skip('should display spelling input component', async ({ page }) => {
+  test.skip('should display spelling input component', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -47,7 +47,7 @@ test.describe('Spelling Quiz', () => {
     // await expect(page.getByRole('button', { name: /check answer/i })).toBeVisible();
   });
 
-  test.skip('should allow typing Japanese characters', async ({ page }) => {
+  test.skip('should allow typing Japanese characters', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -60,7 +60,7 @@ test.describe('Spelling Quiz', () => {
     // await expect(input).toHaveValue('べんきょう');
   });
 
-  test.skip('should show hint when hint button is clicked', async ({ page }) => {
+  test.skip('should show hint when hint button is clicked', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -72,7 +72,7 @@ test.describe('Spelling Quiz', () => {
     // await expect(page.getByText(/starts with/i)).toBeVisible();
   });
 
-  test.skip('should validate correct answer', async ({ page }) => {
+  test.skip('should validate correct answer', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -89,7 +89,7 @@ test.describe('Spelling Quiz', () => {
     // await expect(page.getByText('✓')).toBeVisible();
   });
 
-  test.skip('should validate incorrect answer', async ({ page }) => {
+  test.skip('should validate incorrect answer', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -109,7 +109,7 @@ test.describe('Spelling Quiz', () => {
     // await expect(page.getByText(/correct answer:/i)).toBeVisible();
   });
 
-  test.skip('should accept katakana for hiragana answer', async ({ page }) => {
+  test.skip('should accept katakana for hiragana answer', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -125,7 +125,7 @@ test.describe('Spelling Quiz', () => {
     // await expect(page.getByText(/correct/i)).toBeVisible();
   });
 
-  test.skip('should show character-level feedback for incorrect answer', async ({ page }) => {
+  test.skip('should show character-level feedback for incorrect answer', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 
@@ -145,7 +145,7 @@ test.describe('Spelling Quiz', () => {
     // await expect(page.getByText('✗')).toBeVisible(); // 錯誤的字元
   });
 
-  test.skip('should clear input after submission', async ({ page }) => {
+  test.skip('should clear input after submission', async ({ page: _page }) => {
     // 此測試需要實際的資料庫資料，暫時跳過
     // TODO: 設置測試資料後啟用此測試
 

@@ -81,12 +81,12 @@ test.describe('Random Quiz', () => {
     expect(hasMultipleChoice > 0 || hasSpellingInput > 0).toBe(true);
   });
 
-  test.skip('should complete quiz and show summary', async ({ page }) => {
+  test.skip('should complete quiz and show summary', async ({ page: _page }) => {
     // 此測試需要實際完成所有題目，由於題目是隨機的，暫時跳過
     // TODO: 使用固定的測試資料來完成此測試
   });
 
-  test('should allow restarting quiz from summary', async ({ page }) => {
+  test('should allow restarting quiz from summary', async ({ page: _page }) => {
     // 此測試需要先完成測驗，暫時跳過
     test.skip();
   });
@@ -133,4 +133,3 @@ test.describe('Random Quiz', () => {
     await expect(page).toHaveURL('/study');
   });
 });
-

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
 import { successResponse, ApiErrors } from '@/lib/api/response';
 import { createStudySessionSchema, createQuizSessionSchema } from '@/lib/validations';

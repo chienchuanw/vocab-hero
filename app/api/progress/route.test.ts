@@ -21,7 +21,7 @@ describe('GET /api/progress', () => {
 
   it('should return empty array when no progress logs exist', async () => {
     const request = new NextRequest(`http://localhost:3000/api/progress?userId=${testUserId}`);
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -48,7 +48,7 @@ describe('GET /api/progress', () => {
     });
 
     const request = new NextRequest(`http://localhost:3000/api/progress?userId=${testUserId}`);
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -77,7 +77,7 @@ describe('GET /api/progress', () => {
     const request = new NextRequest(
       `http://localhost:3000/api/progress?userId=${testUserId}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
     );
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -100,7 +100,7 @@ describe('GET /api/progress', () => {
     }
 
     const request = new NextRequest(`http://localhost:3000/api/progress?userId=${testUserId}&limit=5`);
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -110,7 +110,7 @@ describe('GET /api/progress', () => {
 
   it('should return 400 if userId is missing', async () => {
     const request = new NextRequest('http://localhost:3000/api/progress');
-    const response = await GET(request as any);
+    const response = await GET(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -155,7 +155,7 @@ describe('POST /api/progress', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -192,7 +192,7 @@ describe('POST /api/progress', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -214,7 +214,7 @@ describe('POST /api/progress', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -233,7 +233,7 @@ describe('POST /api/progress', () => {
       }),
     });
 
-    const response = await POST(request as any);
+    const response = await POST(request);
     const data = await response.json();
 
     expect(response.status).toBe(400);

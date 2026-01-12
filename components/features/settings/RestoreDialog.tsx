@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Upload, Loader2, AlertCircle, Check } from 'lucide-react';
+import { Loader2, AlertCircle, Check } from 'lucide-react';
 import { useRestorePreview, useRestoreExecute } from '@/hooks/useDataManagement';
 import { ExportFormat } from '@/lib/validations/export';
 

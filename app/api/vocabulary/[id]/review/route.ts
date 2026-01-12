@@ -6,20 +6,17 @@ import { DEFAULT_SM2_DATA, type QualityRating } from '@/lib/srs/sm2.types';
 
 /**
  * POST /api/vocabulary/:id/review
- * 
+ *
  * Records a review result for a vocabulary item and updates its review schedule
  * using the SM-2 algorithm.
- * 
+ *
  * Request body:
  * - quality: Quality rating (0-5)
- * 
+ *
  * Response:
  * - Updated vocabulary item with review schedule
  */
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const body = await request.json();
@@ -55,7 +52,7 @@ export async function POST(
       quality: quality as QualityRating,
     });
 
-    const updatedSchedule = await prisma.reviewSchedule.upsert({
+    await prisma.reviewSchedule.upsert({
       where: { vocabularyItemId: id },
       create: {
         vocabularyItemId: id,
@@ -92,4 +89,3 @@ export async function POST(
     return ApiErrors.INTERNAL_ERROR('Failed to record review');
   }
 }
-

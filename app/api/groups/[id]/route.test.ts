@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GET, PUT, DELETE } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -37,7 +37,7 @@ describe('GET /api/groups/:id', () => {
     });
 
     const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`);
-    const response = await GET(request as any, { params: Promise.resolve({ id: group.id }) });
+    const response = await GET(request, { params: Promise.resolve({ id: group.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -70,7 +70,7 @@ describe('GET /api/groups/:id', () => {
       data: { name: 'Test Group', userId: user.id },
     });
 
-    const item1 = await prisma.vocabularyItem.create({
+    await prisma.vocabularyItem.create({
       data: {
         word: 'first',
         reading: 'first',
@@ -81,7 +81,7 @@ describe('GET /api/groups/:id', () => {
 
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    const item2 = await prisma.vocabularyItem.create({
+    await prisma.vocabularyItem.create({
       data: {
         word: 'second',
         reading: 'second',
@@ -91,7 +91,7 @@ describe('GET /api/groups/:id', () => {
     });
 
     const request = new NextRequest(`http://localhost:3000/api/groups/${group.id}`);
-    const response = await GET(request as any, { params: Promise.resolve({ id: group.id }) });
+    const response = await GET(request, { params: Promise.resolve({ id: group.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -121,7 +121,7 @@ describe('PUT /api/groups/:id', () => {
       }),
     });
 
-    const response = await PUT(request as any, { params: Promise.resolve({ id: group.id }) });
+    const response = await PUT(request, { params: Promise.resolve({ id: group.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -145,7 +145,7 @@ describe('PUT /api/groups/:id', () => {
       }),
     });
 
-    const response = await PUT(request as any, { params: Promise.resolve({ id: group.id }) });
+    const response = await PUT(request, { params: Promise.resolve({ id: group.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -185,7 +185,7 @@ describe('PUT /api/groups/:id', () => {
       }),
     });
 
-    const response = await PUT(request as any, { params: Promise.resolve({ id: group.id }) });
+    const response = await PUT(request, { params: Promise.resolve({ id: group.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -211,7 +211,7 @@ describe('DELETE /api/groups/:id', () => {
       method: 'DELETE',
     });
 
-    const response = await DELETE(request as any, { params: Promise.resolve({ id: group.id }) });
+    const response = await DELETE(request, { params: Promise.resolve({ id: group.id }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -260,7 +260,7 @@ describe('DELETE /api/groups/:id', () => {
       method: 'DELETE',
     });
 
-    await DELETE(request as any, { params: Promise.resolve({ id: group.id }) });
+    await DELETE(request, { params: Promise.resolve({ id: group.id }) });
 
     const vocabularyItem = await prisma.vocabularyItem.findUnique({
       where: { id: item.id },
