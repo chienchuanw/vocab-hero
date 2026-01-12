@@ -67,9 +67,8 @@ describe('Notification Flow Integration Tests', () => {
 
   describe('Complete notification lifecycle', () => {
     it('should create, fetch, and display notifications', async () => {
-      // Mock API responses
       vi.mocked(global.fetch)
-        .mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
+        .mockResolvedValueOnce({
           ok: true,
           json: async () => ({
             success: true,
@@ -85,14 +84,14 @@ describe('Notification Flow Integration Tests', () => {
               updatedAt: new Date().toISOString(),
             },
           }),
-        })
-        .mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
+        } as unknown as Response)
+        .mockResolvedValueOnce({
           ok: true,
           json: async () => ({
             success: true,
             data: mockNotifications,
           }),
-        });
+        } as unknown as Response);
 
       const { rerender } = render(
         <TestWrapper>
@@ -121,10 +120,10 @@ describe('Notification Flow Integration Tests', () => {
       const user = userEvent.setup();
       const handleMarkAsRead = vi.fn();
 
-      vi.mocked(global.fetch).mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
+      vi.mocked(global.fetch).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true }),
-      });
+      } as unknown as Response);
 
       render(
         <TestWrapper>
@@ -140,13 +139,13 @@ describe('Notification Flow Integration Tests', () => {
     });
 
     it('should filter notifications by type', async () => {
-      vi.mocked(global.fetch).mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
+      vi.mocked(global.fetch).mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           success: true,
           data: mockNotifications.filter((n) => n.type === 'GOAL_ACHIEVED'),
         }),
-      });
+      } as unknown as Response);
 
       render(
         <TestWrapper>
@@ -164,13 +163,13 @@ describe('Notification Flow Integration Tests', () => {
     });
 
     it('should filter notifications by read status', async () => {
-      vi.mocked(global.fetch).mockResolvedValueOnce({ // @ts-expect-error - partial mock for testing
+      vi.mocked(global.fetch).mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           success: true,
           data: mockNotifications.filter((n) => !n.isRead),
         }),
-      });
+      } as unknown as Response);
 
       render(
         <TestWrapper>
