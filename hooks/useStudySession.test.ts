@@ -2,7 +2,7 @@
  * @vitest-environment happy-dom
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } , type Mock } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createElement } from 'react';
@@ -47,7 +47,7 @@ describe('useStudySession', () => {
         completedAt: null,
       };
 
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockSession }),
       });
@@ -83,7 +83,7 @@ describe('useStudySession', () => {
         completedAt: null,
       };
 
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockSession }),
       });
@@ -114,7 +114,7 @@ describe('useStudySession', () => {
         completedAt,
       };
 
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockSession }),
       });
@@ -174,7 +174,7 @@ describe('useStudySession', () => {
         completedAt: null,
       };
 
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockQuizSession }),
       });
@@ -209,7 +209,7 @@ describe('useStudySession', () => {
         completedAt: null,
       };
 
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockSpellingSession }),
       });

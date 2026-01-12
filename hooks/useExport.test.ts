@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } , type Mock } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ExportFormat } from '@/lib/validations/export';
@@ -64,7 +64,7 @@ describe('useExportVocabulary', () => {
         },
       };
 
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => mockJsonData,
       });
@@ -94,7 +94,7 @@ describe('useExportVocabulary', () => {
     });
 
     it('should include filters in JSON export request', async () => {
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: {} }),
       });
@@ -131,7 +131,7 @@ describe('useExportVocabulary', () => {
     it('should export vocabulary as CSV successfully', async () => {
       const csvText = '\uFEFFword,reading,meaning\nこんにちは,konnichiwa,Hello';
 
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         text: async () => csvText,
         headers: {
@@ -157,7 +157,7 @@ describe('useExportVocabulary', () => {
     });
 
     it('should include filters in CSV export request', async () => {
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         text: async () => 'csv data',
         headers: {
@@ -191,7 +191,7 @@ describe('useExportVocabulary', () => {
 
   describe('error handling', () => {
     it('should handle network errors', async () => {
-      (global.fetch as unknown).mockRejectedValueOnce(new Error('Network error'));
+      (global.fetch as Mock).mockRejectedValueOnce(new Error('Network error'));
 
       const { result } = renderHook(() => useExportVocabulary(), {
         wrapper: createWrapper(),
@@ -207,7 +207,7 @@ describe('useExportVocabulary', () => {
     });
 
     it('should handle API errors', async () => {
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: false,
         json: async () => ({
           success: false,
@@ -231,7 +231,7 @@ describe('useExportVocabulary', () => {
 
   describe('loading states', () => {
     it('should track loading state during export', async () => {
-      (global.fetch as unknown).mockImplementationOnce(
+      (global.fetch as Mock).mockImplementationOnce(
         () =>
           new Promise((resolve) =>
             setTimeout(
@@ -267,7 +267,7 @@ describe('useExportVocabulary', () => {
 
   describe('cleanup', () => {
     it('should cleanup blob URL after download', async () => {
-      (global.fetch as unknown).mockResolvedValueOnce({
+      (global.fetch as Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: {} }),
       });

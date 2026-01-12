@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } , type Mock } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useNotifications, useMarkAsRead, useCreateNotification } from './useNotifications';
@@ -45,7 +45,7 @@ describe('useNotifications', () => {
       },
     ];
 
-    (global.fetch as unknown).mockResolvedValueOnce({
+    (global.fetch as Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, data: mockNotifications }),
     });
@@ -62,7 +62,7 @@ describe('useNotifications', () => {
   });
 
   it('should handle fetch error', async () => {
-    (global.fetch as unknown).mockResolvedValueOnce({
+    (global.fetch as Mock).mockResolvedValueOnce({
       ok: false,
       json: async () => ({ success: false, error: { message: 'Failed to fetch' } }),
     });
@@ -83,7 +83,7 @@ describe('useMarkAsRead', () => {
   });
 
   it('should mark notification as read', async () => {
-    (global.fetch as unknown).mockResolvedValueOnce({
+    (global.fetch as Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true }),
     });
@@ -125,7 +125,7 @@ describe('useCreateNotification', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    (global.fetch as unknown).mockResolvedValueOnce({
+    (global.fetch as Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, data: mockNotification }),
     });

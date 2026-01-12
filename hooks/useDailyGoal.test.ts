@@ -2,7 +2,7 @@
  * @vitest-environment happy-dom
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createElement } from 'react';
@@ -25,7 +25,7 @@ function createWrapper() {
   });
   const TestWrapper = ({ children }: { children: React.ReactNode }) =>
     createElement(QueryClientProvider, { client: queryClient }, children);
-  TestWrapper.displayName = "TestWrapper";
+  TestWrapper.displayName = 'TestWrapper';
   return TestWrapper;
 }
 
@@ -46,7 +46,7 @@ describe('useDailyGoal', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    (global.fetch as unknown).mockResolvedValueOnce({
+    (global.fetch as Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, data: mockGoal }),
     });
@@ -63,7 +63,7 @@ describe('useDailyGoal', () => {
   });
 
   it('should handle fetch error', async () => {
-    (global.fetch as unknown).mockResolvedValueOnce({
+    (global.fetch as Mock).mockResolvedValueOnce({
       ok: false,
       json: async () => ({ success: false, error: { message: 'Not found' } }),
     });
@@ -104,7 +104,7 @@ describe('useUpdateDailyGoal', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    (global.fetch as unknown).mockResolvedValueOnce({
+    (global.fetch as Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, data: mockUpdatedGoal }),
     });
@@ -129,7 +129,7 @@ describe('useUpdateDailyGoal', () => {
   });
 
   it('should handle update error', async () => {
-    (global.fetch as unknown).mockResolvedValueOnce({
+    (global.fetch as Mock).mockResolvedValueOnce({
       ok: false,
       json: async () => ({
         success: false,
@@ -151,4 +151,3 @@ describe('useUpdateDailyGoal', () => {
     });
   });
 });
-
