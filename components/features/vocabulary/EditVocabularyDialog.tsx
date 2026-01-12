@@ -65,7 +65,6 @@ export function EditVocabularyDialog({
           meaning: s.meaning,
           order: s.order,
         })) || [];
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setExampleSentences(sentences);
     }
   }, [vocabulary]);

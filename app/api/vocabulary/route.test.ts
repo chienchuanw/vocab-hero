@@ -217,7 +217,7 @@ describe('GET /api/vocabulary', () => {
     const request2 = new NextRequest(
       `http://localhost:3000/api/vocabulary?limit=2&cursor=${cursor}&sortBy=createdAt&sortOrder=asc`
     );
-    const response2 = await GET(request1);
+    const response2 = await GET(request2);
     const data2 = await response2.json();
 
     expect(data2.data.items.length).toBeGreaterThan(0);

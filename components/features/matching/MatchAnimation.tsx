@@ -25,7 +25,6 @@ export function MatchAnimation({ show, onComplete }: MatchAnimationProps) {
       return;
     }
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsVisible((prev) => {
       if (prev === true) return prev;
       return true;
