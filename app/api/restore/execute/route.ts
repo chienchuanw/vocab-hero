@@ -108,7 +108,8 @@ async function updateVocabularyItem(
       include: { groups: true },
     });
 
-    const existingGroupIds = existing?.groups.map((g) => g.id) ?? [];
+    const existingGroupIds =
+      existing?.groups.map((g: (typeof existing.groups)[number]) => g.id) ?? [];
     const allGroupIds = [...new Set([...existingGroupIds, ...groupIds])];
 
     await prisma.vocabularyItem.update({
@@ -163,14 +164,16 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const existingForDuplicateCheck: ExistingVocabularyItem[] = existingItems.map((item) => ({
-      id: item.id,
-      word: item.word,
-      reading: item.reading,
-      meaning: item.meaning,
-      notes: item.notes,
-      groups: item.groups,
-    }));
+    const existingForDuplicateCheck: ExistingVocabularyItem[] = existingItems.map(
+      (item: (typeof existingItems)[number]) => ({
+        id: item.id,
+        word: item.word,
+        reading: item.reading,
+        meaning: item.meaning,
+        notes: item.notes,
+        groups: item.groups,
+      })
+    );
 
     const duplicates = findDuplicates(parseResult.data, existingForDuplicateCheck);
     const { itemsToCreate, itemsToUpdate } = applyDuplicateStrategy(

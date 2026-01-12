@@ -62,21 +62,23 @@ export async function POST(request: NextRequest) {
       version: '1.0',
       exportDate: new Date().toISOString(),
       itemCount: vocabularyItems.length,
-      items: vocabularyItems.map((item) => ({
+      items: vocabularyItems.map((item: (typeof vocabularyItems)[number]) => ({
         word: item.word,
         reading: item.reading,
         meaning: item.meaning,
         notes: item.notes,
-        groups: item.groups.map((group) => ({
+        groups: item.groups.map((group: (typeof item.groups)[number]) => ({
           id: group.id,
           name: group.name,
         })),
-        exampleSentences: item.exampleSentences.map((sentence) => ({
-          sentence: sentence.sentence,
-          reading: sentence.reading,
-          meaning: sentence.meaning,
-          order: sentence.order,
-        })),
+        exampleSentences: item.exampleSentences.map(
+          (sentence: (typeof item.exampleSentences)[number]) => ({
+            sentence: sentence.sentence,
+            reading: sentence.reading,
+            meaning: sentence.meaning,
+            order: sentence.order,
+          })
+        ),
       })),
     };
 

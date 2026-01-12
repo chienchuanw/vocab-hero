@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
     let items = await prisma.vocabularyItem.findMany(queryOptions);
 
     if (masteryLevel) {
-      items = items.filter((item) => {
+      items = items.filter((item: (typeof items)[number]) => {
         const reviewData = item.reviewSchedule
           ? {
               easinessFactor: item.reviewSchedule.easinessFactor,

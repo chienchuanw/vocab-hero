@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db/prisma';
 import { successResponse, ApiErrors } from '@/lib/api/response';
 import { recreateDefaultUserData } from '@/lib/db/default-user';
+import type { Prisma } from '@prisma/client';
 
 const deleteAllSchema = z.object({
   confirm: z.string().refine((val) => val.trim() === 'DELETE ALL', {
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       await tx.$executeRaw`TRUNCATE TABLE "example_sentences" RESTART IDENTITY CASCADE`;
       await tx.$executeRaw`TRUNCATE TABLE "review_schedules" RESTART IDENTITY CASCADE`;
       await tx.$executeRaw`TRUNCATE TABLE "_VocabularyGroupToVocabularyItem" RESTART IDENTITY CASCADE`;

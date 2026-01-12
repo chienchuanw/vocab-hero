@@ -55,14 +55,16 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const existingForDuplicateCheck: ExistingVocabularyItem[] = existingItems.map((item) => ({
-      id: item.id,
-      word: item.word,
-      reading: item.reading,
-      meaning: item.meaning,
-      notes: item.notes,
-      groups: item.groups,
-    }));
+    const existingForDuplicateCheck: ExistingVocabularyItem[] = existingItems.map(
+      (item: (typeof existingItems)[number]) => ({
+        id: item.id,
+        word: item.word,
+        reading: item.reading,
+        meaning: item.meaning,
+        notes: item.notes,
+        groups: item.groups,
+      })
+    );
 
     const duplicates = findDuplicates(parseResult.data, existingForDuplicateCheck);
     const duplicateIndices = new Set(duplicates.map((d) => d.importIndex));

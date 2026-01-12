@@ -92,7 +92,7 @@ describe('GET /api/groups', () => {
       where: { id: group.id },
       data: {
         vocabularyItems: {
-          connect: items.map((item) => ({ id: item.id })),
+          connect: items.map((item: (typeof items)[number]) => ({ id: item.id })),
         },
       },
     });

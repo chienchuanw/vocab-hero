@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { POST } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -71,7 +71,7 @@ describe('POST /api/restore/execute', () => {
 
     const items = await prisma.vocabularyItem.findMany();
     expect(items).toHaveLength(2);
-    const existingItem = items.find((i) => i.word === '勉強');
+    const existingItem = items.find((i: (typeof items)[number]) => i.word === '勉強');
     expect(existingItem?.meaning).toBe('study (existing)');
   });
 
@@ -182,8 +182,8 @@ describe('POST /api/restore/execute', () => {
       include: { groups: true },
     });
     expect(item?.groups).toHaveLength(2);
-    expect(item?.groups.map((g) => g.name)).toContain('JLPT N5');
-    expect(item?.groups.map((g) => g.name)).toContain('JLPT N4');
+    expect(item?.groups.map((g: (typeof item.groups)[number]) => g.name)).toContain('JLPT N5');
+    expect(item?.groups.map((g: (typeof item.groups)[number]) => g.name)).toContain('JLPT N4');
   });
 
   it('should require confirmation phrase "RESTORE"', async () => {

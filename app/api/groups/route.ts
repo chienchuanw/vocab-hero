@@ -24,7 +24,7 @@ export async function GET(_request: NextRequest) {
     });
 
     // 轉換資料格式，將 _count 轉換為 vocabularyCount
-    const groupsWithCount = groups.map((group) => ({
+    const groupsWithCount = groups.map((group: (typeof groups)[number]) => ({
       id: group.id,
       name: group.name,
       description: group.description,
