@@ -51,7 +51,7 @@ describe('GET /api/groups/:id', () => {
 
   it('should return 404 for non-existent group', async () => {
     const request = new NextRequest('http://localhost:3000/api/groups/non-existent-id');
-    const response = await GET(request as any, {
+    const response = await GET(request, {
       params: Promise.resolve({ id: 'non-existent-id' }),
     });
     const data = await response.json();
@@ -160,7 +160,7 @@ describe('PUT /api/groups/:id', () => {
       }),
     });
 
-    const response = await PUT(request as any, {
+    const response = await PUT(request, {
       params: Promise.resolve({ id: 'non-existent-id' }),
     });
     const data = await response.json();
@@ -229,7 +229,7 @@ describe('DELETE /api/groups/:id', () => {
       method: 'DELETE',
     });
 
-    const response = await DELETE(request as any, {
+    const response = await DELETE(request, {
       params: Promise.resolve({ id: 'non-existent-id' }),
     });
     const data = await response.json();
