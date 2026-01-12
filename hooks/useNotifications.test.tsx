@@ -43,7 +43,7 @@ describe('useNotifications', () => {
       },
     ];
 
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as unknown).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, data: mockNotifications }),
     });
@@ -60,7 +60,7 @@ describe('useNotifications', () => {
   });
 
   it('should handle fetch error', async () => {
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as unknown).mockResolvedValueOnce({
       ok: false,
       json: async () => ({ success: false, error: { message: 'Failed to fetch' } }),
     });
@@ -81,7 +81,7 @@ describe('useMarkAsRead', () => {
   });
 
   it('should mark notification as read', async () => {
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as unknown).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true }),
     });
@@ -123,7 +123,7 @@ describe('useCreateNotification', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as unknown).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, data: mockNotification }),
     });

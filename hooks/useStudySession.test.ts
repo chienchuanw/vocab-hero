@@ -45,7 +45,7 @@ describe('useStudySession', () => {
         completedAt: null,
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockSession }),
       });
@@ -81,7 +81,7 @@ describe('useStudySession', () => {
         completedAt: null,
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockSession }),
       });
@@ -112,7 +112,7 @@ describe('useStudySession', () => {
         completedAt,
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockSession }),
       });
@@ -172,7 +172,7 @@ describe('useStudySession', () => {
         completedAt: null,
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockQuizSession }),
       });
@@ -207,7 +207,7 @@ describe('useStudySession', () => {
         completedAt: null,
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockSpellingSession }),
       });

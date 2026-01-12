@@ -42,7 +42,7 @@ describe('GET /api/notifications', () => {
       },
     ];
 
-    (prisma.notification.findMany as any).mockResolvedValue(mockNotifications);
+    vi.mocked(prisma.notification.findMany).mockResolvedValue(mockNotifications);
 
     const request = new NextRequest('http://localhost:3000/api/notifications?userId=user-1');
     const response = await GET(request);
@@ -69,7 +69,7 @@ describe('GET /api/notifications', () => {
       },
     ];
 
-    (prisma.notification.findMany as any).mockResolvedValue(mockNotifications);
+    vi.mocked(prisma.notification.findMany).mockResolvedValue(mockNotifications);
 
     const request = new NextRequest('http://localhost:3000/api/notifications?userId=user-1&isRead=false');
     const response = await GET(request);
@@ -96,7 +96,7 @@ describe('GET /api/notifications', () => {
   });
 
   it('should handle database errors', async () => {
-    (prisma.notification.findMany as any).mockRejectedValue(new Error('Database error'));
+    vi.mocked(prisma.notification.findMany).mockRejectedValue(new Error('Database error'));
 
     const request = new NextRequest('http://localhost:3000/api/notifications?userId=user-1');
     const response = await GET(request);
@@ -129,7 +129,7 @@ describe('POST /api/notifications', () => {
       updatedAt: new Date(),
     };
 
-    (prisma.notification.create as any).mockResolvedValue(mockNotification);
+    vi.mocked(prisma.notification.create).mockResolvedValue(mockNotification);
 
     const request = new NextRequest('http://localhost:3000/api/notifications', {
       method: 'POST',

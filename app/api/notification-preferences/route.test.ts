@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GET, PUT } from './route';
 import { prisma } from '@/lib/db/prisma';
@@ -40,9 +40,11 @@ describe('GET /api/notification-preferences', () => {
       updatedAt: new Date(),
     };
 
-    (prisma.notificationPreference.findUnique as any).mockResolvedValue(mockPreferences);
+    vi.mocked(prisma.notificationPreference.findUnique).mockResolvedValue(mockPreferences);
 
-    const request = new NextRequest('http://localhost:3000/api/notification-preferences?userId=user-1');
+    const request = new NextRequest(
+      'http://localhost:3000/api/notification-preferences?userId=user-1'
+    );
     const response = await GET(request);
     const data = await response.json();
 
@@ -61,9 +63,13 @@ describe('GET /api/notification-preferences', () => {
   });
 
   it('should handle database errors', async () => {
-    (prisma.notificationPreference.findUnique as any).mockRejectedValue(new Error('Database error'));
+    vi.mocked(prisma.notificationPreference.findUnique).mockRejectedValue(
+      new Error('Database error')
+    );
 
-    const request = new NextRequest('http://localhost:3000/api/notification-preferences?userId=user-1');
+    const request = new NextRequest(
+      'http://localhost:3000/api/notification-preferences?userId=user-1'
+    );
     const response = await GET(request);
     const data = await response.json();
 
@@ -94,7 +100,7 @@ describe('PUT /api/notification-preferences', () => {
       updatedAt: new Date(),
     };
 
-    (prisma.notificationPreference.upsert as any).mockResolvedValue(mockPreferences);
+    vi.mocked(prisma.notificationPreference.upsert).mockResolvedValue(mockPreferences);
 
     const request = new NextRequest('http://localhost:3000/api/notification-preferences', {
       method: 'PUT',
@@ -144,4 +150,3 @@ describe('PUT /api/notification-preferences', () => {
     expect(data.success).toBe(false);
   });
 });
-

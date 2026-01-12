@@ -62,7 +62,7 @@ describe('useExportVocabulary', () => {
         },
       };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         json: async () => mockJsonData,
       });
@@ -92,7 +92,7 @@ describe('useExportVocabulary', () => {
     });
 
     it('should include filters in JSON export request', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: {} }),
       });
@@ -129,7 +129,7 @@ describe('useExportVocabulary', () => {
     it('should export vocabulary as CSV successfully', async () => {
       const csvText = '\uFEFFword,reading,meaning\nこんにちは,konnichiwa,Hello';
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         text: async () => csvText,
         headers: {
@@ -155,7 +155,7 @@ describe('useExportVocabulary', () => {
     });
 
     it('should include filters in CSV export request', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         text: async () => 'csv data',
         headers: {
@@ -189,7 +189,7 @@ describe('useExportVocabulary', () => {
 
   describe('error handling', () => {
     it('should handle network errors', async () => {
-      (global.fetch as any).mockRejectedValueOnce(new Error('Network error'));
+      (global.fetch as unknown).mockRejectedValueOnce(new Error('Network error'));
 
       const { result } = renderHook(() => useExportVocabulary(), {
         wrapper: createWrapper(),
@@ -205,7 +205,7 @@ describe('useExportVocabulary', () => {
     });
 
     it('should handle API errors', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: false,
         json: async () => ({
           success: false,
@@ -229,7 +229,7 @@ describe('useExportVocabulary', () => {
 
   describe('loading states', () => {
     it('should track loading state during export', async () => {
-      (global.fetch as any).mockImplementationOnce(
+      (global.fetch as unknown).mockImplementationOnce(
         () =>
           new Promise((resolve) =>
             setTimeout(
@@ -265,7 +265,7 @@ describe('useExportVocabulary', () => {
 
   describe('cleanup', () => {
     it('should cleanup blob URL after download', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as unknown).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: {} }),
       });

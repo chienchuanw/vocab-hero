@@ -32,51 +32,22 @@ export function useMatchingGame(initialCards: MatchingCard[]) {
   });
 
   /**
-   * 開始遊戲計時
-   */
-  useEffect(() => {
-    if (state.startTime === null && state.selectedCards.length > 0) {
-      setState((prev) => ({
-        ...prev,
-        startTime: Date.now(),
-      }));
-    }
-  }, [state.selectedCards.length, state.startTime]);
-
-  /**
-   * 檢查遊戲是否完成
-   */
-  useEffect(() => {
-    const totalPairs = initialCards.length / 2;
-    if (state.matchedPairs.length === totalPairs && !state.isComplete) {
-      setState((prev) => ({
-        ...prev,
-        isComplete: true,
-        endTime: Date.now(),
-      }));
-    }
-  }, [state.matchedPairs.length, state.isComplete, initialCards.length]);
-
-  /**
    * 選擇卡片
    */
   const selectCard = useCallback(
     (cardId: string) => {
-      // 如果已經選擇了兩張卡片，或卡片已配對，則忽略
       if (state.selectedCards.length >= 2) return;
 
       const card = state.cards.find((c) => c.id === cardId);
       if (!card) return;
 
-      // 如果卡片已配對，則忽略
       if (state.matchedPairs.includes(card.pairId)) return;
-
-      // 如果卡片已選擇，則忽略
       if (state.selectedCards.includes(cardId)) return;
 
       setState((prev) => ({
         ...prev,
         selectedCards: [...prev.selectedCards, cardId],
+        startTime: prev.startTime === null ? Date.now() : prev.startTime,
       }));
     },
     [state.selectedCards, state.cards, state.matchedPairs]
@@ -92,39 +63,36 @@ export function useMatchingGame(initialCards: MatchingCard[]) {
       const card2 = state.cards.find((c) => c.id === card2Id);
 
       if (card1 && card2) {
-        setState((prev) => ({
-          ...prev,
-          attempts: prev.attempts + 1,
-        }));
+        const isMatch = isMatchingPair(card1, card2);
+        const totalPairs = initialCards.length / 2;
 
-        if (isMatchingPair(card1, card2)) {
-          // 配對成功
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setState((prev) => {
+          const newMatchedPairs = isMatch
+            ? [...prev.matchedPairs, card1.pairId]
+            : prev.matchedPairs;
+          const isGameComplete = newMatchedPairs.length === totalPairs;
+
+          return {
+            ...prev,
+            attempts: prev.attempts + 1,
+            matchedPairs: newMatchedPairs,
+            showMatchAnimation: isMatch,
+            isComplete: isGameComplete,
+            endTime: isGameComplete ? Date.now() : prev.endTime,
+          };
+        });
+
+        setTimeout(() => {
           setState((prev) => ({
             ...prev,
-            matchedPairs: [...prev.matchedPairs, card1.pairId],
-            showMatchAnimation: true,
+            selectedCards: [],
+            showMatchAnimation: false,
           }));
-
-          // 延遲清除選擇
-          setTimeout(() => {
-            setState((prev) => ({
-              ...prev,
-              selectedCards: [],
-              showMatchAnimation: false,
-            }));
-          }, 1000);
-        } else {
-          // 配對失敗，延遲清除選擇
-          setTimeout(() => {
-            setState((prev) => ({
-              ...prev,
-              selectedCards: [],
-            }));
-          }, 1000);
-        }
+        }, 1000);
       }
     }
-  }, [state.selectedCards, state.cards]);
+  }, [state.selectedCards, state.cards, initialCards.length]);
 
   /**
    * 重新開始遊戲
@@ -168,4 +136,3 @@ export function useMatchingGame(initialCards: MatchingCard[]) {
     elapsedTime: getElapsedTime(),
   };
 }
-

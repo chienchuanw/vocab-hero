@@ -44,7 +44,7 @@ describe('useDailyGoal', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as unknown).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, data: mockGoal }),
     });
@@ -61,7 +61,7 @@ describe('useDailyGoal', () => {
   });
 
   it('should handle fetch error', async () => {
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as unknown).mockResolvedValueOnce({
       ok: false,
       json: async () => ({ success: false, error: { message: 'Not found' } }),
     });
@@ -102,7 +102,7 @@ describe('useUpdateDailyGoal', () => {
       updatedAt: new Date().toISOString(),
     };
 
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as unknown).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ success: true, data: mockUpdatedGoal }),
     });
@@ -127,7 +127,7 @@ describe('useUpdateDailyGoal', () => {
   });
 
   it('should handle update error', async () => {
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as unknown).mockResolvedValueOnce({
       ok: false,
       json: async () => ({
         success: false,

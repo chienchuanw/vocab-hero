@@ -20,7 +20,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       body: JSON.stringify({ quality: 4 }),
     });
 
-    const response = await POST(request as any, {
+    const response = await POST(request, {
       params: Promise.resolve({ id: 'invalid-id' }),
     });
     const data = await response.json();
@@ -43,7 +43,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       body: JSON.stringify({}),
     });
 
-    const response = await POST(request as any, {
+    const response = await POST(request, {
       params: Promise.resolve({ id: vocab.id }),
     });
     const data = await response.json();
@@ -66,7 +66,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       body: JSON.stringify({ quality: 6 }),
     });
 
-    const response = await POST(request as any, {
+    const response = await POST(request, {
       params: Promise.resolve({ id: vocab.id }),
     });
     const data = await response.json();
@@ -89,7 +89,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       body: JSON.stringify({ quality: 4 }),
     });
 
-    const response = await POST(request as any, {
+    const response = await POST(request, {
       params: Promise.resolve({ id: vocab.id }),
     });
     const data = await response.json();
@@ -130,7 +130,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       body: JSON.stringify({ quality: 4 }),
     });
 
-    const response = await POST(request as any, {
+    const response = await POST(request, {
       params: Promise.resolve({ id: vocab.id }),
     });
     const data = await response.json();
@@ -165,7 +165,7 @@ describe('POST /api/vocabulary/:id/review', () => {
       body: JSON.stringify({ quality: 2 }),
     });
 
-    const response = await POST(request as any, {
+    const response = await POST(request, {
       params: Promise.resolve({ id: vocab.id }),
     });
     const data = await response.json();
