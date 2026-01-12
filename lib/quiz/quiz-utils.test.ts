@@ -52,19 +52,19 @@ describe('generateDistractors', () => {
   ];
 
   it('should generate correct number of distractors', () => {
-    const correctAnswer = vocabularyPool[0];
+    const correctAnswer = vocabularyPool[0]!;
     const distractors = generateDistractors(correctAnswer, vocabularyPool, 3);
     expect(distractors).toHaveLength(3);
   });
 
   it('should not include the correct answer in distractors', () => {
-    const correctAnswer = vocabularyPool[0];
+    const correctAnswer = vocabularyPool[0]!;
     const distractors = generateDistractors(correctAnswer, vocabularyPool, 3);
     expect(distractors).not.toContainEqual(correctAnswer);
   });
 
   it('should return unique distractors', () => {
-    const correctAnswer = vocabularyPool[0];
+    const correctAnswer = vocabularyPool[0]!;
     const distractors = generateDistractors(correctAnswer, vocabularyPool, 3);
     const ids = distractors.map((d) => d.id);
     const uniqueIds = new Set(ids);
@@ -73,14 +73,14 @@ describe('generateDistractors', () => {
 
   it('should handle case when pool is smaller than requested count', () => {
     const smallPool = vocabularyPool.slice(0, 2);
-    const correctAnswer = smallPool[0];
+    const correctAnswer = smallPool[0]!;
     const distractors = generateDistractors(correctAnswer, smallPool, 3);
     expect(distractors.length).toBeLessThanOrEqual(1);
   });
 
   it('should return empty array when pool only contains correct answer', () => {
-    const singleItemPool = [vocabularyPool[0]];
-    const correctAnswer = vocabularyPool[0];
+    const singleItemPool = [vocabularyPool[0]!];
+    const correctAnswer = vocabularyPool[0]!;
     const distractors = generateDistractors(correctAnswer, singleItemPool, 3);
     expect(distractors).toEqual([]);
   });
@@ -103,32 +103,36 @@ describe('generateQuizQuestions', () => {
   it('should generate WORD_TO_MEANING questions correctly', () => {
     const questions = generateQuizQuestions(vocabularyPool, 2, 'WORD_TO_MEANING');
     questions.forEach((q) => {
-      expect(q.question).toContain(q.correctAnswer.word);
+      expect(q.word).toBeDefined();
+      expect(q.reading).toBeDefined();
       expect(q.options).toHaveLength(4);
-      expect(q.options).toContain(q.correctAnswer.meaning);
+      expect(q.options).toContain(q.correctAnswer);
+      expect(q.type).toBe('WORD_TO_MEANING');
     });
   });
 
   it('should generate MEANING_TO_WORD questions correctly', () => {
     const questions = generateQuizQuestions(vocabularyPool, 2, 'MEANING_TO_WORD');
     questions.forEach((q) => {
-      expect(q.question).toContain(q.correctAnswer.meaning);
+      expect(q.word).toBeDefined();
+      expect(q.reading).toBeDefined();
       expect(q.options).toHaveLength(4);
-      expect(q.options).toContain(q.correctAnswer.word);
+      expect(q.options).toContain(q.correctAnswer);
+      expect(q.type).toBe('MEANING_TO_WORD');
     });
   });
 
   it('should have unique correct answers across questions', () => {
     const questions = generateQuizQuestions(vocabularyPool, 3, 'WORD_TO_MEANING');
-    const correctIds = questions.map((q) => q.correctAnswer.id);
-    const uniqueIds = new Set(correctIds);
+    const vocabularyIds = questions.map((q) => q.vocabularyId);
+    const uniqueIds = new Set(vocabularyIds);
     expect(uniqueIds.size).toBe(questions.length);
   });
 
   it('should shuffle options in each question', () => {
     const questions = generateQuizQuestions(vocabularyPool, 2, 'WORD_TO_MEANING');
     questions.forEach((q) => {
-      const correctIndex = q.options.indexOf(q.correctAnswer.meaning);
+      const correctIndex = q.options.indexOf(q.correctAnswer);
       expect(correctIndex).toBeGreaterThanOrEqual(0);
       expect(correctIndex).toBeLessThan(4);
     });

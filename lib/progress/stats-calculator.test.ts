@@ -118,9 +118,7 @@ describe('calculateGroupDistribution', () => {
       { id: '4', groups: [] },
     ];
 
-    const distribution = calculateGroupDistribution(
-      vocabulary as unknown as Array<{ group: { name: string } | null }>
-    );
+    const distribution = calculateGroupDistribution(vocabulary);
 
     expect(distribution).toHaveLength(3);
     expect(distribution.find((d) => d.name === 'JLPT N5')?.value).toBe(2);

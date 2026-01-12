@@ -145,7 +145,7 @@ describe('matching-generator', () => {
       const shuffled = shuffleCards(cards);
 
       // 檢查是否有任何位置改變（高機率）
-      const hasChanged = shuffled.some((card, index) => card.id !== cards[index].id);
+      const hasChanged = shuffled.some((card, index) => card.id !== cards[index]!.id);
 
       // 這個測試有極小機率失敗（如果洗牌後順序完全相同）
       expect(hasChanged).toBe(true);
