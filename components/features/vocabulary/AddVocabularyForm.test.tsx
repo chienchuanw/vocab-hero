@@ -52,13 +52,13 @@ describe('AddVocabularyForm', () => {
     await user.click(screen.getByRole('button', { name: /add example sentence/i }));
 
     const sentenceInputs = screen.getAllByPlaceholderText(/私は毎日勉強します/i);
-    await user.type(sentenceInputs[0], '私は毎日勉強します');
+    await user.type(sentenceInputs[0]!, '私は毎日勉強します');
 
     const readingInputs = screen.getAllByPlaceholderText(/わたしはまいにちべんきょうします/i);
-    await user.type(readingInputs[0], 'わたしはまいにちべんきょうします');
+    await user.type(readingInputs[0]!, 'わたしはまいにちべんきょうします');
 
     const meaningInputs = screen.getAllByPlaceholderText(/I study every day/i);
-    await user.type(meaningInputs[0], 'I study every day');
+    await user.type(meaningInputs[0]!, 'I study every day');
 
     await user.click(screen.getByRole('button', { name: /add word/i }));
 

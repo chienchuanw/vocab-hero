@@ -8,7 +8,7 @@ import { MultipleChoiceQuestion } from '@/components/features/quiz/MultipleChoic
 import { QuizSummary, type QuizAnswerRecord } from '@/components/features/quiz/QuizSummary';
 import { useQuizSession } from '@/hooks/useQuizSession';
 import { Button } from '@/components/ui/button';
-import { generateQuizQuestions } from '@/lib/quiz/quiz-utils';
+import { generateQuizQuestions, type QuizQuestion } from '@/lib/quiz/quiz-utils';
 
 /**
  * Quiz Study Page
@@ -98,16 +98,14 @@ export default function QuizStudyPage() {
     );
   }
 
-  // 顯示測驗完成畫面
   if (quiz.isComplete) {
-    // 轉換答案記錄格式
     const answerRecords: QuizAnswerRecord[] = quiz.answers.map((answer) => {
       const question = questions.find((q) => q.id === answer.questionId);
       return {
         questionId: answer.questionId,
-        word: question?.word || '',
-        reading: question?.reading || '',
-        correctAnswer: question?.correctAnswer || '',
+        word: question?.word ?? '',
+        reading: question?.reading ?? '',
+        correctAnswer: question?.correctAnswer ?? '',
         selectedAnswer: answer.selectedAnswer,
         isCorrect: answer.isCorrect,
       };

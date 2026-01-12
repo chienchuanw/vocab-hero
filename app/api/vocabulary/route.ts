@@ -69,9 +69,9 @@ export async function GET(request: NextRequest) {
     }
 
     // Cursor-based 分頁
-    const queryOptions: Prisma.VocabularyItemFindManyArgs = {
+    const queryOptions = {
       where,
-      take: limit + 1, // 多取一筆來判斷是否有下一頁
+      take: limit + 1,
       orderBy: {
         [sortBy]: sortOrder,
       },
@@ -96,31 +96,22 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-    };
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : undefined,
+    } as const;
 
-    // 如果有 cursor，加入 cursor 條件
-    if (cursor) {
-      queryOptions.cursor = {
-        id: cursor,
-      };
-      queryOptions.skip = 1; // 跳過 cursor 本身
-    }
-
-    // 執行查詢
     let items = await prisma.vocabularyItem.findMany(queryOptions);
 
-    // 依精熟程度篩選（在記憶體中進行，因為精熟程度是計算出來的）
     if (masteryLevel) {
       items = items.filter((item) => {
-        const level = calculateMasteryLevel(
-          item.reviewSchedule
-            ? {
-                easinessFactor: item.reviewSchedule.easinessFactor,
-                interval: item.reviewSchedule.interval,
-                repetitions: item.reviewSchedule.repetitions,
-              }
-            : null
-        );
+        const reviewData = item.reviewSchedule
+          ? {
+              easinessFactor: item.reviewSchedule.easinessFactor,
+              interval: item.reviewSchedule.interval,
+              repetitions: item.reviewSchedule.repetitions,
+            }
+          : null;
+        const level = calculateMasteryLevel(reviewData);
         return level === masteryLevel;
       });
     }

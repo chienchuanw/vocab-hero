@@ -3,7 +3,7 @@
  */
 
 import '@testing-library/jest-dom/vitest';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@/tests/test-utils';
 import userEvent from '@testing-library/user-event';
 import { QualityRatingButtons } from './QualityRatingButtons';
@@ -94,7 +94,7 @@ describe('QualityRatingButtons', () => {
 
     const buttons = container.querySelectorAll('button');
     expect(buttons).toHaveLength(6);
-    
+
     // Each button should have distinct styling
     buttons.forEach((button) => {
       expect(button.className).toBeTruthy();
@@ -110,4 +110,3 @@ describe('QualityRatingButtons', () => {
     expect(firstButton).toHaveFocus();
   });
 });
-

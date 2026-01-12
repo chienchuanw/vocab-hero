@@ -12,9 +12,11 @@ export interface VocabularyItem {
 
 export interface QuizQuestion {
   id: string;
-  question: string;
+  vocabularyId: string;
+  word: string;
+  reading: string;
+  correctAnswer: string;
   options: string[];
-  correctAnswer: VocabularyItem;
   type: 'WORD_TO_MEANING' | 'MEANING_TO_WORD';
 }
 
@@ -111,14 +113,17 @@ export function generateQuizQuestions(
       options = [item.word, ...distractors.map((d) => d.word)];
     }
 
-    // Shuffle options so correct answer is not always first
     const shuffledOptions = shuffleArray(options);
+
+    const correctAnswerValue = questionType === 'WORD_TO_MEANING' ? item.meaning : item.word;
 
     return {
       id: `question-${index + 1}`,
-      question,
+      vocabularyId: item.id,
+      word: item.word,
+      reading: item.reading,
+      correctAnswer: correctAnswerValue,
       options: shuffledOptions,
-      correctAnswer: item,
       type: questionType,
     };
   });

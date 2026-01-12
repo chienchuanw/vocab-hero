@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { VocabularyCard } from './VocabularyCard';
 import { Loader2 } from 'lucide-react';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
-import type { UseInfiniteQueryResult } from '@tanstack/react-query';
+import type { UseInfiniteQueryResult, InfiniteData } from '@tanstack/react-query';
 
 interface VocabularyPageData {
   items: VocabularyItem[];
@@ -13,7 +13,7 @@ interface VocabularyPageData {
 }
 
 export interface VocabularyListProps {
-  query: UseInfiniteQueryResult<VocabularyPageData, Error>;
+  query: UseInfiniteQueryResult<InfiniteData<VocabularyPageData, unknown>, Error>;
   onEdit?: (vocabulary: VocabularyItem) => void;
   onDelete?: (vocabulary: VocabularyItem) => void;
 }

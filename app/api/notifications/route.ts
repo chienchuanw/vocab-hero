@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
 import { successResponse, ApiErrors } from '@/lib/api/response';
+import { notificationQuerySchema, createNotificationSchema } from '@/lib/validations/notification';
 import type { Prisma } from '@prisma/client';
 
 /**

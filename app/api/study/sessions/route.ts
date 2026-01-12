@@ -37,7 +37,11 @@ export async function POST(request: NextRequest) {
 
     // Prepare session data
     const sessionData: Prisma.StudySessionCreateInput = {
-      userId,
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
       mode,
     };
 
@@ -45,8 +49,14 @@ export async function POST(request: NextRequest) {
     if (isQuizSession) {
       const quizData = validationResult.data as Partial<
         typeof validationResult.data & {
-          studyMode?: string;
-          quizType?: string;
+          studyMode?:
+            | 'FLASHCARD'
+            | 'MULTIPLE_CHOICE'
+            | 'SPELLING'
+            | 'MATCHING'
+            | 'RANDOM'
+            | 'LISTENING';
+          quizType?: 'WORD_TO_MEANING' | 'MEANING_TO_WORD' | 'MIXED';
           questionCount?: number;
           groupId?: string;
         }
