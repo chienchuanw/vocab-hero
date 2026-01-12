@@ -20,10 +20,12 @@ export function MatchAnimation({ show, onComplete }: MatchAnimationProps) {
 
   useEffect(() => {
     if (!show) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsVisible(false);
       return;
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsVisible((prev) => {
       if (prev === true) return prev;
       return true;

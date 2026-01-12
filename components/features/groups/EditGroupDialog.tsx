@@ -37,19 +37,14 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
   });
 
   useEffect(() => {
-    if (group) {
-      setFormData((prev) => {
-        const newDescription = group.description || '';
-        if (prev.name === group.name && prev.description === newDescription) {
-          return prev;
-        }
-        return {
-          name: group.name,
-          description: newDescription,
-        };
+    if (open && group) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setFormData({
+        name: group.name,
+        description: group.description || '',
       });
     }
-  }, [group]);
+  }, [open, group]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

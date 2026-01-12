@@ -6,11 +6,14 @@ import { Loader2 } from 'lucide-react';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
 import type { UseInfiniteQueryResult } from '@tanstack/react-query';
 
-/**
- * VocabularyList component props
- */
+interface VocabularyPageData {
+  items: VocabularyItem[];
+  nextCursor: string | null;
+  hasNextPage: boolean;
+}
+
 export interface VocabularyListProps {
-  query: UseInfiniteQueryResult<any, Error>;
+  query: UseInfiniteQueryResult<VocabularyPageData, Error>;
   onEdit?: (vocabulary: VocabularyItem) => void;
   onDelete?: (vocabulary: VocabularyItem) => void;
 }
@@ -67,7 +70,7 @@ export function VocabularyList({ query, onEdit, onDelete }: VocabularyListProps)
   }
 
   // Get all pages data
-  const vocabularyItems = data?.pages.flatMap((page: any) => page.items) ?? [];
+  const vocabularyItems = data?.pages.flatMap((page) => page.items) ?? [];
 
   // Empty state
   if (vocabularyItems.length === 0) {
@@ -75,7 +78,7 @@ export function VocabularyList({ query, onEdit, onDelete }: VocabularyListProps)
       <div className="text-center py-12">
         <p className="text-gray-500">No vocabulary items yet</p>
         <p className="text-sm text-gray-400 mt-2">
-          Click "Add Word" to start building your collection
+          Click &quot;Add Word&quot; to start building your collection
         </p>
       </div>
     );

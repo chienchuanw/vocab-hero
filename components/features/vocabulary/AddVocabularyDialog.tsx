@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { AddVocabularyForm } from './AddVocabularyForm';
-import { useCreateVocabulary } from '@/hooks/useVocabularyMutations';
+import { useCreateVocabulary, type CreateVocabularyInput } from '@/hooks/useVocabularyMutations';
 import { toast } from 'sonner';
 
 /**
@@ -26,7 +26,7 @@ export interface AddVocabularyDialogProps {
 export function AddVocabularyDialog({ open, onOpenChange }: AddVocabularyDialogProps) {
   const createMutation = useCreateVocabulary();
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: CreateVocabularyInput) => {
     try {
       await createMutation.mutateAsync(data);
       toast.success('Word added successfully!');

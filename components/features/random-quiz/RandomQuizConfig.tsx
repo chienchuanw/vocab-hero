@@ -76,7 +76,10 @@ export function RandomQuizConfigForm({ onStart }: RandomQuizConfigProps) {
         {/* 難度選擇 */}
         <div className="space-y-2">
           <Label htmlFor="difficulty">Difficulty Level</Label>
-          <Select value={difficulty} onValueChange={(value: any) => setDifficulty(value)}>
+          <Select
+            value={difficulty}
+            onValueChange={(value) => setDifficulty(value as 'all' | 'easy' | 'medium' | 'hard')}
+          >
             <SelectTrigger id="difficulty">
               <SelectValue />
             </SelectTrigger>
@@ -108,4 +111,3 @@ export function RandomQuizConfigForm({ onStart }: RandomQuizConfigProps) {
     </div>
   );
 }
-

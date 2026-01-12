@@ -48,6 +48,7 @@ export function EditVocabularyDialog({
   // Update form data when vocabulary changes
   useEffect(() => {
     if (vocabulary) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData({
         word: vocabulary.word,
         reading: vocabulary.reading,
@@ -64,6 +65,7 @@ export function EditVocabularyDialog({
           meaning: s.meaning,
           order: s.order,
         })) || [];
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setExampleSentences(sentences);
     }
   }, [vocabulary]);

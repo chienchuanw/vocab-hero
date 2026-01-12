@@ -52,7 +52,8 @@ export function DeleteConfirmationDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "{vocabulary?.word}"? This action cannot be undone.
+            Are you sure you want to delete &quot;{vocabulary?.word}&quot;? This action cannot be
+            undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

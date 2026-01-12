@@ -14,14 +14,16 @@ export function StreakDisplay({
   longestStreak,
   freezesRemaining,
 }: StreakDisplayProps) {
-  const isMilestone = STREAK_MILESTONES.includes(currentStreak as any);
+  const isMilestone = (STREAK_MILESTONES as readonly number[]).includes(currentStreak);
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Current Streak</CardTitle>
-          <Flame className={`h-4 w-4 ${currentStreak > 0 ? 'text-orange-500' : 'text-muted-foreground'}`} />
+          <Flame
+            className={`h-4 w-4 ${currentStreak > 0 ? 'text-orange-500' : 'text-muted-foreground'}`}
+          />
         </CardHeader>
         <CardContent>
           <div className="flex items-baseline gap-2">
@@ -52,7 +54,9 @@ export function StreakDisplay({
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Freezes Remaining</CardTitle>
-          <Snowflake className={`h-4 w-4 ${freezesRemaining > 0 ? 'text-blue-500' : 'text-muted-foreground'}`} />
+          <Snowflake
+            className={`h-4 w-4 ${freezesRemaining > 0 ? 'text-blue-500' : 'text-muted-foreground'}`}
+          />
         </CardHeader>
         <CardContent>
           <div className="flex items-baseline gap-2">
@@ -60,13 +64,10 @@ export function StreakDisplay({
             <span className="text-sm text-muted-foreground">/ 5</span>
           </div>
           {freezesRemaining === 0 && (
-            <p className="mt-2 text-xs text-muted-foreground">
-              Resets monthly
-            </p>
+            <p className="mt-2 text-xs text-muted-foreground">Resets monthly</p>
           )}
         </CardContent>
       </Card>
     </div>
   );
 }
-
