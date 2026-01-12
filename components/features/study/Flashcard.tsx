@@ -15,7 +15,7 @@ import type { ExampleSentenceData } from '@/components/features/vocabulary/Examp
  */
 export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const cardRef = useRef<HTMLButtonElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const handleFlip = useCallback(() => {
     const newFlippedState = !isFlipped;
@@ -55,10 +55,18 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
 
   return (
     <div className="flashcard-container perspective-1000">
-      <button
+      <div
         ref={cardRef}
         onClick={handleFlip}
-        className="flashcard-inner relative w-full h-96 transition-transform duration-500 transform-style-3d focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleFlip();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        className="flashcard-inner relative w-full h-96 transition-transform duration-500 transform-style-3d focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg cursor-pointer"
         style={{
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
           transformStyle: 'preserve-3d',
@@ -119,7 +127,7 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
             Press Space or Click to flip back
           </p>
         </div>
-      </button>
+      </div>
     </div>
   );
 }

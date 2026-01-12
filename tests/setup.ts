@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
-import { afterEach, vi } from 'vitest';
+import { afterEach, vi, beforeAll } from 'vitest';
 
 // Mock ResizeObserver (required by Radix UI components)
 class ResizeObserverMock implements ResizeObserver {
@@ -155,7 +155,19 @@ Object.defineProperty(HTMLMediaElement.prototype, 'pause', {
   value: vi.fn(),
 });
 
-// 每個測試後清理 React 組件
+beforeAll(() => {
+  if (!global.fetch) {
+    global.fetch = vi.fn(() =>
+      Promise.resolve(
+        new Response(JSON.stringify({}), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        })
+      )
+    );
+  }
+});
+
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
