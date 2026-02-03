@@ -244,5 +244,29 @@
     "en": "English",
     "zhTW": "繁體中文",
     "current": "目前語言"
+  },
+  "metadata": {
+    "title": "Vocab Hero - 日文單字學習",
+    "description": "透過間隔重複和互動學習模式精通日文單字",
+    "settings": {
+      "title": "設定 - Vocab Hero",
+      "description": "自訂您的學習體驗"
+    },
+    "study": {
+      "title": "學習 - Vocab Hero",
+      "description": "練習您的日文單字"
+    },
+    "vocabulary": {
+      "title": "單字 - Vocab Hero",
+      "description": "管理您的日文單字收藏"
+    },
+    "progress": {
+      "title": "進度 - Vocab Hero",
+      "description": "追蹤您的學習旅程"
+    },
+    "groups": {
+      "title": "群組 - Vocab Hero",
+      "description": "將單字整理成群組"
+    }
   }
 }

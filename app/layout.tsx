@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { QueryProvider } from '@/lib/providers/QueryProvider';
 import { ThemeProvider } from '@/lib/providers/ThemeProvider';
 import { OfflineBanner } from '@/components/shared/OfflineBanner';
@@ -17,10 +18,13 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'Vocab Hero - Japanese Vocabulary Learning',
-  description: 'Learn Japanese vocabulary with gamified spaced repetition',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('metadata');
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
 
 export default async function RootLayout({
   children,

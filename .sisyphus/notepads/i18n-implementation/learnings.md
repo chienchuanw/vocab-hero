@@ -38,3 +38,16 @@
 
 - Middleware shows deprecation warning recommending "proxy" convention
 - Still functional, just a heads up for future Next.js versions
+
+## i18n Test Patterns (2026-02-03)
+
+### Unit Test Structure
+- Import JSON translation files directly for testing key parity
+- Recursive helper functions work well for checking nested empty values
+- Test namespaces count to catch missing translation sections
+
+### E2E Test Patterns
+- Use `context.clearCookies()` in beforeEach for clean state
+- Set locale cookie directly with `context.addCookies()` to skip UI interaction
+- Test IDs used: `language-switcher`, `locale-en`, `locale-zh-TW`, `language-option-en`, `language-option-zh-TW`
+- Use `waitForLoadState('networkidle')` after locale switch for page reload

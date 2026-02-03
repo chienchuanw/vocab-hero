@@ -244,5 +244,29 @@
     "en": "English",
     "zhTW": "繁體中文",
     "current": "Current language"
+  },
+  "metadata": {
+    "title": "Vocab Hero - Japanese Vocabulary Learning",
+    "description": "Master Japanese vocabulary with spaced repetition and interactive study modes",
+    "settings": {
+      "title": "Settings - Vocab Hero",
+      "description": "Customize your learning experience"
+    },
+    "study": {
+      "title": "Study - Vocab Hero",
+      "description": "Practice your Japanese vocabulary"
+    },
+    "vocabulary": {
+      "title": "Vocabulary - Vocab Hero",
+      "description": "Manage your Japanese vocabulary collection"
+    },
+    "progress": {
+      "title": "Progress - Vocab Hero",
+      "description": "Track your learning journey"
+    },
+    "groups": {
+      "title": "Groups - Vocab Hero",
+      "description": "Organize your vocabulary into groups"
+    }
   }
 }
