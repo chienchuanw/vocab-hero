@@ -59,7 +59,39 @@
     },
     "deleteConfirmPrompt": "Type DELETE ALL to confirm",
     "deleteConfirmText": "DELETE ALL",
-    "deleteConfirmError": "Please type exactly: DELETE ALL"
+    "deleteConfirmError": "Please type exactly: DELETE ALL",
+    "restore": {
+      "uploadTitle": "Upload Backup File",
+      "uploadDescription": "Select a JSON backup file to restore your vocabulary data",
+      "backupFile": "Backup File",
+      "analyzing": "Analyzing backup file...",
+      "previewTitle": "Preview Restore",
+      "previewDescription": "Review what will be restored from",
+      "totalItems": "Total Items",
+      "newItems": "New Items",
+      "duplicates": "Duplicates",
+      "duplicateHandling": "How should duplicates be handled?",
+      "skipDuplicates": "Skip duplicates",
+      "skipDuplicatesDesc": "Only import new vocabulary items. Existing items remain unchanged.",
+      "overwriteDuplicates": "Overwrite duplicates",
+      "overwriteDuplicatesDesc": "Replace existing items completely with backup data.",
+      "mergeDuplicates": "Merge duplicates",
+      "mergeDuplicatesDesc": "Keep existing data but add new groups from backup.",
+      "continueRestore": "Continue to Restore",
+      "confirmTitle": "Confirm Restore",
+      "confirmDescription": "This will restore",
+      "confirmDescriptionAnd": "and handle",
+      "confirmPrompt": "Type RESTORE to confirm",
+      "confirmError": "Please type exactly: RESTORE",
+      "restoring": "Restoring...",
+      "restoreData": "Restore Data"
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "toggleTheme": "Toggle theme"
+    }
   },
   "study": {
     "title": "Study",
@@ -221,6 +253,16 @@
     "noGoalSet": "No daily goal set. Go to settings to create one.",
     "startStudying": "Start Studying"
   },
+  "goals": {
+    "congratulations": "Congratulations!",
+    "goalAchieved": "You've completed your daily goal!",
+    "wordsGoal": "Words Goal",
+    "timeGoal": "Time Goal",
+    "complete": "% complete",
+    "goalsAchieved": "Daily goals achieved!",
+    "words": "Words",
+    "minutes": "Minutes"
+  },
   "errors": {
     "somethingWentWrong": "Something Went Wrong",
     "pageLoadError": "An error occurred while loading this page.",
@@ -250,11 +292,63 @@
     "description": "Master Japanese vocabulary with spaced repetition and interactive study modes",
     "settings": {
       "title": "Settings - Vocab Hero",
-      "description": "Customize your learning experience"
+      "description": "Customize your learning experience",
+      "audio": {
+        "title": "Audio Settings - Vocab Hero",
+        "description": "Configure TTS voice and playback settings"
+      },
+      "data": {
+        "title": "Data Management - Vocab Hero",
+        "description": "Backup, restore, or delete your data"
+      },
+      "goals": {
+        "title": "Daily Goals - Vocab Hero",
+        "description": "Set and manage your daily study targets"
+      },
+      "language": {
+        "title": "Language Settings - Vocab Hero",
+        "description": "Choose your preferred app language"
+      },
+      "notifications": {
+        "title": "Notifications - Vocab Hero",
+        "description": "Manage your notification preferences"
+      },
+      "study": {
+        "title": "Study Settings - Vocab Hero",
+        "description": "Customize your study session preferences"
+      },
+      "theme": {
+        "title": "Theme Settings - Vocab Hero",
+        "description": "Choose your preferred theme"
+      }
     },
     "study": {
       "title": "Study - Vocab Hero",
-      "description": "Practice your Japanese vocabulary"
+      "description": "Practice your Japanese vocabulary",
+      "flashcard": {
+        "title": "Flashcard Study - Vocab Hero",
+        "description": "Review vocabulary with spaced repetition"
+      },
+      "listening": {
+        "title": "Listening Study - Vocab Hero",
+        "description": "Listen and identify Japanese vocabulary"
+      },
+      "matching": {
+        "title": "Matching Study - Vocab Hero",
+        "description": "Match words with their meanings"
+      },
+      "quiz": {
+        "title": "Quiz Study - Vocab Hero",
+        "description": "Test your knowledge with multiple choice questions"
+      },
+      "random": {
+        "title": "Random Study - Vocab Hero",
+        "description": "Practice with mixed question types"
+      },
+      "spelling": {
+        "title": "Spelling Study - Vocab Hero",
+        "description": "Practice typing Japanese readings"
+      }
     },
     "vocabulary": {
       "title": "Vocabulary - Vocab Hero",

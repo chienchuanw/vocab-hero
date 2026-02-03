@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -28,6 +29,7 @@ import type {
  */
 export default function ListeningQuizPage() {
   const router = useRouter();
+  const t = useTranslations('study');
   const { data: vocabularyQueryData } = useVocabulary();
   const { startQuizSession, endSession, session } = useStudySession();
 
@@ -47,7 +49,7 @@ export default function ListeningQuizPage() {
   // Generate questions when quiz starts
   const handleStartQuiz = () => {
     if (!vocabularyData || vocabularyData.length === 0) {
-      alert('No vocabulary available. Please add vocabulary first.');
+      alert(t('noVocabulary'));
       return;
     }
 
@@ -141,29 +143,29 @@ export default function ListeningQuizPage() {
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
           <Card className="p-6">
-            <h1 className="text-3xl font-bold mb-6">Listening Quiz</h1>
+            <h1 className="text-3xl font-bold mb-6">{t('listening')}</h1>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium mb-2">Question Type</label>
+                <label className="block text-sm font-medium mb-2">{t('questionType')}</label>
                 <div className="flex gap-4">
                   <Button
                     variant={questionType === 'multiple-choice' ? 'default' : 'outline'}
                     onClick={() => setQuestionType('multiple-choice')}
                   >
-                    Multiple Choice
+                    {t('questionTypes.wordToMeaning')}
                   </Button>
                   <Button
                     variant={questionType === 'typing' ? 'default' : 'outline'}
                     onClick={() => setQuestionType('typing')}
                   >
-                    Typing
+                    {t('questionTypes.meaningToWord')}
                   </Button>
                 </div>
               </div>
 
               <Button onClick={handleStartQuiz} className="w-full" size="lg">
-                Start Quiz
+                {t('startQuiz')}
               </Button>
             </div>
           </Card>
@@ -178,16 +180,18 @@ export default function ListeningQuizPage() {
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
           <Card className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Quiz Complete!</h2>
+            <h2 className="text-2xl font-bold mb-4">{t('sessionSummary')}</h2>
             <div className="space-y-2">
-              <p>Accuracy: {stats.accuracy.toFixed(1)}%</p>
               <p>
-                Correct: {stats.correctAnswers}/{stats.totalQuestions}
+                {t('correctRate')}: {stats.accuracy.toFixed(1)}%
+              </p>
+              <p>
+                {t('correctAnswers')}: {stats.correctAnswers}/{stats.totalQuestions}
               </p>
               <p>Total Replays: {stats.totalReplays}</p>
             </div>
             <Button onClick={() => router.push('/study')} className="mt-6">
-              Back to Study
+              {t('backToStudy')}
             </Button>
           </Card>
         </div>
@@ -203,7 +207,7 @@ export default function ListeningQuizPage() {
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
           <Card className="p-6">
-            <p className="text-center text-gray-600">Loading question...</p>
+            <p className="text-center text-gray-600">{t('loading')}</p>
           </Card>
         </div>
       </Layout>

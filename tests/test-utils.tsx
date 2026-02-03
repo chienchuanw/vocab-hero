@@ -1,6 +1,8 @@
 import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { NextIntlClientProvider } from 'next-intl';
+import messages from '@/messages/en.json';
 
 /**
  * 自訂 render 函式，包裝所有必要的 Provider
@@ -22,7 +24,11 @@ function customRender(
   });
 
   const AllTheProviders = ({ children }: { children: ReactNode }): ReactElement => {
-    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+    return (
+      <NextIntlClientProvider messages={messages} locale="en">
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      </NextIntlClientProvider>
+    );
   };
 
   return render(ui, { wrapper: AllTheProviders, ...options });

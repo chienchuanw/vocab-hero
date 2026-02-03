@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@/tests/test-utils';
 import { GoalCelebration } from './GoalCelebration';
 
 /**
@@ -22,13 +22,7 @@ describe('GoalCelebration', () => {
   });
 
   it('should render celebration message when both goals achieved', () => {
-    render(
-      <GoalCelebration
-        isWordsGoalAchieved={true}
-        isMinutesGoalAchieved={true}
-        show={true}
-      />
-    );
+    render(<GoalCelebration isWordsGoalAchieved={true} isMinutesGoalAchieved={true} show={true} />);
 
     expect(screen.getByText(/congratulations/i)).toBeInTheDocument();
     expect(screen.getByText(/daily goal/i)).toBeInTheDocument();
@@ -36,11 +30,7 @@ describe('GoalCelebration', () => {
 
   it('should not render when show is false', () => {
     const { container } = render(
-      <GoalCelebration
-        isWordsGoalAchieved={true}
-        isMinutesGoalAchieved={true}
-        show={false}
-      />
+      <GoalCelebration isWordsGoalAchieved={true} isMinutesGoalAchieved={true} show={false} />
     );
 
     expect(container.firstChild).toBeNull();
@@ -48,11 +38,7 @@ describe('GoalCelebration', () => {
 
   it('should not render when only words goal achieved', () => {
     const { container } = render(
-      <GoalCelebration
-        isWordsGoalAchieved={true}
-        isMinutesGoalAchieved={false}
-        show={true}
-      />
+      <GoalCelebration isWordsGoalAchieved={true} isMinutesGoalAchieved={false} show={true} />
     );
 
     expect(container.firstChild).toBeNull();
@@ -60,11 +46,7 @@ describe('GoalCelebration', () => {
 
   it('should not render when only minutes goal achieved', () => {
     const { container } = render(
-      <GoalCelebration
-        isWordsGoalAchieved={false}
-        isMinutesGoalAchieved={true}
-        show={true}
-      />
+      <GoalCelebration isWordsGoalAchieved={false} isMinutesGoalAchieved={true} show={true} />
     );
 
     expect(container.firstChild).toBeNull();
@@ -72,14 +54,8 @@ describe('GoalCelebration', () => {
 
   it('should trigger confetti animation when both goals achieved', async () => {
     const confetti = await import('canvas-confetti');
-    
-    render(
-      <GoalCelebration
-        isWordsGoalAchieved={true}
-        isMinutesGoalAchieved={true}
-        show={true}
-      />
-    );
+
+    render(<GoalCelebration isWordsGoalAchieved={true} isMinutesGoalAchieved={true} show={true} />);
 
     await waitFor(() => {
       expect(confetti.default).toHaveBeenCalled();
@@ -87,26 +63,14 @@ describe('GoalCelebration', () => {
   });
 
   it('should display achievement icon', () => {
-    render(
-      <GoalCelebration
-        isWordsGoalAchieved={true}
-        isMinutesGoalAchieved={true}
-        show={true}
-      />
-    );
+    render(<GoalCelebration isWordsGoalAchieved={true} isMinutesGoalAchieved={true} show={true} />);
 
     const icon = screen.getByRole('img', { hidden: true });
     expect(icon).toBeInTheDocument();
   });
 
   it('should have proper accessibility attributes', () => {
-    render(
-      <GoalCelebration
-        isWordsGoalAchieved={true}
-        isMinutesGoalAchieved={true}
-        show={true}
-      />
-    );
+    render(<GoalCelebration isWordsGoalAchieved={true} isMinutesGoalAchieved={true} show={true} />);
 
     const celebration = screen.getByRole('alert');
     expect(celebration).toHaveAttribute('aria-live', 'polite');
@@ -125,4 +89,3 @@ describe('GoalCelebration', () => {
     expect(screen.getByText('Great job today!')).toBeInTheDocument();
   });
 });
-

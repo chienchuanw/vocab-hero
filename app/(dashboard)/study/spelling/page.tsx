@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { SpellingInput } from '@/components/features/spelling/SpellingInput';
@@ -13,6 +14,7 @@ import { useSpellingSession, type SpellingQuestion } from '@/hooks/useSpellingSe
  */
 export default function SpellingQuizPage() {
   const router = useRouter();
+  const t = useTranslations('study');
 
   // TODO: 從 API 獲取題目資料
   // 暫時使用模擬資料
@@ -62,20 +64,21 @@ export default function SpellingQuizPage() {
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
           <div className="rounded-lg border bg-card p-8 text-center">
-            <h2 className="text-2xl font-bold">Spelling Quiz Complete!</h2>
+            <h2 className="text-2xl font-bold">{t('sessionSummary')}</h2>
             <div className="mt-6 space-y-2">
               <p className="text-lg">
-                Score: {spelling.stats.correctAnswers} / {spelling.stats.totalQuestions}
+                {t('correctAnswers')}: {spelling.stats.correctAnswers} /{' '}
+                {spelling.stats.totalQuestions}
               </p>
               <p className="text-muted-foreground">
-                Accuracy: {spelling.stats.accuracy.toFixed(1)}%
+                {t('correctRate')}: {spelling.stats.accuracy.toFixed(1)}%
               </p>
             </div>
 
             <div className="mt-8 flex gap-4 justify-center">
-              <Button onClick={spelling.restart}>Try Again</Button>
+              <Button onClick={spelling.restart}>{t('tryAgain')}</Button>
               <Button variant="outline" onClick={() => router.push('/study')}>
-                Back to Study
+                {t('backToStudy')}
               </Button>
             </div>
           </div>
@@ -89,14 +92,12 @@ export default function SpellingQuizPage() {
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <div className="mb-4 flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Spelling Quiz</h1>
+            <h1 className="text-3xl font-bold">{t('spelling')}</h1>
             <Button variant="ghost" onClick={() => router.push('/study')}>
-              ← Back to Study
+              ← {t('backToStudy')}
             </Button>
           </div>
-          <p className="text-muted-foreground">
-            Test your spelling by typing the Japanese reading of vocabulary words
-          </p>
+          <p className="text-muted-foreground">{t('spellingDesc')}</p>
         </div>
 
         {/* 進度指示 */}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { AnswerFeedback } from './AnswerFeedback';
@@ -41,6 +42,7 @@ export function MultipleChoiceQuestion({
   selectedAnswer,
   isCorrect,
 }: MultipleChoiceQuestionProps) {
+  const t = useTranslations('quiz');
   const handleOptionClick = (option: string) => {
     // 如果已經選擇答案，不允許再次選擇
     if (selectedAnswer) return;
@@ -75,30 +77,31 @@ export function MultipleChoiceQuestion({
 
   return (
     <div className="space-y-6">
-      {/* 題目進度 */}
       <div className="text-center text-sm text-muted-foreground">
         Question {currentQuestionNumber} of {totalQuestions}
       </div>
 
-      {/* 題目卡片 */}
       <div className="rounded-lg border bg-card p-8 text-center">
         <div className="space-y-2">
           {question.type === 'WORD_TO_MEANING' ? (
             <>
               <div className="text-4xl font-bold">{question.word}</div>
               <div className="text-xl text-muted-foreground">{question.reading}</div>
-              <div className="pt-4 text-sm text-muted-foreground">What does this word mean?</div>
+              <div className="pt-4 text-sm text-muted-foreground">
+                {t('questionTypes.wordToMeaning')}
+              </div>
             </>
           ) : (
             <>
               <div className="text-2xl font-bold">{question.correctAnswer}</div>
-              <div className="pt-4 text-sm text-muted-foreground">Which word means this?</div>
+              <div className="pt-4 text-sm text-muted-foreground">
+                {t('questionTypes.meaningToWord')}
+              </div>
             </>
           )}
         </div>
       </div>
 
-      {/* 選項按鈕 */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {question.options.map((option, index) => (
           <Button
@@ -120,12 +123,13 @@ export function MultipleChoiceQuestion({
         ))}
       </div>
 
-      {/* 答案反饋 */}
       {selectedAnswer && isCorrect !== undefined && (
         <AnswerFeedback
           isCorrect={isCorrect}
           message={
-            isCorrect ? 'Correct!' : `Incorrect. The correct answer is: ${question.correctAnswer}`
+            isCorrect
+              ? t('correct')
+              : `${t('incorrect')}. ${t('correctAnswer')}: ${question.correctAnswer}`
           }
         />
       )}

@@ -59,7 +59,39 @@
     },
     "deleteConfirmPrompt": "輸入 DELETE ALL 以確認",
     "deleteConfirmText": "DELETE ALL",
-    "deleteConfirmError": "請輸入正確的確認文字：DELETE ALL"
+    "deleteConfirmError": "請輸入正確的確認文字：DELETE ALL",
+    "restore": {
+      "uploadTitle": "上傳備份檔案",
+      "uploadDescription": "選擇 JSON 備份檔案以還原您的單字資料",
+      "backupFile": "備份檔案",
+      "analyzing": "分析備份檔案中...",
+      "previewTitle": "預覽還原",
+      "previewDescription": "檢視將從以下位置還原的內容",
+      "totalItems": "總項目數",
+      "newItems": "新項目",
+      "duplicates": "重複項目",
+      "duplicateHandling": "應如何處理重複項目？",
+      "skipDuplicates": "跳過重複項目",
+      "skipDuplicatesDesc": "僅匯入新的單字項目。現有項目保持不變。",
+      "overwriteDuplicates": "覆蓋重複項目",
+      "overwriteDuplicatesDesc": "使用備份資料完全取代現有項目。",
+      "mergeDuplicates": "合併重複項目",
+      "mergeDuplicatesDesc": "保留現有資料但新增備份中的新群組。",
+      "continueRestore": "繼續還原",
+      "confirmTitle": "確認還原",
+      "confirmDescription": "這將還原",
+      "confirmDescriptionAnd": "並處理",
+      "confirmPrompt": "輸入 RESTORE 以確認",
+      "confirmError": "請輸入正確的確認文字：RESTORE",
+      "restoring": "還原中...",
+      "restoreData": "還原資料"
+    },
+    "theme": {
+      "light": "淺色",
+      "dark": "深色",
+      "system": "系統",
+      "toggleTheme": "切換主題"
+    }
   },
   "study": {
     "title": "學習",
@@ -221,6 +253,16 @@
     "noGoalSet": "尚未設定每日目標。前往設定建立一個。",
     "startStudying": "開始學習"
   },
+  "goals": {
+    "congratulations": "恭喜！",
+    "goalAchieved": "您已完成每日目標！",
+    "wordsGoal": "單字目標",
+    "timeGoal": "時間目標",
+    "complete": "% 完成",
+    "goalsAchieved": "每日目標已達成！",
+    "words": "單字",
+    "minutes": "分鐘"
+  },
   "errors": {
     "somethingWentWrong": "發生錯誤",
     "pageLoadError": "載入此頁面時發生錯誤。",
@@ -250,11 +292,63 @@
     "description": "透過間隔重複和互動學習模式精通日文單字",
     "settings": {
       "title": "設定 - Vocab Hero",
-      "description": "自訂您的學習體驗"
+      "description": "自訂您的學習體驗",
+      "audio": {
+        "title": "音訊設定 - Vocab Hero",
+        "description": "設定語音合成聲音和播放設定"
+      },
+      "data": {
+        "title": "資料管理 - Vocab Hero",
+        "description": "備份、還原或刪除您的資料"
+      },
+      "goals": {
+        "title": "每日目標 - Vocab Hero",
+        "description": "設定和管理您的每日學習目標"
+      },
+      "language": {
+        "title": "語言設定 - Vocab Hero",
+        "description": "選擇您偏好的應用程式語言"
+      },
+      "notifications": {
+        "title": "通知 - Vocab Hero",
+        "description": "管理您的通知偏好設定"
+      },
+      "study": {
+        "title": "學習設定 - Vocab Hero",
+        "description": "自訂您的學習階段偏好設定"
+      },
+      "theme": {
+        "title": "主題設定 - Vocab Hero",
+        "description": "選擇您偏好的主題"
+      }
     },
     "study": {
       "title": "學習 - Vocab Hero",
-      "description": "練習您的日文單字"
+      "description": "練習您的日文單字",
+      "flashcard": {
+        "title": "單字卡學習 - Vocab Hero",
+        "description": "使用間隔重複法複習單字"
+      },
+      "listening": {
+        "title": "聽力學習 - Vocab Hero",
+        "description": "聽取並辨識日文單字"
+      },
+      "matching": {
+        "title": "配對學習 - Vocab Hero",
+        "description": "將單字與其意思配對"
+      },
+      "quiz": {
+        "title": "測驗學習 - Vocab Hero",
+        "description": "透過選擇題測試您的知識"
+      },
+      "random": {
+        "title": "隨機學習 - Vocab Hero",
+        "description": "練習混合題型"
+      },
+      "spelling": {
+        "title": "拼寫學習 - Vocab Hero",
+        "description": "練習輸入日文讀音"
+      }
     },
     "vocabulary": {
       "title": "單字 - Vocab Hero",

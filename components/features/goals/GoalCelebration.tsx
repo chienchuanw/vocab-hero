@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import confetti from 'canvas-confetti';
 import { Trophy } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -12,7 +13,7 @@ export interface GoalCelebrationProps {
   isWordsGoalAchieved: boolean;
   isMinutesGoalAchieved: boolean;
   show: boolean;
-  message?: string;
+  message?: string | null;
 }
 
 /**
@@ -25,9 +26,11 @@ export function GoalCelebration({
   isWordsGoalAchieved,
   isMinutesGoalAchieved,
   show,
-  message = "You've completed your daily goal!",
+  message,
 }: GoalCelebrationProps) {
+  const t = useTranslations('goals');
   const isBothGoalsAchieved = isWordsGoalAchieved && isMinutesGoalAchieved;
+  const displayMessage = message || t('goalAchieved');
 
   useEffect(() => {
     if (!show || !isBothGoalsAchieved) {
@@ -82,9 +85,9 @@ export function GoalCelebration({
         </div>
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-green-900 dark:text-green-100">
-            Congratulations!
+            {t('congratulations')}
           </h3>
-          <p className="text-sm text-green-700 dark:text-green-300">{message}</p>
+          <p className="text-sm text-green-700 dark:text-green-300">{displayMessage}</p>
         </div>
       </div>
     </Card>

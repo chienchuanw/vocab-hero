@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '@/tests/test-utils';
 import { GoalProgressBar } from './GoalProgressBar';
 
 /**

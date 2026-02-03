@@ -42,8 +42,8 @@ test.describe('i18n Language Switching', () => {
 
     await page.goto('/settings');
 
-    // Check for Chinese text
-    await expect(page.locator('h1')).toContainText('設定');
+    // Check for Chinese text (use main content h1, not header)
+    await expect(page.locator('main h1').first()).toContainText('設定');
   });
 
   test('should have functional language selection on settings page', async ({ page }) => {

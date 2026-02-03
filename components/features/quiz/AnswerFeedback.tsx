@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 /**
@@ -17,6 +18,7 @@ export interface AnswerFeedbackProps {
  * 顯示答題後的動畫反饋
  */
 export function AnswerFeedback({ isCorrect, message, onAnimationComplete }: AnswerFeedbackProps) {
+  const t = useTranslations('quiz');
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -54,7 +56,6 @@ export function AnswerFeedback({ isCorrect, message, onAnimationComplete }: Answ
       )}
     >
       <div className="flex items-center justify-center gap-3">
-        {/* 圖示 */}
         <div
           className={cn(
             'flex h-12 w-12 items-center justify-center rounded-full text-2xl',
@@ -66,10 +67,8 @@ export function AnswerFeedback({ isCorrect, message, onAnimationComplete }: Answ
           {isCorrect ? '✓' : '✗'}
         </div>
 
-        {/* 訊息 */}
         <div className="text-lg">{message}</div>
       </div>
     </div>
   );
 }
-

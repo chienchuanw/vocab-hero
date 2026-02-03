@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,6 +25,7 @@ import {
  */
 export default function RandomQuizPage() {
   const router = useRouter();
+  const t = useTranslations('study');
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizConfig, setQuizConfig] = useState<RandomQuizConfig | null>(null);
 
@@ -170,14 +172,12 @@ export default function RandomQuizPage() {
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
             <div className="mb-4 flex items-center justify-between">
-              <h1 className="text-3xl font-bold">Random Quiz</h1>
+              <h1 className="text-3xl font-bold">{t('random')}</h1>
               <Button variant="ghost" onClick={() => router.push('/study')}>
-                ← Back to Study
+                ← {t('backToStudy')}
               </Button>
             </div>
-            <p className="text-muted-foreground">
-              Test your knowledge with a mix of question types from all your vocabulary
-            </p>
+            <p className="text-muted-foreground">{t('randomDesc')}</p>
           </div>
 
           <RandomQuizConfigForm onStart={handleStartQuiz} />
@@ -208,9 +208,9 @@ export default function RandomQuizPage() {
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <div className="mb-4 flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Random Quiz</h1>
+            <h1 className="text-3xl font-bold">{t('random')}</h1>
             <Button variant="ghost" onClick={() => router.push('/study')}>
-              ← Back to Study
+              ← {t('backToStudy')}
             </Button>
           </div>
         </div>

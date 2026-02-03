@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { MatchingCard } from '@/components/features/matching/MatchingCard';
@@ -16,6 +17,7 @@ import { generateShuffledPairs, type VocabularyItem } from '@/lib/matching/match
  */
 export default function MatchingGamePage() {
   const router = useRouter();
+  const t = useTranslations('study');
 
   // TODO: 從 API 獲取單字資料
   // 暫時使用模擬資料
@@ -81,14 +83,12 @@ export default function MatchingGamePage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <div className="mb-4 flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Matching Game</h1>
+            <h1 className="text-3xl font-bold">{t('matching')}</h1>
             <Button variant="ghost" onClick={() => router.push('/study')}>
-              ← Back to Study
+              ← {t('backToStudy')}
             </Button>
           </div>
-          <p className="text-muted-foreground">
-            Match Japanese words with their meanings. Find all 5 pairs as quickly as you can!
-          </p>
+          <p className="text-muted-foreground">{t('matchingDesc')}</p>
         </div>
 
         {/* 遊戲統計 */}

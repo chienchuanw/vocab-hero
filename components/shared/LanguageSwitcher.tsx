@@ -23,6 +23,7 @@ export function LanguageSwitcher() {
   const currentLocale = useLocale();
 
   const setLocale = (locale: string) => {
+    // eslint-disable-next-line react-hooks/immutability
     document.cookie = `locale=${locale}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
     window.location.reload();
   };

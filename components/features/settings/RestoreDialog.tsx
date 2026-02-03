@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,8 @@ type DuplicateStrategy = 'skip' | 'overwrite' | 'merge';
 const CONFIRMATION_PHRASE = 'RESTORE';
 
 export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
+  const t = useTranslations('settings.restore');
+  const tc = useTranslations('common');
   const [step, setStep] = useState<RestoreStep>('upload');
   const [fileContent, setFileContent] = useState<string>('');
   const [fileName, setFileName] = useState<string>('');
@@ -107,15 +110,13 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
         {step === 'upload' && (
           <>
             <DialogHeader>
-              <DialogTitle>Upload Backup File</DialogTitle>
-              <DialogDescription>
-                Select a JSON backup file to restore your vocabulary data
-              </DialogDescription>
+              <DialogTitle>{t('uploadTitle')}</DialogTitle>
+              <DialogDescription>{t('uploadDescription')}</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="backup-file">Backup File</Label>
+                <Label htmlFor="backup-file">{t('backupFile')}</Label>
                 <Input
                   id="backup-file"
                   type="file"
@@ -129,7 +130,7 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
               {restorePreview.isPending && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Analyzing backup file...
+                  {t('analyzing')}
                 </div>
               )}
 
@@ -148,7 +149,7 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
 
             <DialogFooter>
               <Button variant="outline" onClick={handleClose}>
-                Cancel
+                {tc('cancel')}
               </Button>
             </DialogFooter>
           </>
@@ -157,9 +158,9 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
         {step === 'preview' && previewData && (
           <>
             <DialogHeader>
-              <DialogTitle>Preview Restore</DialogTitle>
+              <DialogTitle>{t('previewTitle')}</DialogTitle>
               <DialogDescription>
-                Review what will be restored from <span className="font-mono">{fileName}</span>
+                {t('previewDescription')} <span className="font-mono">{fileName}</span>
               </DialogDescription>
             </DialogHeader>
 
@@ -167,21 +168,21 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
               <div className="grid grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg">
                 <div className="space-y-1">
                   <p className="text-2xl font-bold">{previewData.totalItems}</p>
-                  <p className="text-sm text-muted-foreground">Total Items</p>
+                  <p className="text-sm text-muted-foreground">{t('totalItems')}</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-2xl font-bold text-green-600">{previewData.newItems.length}</p>
-                  <p className="text-sm text-muted-foreground">New Items</p>
+                  <p className="text-sm text-muted-foreground">{t('newItems')}</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-2xl font-bold text-amber-600">{previewData.duplicateCount}</p>
-                  <p className="text-sm text-muted-foreground">Duplicates</p>
+                  <p className="text-sm text-muted-foreground">{t('duplicates')}</p>
                 </div>
               </div>
 
               {previewData.duplicateCount > 0 && (
                 <div className="space-y-3">
-                  <Label>How should duplicates be handled?</Label>
+                  <Label>{t('duplicateHandling')}</Label>
                   <div className="space-y-2">
                     <button
                       type="button"
@@ -204,10 +205,8 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
                         )}
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium">Skip duplicates</p>
-                        <p className="text-xs text-muted-foreground">
-                          Only import new vocabulary items. Existing items remain unchanged.
-                        </p>
+                        <p className="text-sm font-medium">{t('skipDuplicates')}</p>
+                        <p className="text-xs text-muted-foreground">{t('skipDuplicatesDesc')}</p>
                       </div>
                     </button>
 
@@ -232,9 +231,9 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
                         )}
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium">Overwrite duplicates</p>
+                        <p className="text-sm font-medium">{t('overwriteDuplicates')}</p>
                         <p className="text-xs text-muted-foreground">
-                          Replace existing items completely with backup data.
+                          {t('overwriteDuplicatesDesc')}
                         </p>
                       </div>
                     </button>
@@ -260,10 +259,8 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
                         )}
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium">Merge duplicates</p>
-                        <p className="text-xs text-muted-foreground">
-                          Keep existing data but add new groups from backup.
-                        </p>
+                        <p className="text-sm font-medium">{t('mergeDuplicates')}</p>
+                        <p className="text-xs text-muted-foreground">{t('mergeDuplicatesDesc')}</p>
                       </div>
                     </button>
                   </div>
@@ -273,9 +270,9 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
 
             <DialogFooter>
               <Button variant="outline" onClick={handleClose}>
-                Cancel
+                {tc('cancel')}
               </Button>
-              <Button onClick={() => setStep('execute')}>Continue to Restore</Button>
+              <Button onClick={() => setStep('execute')}>{t('continueRestore')}</Button>
             </DialogFooter>
           </>
         )}
@@ -283,18 +280,19 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
         {step === 'execute' && previewData && (
           <>
             <DialogHeader>
-              <DialogTitle>Confirm Restore</DialogTitle>
+              <DialogTitle>{t('confirmTitle')}</DialogTitle>
               <DialogDescription>
-                This will restore {previewData.newItems.length} new items
+                {t('confirmDescription')} {previewData.newItems.length} new items
                 {previewData.duplicateCount > 0 &&
-                  ` and handle ${previewData.duplicateCount} duplicates`}
+                  ` ${t('confirmDescriptionAnd')} ${previewData.duplicateCount} duplicates`}
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label htmlFor="confirm-restore">
-                  Type <span className="font-mono font-bold">{CONFIRMATION_PHRASE}</span> to confirm
+                  {t('confirmPrompt')}{' '}
+                  <span className="font-mono font-bold">{CONFIRMATION_PHRASE}</span>
                 </Label>
                 <Input
                   id="confirm-restore"
@@ -307,9 +305,7 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
               </div>
 
               {!confirmText.trim() && confirmText.length > 0 && (
-                <p className="text-sm text-destructive">
-                  Please type exactly: {CONFIRMATION_PHRASE}
-                </p>
+                <p className="text-sm text-destructive">{t('confirmError')}</p>
               )}
 
               {restoreExecute.isError && (
@@ -331,7 +327,7 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
                 onClick={() => setStep('preview')}
                 disabled={restoreExecute.isPending}
               >
-                Back
+                {tc('cancel')}
               </Button>
               <Button
                 onClick={handleRestore}
@@ -340,10 +336,10 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
                 {restoreExecute.isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Restoring...
+                    {t('restoring')}
                   </>
                 ) : (
-                  'Restore Data'
+                  t('restoreData')
                 )}
               </Button>
             </DialogFooter>
