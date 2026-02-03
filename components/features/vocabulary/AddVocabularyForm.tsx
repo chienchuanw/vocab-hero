@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,6 +28,9 @@ export function AddVocabularyForm({
   onCancel,
   isLoading = false,
 }: AddVocabularyFormProps) {
+  const t = useTranslations('vocabulary');
+  const tc = useTranslations('common');
+
   const [formData, setFormData] = useState<CreateVocabularyInput>({
     word: '',
     reading: '',
@@ -42,13 +46,13 @@ export function AddVocabularyForm({
     const newErrors: Record<string, string> = {};
 
     if (!formData.word.trim()) {
-      newErrors.word = 'Please enter word';
+      newErrors.word = t('form.wordError');
     }
     if (!formData.reading.trim()) {
-      newErrors.reading = 'Please enter reading';
+      newErrors.reading = t('form.readingError');
     }
     if (!formData.meaning.trim()) {
-      newErrors.meaning = 'Please enter meaning';
+      newErrors.meaning = t('form.meaningError');
     }
 
     setErrors(newErrors);
@@ -81,12 +85,12 @@ export function AddVocabularyForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Word */}
       <div>
-        <Label htmlFor="word">Word *</Label>
+        <Label htmlFor="word">{t('form.word')}</Label>
         <Input
           id="word"
           value={formData.word}
           onChange={(e) => setFormData({ ...formData, word: e.target.value })}
-          placeholder="e.g., 勉強"
+          placeholder={t('form.wordPlaceholder')}
           className={errors.word ? 'border-red-500' : ''}
         />
         {errors.word && <p className="text-sm text-red-500 mt-1">{errors.word}</p>}
@@ -94,12 +98,12 @@ export function AddVocabularyForm({
 
       {/* Reading */}
       <div>
-        <Label htmlFor="reading">Reading *</Label>
+        <Label htmlFor="reading">{t('form.reading')}</Label>
         <Input
           id="reading"
           value={formData.reading}
           onChange={(e) => setFormData({ ...formData, reading: e.target.value })}
-          placeholder="e.g., べんきょう"
+          placeholder={t('form.readingPlaceholder')}
           className={errors.reading ? 'border-red-500' : ''}
         />
         {errors.reading && <p className="text-sm text-red-500 mt-1">{errors.reading}</p>}
@@ -107,12 +111,12 @@ export function AddVocabularyForm({
 
       {/* Meaning */}
       <div>
-        <Label htmlFor="meaning">Meaning *</Label>
+        <Label htmlFor="meaning">{t('form.meaning')}</Label>
         <Input
           id="meaning"
           value={formData.meaning}
           onChange={(e) => setFormData({ ...formData, meaning: e.target.value })}
-          placeholder="e.g., study, learn"
+          placeholder={t('form.meaningPlaceholder')}
           className={errors.meaning ? 'border-red-500' : ''}
         />
         {errors.meaning && <p className="text-sm text-red-500 mt-1">{errors.meaning}</p>}
@@ -120,14 +124,14 @@ export function AddVocabularyForm({
 
       {/* Notes */}
       <div>
-        <Label htmlFor="notes">Notes (Optional)</Label>
+        <Label htmlFor="notes">{t('form.notes')}</Label>
         <Textarea
           id="notes"
           value={formData.notes}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
             setFormData({ ...formData, notes: e.target.value })
           }
-          placeholder="Additional notes or memory tips..."
+          placeholder={t('form.notesPlaceholder')}
           rows={3}
         />
       </div>
@@ -139,11 +143,11 @@ export function AddVocabularyForm({
       <div className="flex justify-end gap-2 pt-4">
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
-            Cancel
+            {tc('cancel')}
           </Button>
         )}
         <Button type="submit" disabled={isLoading}>
-          {isLoading ? 'Adding...' : 'Add Word'}
+          {isLoading ? tc('adding') : tc('add')}
         </Button>
       </div>
     </form>

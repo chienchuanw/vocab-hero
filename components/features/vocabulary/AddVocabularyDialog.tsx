@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -24,15 +25,16 @@ export interface AddVocabularyDialogProps {
  * Dialog for adding new vocabulary
  */
 export function AddVocabularyDialog({ open, onOpenChange }: AddVocabularyDialogProps) {
+  const t = useTranslations('vocabulary');
   const createMutation = useCreateVocabulary();
 
   const handleSubmit = async (data: CreateVocabularyInput) => {
     try {
       await createMutation.mutateAsync(data);
-      toast.success('Word added successfully!');
+      toast.success(t('toast.addSuccess'));
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to add word, please try again');
+      toast.error(error instanceof Error ? error.message : t('toast.addError'));
     }
   };
 
@@ -40,10 +42,8 @@ export function AddVocabularyDialog({ open, onOpenChange }: AddVocabularyDialogP
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Add Word</DialogTitle>
-          <DialogDescription>
-            Fill in word information to create a new learning item
-          </DialogDescription>
+          <DialogTitle>{t('addWordDialog.title')}</DialogTitle>
+          <DialogDescription>{t('addWordDialog.description')}</DialogDescription>
         </DialogHeader>
         <AddVocabularyForm
           onSubmit={handleSubmit}
