@@ -1,5 +1,248 @@
 {
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "delete": "Delete",
+    "deleting": "Deleting...",
+    "update": "Update",
+    "updating": "Updating...",
+    "add": "Add",
+    "adding": "Adding...",
+    "tryAgain": "Try Again",
+    "goHome": "Go Home",
+    "startQuiz": "Start Quiz",
+    "starting": "Starting...",
+    "backToStudy": "Back to Study",
+    "browseVocabulary": "Browse Vocabulary",
+    "continueStudying": "Continue Studying",
+    "endSession": "End Session",
+    "appName": "Vocab Hero",
+    "dayStreak": "day streak",
+    "offline": "You are currently offline. Some features may be unavailable."
+  },
+  "nav": {
+    "home": "Home",
+    "vocabulary": "Vocabulary",
+    "study": "Study",
+    "progress": "Progress",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your preferences and customize your experience",
+    "appearance": "Appearance",
+    "appearanceDesc": "Theme and display settings",
+    "audio": "Audio",
+    "audioDesc": "TTS voice and playback settings",
+    "study": "Study",
+    "studyDesc": "Study session preferences",
+    "dailyGoals": "Daily Goals",
+    "dailyGoalsDesc": "Daily study targets and reminders",
+    "notifications": "Notifications",
+    "notificationsDesc": "Notification preferences",
+    "language": "Language",
+    "languageDesc": "App language settings",
+    "dataManagement": "Data Management",
+    "dataManagementDesc": "Backup, restore, or delete all data",
+    "deleteAllData": "Delete All Data",
+    "deleteAllDataDesc": "This action cannot be undone. Please review carefully before proceeding.",
+    "deleteWarning": "The following data will be permanently deleted:",
+    "deleteItems": {
+      "vocabulary": "All vocabulary items",
+      "groups": "All vocabulary groups",
+      "sentences": "All example sentences",
+      "sessions": "All study sessions",
+      "progress": "All progress logs",
+      "schedules": "All review schedules"
+    },
+    "deleteConfirmPrompt": "Type DELETE ALL to confirm",
+    "deleteConfirmText": "DELETE ALL",
+    "deleteConfirmError": "Please type exactly: DELETE ALL"
+  },
+  "study": {
+    "title": "Study",
+    "description": "Choose a study mode to practice your vocabulary",
+    "flashcard": "Flashcard",
+    "flashcardDesc": "Review vocabulary with spaced repetition",
+    "quiz": "Quiz",
+    "quizDesc": "Test your knowledge with multiple choice",
+    "spelling": "Spelling",
+    "spellingDesc": "Practice typing Japanese readings",
+    "matching": "Matching",
+    "matchingDesc": "Match words with their meanings",
+    "listening": "Listening",
+    "listeningDesc": "Listen and identify vocabulary",
+    "random": "Random",
+    "randomDesc": "Mixed question types",
+    "ratingPrompt": "How well did you know this?",
+    "ratingKeyboard": "Press 0-5 on your keyboard to rate",
+    "ratings": {
+      "0": { "label": "完全忘記", "description": "Blackout" },
+      "1": { "label": "不太確定", "description": "Incorrect" },
+      "2": { "label": "有點困難", "description": "Hard" },
+      "3": { "label": "還可以", "description": "Good" },
+      "4": { "label": "很熟悉", "description": "Easy" },
+      "5": { "label": "完美記住", "description": "Perfect" }
+    },
+    "sessionSummary": "Session Summary",
+    "totalCards": "Total Cards Reviewed",
+    "correctRate": "Correct Rate",
+    "correctAnswers": "Correct Answers",
+    "timeSpent": "Time Spent",
+    "selectGroup": "Select Group",
+    "selectGroupPlaceholder": "Choose a vocabulary group",
+    "numberOfQuestions": "Number of Questions",
+    "questionType": "Question Type",
+    "questionTypes": {
+      "wordToMeaning": "Japanese Word → Meaning",
+      "meaningToWord": "Meaning → Japanese Word",
+      "mixed": "Mixed (Random)"
+    }
+  },
+  "vocabulary": {
+    "title": "Vocabulary",
+    "description": "Manage your Japanese vocabulary collection",
+    "addWord": "Add Word",
+    "dragToGroups": "Drag vocabulary to groups",
+    "searchPlaceholder": "Search word, reading, or meaning...",
+    "sortBy": "Sort by",
+    "sortOptions": {
+      "createdDate": "Created Date",
+      "word": "Word",
+      "mastery": "Mastery"
+    },
+    "order": "Order",
+    "orderOptions": {
+      "ascending": "Ascending",
+      "descending": "Descending"
+    },
+    "masteryLevel": "Mastery Level",
+    "allLevels": "All Levels",
+    "selectGroup": "Select group",
+    "allGroups": "All Groups",
+    "addWordDialog": {
+      "title": "Add Word",
+      "description": "Fill in word information to create a new learning item"
+    },
+    "form": {
+      "word": "Word *",
+      "wordPlaceholder": "e.g., 勉強",
+      "wordError": "Please enter word",
+      "reading": "Reading *",
+      "readingPlaceholder": "e.g., べんきょう",
+      "readingError": "Please enter reading",
+      "meaning": "Meaning *",
+      "meaningPlaceholder": "e.g., study, learn",
+      "meaningError": "Please enter meaning",
+      "notes": "Notes (Optional)",
+      "notesPlaceholder": "Additional notes or memory tips..."
+    },
+    "editWordDialog": {
+      "title": "Edit Word",
+      "description": "Modify word information"
+    },
+    "deleteDialog": {
+      "title": "Confirm Delete",
+      "description": "Are you sure you want to delete \"{word}\"? This action cannot be undone."
+    },
+    "toast": {
+      "addSuccess": "Word added successfully!",
+      "addError": "Failed to add word, please try again",
+      "updateSuccess": "Word updated successfully!",
+      "updateError": "Failed to update, please try again",
+      "deleteSuccess": "Word deleted successfully",
+      "deleteError": "Failed to delete, please try again",
+      "addToGroupSuccess": "\"{word}\" added to group \"{group}\"",
+      "addToGroupError": "Failed to add vocabulary to group"
+    }
+  },
+  "groups": {
+    "addDialog": {
+      "title": "Add Group",
+      "description": "Create a new vocabulary group to organize your learning content"
+    },
+    "form": {
+      "name": "Group Name *",
+      "namePlaceholder": "e.g., JLPT N5 Vocabulary",
+      "nameError": "Please enter group name",
+      "description": "Description (Optional)",
+      "descriptionPlaceholder": "Group description or purpose..."
+    },
+    "editDialog": {
+      "title": "Edit Group",
+      "description": "Modify group information"
+    },
+    "deleteDialog": {
+      "title": "Confirm Delete",
+      "description": "Are you sure you want to delete \"{group}\"?",
+      "warning": "This group contains {count, plural, one {# vocabulary item} other {# vocabulary items}}. The vocabulary items will not be deleted, only removed from this group."
+    },
+    "toast": {
+      "addSuccess": "Group added successfully!",
+      "addError": "Failed to add group, please try again",
+      "updateSuccess": "Group updated successfully!",
+      "updateError": "Failed to update, please try again",
+      "deleteSuccess": "Group deleted successfully",
+      "deleteError": "Failed to delete, please try again"
+    }
+  },
+  "progress": {
+    "title": "Progress",
+    "description": "Track your learning journey and achievements",
+    "todaysGoal": "Today's Goal",
+    "totalWords": "Total Words",
+    "totalWordsDesc": "Words in your collection",
+    "studyTime": "Study Time",
+    "studyTimeDesc": "This month",
+    "masteryRate": "Mastery Rate",
+    "masteryRateDesc": "Words learned or mastered",
+    "currentStreak": "Current Streak",
+    "currentStreakDesc": "Days in a row",
+    "tabs": {
+      "week": "Week",
+      "month": "Month",
+      "year": "Year"
+    },
+    "charts": {
+      "learningProgress": "Learning Progress",
+      "vocabularyGroups": "Vocabulary Groups",
+      "masteryLevels": "Mastery Levels"
+    }
+  },
+  "home": {
+    "welcome": "Welcome to Vocab Hero",
+    "description": "Start your Japanese vocabulary learning journey today",
+    "totalWords": "Total Words",
+    "wordsMastered": "Words Mastered",
+    "studySessions": "Study Sessions",
+    "dailyGoal": "Daily Goal",
+    "noGoalSet": "No daily goal set. Go to settings to create one.",
+    "startStudying": "Start Studying"
+  },
+  "errors": {
+    "somethingWentWrong": "Something Went Wrong",
+    "pageLoadError": "An error occurred while loading this page.",
+    "errorDetails": "Error Details (Development Only):",
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundDesc": "The page you are looking for does not exist or has been moved."
+  },
+  "quiz": {
+    "noGroups": "No groups available. Please create a group first.",
+    "complete": "Quiz Complete!",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "accuracy": "Accuracy",
+    "reviewAnswers": "Review Answers",
+    "yourAnswer": "Your answer:",
+    "correctAnswer": "Correct answer:"
+  },
+  "language": {
+    "title": "Language",
+    "description": "Choose your preferred language",
+    "en": "English",
+    "zhTW": "繁體中文",
+    "current": "Current language"
   }
 }

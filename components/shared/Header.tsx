@@ -2,6 +2,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Flame } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 /**
  * Header component - Top navigation bar
@@ -24,8 +25,9 @@ export function Header({ streak = 0 }: HeaderProps) {
           <h1 className="text-xl font-bold">Vocab Hero</h1>
         </div>
 
-        {/* Streak Counter */}
+        {/* Language Switcher and Streak Counter */}
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <Badge variant="secondary" className="flex items-center gap-1 px-3 py-1">
             <Flame className="h-4 w-4 text-orange-500" />
             <span className="font-semibold">{streak}</span>
@@ -36,4 +38,3 @@ export function Header({ streak = 0 }: HeaderProps) {
     </header>
   );
 }
-

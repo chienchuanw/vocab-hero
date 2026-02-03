@@ -1,5 +1,248 @@
 {
   "common": {
-    "loading": "載入中..."
+    "loading": "載入中...",
+    "cancel": "取消",
+    "save": "儲存",
+    "close": "關閉",
+    "delete": "刪除",
+    "deleting": "刪除中...",
+    "update": "更新",
+    "updating": "更新中...",
+    "add": "新增",
+    "adding": "新增中...",
+    "tryAgain": "重試",
+    "goHome": "返回首頁",
+    "startQuiz": "開始測驗",
+    "starting": "啟動中...",
+    "backToStudy": "返回學習",
+    "browseVocabulary": "瀏覽單字",
+    "continueStudying": "繼續學習",
+    "endSession": "結束學習",
+    "appName": "Vocab Hero",
+    "dayStreak": "天連續",
+    "offline": "您目前處於離線狀態，部分功能可能無法使用。"
+  },
+  "nav": {
+    "home": "首頁",
+    "vocabulary": "單字",
+    "study": "學習",
+    "progress": "進度",
+    "settings": "設定"
+  },
+  "settings": {
+    "title": "設定",
+    "description": "管理您的偏好設定並自訂體驗",
+    "appearance": "外觀",
+    "appearanceDesc": "主題與顯示設定",
+    "audio": "音訊",
+    "audioDesc": "語音合成與播放設定",
+    "study": "學習",
+    "studyDesc": "學習階段偏好設定",
+    "dailyGoals": "每日目標",
+    "dailyGoalsDesc": "每日學習目標與提醒",
+    "notifications": "通知",
+    "notificationsDesc": "通知偏好設定",
+    "language": "語言",
+    "languageDesc": "應用程式語言設定",
+    "dataManagement": "資料管理",
+    "dataManagementDesc": "備份、還原或刪除所有資料",
+    "deleteAllData": "刪除所有資料",
+    "deleteAllDataDesc": "此操作無法復原，請在繼續前仔細確認。",
+    "deleteWarning": "以下資料將被永久刪除：",
+    "deleteItems": {
+      "vocabulary": "所有單字項目",
+      "groups": "所有單字群組",
+      "sentences": "所有例句",
+      "sessions": "所有學習紀錄",
+      "progress": "所有進度紀錄",
+      "schedules": "所有複習排程"
+    },
+    "deleteConfirmPrompt": "輸入 DELETE ALL 以確認",
+    "deleteConfirmText": "DELETE ALL",
+    "deleteConfirmError": "請輸入正確的確認文字：DELETE ALL"
+  },
+  "study": {
+    "title": "學習",
+    "description": "選擇學習模式來練習您的單字",
+    "flashcard": "單字卡",
+    "flashcardDesc": "使用間隔重複法複習單字",
+    "quiz": "測驗",
+    "quizDesc": "透過選擇題測試您的知識",
+    "spelling": "拼寫",
+    "spellingDesc": "練習輸入日文讀音",
+    "matching": "配對",
+    "matchingDesc": "將單字與其意思配對",
+    "listening": "聽力",
+    "listeningDesc": "聽取並辨識單字",
+    "random": "隨機",
+    "randomDesc": "混合題型",
+    "ratingPrompt": "您對這個單字的熟悉程度？",
+    "ratingKeyboard": "按鍵盤 0-5 來評分",
+    "ratings": {
+      "0": { "label": "完全忘記", "description": "完全想不起來" },
+      "1": { "label": "不太確定", "description": "答錯了" },
+      "2": { "label": "有點困難", "description": "想了很久" },
+      "3": { "label": "還可以", "description": "正確但猶豫" },
+      "4": { "label": "很熟悉", "description": "輕鬆答對" },
+      "5": { "label": "完美記住", "description": "非常熟練" }
+    },
+    "sessionSummary": "學習摘要",
+    "totalCards": "複習卡片總數",
+    "correctRate": "正確率",
+    "correctAnswers": "正確答案數",
+    "timeSpent": "花費時間",
+    "selectGroup": "選擇群組",
+    "selectGroupPlaceholder": "選擇一個單字群組",
+    "numberOfQuestions": "題目數量",
+    "questionType": "題目類型",
+    "questionTypes": {
+      "wordToMeaning": "日文單字 → 意思",
+      "meaningToWord": "意思 → 日文單字",
+      "mixed": "混合（隨機）"
+    }
+  },
+  "vocabulary": {
+    "title": "單字",
+    "description": "管理您的日文單字收藏",
+    "addWord": "新增單字",
+    "dragToGroups": "拖曳單字到群組",
+    "searchPlaceholder": "搜尋單字、讀音或意思...",
+    "sortBy": "排序方式",
+    "sortOptions": {
+      "createdDate": "建立日期",
+      "word": "單字",
+      "mastery": "熟練度"
+    },
+    "order": "順序",
+    "orderOptions": {
+      "ascending": "升冪",
+      "descending": "降冪"
+    },
+    "masteryLevel": "熟練等級",
+    "allLevels": "所有等級",
+    "selectGroup": "選擇群組",
+    "allGroups": "所有群組",
+    "addWordDialog": {
+      "title": "新增單字",
+      "description": "填寫單字資訊以建立新的學習項目"
+    },
+    "form": {
+      "word": "單字 *",
+      "wordPlaceholder": "例如：勉強",
+      "wordError": "請輸入單字",
+      "reading": "讀音 *",
+      "readingPlaceholder": "例如：べんきょう",
+      "readingError": "請輸入讀音",
+      "meaning": "意思 *",
+      "meaningPlaceholder": "例如：學習、用功",
+      "meaningError": "請輸入意思",
+      "notes": "備註（選填）",
+      "notesPlaceholder": "額外的筆記或記憶技巧..."
+    },
+    "editWordDialog": {
+      "title": "編輯單字",
+      "description": "修改單字資訊"
+    },
+    "deleteDialog": {
+      "title": "確認刪除",
+      "description": "您確定要刪除「{word}」嗎？此操作無法復原。"
+    },
+    "toast": {
+      "addSuccess": "單字新增成功！",
+      "addError": "新增失敗，請重試",
+      "updateSuccess": "單字更新成功！",
+      "updateError": "更新失敗，請重試",
+      "deleteSuccess": "單字已刪除",
+      "deleteError": "刪除失敗，請重試",
+      "addToGroupSuccess": "「{word}」已加入群組「{group}」",
+      "addToGroupError": "無法將單字加入群組"
+    }
+  },
+  "groups": {
+    "addDialog": {
+      "title": "新增群組",
+      "description": "建立新的單字群組來整理您的學習內容"
+    },
+    "form": {
+      "name": "群組名稱 *",
+      "namePlaceholder": "例如：JLPT N5 單字",
+      "nameError": "請輸入群組名稱",
+      "description": "描述（選填）",
+      "descriptionPlaceholder": "群組描述或用途..."
+    },
+    "editDialog": {
+      "title": "編輯群組",
+      "description": "修改群組資訊"
+    },
+    "deleteDialog": {
+      "title": "確認刪除",
+      "description": "您確定要刪除「{group}」嗎？",
+      "warning": "此群組包含 {count, plural, one {# 個單字} other {# 個單字}}。單字不會被刪除，只會從此群組中移除。"
+    },
+    "toast": {
+      "addSuccess": "群組新增成功！",
+      "addError": "新增失敗，請重試",
+      "updateSuccess": "群組更新成功！",
+      "updateError": "更新失敗，請重試",
+      "deleteSuccess": "群組已刪除",
+      "deleteError": "刪除失敗，請重試"
+    }
+  },
+  "progress": {
+    "title": "進度",
+    "description": "追蹤您的學習旅程與成就",
+    "todaysGoal": "今日目標",
+    "totalWords": "單字總數",
+    "totalWordsDesc": "您收藏的單字",
+    "studyTime": "學習時間",
+    "studyTimeDesc": "本月",
+    "masteryRate": "熟練率",
+    "masteryRateDesc": "已學會或精通的單字",
+    "currentStreak": "目前連續",
+    "currentStreakDesc": "連續天數",
+    "tabs": {
+      "week": "週",
+      "month": "月",
+      "year": "年"
+    },
+    "charts": {
+      "learningProgress": "學習進度",
+      "vocabularyGroups": "單字群組",
+      "masteryLevels": "熟練等級"
+    }
+  },
+  "home": {
+    "welcome": "歡迎使用 Vocab Hero",
+    "description": "今天就開始您的日文單字學習之旅",
+    "totalWords": "單字總數",
+    "wordsMastered": "已精通單字",
+    "studySessions": "學習次數",
+    "dailyGoal": "每日目標",
+    "noGoalSet": "尚未設定每日目標。前往設定建立一個。",
+    "startStudying": "開始學習"
+  },
+  "errors": {
+    "somethingWentWrong": "發生錯誤",
+    "pageLoadError": "載入此頁面時發生錯誤。",
+    "errorDetails": "錯誤詳情（僅限開發模式）：",
+    "pageNotFound": "找不到頁面",
+    "pageNotFoundDesc": "您尋找的頁面不存在或已被移動。"
+  },
+  "quiz": {
+    "noGroups": "沒有可用的群組。請先建立一個群組。",
+    "complete": "測驗完成！",
+    "correct": "正確",
+    "incorrect": "錯誤",
+    "accuracy": "準確率",
+    "reviewAnswers": "檢視答案",
+    "yourAnswer": "您的答案：",
+    "correctAnswer": "正確答案："
+  },
+  "language": {
+    "title": "語言",
+    "description": "選擇您偏好的語言",
+    "en": "English",
+    "zhTW": "繁體中文",
+    "current": "目前語言"
   }
 }
