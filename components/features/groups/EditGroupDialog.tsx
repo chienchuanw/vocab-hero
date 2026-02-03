@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useUpdateGroup } from '@/hooks/useGroupMutations';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import type { Group } from '@/hooks/useGroups';
 
 /**
@@ -30,6 +31,8 @@ export interface EditGroupDialogProps {
  * Dialog for editing group
  */
 export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogProps) {
+  const t = useTranslations('groups');
+  const tc = useTranslations('common');
   const updateMutation = useUpdateGroup();
   const [formData, setFormData] = useState({
     name: '',
@@ -56,10 +59,10 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
         id: group.id,
         data: formData,
       });
-      toast.success('Group updated successfully!');
+      toast.success(t('toast.updateSuccess'));
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to update, please try again');
+      toast.error(error instanceof Error ? error.message : t('toast.updateError'));
     }
   };
 
@@ -67,12 +70,12 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Edit Group</DialogTitle>
-          <DialogDescription>Modify group information</DialogDescription>
+          <DialogTitle>{t('editDialog.title')}</DialogTitle>
+          <DialogDescription>{t('editDialog.description')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="edit-group-name">Group Name</Label>
+            <Label htmlFor="edit-group-name">{t('form.name')}</Label>
             <Input
               id="edit-group-name"
               value={formData.name}
@@ -81,7 +84,7 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
             />
           </div>
           <div>
-            <Label htmlFor="edit-group-description">Description</Label>
+            <Label htmlFor="edit-group-description">{t('form.description')}</Label>
             <Textarea
               id="edit-group-description"
               value={formData.description}
@@ -93,10 +96,10 @@ export function EditGroupDialog({ open, onOpenChange, group }: EditGroupDialogPr
           </div>
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button type="submit" disabled={updateMutation.isPending}>
-              {updateMutation.isPending ? 'Updating...' : 'Update'}
+              {updateMutation.isPending ? tc('updating') : tc('update')}
             </Button>
           </div>
         </form>

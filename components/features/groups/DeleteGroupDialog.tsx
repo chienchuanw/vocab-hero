@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useDeleteGroup } from '@/hooks/useGroupMutations';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import type { Group } from '@/hooks/useGroups';
 
 /**
@@ -28,6 +29,8 @@ export interface DeleteGroupDialogProps {
  * Confirmation dialog for deleting group
  */
 export function DeleteGroupDialog({ open, onOpenChange, group }: DeleteGroupDialogProps) {
+  const t = useTranslations('groups');
+  const tc = useTranslations('common');
   const deleteMutation = useDeleteGroup();
 
   const handleDelete = async () => {
@@ -35,10 +38,10 @@ export function DeleteGroupDialog({ open, onOpenChange, group }: DeleteGroupDial
 
     try {
       await deleteMutation.mutateAsync(group.id);
-      toast.success('Group deleted successfully');
+      toast.success(t('toast.deleteSuccess'));
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to delete, please try again');
+      toast.error(error instanceof Error ? error.message : t('toast.deleteError'));
     }
   };
 
@@ -46,27 +49,24 @@ export function DeleteGroupDialog({ open, onOpenChange, group }: DeleteGroupDial
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+          <AlertDialogTitle>{t('deleteDialog.title')}</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete &ldquo;{group?.name}&rdquo;?
+            {t('deleteDialog.description', { group: group?.name || '' })}
             {group && group.vocabularyCount > 0 && (
               <span className="block mt-2 text-amber-600 dark:text-amber-500 font-medium">
-                This group contains {group.vocabularyCount} vocabulary{' '}
-                {group.vocabularyCount === 1 ? 'item' : 'items'}. The vocabulary items will not be
-                deleted, only removed from this group.
+                {t('deleteDialog.warning', { count: group.vocabularyCount })}
               </span>
             )}
-            This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{tc('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             className="bg-red-600 hover:bg-red-700"
             disabled={deleteMutation.isPending}
           >
-            {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+            {deleteMutation.isPending ? tc('deleting') : tc('delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

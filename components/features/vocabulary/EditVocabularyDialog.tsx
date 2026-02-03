@@ -15,6 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ExampleSentenceInput } from './ExampleSentenceInput';
 import { useUpdateVocabulary } from '@/hooks/useVocabularyMutations';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
 import type { ExampleSentenceData } from './ExampleSentence.types';
 
@@ -36,6 +37,8 @@ export function EditVocabularyDialog({
   onOpenChange,
   vocabulary,
 }: EditVocabularyDialogProps) {
+  const t = useTranslations('vocabulary');
+  const tc = useTranslations('common');
   const updateMutation = useUpdateVocabulary();
   const [formData, setFormData] = useState({
     word: '',
@@ -92,10 +95,10 @@ export function EditVocabularyDialog({
           exampleSentences: exampleSentencesData.length > 0 ? exampleSentencesData : undefined,
         },
       });
-      toast.success('Word updated successfully!');
+      toast.success(t('toast.updateSuccess'));
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to update, please try again');
+      toast.error(error instanceof Error ? error.message : t('toast.updateError'));
     }
   };
 
@@ -103,12 +106,12 @@ export function EditVocabularyDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Edit Word</DialogTitle>
-          <DialogDescription>Modify word information</DialogDescription>
+          <DialogTitle>{t('editWordDialog.title')}</DialogTitle>
+          <DialogDescription>{t('editWordDialog.description')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="edit-word">Word</Label>
+            <Label htmlFor="edit-word">{t('form.word')}</Label>
             <Input
               id="edit-word"
               value={formData.word}
@@ -117,7 +120,7 @@ export function EditVocabularyDialog({
             />
           </div>
           <div>
-            <Label htmlFor="edit-reading">Reading</Label>
+            <Label htmlFor="edit-reading">{t('form.reading')}</Label>
             <Input
               id="edit-reading"
               value={formData.reading}
@@ -126,7 +129,7 @@ export function EditVocabularyDialog({
             />
           </div>
           <div>
-            <Label htmlFor="edit-meaning">Meaning</Label>
+            <Label htmlFor="edit-meaning">{t('form.meaning')}</Label>
             <Input
               id="edit-meaning"
               value={formData.meaning}
@@ -135,7 +138,7 @@ export function EditVocabularyDialog({
             />
           </div>
           <div>
-            <Label htmlFor="edit-notes">Notes</Label>
+            <Label htmlFor="edit-notes">{t('form.notes')}</Label>
             <Textarea
               id="edit-notes"
               value={formData.notes}
@@ -151,10 +154,10 @@ export function EditVocabularyDialog({
 
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button type="submit" disabled={updateMutation.isPending}>
-              {updateMutation.isPending ? 'Updating...' : 'Update'}
+              {updateMutation.isPending ? tc('updating') : tc('update')}
             </Button>
           </div>
         </form>

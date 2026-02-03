@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AlertTriangle, Loader2 } from 'lucide-react';
 import { useDeleteAllData } from '@/hooks/useDataManagement';
+import { useTranslations } from 'next-intl';
 
 interface DeleteAllDataDialogProps {
   open: boolean;
@@ -23,19 +24,21 @@ interface DeleteAllDataDialogProps {
 
 const CONFIRMATION_PHRASE = 'DELETE ALL';
 
-const deleteItems = [
-  'All vocabulary items',
-  'All vocabulary groups',
-  'All example sentences',
-  'All study sessions',
-  'All progress logs',
-  'All review schedules',
-];
-
 export function DeleteAllDataDialog({ open, onOpenChange }: DeleteAllDataDialogProps) {
+  const t = useTranslations('settings');
+  const tc = useTranslations('common');
   const [confirmText, setConfirmText] = useState('');
 
   const deleteAllData = useDeleteAllData();
+
+  const deleteItems = [
+    t('deleteItems.vocabulary'),
+    t('deleteItems.groups'),
+    t('deleteItems.sentences'),
+    t('deleteItems.sessions'),
+    t('deleteItems.progress'),
+    t('deleteItems.schedules'),
+  ];
 
   const confirmMatches = confirmText.trim() === CONFIRMATION_PHRASE;
   const canDelete = confirmMatches && !deleteAllData.isPending;
@@ -72,9 +75,9 @@ export function DeleteAllDataDialog({ open, onOpenChange }: DeleteAllDataDialogP
               <AlertTriangle className="h-6 w-6 text-destructive" />
             </div>
             <div>
-              <AlertDialogTitle className="text-2xl">Delete All Data</AlertDialogTitle>
+              <AlertDialogTitle className="text-2xl">{t('deleteAllData')}</AlertDialogTitle>
               <AlertDialogDescription className="mt-1">
-                This action cannot be undone. Please review carefully before proceeding.
+                {t('deleteAllDataDesc')}
               </AlertDialogDescription>
             </div>
           </div>
@@ -82,7 +85,7 @@ export function DeleteAllDataDialog({ open, onOpenChange }: DeleteAllDataDialogP
 
         <div className="space-y-6 py-4">
           <div className="space-y-3">
-            <p className="text-sm font-medium">The following data will be permanently deleted:</p>
+            <p className="text-sm font-medium">{t('deleteWarning')}</p>
             <ul className="space-y-2 p-4 bg-muted/50 rounded-lg list-disc list-inside">
               {deleteItems.map((item, index) => (
                 <li key={index} className="text-sm text-muted-foreground">
@@ -94,26 +97,24 @@ export function DeleteAllDataDialog({ open, onOpenChange }: DeleteAllDataDialogP
 
           <div className="space-y-3">
             <div className="space-y-2">
-              <Label htmlFor="confirm-text">
-                Type <span className="font-mono font-bold">{CONFIRMATION_PHRASE}</span> to confirm
-              </Label>
+              <Label htmlFor="confirm-text">{t('deleteConfirmPrompt')}</Label>
               <Input
                 id="confirm-text"
                 value={confirmText}
                 onChange={(e) => setConfirmText(e.target.value)}
-                placeholder={CONFIRMATION_PHRASE}
+                placeholder={t('deleteConfirmText')}
                 disabled={deleteAllData.isPending}
                 className="font-mono"
               />
             </div>
             {!confirmMatches && confirmText.length > 0 && (
-              <p className="text-sm text-destructive">Please type exactly: {CONFIRMATION_PHRASE}</p>
+              <p className="text-sm text-destructive">{t('deleteConfirmError')}</p>
             )}
           </div>
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={deleteAllData.isPending}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={deleteAllData.isPending}>{tc('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => {
               e.preventDefault();
@@ -125,10 +126,10 @@ export function DeleteAllDataDialog({ open, onOpenChange }: DeleteAllDataDialogP
             {deleteAllData.isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Deleting...
+                {tc('deleting')}
               </>
             ) : (
-              'Delete All Data'
+              t('deleteAllData')
             )}
           </AlertDialogAction>
         </AlertDialogFooter>

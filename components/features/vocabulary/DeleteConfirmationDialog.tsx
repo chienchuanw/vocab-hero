@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useDeleteVocabulary } from '@/hooks/useVocabularyMutations';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import type { VocabularyItem } from '@/hooks/useVocabulary';
 
 /**
@@ -32,6 +33,8 @@ export function DeleteConfirmationDialog({
   onOpenChange,
   vocabulary,
 }: DeleteConfirmationDialogProps) {
+  const t = useTranslations('vocabulary');
+  const tc = useTranslations('common');
   const deleteMutation = useDeleteVocabulary();
 
   const handleDelete = async () => {
@@ -39,10 +42,10 @@ export function DeleteConfirmationDialog({
 
     try {
       await deleteMutation.mutateAsync(vocabulary.id);
-      toast.success('Word deleted successfully');
+      toast.success(t('toast.deleteSuccess'));
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to delete, please try again');
+      toast.error(error instanceof Error ? error.message : t('toast.deleteError'));
     }
   };
 
@@ -50,20 +53,19 @@ export function DeleteConfirmationDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+          <AlertDialogTitle>{t('deleteDialog.title')}</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete &quot;{vocabulary?.word}&quot;? This action cannot be
-            undone.
+            {t('deleteDialog.description', { word: vocabulary?.word || '' })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{tc('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
             className="bg-red-600 hover:bg-red-700"
             disabled={deleteMutation.isPending}
           >
-            {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+            {deleteMutation.isPending ? tc('deleting') : tc('delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

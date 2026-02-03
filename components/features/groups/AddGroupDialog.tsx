@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useCreateGroup } from '@/hooks/useGroupMutations';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 /**
  * AddGroupDialog component props
@@ -28,6 +29,8 @@ export interface AddGroupDialogProps {
  * Dialog for adding new group
  */
 export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
+  const t = useTranslations('groups');
+  const tc = useTranslations('common');
   const createMutation = useCreateGroup();
   const [formData, setFormData] = useState({
     name: '',
@@ -38,17 +41,17 @@ export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
     e.preventDefault();
 
     if (!formData.name.trim()) {
-      toast.error('Please enter group name');
+      toast.error(t('form.nameError'));
       return;
     }
 
     try {
       await createMutation.mutateAsync(formData);
-      toast.success('Group added successfully!');
+      toast.success(t('toast.addSuccess'));
       setFormData({ name: '', description: '' });
       onOpenChange(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to add group, please try again');
+      toast.error(error instanceof Error ? error.message : t('toast.addError'));
     }
   };
 
@@ -56,40 +59,38 @@ export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>Add Group</DialogTitle>
-          <DialogDescription>
-            Create a new vocabulary group to organize your learning content
-          </DialogDescription>
+          <DialogTitle>{t('addDialog.title')}</DialogTitle>
+          <DialogDescription>{t('addDialog.description')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="group-name">Group Name *</Label>
+            <Label htmlFor="group-name">{t('form.name')}</Label>
             <Input
               id="group-name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="e.g., JLPT N5 Vocabulary"
+              placeholder={t('form.namePlaceholder')}
               required
             />
           </div>
           <div>
-            <Label htmlFor="group-description">Description (Optional)</Label>
+            <Label htmlFor="group-description">{t('form.description')}</Label>
             <Textarea
               id="group-description"
               value={formData.description}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              placeholder="Group description or purpose..."
+              placeholder={t('form.descriptionPlaceholder')}
               rows={3}
             />
           </div>
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button type="submit" disabled={createMutation.isPending}>
-              {createMutation.isPending ? 'Adding...' : 'Add Group'}
+              {createMutation.isPending ? tc('adding') : tc('add')}
             </Button>
           </div>
         </form>
