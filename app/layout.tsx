@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 import { QueryProvider } from '@/lib/providers/QueryProvider';
 import { ThemeProvider } from '@/lib/providers/ThemeProvider';
 import { OfflineBanner } from '@/components/shared/OfflineBanner';
@@ -20,17 +22,22 @@ export const metadata: Metadata = {
   description: 'Learn Japanese vocabulary with gamified spaced repetition',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
-          <OfflineBanner />
-          <QueryProvider>{children}</QueryProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <OfflineBanner />
+            <QueryProvider>{children}</QueryProvider>
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>
