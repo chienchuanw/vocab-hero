@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Loader2 } from 'lucide-react';
 
@@ -11,7 +12,9 @@ interface LoadingProps {
   text?: string;
 }
 
-export function Loading({ variant = 'spinner', text = 'Loading...' }: LoadingProps) {
+export function Loading({ variant = 'spinner', text }: LoadingProps) {
+  const t = useTranslations('common');
+  const displayText = text ?? t('loading');
   if (variant === 'skeleton') {
     return <LoadingSkeleton />;
   }
@@ -19,7 +22,7 @@ export function Loading({ variant = 'spinner', text = 'Loading...' }: LoadingPro
   return (
     <div className="flex min-h-[400px] flex-col items-center justify-center gap-4">
       <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      <p className="text-sm text-muted-foreground">{text}</p>
+      <p className="text-sm text-muted-foreground">{displayText}</p>
     </div>
   );
 }
@@ -52,4 +55,3 @@ export function CardSkeleton() {
     </div>
   );
 }
-

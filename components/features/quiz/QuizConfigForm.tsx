@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
@@ -44,6 +45,10 @@ export interface QuizConfigFormProps {
  * Form for configuring quiz settings before starting
  */
 export function QuizConfigForm({ groups, onSubmit, isLoading = false }: QuizConfigFormProps) {
+  const t = useTranslations('study');
+  const tCommon = useTranslations('common');
+  const tQuiz = useTranslations('quiz');
+
   const [groupId, setGroupId] = useState<string>('');
   const [questionCount, setQuestionCount] = useState<number>(10);
   const [quizType, setQuizType] = useState<'WORD_TO_MEANING' | 'MEANING_TO_WORD' | 'MIXED'>(
@@ -73,7 +78,7 @@ export function QuizConfigForm({ groups, onSubmit, isLoading = false }: QuizConf
   if (groups.length === 0) {
     return (
       <div className="rounded-lg border bg-card p-8 text-center">
-        <p className="text-muted-foreground">No groups available. Please create a group first.</p>
+        <p className="text-muted-foreground">{tQuiz('noGroups')}</p>
       </div>
     );
   }
@@ -82,10 +87,10 @@ export function QuizConfigForm({ groups, onSubmit, isLoading = false }: QuizConf
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Group Selection */}
       <div className="space-y-2">
-        <Label htmlFor="group-select">Select Group</Label>
+        <Label htmlFor="group-select">{t('selectGroup')}</Label>
         <Select value={groupId} onValueChange={setGroupId}>
           <SelectTrigger id="group-select">
-            <SelectValue placeholder="Choose a vocabulary group" />
+            <SelectValue placeholder={t('selectGroupPlaceholder')} />
           </SelectTrigger>
           <SelectContent>
             {groups.map((group) => (
@@ -99,7 +104,7 @@ export function QuizConfigForm({ groups, onSubmit, isLoading = false }: QuizConf
 
       {/* Question Count */}
       <div className="space-y-2">
-        <Label htmlFor="question-count">Number of Questions</Label>
+        <Label htmlFor="question-count">{t('numberOfQuestions')}</Label>
         <Input
           id="question-count"
           type="number"
@@ -112,7 +117,7 @@ export function QuizConfigForm({ groups, onSubmit, isLoading = false }: QuizConf
 
       {/* Question Type */}
       <div className="space-y-2">
-        <Label htmlFor="question-type">Question Type</Label>
+        <Label htmlFor="question-type">{t('questionType')}</Label>
         <Select
           value={quizType}
           onValueChange={(value) =>
@@ -123,18 +128,17 @@ export function QuizConfigForm({ groups, onSubmit, isLoading = false }: QuizConf
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="WORD_TO_MEANING">Japanese Word → Meaning</SelectItem>
-            <SelectItem value="MEANING_TO_WORD">Meaning → Japanese Word</SelectItem>
-            <SelectItem value="MIXED">Mixed (Random)</SelectItem>
+            <SelectItem value="WORD_TO_MEANING">{t('questionTypes.wordToMeaning')}</SelectItem>
+            <SelectItem value="MEANING_TO_WORD">{t('questionTypes.meaningToWord')}</SelectItem>
+            <SelectItem value="MIXED">{t('questionTypes.mixed')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {/* Submit Button */}
       <Button type="submit" className="w-full" disabled={isLoading || !groupId}>
-        {isLoading ? 'Starting...' : 'Start Quiz'}
+        {isLoading ? tCommon('starting') : tCommon('startQuiz')}
       </Button>
     </form>
   );
 }
-

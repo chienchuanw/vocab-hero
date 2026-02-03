@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +18,7 @@ function GoalSettingsForm({
 }: {
   goal: NonNullable<ReturnType<typeof useDailyGoal>['data']>;
 }) {
+  const t = useTranslations('settings');
   const updateMutation = useUpdateDailyGoal();
 
   const [formData, setFormData] = useState({
@@ -42,10 +44,8 @@ function GoalSettingsForm({
   return (
     <div className="container max-w-2xl py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Daily Goals</h1>
-        <p className="text-muted-foreground mt-2">
-          Set your daily study targets to stay motivated and track progress
-        </p>
+        <h1 className="text-3xl font-bold">{t('dailyGoals')}</h1>
+        <p className="text-muted-foreground mt-2">{t('dailyGoalsDesc')}</p>
       </div>
 
       <Card>

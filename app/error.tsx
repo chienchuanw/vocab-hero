@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AlertCircle } from 'lucide-react';
@@ -12,6 +13,9 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const t = useTranslations('errors');
+  const tc = useTranslations('common');
+
   useEffect(() => {
     console.error('Error boundary caught:', error);
   }, [error]);
@@ -24,25 +28,23 @@ export default function Error({
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Something Went Wrong</h1>
-          <p className="text-muted-foreground">An error occurred while loading this page.</p>
+          <h1 className="text-3xl font-bold">{t('somethingWentWrong')}</h1>
+          <p className="text-muted-foreground">{t('pageLoadError')}</p>
         </div>
 
         {process.env.NODE_ENV === 'development' && (
           <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-4 text-left">
-            <p className="text-sm font-semibold text-destructive">
-              Error Details (Development Only):
-            </p>
+            <p className="text-sm font-semibold text-destructive">{t('errorDetails')}</p>
             <p className="mt-2 font-mono text-xs text-destructive/80">{error.message}</p>
           </div>
         )}
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Button onClick={reset} variant="default">
-            Try Again
+            {tc('tryAgain')}
           </Button>
           <Button asChild variant="outline">
-            <Link href="/">Go Home</Link>
+            <Link href="/">{tc('goHome')}</Link>
           </Button>
         </div>
       </div>

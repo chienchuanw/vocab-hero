@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { StatCard } from '@/components/features/progress/StatCard';
 import { ContributionWall } from '@/components/features/progress/ContributionWall';
@@ -18,6 +19,7 @@ import { Card } from '@/components/ui/card';
  * Displays comprehensive learning statistics and progress visualization
  */
 export default function ProgressPage() {
+  const t = useTranslations('progress');
   const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('month');
@@ -66,14 +68,14 @@ export default function ProgressPage() {
       <div className="space-y-6">
         {/* Page Header */}
         <div>
-          <h1 className="text-3xl font-bold">Progress</h1>
-          <p className="text-muted-foreground mt-1">Track your learning journey and achievements</p>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground mt-1">{t('description')}</p>
         </div>
 
         {/* Daily Goal Progress - Compact */}
         {goal && (
           <Card className="p-4">
-            <h2 className="text-lg font-semibold mb-3">Today&apos;s Goal</h2>
+            <h2 className="text-lg font-semibold mb-3">{t('todaysGoal')}</h2>
             <GoalProgressBar
               wordsProgress={todayProgress.wordsStudied}
               wordsGoal={goal.wordsPerDay}
@@ -87,33 +89,33 @@ export default function ProgressPage() {
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            title="Total Words"
+            title={t('totalWords')}
             value={375}
             icon={<BookOpen className="h-4 w-4" />}
             trend={25}
-            description="Words in your collection"
+            description={t('totalWordsDesc')}
           />
           <StatCard
-            title="Study Time"
+            title={t('studyTime')}
             value={195}
             unit="min"
             icon={<Clock className="h-4 w-4" />}
             trend={15}
-            description="This month"
+            description={t('studyTimeDesc')}
           />
           <StatCard
-            title="Mastery Rate"
+            title={t('masteryRate')}
             value={68.5}
             unit="%"
             icon={<TrendingUp className="h-4 w-4" />}
             trend={5.2}
-            description="Words learned or mastered"
+            description={t('masteryRateDesc')}
           />
           <StatCard
-            title="Current Streak"
+            title={t('currentStreak')}
             value={7}
             icon={<Award className="h-4 w-4" />}
-            description="Days in a row"
+            description={t('currentStreakDesc')}
           />
         </div>
 
@@ -127,19 +129,22 @@ export default function ProgressPage() {
         {/* Charts Section with Tabs */}
         <Tabs value={timeRange} onValueChange={(v) => setTimeRange(v as typeof timeRange)}>
           <TabsList>
-            <TabsTrigger value="week">Week</TabsTrigger>
-            <TabsTrigger value="month">Month</TabsTrigger>
-            <TabsTrigger value="year">Year</TabsTrigger>
+            <TabsTrigger value="week">{t('tabs.week')}</TabsTrigger>
+            <TabsTrigger value="month">{t('tabs.month')}</TabsTrigger>
+            <TabsTrigger value="year">{t('tabs.year')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value={timeRange} className="space-y-6 mt-6">
             {/* Line Chart */}
-            <ProgressLineChart data={mockLineChartData} title="Learning Progress" />
+            <ProgressLineChart data={mockLineChartData} title={t('charts.learningProgress')} />
 
             {/* Pie and Bar Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <GroupDistributionPieChart data={mockGroupData} title="Vocabulary Groups" />
-              <MasteryLevelBarChart data={mockMasteryData} title="Mastery Levels" />
+              <GroupDistributionPieChart
+                data={mockGroupData}
+                title={t('charts.vocabularyGroups')}
+              />
+              <MasteryLevelBarChart data={mockMasteryData} title={t('charts.masteryLevels')} />
             </div>
           </TabsContent>
         </Tabs>

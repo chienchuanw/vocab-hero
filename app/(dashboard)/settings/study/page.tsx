@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -35,6 +36,7 @@ function StudySettingsForm({
 }: {
   settings: NonNullable<ReturnType<typeof useUserSettings>['data']>;
 }) {
+  const t = useTranslations('settings');
   const updateMutation = useUpdateUserSettings();
 
   const [formData, setFormData] = useState({
@@ -76,10 +78,8 @@ function StudySettingsForm({
   return (
     <div className="container max-w-2xl py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Study Preferences</h1>
-        <p className="text-muted-foreground mt-2">
-          Customize your study sessions and learning experience
-        </p>
+        <h1 className="text-3xl font-bold">{t('study')}</h1>
+        <p className="text-muted-foreground mt-2">{t('studyDesc')}</p>
       </div>
 
       <form onSubmit={handleSubmit}>

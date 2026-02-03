@@ -1,9 +1,11 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 import { WifiOff } from 'lucide-react';
 
 export function OfflineBanner() {
+  const t = useTranslations('common');
   const isOnline = useOnlineStatus();
 
   if (isOnline) {
@@ -17,7 +19,7 @@ export function OfflineBanner() {
     >
       <div className="flex items-center justify-center gap-2">
         <WifiOff className="h-4 w-4" />
-        <span>You are currently offline. Some features may be unavailable.</span>
+        <span>{t('offline')}</span>
       </div>
     </div>
   );

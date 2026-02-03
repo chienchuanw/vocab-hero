@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useTheme } from 'next-themes';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/features/settings';
@@ -12,6 +13,7 @@ import { Loader2, Sun, Moon, Monitor } from 'lucide-react';
 const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
 
 export default function ThemeSettingsPage() {
+  const t = useTranslations('settings');
   const { theme, setTheme } = useTheme();
   const { data: settings, isLoading } = useUserSettings(DEFAULT_USER_ID);
   const updateMutation = useUpdateUserSettings();
@@ -58,16 +60,14 @@ export default function ThemeSettingsPage() {
     <Layout>
       <div className="container max-w-2xl py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">Appearance</h1>
-          <p className="text-muted-foreground mt-2">
-            Customize how Vocab Hero looks on your device
-          </p>
+          <h1 className="text-3xl font-bold">{t('appearance')}</h1>
+          <p className="text-muted-foreground mt-2">{t('appearanceDesc')}</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Theme</CardTitle>
-            <CardDescription>Select your preferred color theme for the application</CardDescription>
+            <CardTitle>{t('appearance')}</CardTitle>
+            <CardDescription>{t('appearanceDesc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <ThemeToggle variant="buttons" className="justify-center" />

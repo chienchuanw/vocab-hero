@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -35,6 +36,7 @@ import { toast } from 'sonner';
  * Main page for vocabulary management
  */
 export default function VocabularyPage() {
+  const t = useTranslations('vocabulary');
   const [filters, setFilters] = useState<VocabularyQueryParams>({
     sortBy: 'createdAt',
     sortOrder: 'desc',
@@ -107,10 +109,10 @@ export default function VocabularyPage() {
           throw new Error('Failed to add vocabulary to group');
         }
 
-        toast.success(`"${vocabulary.word}" added to group "${group.name}"`);
+        toast.success(t('toast.addToGroupSuccess', { word: vocabulary.word, group: group.name }));
         vocabularyQuery.refetch();
       } catch {
-        toast.error('Failed to add vocabulary to group');
+        toast.error(t('toast.addToGroupError'));
       }
     }
   };
@@ -130,14 +132,12 @@ export default function VocabularyPage() {
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold">Vocabulary</h1>
-              <p className="text-muted-foreground mt-1">
-                Manage your Japanese vocabulary collection
-              </p>
+              <h1 className="text-3xl font-bold">{t('title')}</h1>
+              <p className="text-muted-foreground mt-1">{t('description')}</p>
             </div>
             <Button onClick={() => setAddDialogOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Word
+              {t('addWord')}
             </Button>
           </div>
 
@@ -149,9 +149,7 @@ export default function VocabularyPage() {
 
           {groups && groups.length > 0 && (
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-              <h2 className="text-sm font-semibold text-gray-700 mb-3">
-                Drag vocabulary to groups
-              </h2>
+              <h2 className="text-sm font-semibold text-gray-700 mb-3">{t('dragToGroups')}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {groups.map((group) => (
                   <GroupCard key={group.id} group={group} />

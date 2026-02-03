@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { QuizConfigForm, type QuizConfig } from '@/components/features/quiz/QuizConfigForm';
 import { MultipleChoiceQuestion } from '@/components/features/quiz/MultipleChoiceQuestion';
@@ -16,6 +17,7 @@ import { generateQuizQuestions, type QuizQuestion } from '@/lib/quiz/quiz-utils'
  */
 export default function QuizStudyPage() {
   const router = useRouter();
+  const t = useTranslations('common');
   const [config, setConfig] = useState<QuizConfig | null>(null);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +84,7 @@ export default function QuizStudyPage() {
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold">Quiz Mode</h1>
+            <h1 className="text-3xl font-bold">{t('startQuiz')}</h1>
             <p className="mt-2 text-muted-foreground">
               Test your knowledge with multiple choice questions
             </p>
@@ -133,7 +135,7 @@ export default function QuizStudyPage() {
       <div className="max-w-3xl mx-auto">
         <div className="mb-4 flex items-center justify-between">
           <Button variant="ghost" onClick={() => router.push('/study')}>
-            ← Exit Quiz
+            ← {t('backToStudy')}
           </Button>
           <div className="text-sm text-muted-foreground">
             {quiz.currentQuestionNumber} / {quiz.totalQuestions}

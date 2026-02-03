@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { NotificationPreferences } from '@/components/features/notifications/NotificationPreferences';
 import type { NotificationPreference } from '@/components/features/notifications/NotificationPreferences.types';
@@ -22,6 +23,7 @@ const DEFAULT_PREFERENCES: NotificationPreference = {
 };
 
 export default function NotificationSettingsPage() {
+  const t = useTranslations('settings');
   const queryClient = useQueryClient();
 
   const {
@@ -100,6 +102,10 @@ export default function NotificationSettingsPage() {
   return (
     <Layout>
       <div className="container max-w-2xl py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">{t('notifications')}</h1>
+          <p className="text-muted-foreground mt-2">{t('notificationsDesc')}</p>
+        </div>
         <NotificationPreferences
           preferences={preferences || DEFAULT_PREFERENCES}
           onUpdate={handleUpdate}

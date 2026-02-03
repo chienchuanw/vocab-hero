@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -39,40 +40,42 @@ export function QuizSummary({
   onRestart,
   onExit,
 }: QuizSummaryProps) {
+  const t = useTranslations('quiz');
+  const tCommon = useTranslations('common');
   const incorrectAnswers = totalQuestions - correctAnswers;
 
   return (
     <div className="space-y-8">
       {/* 成績摘要 */}
       <div className="rounded-lg border bg-card p-8 text-center">
-        <h2 className="text-3xl font-bold">Quiz Complete!</h2>
+        <h2 className="text-3xl font-bold">{t('complete')}</h2>
 
         <div className="mt-8 grid grid-cols-3 gap-6">
           <div>
             <div className="text-4xl font-bold text-primary">{correctAnswers}</div>
-            <div className="mt-2 text-sm text-muted-foreground">Correct</div>
+            <div className="mt-2 text-sm text-muted-foreground">{t('correct')}</div>
           </div>
           <div>
             <div className="text-4xl font-bold text-destructive">{incorrectAnswers}</div>
-            <div className="mt-2 text-sm text-muted-foreground">Incorrect</div>
+            <div className="mt-2 text-sm text-muted-foreground">{t('incorrect')}</div>
           </div>
           <div>
             <div className="text-4xl font-bold">{accuracy.toFixed(1)}%</div>
-            <div className="mt-2 text-sm text-muted-foreground">Accuracy</div>
+            <div className="mt-2 text-sm text-muted-foreground">{t('accuracy')}</div>
           </div>
         </div>
 
         <div className="mt-8 flex gap-4 justify-center">
-          <Button onClick={onRestart}>Try Again</Button>
+          <Button onClick={onRestart}>{tCommon('tryAgain')}</Button>
           <Button variant="outline" onClick={onExit}>
-            Back to Study
+            {tCommon('backToStudy')}
           </Button>
         </div>
       </div>
 
       {/* 答題詳情 */}
       <div>
-        <h3 className="text-xl font-bold mb-4">Review Answers</h3>
+        <h3 className="text-xl font-bold mb-4">{t('reviewAnswers')}</h3>
         <div className="space-y-3">
           {answers.map((answer, index) => (
             <div
@@ -87,9 +90,7 @@ export function QuizSummary({
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      #{index + 1}
-                    </span>
+                    <span className="text-sm font-medium text-muted-foreground">#{index + 1}</span>
                     <div>
                       <div className="font-bold">{answer.word}</div>
                       <div className="text-sm text-muted-foreground">{answer.reading}</div>
@@ -98,11 +99,13 @@ export function QuizSummary({
 
                   <div className="mt-3 space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">Your answer:</span>
+                      <span className="text-sm text-muted-foreground">{t('yourAnswer')}</span>
                       <span
                         className={cn(
                           'font-medium',
-                          answer.isCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'
+                          answer.isCorrect
+                            ? 'text-green-700 dark:text-green-400'
+                            : 'text-red-700 dark:text-red-400'
                         )}
                       >
                         {answer.selectedAnswer}
@@ -111,7 +114,7 @@ export function QuizSummary({
 
                     {!answer.isCorrect && (
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">Correct answer:</span>
+                        <span className="text-sm text-muted-foreground">{t('correctAnswer')}</span>
                         <span className="font-medium text-green-700 dark:text-green-400">
                           {answer.correctAnswer}
                         </span>
@@ -123,9 +126,7 @@ export function QuizSummary({
                 <div
                   className={cn(
                     'flex h-8 w-8 items-center justify-center rounded-full text-lg',
-                    answer.isCorrect
-                      ? 'bg-green-500 text-white'
-                      : 'bg-red-500 text-white'
+                    answer.isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
                   )}
                 >
                   {answer.isCorrect ? '✓' : '✗'}
@@ -138,4 +139,3 @@ export function QuizSummary({
     </div>
   );
 }
-

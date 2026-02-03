@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Card, CardContent } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/features/settings';
@@ -41,61 +42,61 @@ function SettingsLink({ href, icon: Icon, title, description }: SettingsLinkProp
   );
 }
 
-const settingsLinks: SettingsLinkProps[] = [
-  {
-    href: '/settings/theme',
-    icon: Palette,
-    title: 'Appearance',
-    description: 'Theme and display settings',
-  },
-  {
-    href: '/settings/audio',
-    icon: Volume2,
-    title: 'Audio',
-    description: 'TTS voice and playback settings',
-  },
-  {
-    href: '/settings/study',
-    icon: GraduationCap,
-    title: 'Study',
-    description: 'Study session preferences',
-  },
-  {
-    href: '/settings/goals',
-    icon: Target,
-    title: 'Daily Goals',
-    description: 'Daily study targets and reminders',
-  },
-  {
-    href: '/settings/notifications',
-    icon: Bell,
-    title: 'Notifications',
-    description: 'Notification preferences',
-  },
-  {
-    href: '/settings/language',
-    icon: Globe,
-    title: 'Language',
-    description: 'App language settings',
-  },
-  {
-    href: '/settings/data',
-    icon: Database,
-    title: 'Data Management',
-    description: 'Backup, restore, or delete all data',
-  },
-];
-
 export default function SettingsPage() {
+  const t = useTranslations('settings');
+
+  const settingsLinks: SettingsLinkProps[] = [
+    {
+      href: '/settings/theme',
+      icon: Palette,
+      title: t('appearance'),
+      description: t('appearanceDesc'),
+    },
+    {
+      href: '/settings/audio',
+      icon: Volume2,
+      title: t('audio'),
+      description: t('audioDesc'),
+    },
+    {
+      href: '/settings/study',
+      icon: GraduationCap,
+      title: t('study'),
+      description: t('studyDesc'),
+    },
+    {
+      href: '/settings/goals',
+      icon: Target,
+      title: t('dailyGoals'),
+      description: t('dailyGoalsDesc'),
+    },
+    {
+      href: '/settings/notifications',
+      icon: Bell,
+      title: t('notifications'),
+      description: t('notificationsDesc'),
+    },
+    {
+      href: '/settings/language',
+      icon: Globe,
+      title: t('language'),
+      description: t('languageDesc'),
+    },
+    {
+      href: '/settings/data',
+      icon: Database,
+      title: t('dataManagement'),
+      description: t('dataManagementDesc'),
+    },
+  ];
+
   return (
     <Layout>
       <div className="container max-w-2xl py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold">Settings</h1>
-            <p className="text-muted-foreground mt-2">
-              Manage your preferences and customize your experience
-            </p>
+            <h1 className="text-3xl font-bold">{t('title')}</h1>
+            <p className="text-muted-foreground mt-2">{t('description')}</p>
           </div>
           <ThemeToggle />
         </div>

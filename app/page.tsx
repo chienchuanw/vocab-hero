@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,8 @@ import { BookOpen, GraduationCap, TrendingUp, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
+  const t = useTranslations('home');
+  const tc = useTranslations('common');
   const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
   const { data: goal, isLoading: isLoadingGoal } = useDailyGoal(DEFAULT_USER_ID);
 
@@ -23,10 +26,8 @@ export default function Home() {
       <div className="space-y-6">
         {/* Welcome Section */}
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Welcome to Vocab Hero</h1>
-          <p className="text-muted-foreground">
-            Start your Japanese vocabulary learning journey today
-          </p>
+          <h1 className="text-3xl font-bold">{t('welcome')}</h1>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
 
         {/* Quick Stats */}
@@ -38,7 +39,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-2xl font-bold">0</p>
-                <p className="text-sm text-muted-foreground">Total Words</p>
+                <p className="text-sm text-muted-foreground">{t('totalWords')}</p>
               </div>
             </div>
           </Card>
@@ -50,7 +51,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-2xl font-bold">0</p>
-                <p className="text-sm text-muted-foreground">Words Mastered</p>
+                <p className="text-sm text-muted-foreground">{t('wordsMastered')}</p>
               </div>
             </div>
           </Card>
@@ -62,7 +63,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-2xl font-bold">0</p>
-                <p className="text-sm text-muted-foreground">Study Sessions</p>
+                <p className="text-sm text-muted-foreground">{t('studySessions')}</p>
               </div>
             </div>
           </Card>
@@ -71,10 +72,10 @@ export default function Home() {
         {/* Daily Goal Progress */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Daily Goal</h2>
+            <h2 className="text-xl font-semibold">{t('dailyGoal')}</h2>
             <Link href="/settings/goals">
               <Button variant="outline" size="sm">
-                Settings
+                {tc('save')}
               </Button>
             </Link>
           </div>
@@ -95,15 +96,13 @@ export default function Home() {
             />
           ) : (
             <Card className="p-6">
-              <p className="text-center text-muted-foreground">
-                No daily goal set. Go to settings to create one.
-              </p>
+              <p className="text-center text-muted-foreground">{t('noGoalSet')}</p>
             </Card>
           )}
 
           <Link href="/study">
             <Button className="w-full" size="lg">
-              Start Studying
+              {t('startStudying')}
             </Button>
           </Link>
         </div>

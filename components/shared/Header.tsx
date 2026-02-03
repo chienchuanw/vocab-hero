@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/badge';
 import { Flame } from 'lucide-react';
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -14,6 +15,7 @@ interface HeaderProps {
 }
 
 export function Header({ streak = 0 }: HeaderProps) {
+  const t = useTranslations('common');
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4">
@@ -31,7 +33,7 @@ export function Header({ streak = 0 }: HeaderProps) {
           <Badge variant="secondary" className="flex items-center gap-1 px-3 py-1">
             <Flame className="h-4 w-4 text-orange-500" />
             <span className="font-semibold">{streak}</span>
-            <span className="text-xs text-muted-foreground">day streak</span>
+            <span className="text-xs text-muted-foreground">{t('dayStreak')}</span>
           </Badge>
         </div>
       </div>

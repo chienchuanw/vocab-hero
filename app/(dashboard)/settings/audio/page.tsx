@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -31,6 +32,7 @@ function AudioSettingsForm({
 }: {
   settings: NonNullable<ReturnType<typeof useUserSettings>['data']>;
 }) {
+  const t = useTranslations('settings');
   const updateMutation = useUpdateUserSettings();
 
   const [formData, setFormData] = useState({
@@ -127,10 +129,8 @@ function AudioSettingsForm({
   return (
     <div className="container max-w-2xl py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Audio Settings</h1>
-        <p className="text-muted-foreground mt-2">
-          Configure text-to-speech voice and playback options
-        </p>
+        <h1 className="text-3xl font-bold">{t('audio')}</h1>
+        <p className="text-muted-foreground mt-2">{t('audioDesc')}</p>
       </div>
 
       <form onSubmit={handleSubmit}>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { useDueVocabulary } from '@/hooks/useVocabulary';
 import { useUserSettings } from '@/hooks/useUserSettings';
@@ -12,6 +13,7 @@ const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
 const DEFAULT_CARDS_PER_SESSION = 20;
 
 export default function FlashcardStudyPage() {
+  const t = useTranslations('common');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [ratings, setRatings] = useState<Record<string, QualityRating>>({});
@@ -64,7 +66,7 @@ export default function FlashcardStudyPage() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading vocabulary...</p>
+            <p className="text-muted-foreground">{t('loading')}</p>
           </div>
         </div>
       </Layout>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import { useBackup } from '@/hooks/useDataManagement';
 import { ExportFormat } from '@/lib/validations/export';
 
 export default function DataManagementPage() {
+  const t = useTranslations('settings');
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showRestoreDialog, setShowRestoreDialog] = useState(false);
   const backup = useBackup();
@@ -18,10 +20,8 @@ export default function DataManagementPage() {
     <Layout>
       <div className="container max-w-4xl py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">Data Management</h1>
-          <p className="text-muted-foreground mt-2">
-            Manage your vocabulary data - backup, restore, or reset everything
-          </p>
+          <h1 className="text-3xl font-bold">{t('dataManagement')}</h1>
+          <p className="text-muted-foreground mt-2">{t('dataManagementDesc')}</p>
         </div>
 
         <div className="space-y-6">

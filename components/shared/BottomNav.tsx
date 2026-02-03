@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Home, BookOpen, GraduationCap, TrendingUp, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -12,40 +13,41 @@ import { cn } from '@/lib/utils';
 
 interface NavItem {
   href: string;
-  label: string;
+  labelKey: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
-const navItems: NavItem[] = [
-  {
-    href: '/',
-    label: 'Home',
-    icon: Home,
-  },
-  {
-    href: '/vocabulary',
-    label: 'Vocabulary',
-    icon: BookOpen,
-  },
-  {
-    href: '/study',
-    label: 'Study',
-    icon: GraduationCap,
-  },
-  {
-    href: '/progress',
-    label: 'Progress',
-    icon: TrendingUp,
-  },
-  {
-    href: '/settings',
-    label: 'Settings',
-    icon: Settings,
-  },
-];
-
 export function BottomNav() {
   const pathname = usePathname();
+  const t = useTranslations('nav');
+
+  const navItems: NavItem[] = [
+    {
+      href: '/',
+      labelKey: 'home',
+      icon: Home,
+    },
+    {
+      href: '/vocabulary',
+      labelKey: 'vocabulary',
+      icon: BookOpen,
+    },
+    {
+      href: '/study',
+      labelKey: 'study',
+      icon: GraduationCap,
+    },
+    {
+      href: '/progress',
+      labelKey: 'progress',
+      icon: TrendingUp,
+    },
+    {
+      href: '/settings',
+      labelKey: 'settings',
+      icon: Settings,
+    },
+  ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background">
@@ -65,7 +67,7 @@ export function BottomNav() {
               )}
             >
               <Icon className={cn('h-6 w-6', isActive && 'fill-current')} />
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className="text-xs font-medium">{t(item.labelKey)}</span>
             </Link>
           );
         })}
@@ -73,4 +75,3 @@ export function BottomNav() {
     </nav>
   );
 }
-

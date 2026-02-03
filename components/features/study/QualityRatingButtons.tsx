@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import type {
   QualityRatingButtonsProps,
@@ -12,44 +13,14 @@ import type {
  * Quality rating button configurations
  * Based on SM-2 algorithm quality ratings
  */
-const RATING_CONFIGS: QualityRatingConfig[] = [
-  {
-    quality: 0,
-    label: '完全忘記',
-    description: 'Blackout',
-    colorClass: 'bg-destructive hover:bg-destructive/90 text-destructive-foreground',
-  },
-  {
-    quality: 1,
-    label: '不太確定',
-    description: 'Incorrect',
-    colorClass: 'bg-orange-500 hover:bg-orange-600 text-white',
-  },
-  {
-    quality: 2,
-    label: '有點困難',
-    description: 'Hard',
-    colorClass: 'bg-yellow-500 hover:bg-yellow-600 text-white',
-  },
-  {
-    quality: 3,
-    label: '還可以',
-    description: 'Good',
-    colorClass: 'bg-blue-500 hover:bg-blue-600 text-white',
-  },
-  {
-    quality: 4,
-    label: '很熟悉',
-    description: 'Easy',
-    colorClass: 'bg-green-500 hover:bg-green-600 text-white',
-  },
-  {
-    quality: 5,
-    label: '完美記住',
-    description: 'Perfect',
-    colorClass: 'bg-primary hover:bg-primary/90 text-primary-foreground',
-  },
-];
+const RATING_COLORS: Record<number, string> = {
+  0: 'bg-destructive hover:bg-destructive/90 text-destructive-foreground',
+  1: 'bg-orange-500 hover:bg-orange-600 text-white',
+  2: 'bg-yellow-500 hover:bg-yellow-600 text-white',
+  3: 'bg-blue-500 hover:bg-blue-600 text-white',
+  4: 'bg-green-500 hover:bg-green-600 text-white',
+  5: 'bg-primary hover:bg-primary/90 text-primary-foreground',
+};
 
 /**
  * QualityRatingButtons component
@@ -57,6 +28,8 @@ const RATING_CONFIGS: QualityRatingConfig[] = [
  * Supports keyboard shortcuts 0-5
  */
 export function QualityRatingButtons({ onRate, disabled = false }: QualityRatingButtonsProps) {
+  const t = useTranslations('study');
+
   // Handle keyboard shortcuts
   useEffect(() => {
     if (disabled) return;
@@ -76,11 +49,18 @@ export function QualityRatingButtons({ onRate, disabled = false }: QualityRating
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [onRate, disabled]);
 
+  const ratingConfigs: QualityRatingConfig[] = [0, 1, 2, 3, 4, 5].map((quality) => ({
+    quality: quality as QualityRating,
+    label: t(`ratings.${quality}.label`),
+    description: t(`ratings.${quality}.description`),
+    colorClass: RATING_COLORS[quality] || '',
+  }));
+
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-center">How well did you know this?</h3>
+      <h3 className="text-lg font-semibold text-center">{t('ratingPrompt')}</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {RATING_CONFIGS.map((config) => (
+        {ratingConfigs.map((config) => (
           <Button
             key={config.quality}
             onClick={() => onRate(config.quality)}
@@ -94,10 +74,7 @@ export function QualityRatingButtons({ onRate, disabled = false }: QualityRating
           </Button>
         ))}
       </div>
-      <p className="text-sm text-muted-foreground text-center">
-        Press 0-5 on your keyboard to rate
-      </p>
+      <p className="text-sm text-muted-foreground text-center">{t('ratingKeyboard')}</p>
     </div>
   );
 }
-

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
@@ -15,6 +16,7 @@ import { useGroups, type Group } from '@/hooks/useGroups';
  * Main page for vocabulary groups management
  */
 export default function GroupsPage() {
+  const t = useTranslations('nav');
   // Dialog state
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -47,7 +49,7 @@ export default function GroupsPage() {
         {/* Page header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold">Groups</h1>
+            <h1 className="text-3xl font-bold">{t('vocabulary')}</h1>
             <p className="text-muted-foreground mt-1">Organize your vocabulary into groups</p>
           </div>
           <Button onClick={() => setAddDialogOpen(true)}>
