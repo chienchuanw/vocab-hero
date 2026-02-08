@@ -364,6 +364,20 @@
     }
   },
   "sentences": {
+    "list": {
+      "title": "Sentence Cards",
+      "study": "Study Sentences",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Are you sure you want to delete this sentence?",
+      "deleteSuccess": "Sentence deleted",
+      "empty": "No sentence cards yet",
+      "emptyDescription": "Import sentences from Duolingo screenshots to get started",
+      "import": "Import from Image",
+      "loading": "Loading sentences...",
+      "error": "Failed to load sentences",
+      "retry": "Retry"
+    },
     "upload": {
       "title": "Upload Images",
       "dropzone": "Drag and drop images here, or click to select",
@@ -375,6 +389,26 @@
       "process": "Process Images",
       "processing": "Processing...",
       "remove": "Remove"
+    },
+    "preview": {
+      "title": "Review OCR Results",
+      "japanese": "Japanese",
+      "english": "English",
+      "notes": "Notes (optional)",
+      "save": "Save",
+      "discard": "Discard",
+      "saveAll": "Save All",
+      "processing": "Processing...",
+      "noResults": "No results to review"
+    },
+    "flashcard": {
+      "flipToReveal": "Press Space or click to reveal",
+      "flipBack": "Press Space or click to flip back",
+      "previous": "Previous",
+      "next": "Next",
+      "close": "Close",
+      "counter": "{current} / {total}",
+      "noSentences": "No sentences to review"
     }
   }
 }

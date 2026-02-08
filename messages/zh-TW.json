@@ -364,6 +364,20 @@
     }
   },
   "sentences": {
+    "list": {
+      "title": "句子卡片",
+      "study": "學習句子",
+      "edit": "編輯",
+      "delete": "刪除",
+      "confirmDelete": "確定要刪除這個句子嗎？",
+      "deleteSuccess": "句子已刪除",
+      "empty": "尚無句子卡片",
+      "emptyDescription": "從 Duolingo 截圖匯入句子以開始使用",
+      "import": "從圖片匯入",
+      "loading": "載入句子中...",
+      "error": "無法載入句子",
+      "retry": "重試"
+    },
     "upload": {
       "title": "上傳圖片",
       "dropzone": "拖曳圖片至此，或點擊選擇",
@@ -375,6 +389,26 @@
       "process": "處理圖片",
       "processing": "處理中...",
       "remove": "移除"
+    },
+    "preview": {
+      "title": "檢視 OCR 結果",
+      "japanese": "日文",
+      "english": "英文",
+      "notes": "備註（選填）",
+      "save": "儲存",
+      "discard": "捨棄",
+      "saveAll": "全部儲存",
+      "processing": "處理中...",
+      "noResults": "沒有可檢視的結果"
+    },
+    "flashcard": {
+      "flipToReveal": "按空白鍵或點擊以顯示",
+      "flipBack": "按空白鍵或點擊以翻回",
+      "previous": "上一個",
+      "next": "下一個",
+      "close": "關閉",
+      "counter": "{current} / {total}",
+      "noSentences": "沒有可複習的句子"
     }
   }
 }
