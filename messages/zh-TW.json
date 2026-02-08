@@ -188,7 +188,13 @@
       "deleteError": "刪除失敗，請重試",
       "addToGroupSuccess": "「{word}」已加入群組「{group}」",
       "addToGroupError": "無法將單字加入群組"
-    }
+    },
+    "tabs": {
+      "vocabulary": "單字",
+      "sentences": "句子"
+    },
+    "importFromImage": "從圖片匯入",
+    "importFromImageDescription": "上傳 Duolingo 截圖以擷取句子配對"
   },
   "groups": {
     "addDialog": {

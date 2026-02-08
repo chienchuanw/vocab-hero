@@ -188,7 +188,13 @@
       "deleteError": "Failed to delete, please try again",
       "addToGroupSuccess": "\"{word}\" added to group \"{group}\"",
       "addToGroupError": "Failed to add vocabulary to group"
-    }
+    },
+    "tabs": {
+      "vocabulary": "Vocabulary",
+      "sentences": "Sentences"
+    },
+    "importFromImage": "Import from Image",
+    "importFromImageDescription": "Upload Duolingo screenshots to extract sentence pairs"
   },
   "groups": {
     "addDialog": {
