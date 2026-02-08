@@ -362,5 +362,19 @@
       "title": "群組 - Vocab Hero",
       "description": "將單字整理成群組"
     }
+  },
+  "sentences": {
+    "upload": {
+      "title": "上傳圖片",
+      "dropzone": "拖曳圖片至此，或點擊選擇",
+      "maxFiles": "最多 {max} 張圖片",
+      "maxSize": "每張圖片最大 {size}MB",
+      "invalidType": "僅接受圖片檔案",
+      "tooLarge": "檔案 {name} 超過 {size}MB 限制",
+      "tooMany": "最多允許 {max} 個檔案",
+      "process": "處理圖片",
+      "processing": "處理中...",
+      "remove": "移除"
+    }
   }
 }

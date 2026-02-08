@@ -362,5 +362,19 @@
       "title": "Groups - Vocab Hero",
       "description": "Organize your vocabulary into groups"
     }
+  },
+  "sentences": {
+    "upload": {
+      "title": "Upload Images",
+      "dropzone": "Drag and drop images here, or click to select",
+      "maxFiles": "Maximum {max} images",
+      "maxSize": "Maximum {size}MB per image",
+      "invalidType": "Only image files are accepted",
+      "tooLarge": "File {name} exceeds {size}MB limit",
+      "tooMany": "Maximum {max} files allowed",
+      "process": "Process Images",
+      "processing": "Processing...",
+      "remove": "Remove"
+    }
   }
 }
