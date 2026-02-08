@@ -1,9 +1,6 @@
 {
-  "active_plan": "/Users/chienchuanw/Documents/vocab-hero/.sisyphus/plans/i18n-implementation.md",
-  "started_at": "2026-02-03T08:47:03.218Z",
-  "session_ids": [
-    "ses_3dd619c20ffeq17ga3XfFB0EeJ",
-    "ses_3dd0b9176ffeFZ4lzNiPAPkn7g"
-  ],
-  "plan_name": "i18n-implementation"
+  "active_plan": "/Users/chienchuanw/Documents/vocab-hero/.sisyphus/plans/duolingo-image-import.md",
+  "started_at": "2026-02-08T15:15:52.347Z",
+  "session_ids": ["ses_3dd0b9176ffeFZ4lzNiPAPkn7g"],
+  "plan_name": "duolingo-image-import"
 }

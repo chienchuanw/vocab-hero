@@ -68,6 +68,19 @@ model ExampleSentence {
   @@map("example_sentences")
 }
 
+// SentenceCard model - Japanese/English sentence pairs imported from Duolingo screenshots
+model SentenceCard {
+  id        String   @id @default(cuid())
+  japanese  String
+  english   String
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([createdAt])
+  @@map("sentence_cards")
+}
+
 // VocabularyGroup model - Collections/decks of vocabulary items
 model VocabularyGroup {
   id          String   @id @default(cuid())
