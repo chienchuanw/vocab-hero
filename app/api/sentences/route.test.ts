@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GET, POST } from './route';
 import { NextRequest } from 'next/server';
 import {
@@ -7,20 +7,82 @@ import {
   updateSentenceSchema,
 } from '@/lib/validations/sentence';
 
+vi.mock('@/lib/db/prisma', () => ({
+  prisma: {
+    sentenceCard: {
+      findMany: vi.fn(),
+      create: vi.fn(),
+    },
+  },
+}));
+
+import { prisma } from '@/lib/db/prisma';
+
 describe('GET /api/sentences', () => {
-  it('should return 501 Not Implemented', async () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should return empty array when no sentences exist', async () => {
+    (prisma.sentenceCard.findMany as any).mockResolvedValue([]);
+
     const request = new NextRequest('http://localhost:3000/api/sentences');
     const response = await GET(request);
     const data = await response.json();
 
-    expect(response.status).toBe(501);
-    expect(data.success).toBe(false);
-    expect(data.error.code).toBe('NOT_IMPLEMENTED');
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.data).toEqual([]);
+  });
+
+  it('should return list of sentences', async () => {
+    const mockSentences = [
+      {
+        id: '1',
+        japanese: 'これはテストです',
+        english: 'This is a test',
+        notes: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: '2',
+        japanese: '日本語を勉強しています',
+        english: 'I am studying Japanese',
+        notes: 'Present continuous',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+    (prisma.sentenceCard.findMany as any).mockResolvedValue(mockSentences);
+
+    const request = new NextRequest('http://localhost:3000/api/sentences');
+    const response = await GET(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.data).toHaveLength(2);
+    expect(data.data[0].japanese).toBe('これはテストです');
   });
 });
 
 describe('POST /api/sentences', () => {
-  it('should return 501 Not Implemented', async () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should create sentence with valid data', async () => {
+    const mockSentence = {
+      id: '1',
+      japanese: 'これはテストです',
+      english: 'This is a test',
+      notes: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    (prisma.sentenceCard.create as any).mockResolvedValue(mockSentence);
+
     const request = new NextRequest('http://localhost:3000/api/sentences', {
       method: 'POST',
       body: JSON.stringify({
@@ -31,9 +93,42 @@ describe('POST /api/sentences', () => {
     const response = await POST(request);
     const data = await response.json();
 
-    expect(response.status).toBe(501);
+    expect(response.status).toBe(201);
+    expect(data.success).toBe(true);
+    expect(data.data.id).toBe('1');
+    expect(data.data.japanese).toBe('これはテストです');
+  });
+
+  it('should return 400 for empty japanese', async () => {
+    const request = new NextRequest('http://localhost:3000/api/sentences', {
+      method: 'POST',
+      body: JSON.stringify({
+        japanese: '',
+        english: 'This is a test',
+      }),
+    });
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(400);
     expect(data.success).toBe(false);
-    expect(data.error.code).toBe('NOT_IMPLEMENTED');
+    expect(data.error.code).toBe('VALIDATION_ERROR');
+  });
+
+  it('should return 400 for empty english', async () => {
+    const request = new NextRequest('http://localhost:3000/api/sentences', {
+      method: 'POST',
+      body: JSON.stringify({
+        japanese: 'これはテストです',
+        english: '',
+      }),
+    });
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(data.success).toBe(false);
+    expect(data.error.code).toBe('VALIDATION_ERROR');
   });
 });
 
