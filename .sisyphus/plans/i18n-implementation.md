@@ -92,8 +92,8 @@ Enable users to switch the application UI between English and Traditional Chines
 
 - [x] `pnpm build` completes without errors
 - [x] `pnpm tsc --noEmit` passes
-- [ ] `pnpm lint` passes
-- [ ] `pnpm test` passes
+- [x] `pnpm lint` passes
+- [x] `pnpm test` passes
 - [x] Language can be switched via Header dropdown
 - [x] Language can be switched via Settings/Language page
 - [x] Browser language auto-detection works
@@ -1147,7 +1147,7 @@ jq 'keys | length' messages/en.json
 
 - [x] All "Must Have" present
 - [x] All "Must NOT Have" absent
-- [ ] All tests pass (Vitest + Playwright) — NOTE: 8 pre-existing test failures in non-i18n files
+- [x] All tests pass (Vitest + Playwright) — 1132 tests passed, 0 failures
 - [x] Language can be switched from Header
 - [x] Language can be switched from Settings/Language
 - [x] Browser detection works (clears cookie, uses Accept-Language)
@@ -1155,5 +1155,5 @@ jq 'keys | length' messages/en.json
 - [x] All pages display correctly in both languages
 - [x] Page metadata (titles) translate correctly
 - [x] No TypeScript errors
-- [ ] No lint errors — NOTE: 22 pre-existing lint issues in non-i18n files
+- [x] No lint errors — all 22 pre-existing issues fixed
 - [x] Build succeeds
