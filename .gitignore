@@ -11,10 +11,10 @@
 !.yarn/versions
 
 # testing
-/coverage
+coverage/
 
 # next.js
-/.next/
+.next/
 /out/
 
 # production
@@ -45,8 +45,8 @@ next-env.d.ts
 
 # Playwright
 node_modules/
-/test-results/
-/playwright-report/
+test-results/
+playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/

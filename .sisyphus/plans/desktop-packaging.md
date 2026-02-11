@@ -364,7 +364,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 2. Move Existing Code to packages/web
+- [x] 2. Move Existing Code to packages/web
 
   **What to do**:
   - 使用 `git mv` 將所有現有原始碼移到 `packages/web/`
