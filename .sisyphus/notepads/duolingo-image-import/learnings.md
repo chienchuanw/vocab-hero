@@ -42,3 +42,32 @@
 - OEM mode 1 (LSTM_ONLY) for best accuracy with modern models
 - Lazy initialization: recognizeText auto-initializes if worker not yet created
 - Worker reuse: single worker instance reused across recognize calls (tesseract.js docs recommend this)
+
+## Task 10: Vocabulary Page Integration
+
+### Completed
+- Modified `app/(dashboard)/vocabulary/page.tsx` to add Tabs with "Vocabulary" and "Sentences" tabs
+- Added i18n keys for tab labels and import button in both en.json and zh-TW.json
+- Created `e2e/sentences.spec.ts` with 5 E2E tests
+- Full OCR import flow wired: Upload -> recognizeText -> parseDuolingoText -> OcrPreview -> createSentence
+- Study flow wired: SentenceList onStudy -> Dialog with SentenceFlashcard
+
+### Key Patterns
+- DndContext moved INSIDE TabsContent("vocabulary") to avoid interfering with Sentences tab
+- Layout wrapper stays at top level, Tabs inside Layout
+- Import dialog uses conditional rendering: ImageUpload when no OCR items, OcrPreview when items exist
+- Study dialog uses showCloseButton={false} since SentenceFlashcard has its own close button
+- recognizeText returns OcrResult { text: string; confidence: number } not just string
+- parseDuolingoText returns { japanese: string; english: string }
+
+### Technical Decisions
+- No tab persistence via URL params (defaultValue="vocabulary" resets on navigation)
+- onEdit prop on SentenceList set to empty function (edit functionality deferred)
+- OCR items use URL.createObjectURL for image previews in OcrPreview
+- Sequential OCR processing (one file at a time) to avoid overwhelming the worker
+
+### All 10 Tasks Complete
+- 9 feature commits on main branch
+- 77 unit tests passing across 8 test files
+- 5 E2E tests in sentences.spec.ts
+- TypeScript strict mode: zero errors

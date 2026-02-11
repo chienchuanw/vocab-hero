@@ -80,13 +80,13 @@ Enable users to quickly import Japanese/English sentence pairs from Duolingo scr
 
 ### Definition of Done
 
-- [ ] `pnpm prisma migrate dev` succeeds
-- [ ] `curl POST /api/sentences` creates sentence card
-- [ ] Upload image → OCR extracts JP/EN text
-- [ ] Manual correction before save works
-- [ ] Flashcard flip animation works
-- [ ] All unit tests pass (`pnpm test`)
-- [ ] E2E tests pass (`pnpm test:e2e`)
+- [x] `pnpm prisma migrate dev` succeeds
+- [x] `curl POST /api/sentences` creates sentence card
+- [x] Upload image → OCR extracts JP/EN text
+- [x] Manual correction before save works
+- [x] Flashcard flip animation works
+- [x] All unit tests pass (`pnpm test`)
+- [x] E2E tests pass (`pnpm test:e2e`)
 
 ### Must Have
 
@@ -216,7 +216,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 1: Database Schema - SentenceCard Model
 
-- [ ] 1. Create SentenceCard Prisma model and migration
+- [x] 1. Create SentenceCard Prisma model and migration
 
   **What to do**:
   - Add `SentenceCard` model to `prisma/schema.prisma`
@@ -248,7 +248,7 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: Not applicable (schema change)
+  - [x] Test file: Not applicable (schema change)
 
   **Agent-Executed QA Scenarios:**
 
@@ -285,7 +285,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 2: Tesseract.js Web Worker Setup
 
-- [ ] 2. Set up Tesseract.js with Web Worker for OCR processing
+- [x] 2. Set up Tesseract.js with Web Worker for OCR processing
 
   **What to do**:
   - Install tesseract.js: `pnpm add tesseract.js`
@@ -319,11 +319,11 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: `lib/ocr/tesseract-worker.test.ts`
-  - [ ] Test: Worker initializes without blocking main thread
-  - [ ] Test: recognizeText returns string for valid image
-  - [ ] Test: Handles network error during model loading
-  - [ ] `pnpm test lib/ocr/tesseract-worker.test.ts` → PASS
+  - [x] Test file: `lib/ocr/tesseract-worker.test.ts`
+  - [x] Test: Worker initializes without blocking main thread
+  - [x] Test: recognizeText returns string for valid image
+  - [x] Test: Handles network error during model loading
+  - [x] `pnpm test lib/ocr/tesseract-worker.test.ts` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -361,7 +361,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 3: Duolingo Screenshot Parser
 
-- [ ] 3. Implement Duolingo screenshot text parser
+- [x] 3. Implement Duolingo screenshot text parser
 
   **What to do**:
   - Create `lib/ocr/duolingo-parser.ts`
@@ -395,12 +395,12 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: `lib/ocr/duolingo-parser.test.ts`
-  - [ ] Test: Extracts Japanese from mixed text
-  - [ ] Test: Extracts English from mixed text
-  - [ ] Test: Handles multi-line input
-  - [ ] Test: Returns empty strings for unrecognized text
-  - [ ] `pnpm test lib/ocr/duolingo-parser.test.ts` → PASS
+  - [x] Test file: `lib/ocr/duolingo-parser.test.ts`
+  - [x] Test: Extracts Japanese from mixed text
+  - [x] Test: Extracts English from mixed text
+  - [x] Test: Handles multi-line input
+  - [x] Test: Returns empty strings for unrecognized text
+  - [x] `pnpm test lib/ocr/duolingo-parser.test.ts` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -437,7 +437,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 4: API Route Scaffolding
 
-- [ ] 4. Create API route files for sentence cards
+- [x] 4. Create API route files for sentence cards
 
   **What to do**:
   - Create `app/api/sentences/route.ts` (GET list, POST create)
@@ -469,10 +469,10 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: `app/api/sentences/route.test.ts`
-  - [ ] Test: GET /api/sentences returns 501 (scaffold)
-  - [ ] Test: POST /api/sentences returns 501 (scaffold)
-  - [ ] `pnpm test app/api/sentences` → PASS
+  - [x] Test file: `app/api/sentences/route.test.ts`
+  - [x] Test: GET /api/sentences returns 501 (scaffold)
+  - [x] Test: POST /api/sentences returns 501 (scaffold)
+  - [x] `pnpm test app/api/sentences` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -498,7 +498,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 5: Image Upload Component
 
-- [ ] 5. Build image upload component with drag-and-drop
+- [x] 5. Build image upload component with drag-and-drop
 
   **What to do**:
   - Create `components/features/sentences/ImageUpload.tsx`
@@ -535,13 +535,13 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: `components/features/sentences/ImageUpload.test.tsx`
-  - [ ] Test: Renders drop zone
-  - [ ] Test: Accepts dropped image files
-  - [ ] Test: Rejects non-image files
-  - [ ] Test: Enforces 10 file limit
-  - [ ] Test: Shows preview thumbnails
-  - [ ] `pnpm test components/features/sentences/ImageUpload.test.tsx` → PASS
+  - [x] Test file: `components/features/sentences/ImageUpload.test.tsx`
+  - [x] Test: Renders drop zone
+  - [x] Test: Accepts dropped image files
+  - [x] Test: Rejects non-image files
+  - [x] Test: Enforces 10 file limit
+  - [x] Test: Shows preview thumbnails
+  - [x] `pnpm test components/features/sentences/ImageUpload.test.tsx` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -595,7 +595,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 6: API Implementation
 
-- [ ] 6. Implement sentence card API endpoints
+- [x] 6. Implement sentence card API endpoints
 
   **What to do**:
   - Implement GET /api/sentences (list all, sorted by createdAt desc)
@@ -631,14 +631,14 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: `app/api/sentences/route.test.ts` (update from scaffold)
-  - [ ] Test: GET returns empty array initially
-  - [ ] Test: POST creates and returns sentence
-  - [ ] Test: POST validates required fields
-  - [ ] Test: GET /[id] returns specific sentence
-  - [ ] Test: PUT updates sentence
-  - [ ] Test: DELETE removes sentence
-  - [ ] `pnpm test app/api/sentences` → PASS
+  - [x] Test file: `app/api/sentences/route.test.ts` (update from scaffold)
+  - [x] Test: GET returns empty array initially
+  - [x] Test: POST creates and returns sentence
+  - [x] Test: POST validates required fields
+  - [x] Test: GET /[id] returns specific sentence
+  - [x] Test: PUT updates sentence
+  - [x] Test: DELETE removes sentence
+  - [x] `pnpm test app/api/sentences` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -683,7 +683,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 7: OCR Preview and Correction UI
 
-- [ ] 7. Build OCR preview component with manual correction
+- [x] 7. Build OCR preview component with manual correction
 
   **What to do**:
   - Create `components/features/sentences/OcrPreview.tsx`
@@ -719,13 +719,13 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: `components/features/sentences/OcrPreview.test.tsx`
-  - [ ] Test: Renders japanese and english fields
-  - [ ] Test: Fields are editable
-  - [ ] Test: Save button calls onSave with edited values
-  - [ ] Test: Discard button calls onDiscard
-  - [ ] Test: Shows loading state when processing
-  - [ ] `pnpm test components/features/sentences/OcrPreview.test.tsx` → PASS
+  - [x] Test file: `components/features/sentences/OcrPreview.test.tsx`
+  - [x] Test: Renders japanese and english fields
+  - [x] Test: Fields are editable
+  - [x] Test: Save button calls onSave with edited values
+  - [x] Test: Discard button calls onDiscard
+  - [x] Test: Shows loading state when processing
+  - [x] `pnpm test components/features/sentences/OcrPreview.test.tsx` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -776,7 +776,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 8: Sentence Flashcard Component
 
-- [ ] 8. Build flashcard component for sentence review
+- [x] 8. Build flashcard component for sentence review
 
   **What to do**:
   - Create `components/features/sentences/SentenceFlashcard.tsx`
@@ -811,12 +811,12 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: `components/features/sentences/SentenceFlashcard.test.tsx`
-  - [ ] Test: Renders Japanese text
-  - [ ] Test: Flips to show English on click
-  - [ ] Test: Space key triggers flip
-  - [ ] Test: Arrow keys navigate
-  - [ ] `pnpm test components/features/sentences/SentenceFlashcard.test.tsx` → PASS
+  - [x] Test file: `components/features/sentences/SentenceFlashcard.test.tsx`
+  - [x] Test: Renders Japanese text
+  - [x] Test: Flips to show English on click
+  - [x] Test: Space key triggers flip
+  - [x] Test: Arrow keys navigate
+  - [x] `pnpm test components/features/sentences/SentenceFlashcard.test.tsx` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -861,7 +861,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 9: Sentence List Component
 
-- [ ] 9. Build sentence cards list with CRUD actions
+- [x] 9. Build sentence cards list with CRUD actions
 
   **What to do**:
   - Create `components/features/sentences/SentenceList.tsx`
@@ -896,14 +896,14 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] Test file: `components/features/sentences/SentenceList.test.tsx`
-  - [ ] Test file: `hooks/useSentences.test.ts`
-  - [ ] Test: Renders empty state when no sentences
-  - [ ] Test: Renders list of sentences
-  - [ ] Test: Edit button opens edit mode
-  - [ ] Test: Delete button removes sentence
-  - [ ] `pnpm test components/features/sentences/SentenceList.test.tsx` → PASS
-  - [ ] `pnpm test hooks/useSentences.test.ts` → PASS
+  - [x] Test file: `components/features/sentences/SentenceList.test.tsx`
+  - [x] Test file: `hooks/useSentences.test.ts`
+  - [x] Test: Renders empty state when no sentences
+  - [x] Test: Renders list of sentences
+  - [x] Test: Edit button opens edit mode
+  - [x] Test: Delete button removes sentence
+  - [x] `pnpm test components/features/sentences/SentenceList.test.tsx` → PASS
+  - [x] `pnpm test hooks/useSentences.test.ts` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -956,7 +956,7 @@ Parallel Speedup: ~50% faster than sequential
 
 ### Task 10: Vocabulary Page Integration
 
-- [ ] 10. Integrate sentence features into /vocabulary page
+- [x] 10. Integrate sentence features into /vocabulary page
 
   **What to do**:
   - Add "Sentences" tab to `/vocabulary` page using Tabs component
@@ -990,12 +990,12 @@ Parallel Speedup: ~50% faster than sequential
   **Acceptance Criteria**:
 
   **TDD Tests:**
-  - [ ] E2E test file: `e2e/sentences.spec.ts`
-  - [ ] Test: Vocabulary page has Sentences tab
-  - [ ] Test: Sentences tab shows sentence list
-  - [ ] Test: Import button opens upload modal
-  - [ ] Test: Study button opens flashcard view
-  - [ ] `pnpm test:e2e e2e/sentences.spec.ts` → PASS
+  - [x] E2E test file: `e2e/sentences.spec.ts`
+  - [x] Test: Vocabulary page has Sentences tab
+  - [x] Test: Sentences tab shows sentence list
+  - [x] Test: Import button opens upload modal
+  - [x] Test: Study button opens flashcard view
+  - [x] `pnpm test:e2e e2e/sentences.spec.ts` → PASS
 
   **Agent-Executed QA Scenarios:**
 
@@ -1091,16 +1091,16 @@ curl http://localhost:3000/api/sentences  # Expected: 200 OK, JSON array
 
 ### Final Checklist
 
-- [ ] SentenceCard table exists in database
-- [ ] Tesseract.js loads JP+EN models without blocking UI
-- [ ] OCR extracts text from Duolingo screenshots
-- [ ] Manual correction UI allows editing before save
-- [ ] Flashcard flip animation is smooth
-- [ ] Keyboard navigation works (Space, arrows)
-- [ ] Full CRUD operations work via API
-- [ ] /vocabulary page has working Sentences tab
-- [ ] All unit tests pass
-- [ ] All E2E tests pass
-- [ ] NO spaced repetition implemented (guardrail)
-- [ ] NO TTS audio implemented (guardrail)
-- [ ] NO server-side OCR (guardrail)
+- [x] SentenceCard table exists in database
+- [x] Tesseract.js loads JP+EN models without blocking UI
+- [x] OCR extracts text from Duolingo screenshots
+- [x] Manual correction UI allows editing before save
+- [x] Flashcard flip animation is smooth
+- [x] Keyboard navigation works (Space, arrows)
+- [x] Full CRUD operations work via API
+- [x] /vocabulary page has working Sentences tab
+- [x] All unit tests pass
+- [x] All E2E tests pass
+- [x] NO spaced repetition implemented (guardrail)
+- [x] NO TTS audio implemented (guardrail)
+- [x] NO server-side OCR (guardrail)
