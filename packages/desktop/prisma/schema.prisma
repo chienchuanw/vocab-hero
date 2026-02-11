@@ -1,0 +1,281 @@
+// Prisma schema for Vocab Hero Desktop (SQLite)
+// Mirrors packages/web/prisma/schema.prisma but uses SQLite provider
+// All PostgreSQL enums replaced with String fields
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin-arm64"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model - Single user application, but keeping for future multi-user support
+model User {
+  id        String   @id @default(cuid())
+  email     String?  @unique
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  vocabularyGroups       VocabularyGroup[]
+  studySessions          StudySession[]
+  progressLogs           ProgressLog[]
+  dailyGoals             DailyGoal[]
+  userStreak             UserStreak?
+  notifications          Notification[]
+  notificationPreference NotificationPreference?
+  userSettings           UserSettings?
+
+  @@map("users")
+}
+
+// VocabularyItem model - Individual vocabulary entries
+model VocabularyItem {
+  id        String   @id @default(cuid())
+  word      String
+  reading   String
+  meaning   String
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  groups           VocabularyGroup[]
+  exampleSentences ExampleSentence[]
+  reviewSchedule   ReviewSchedule?
+
+  @@index([word])
+  @@index([reading])
+  @@index([createdAt])
+  @@map("vocabulary_items")
+}
+
+// ExampleSentence model - Example sentences for vocabulary items
+model ExampleSentence {
+  id               String   @id @default(cuid())
+  vocabularyItemId String   @map("vocabulary_item_id")
+  sentence         String
+  reading          String?
+  meaning          String
+  order            Int      @default(0)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  vocabularyItem VocabularyItem @relation(fields: [vocabularyItemId], references: [id], onDelete: Cascade)
+
+  @@index([vocabularyItemId])
+  @@index([order])
+  @@map("example_sentences")
+}
+
+// SentenceCard model - Japanese/English sentence pairs imported from Duolingo screenshots
+model SentenceCard {
+  id        String   @id @default(cuid())
+  japanese  String
+  english   String
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([createdAt])
+  @@map("sentence_cards")
+}
+
+// VocabularyGroup model - Collections/decks of vocabulary items
+model VocabularyGroup {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  userId      String   @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vocabularyItems VocabularyItem[]
+
+  @@index([userId])
+  @@index([name])
+  @@index([createdAt])
+  @@map("vocabulary_groups")
+}
+
+// ReviewSchedule model - SM-2 algorithm data for spaced repetition
+model ReviewSchedule {
+  id               String    @id @default(cuid())
+  vocabularyItemId String    @unique @map("vocabulary_item_id")
+  easinessFactor   Float     @default(2.5) @map("easiness_factor")
+  interval         Int       @default(0)
+  repetitions      Int       @default(0)
+  nextReviewDate   DateTime  @map("next_review_date")
+  lastReviewDate   DateTime? @map("last_review_date")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  vocabularyItem VocabularyItem @relation(fields: [vocabularyItemId], references: [id], onDelete: Cascade)
+
+  @@index([nextReviewDate])
+  @@map("review_schedules")
+}
+
+// StudyMode values: FLASHCARD, MULTIPLE_CHOICE, SPELLING, MATCHING, RANDOM, LISTENING
+// QuizType values: WORD_TO_MEANING, MEANING_TO_WORD, MIXED
+
+// StudySession model - Study session records
+model StudySession {
+  id               String    @id @default(cuid())
+  userId           String    @map("user_id")
+  mode             String
+  studyMode        String?   @map("study_mode")
+  cardsReviewed    Int       @default(0) @map("cards_reviewed")
+  correctAnswers   Int       @default(0) @map("correct_answers")
+  timeSpentMinutes Int       @default(0) @map("time_spent_minutes")
+  startedAt        DateTime  @default(now()) @map("started_at")
+  completedAt      DateTime? @map("completed_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  // Quiz-specific fields
+  quizType      String? @map("quiz_type")
+  questionCount Int?    @map("question_count")
+  groupId       String? @map("group_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([studyMode])
+  @@index([groupId])
+  @@index([startedAt])
+  @@index([completedAt])
+  @@map("study_sessions")
+}
+
+// ProgressLog model - Daily progress tracking
+model ProgressLog {
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  date              DateTime
+  wordsStudied      Int      @default(0) @map("words_studied")
+  newWords          Int      @default(0) @map("new_words")
+  reviewWords       Int      @default(0) @map("review_words")
+  timeSpentMinutes  Int      @default(0) @map("time_spent_minutes")
+  sessionsCompleted Int      @default(0) @map("sessions_completed")
+  correctAnswers    Int      @default(0) @map("correct_answers")
+  totalAnswers      Int      @default(0) @map("total_answers")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+  @@map("progress_logs")
+}
+
+// DailyGoal model - User's daily study goals
+model DailyGoal {
+  id            String   @id @default(cuid())
+  userId        String   @unique @map("user_id")
+  wordsPerDay   Int      @default(10) @map("words_per_day")
+  minutesPerDay Int      @default(30) @map("minutes_per_day")
+  reminderTime  String   @default("10:00") @map("reminder_time")
+  pushEnabled   Boolean  @default(false) @map("push_enabled")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("daily_goals")
+}
+
+// UserStreak model - Streak tracking for continuous learning
+model UserStreak {
+  id               String    @id @default(cuid())
+  userId           String    @unique @map("user_id")
+  currentStreak    Int       @default(0) @map("current_streak")
+  longestStreak    Int       @default(0) @map("longest_streak")
+  lastStudyDate    DateTime? @map("last_study_date")
+  freezesRemaining Int       @default(0) @map("freezes_remaining")
+  freezeUsedAt     DateTime? @map("freeze_used_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_streaks")
+}
+
+// NotificationType values: GOAL_ACHIEVED, STREAK_WARNING, STUDY_REMINDER, MILESTONE_REACHED, FREEZE_USED
+// NotificationPriority values: LOW, MEDIUM, HIGH
+
+// Notification model - In-app notifications and push notification history
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  type      String
+  title     String
+  message   String
+  priority  String   @default("MEDIUM")
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+// NotificationPreference model - User preferences for notifications
+model NotificationPreference {
+  id                     String   @id @default(cuid())
+  userId                 String   @unique @map("user_id")
+  goalAchievementEnabled Boolean  @default(true) @map("goal_achievement_enabled")
+  streakWarningEnabled   Boolean  @default(true) @map("streak_warning_enabled")
+  studyReminderEnabled   Boolean  @default(true) @map("study_reminder_enabled")
+  milestoneEnabled       Boolean  @default(true) @map("milestone_enabled")
+  pushEnabled            Boolean  @default(false) @map("push_enabled")
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+// ThemePreference values: LIGHT, DARK, SYSTEM
+
+// UserSettings model - User preferences for theme, TTS, and study settings
+model UserSettings {
+  id     String @id @default(cuid())
+  userId String @unique @map("user_id")
+
+  // Theme Settings
+  theme String @default("SYSTEM")
+
+  // TTS (Text-to-Speech) Settings
+  ttsSpeed  Float   @default(1.0) @map("tts_speed")
+  ttsVolume Float   @default(1.0) @map("tts_volume")
+  ttsPitch  Float   @default(1.0) @map("tts_pitch")
+  ttsVoice  String? @map("tts_voice")
+
+  // Study Settings
+  cardsPerSession  Int     @default(20) @map("cards_per_session")
+  defaultStudyMode String  @default("FLASHCARD") @map("default_study_mode")
+  autoAdvance      Boolean @default(false) @map("auto_advance")
+  showReading      Boolean @default(true) @map("show_reading")
+
+  // Language Settings (placeholder for future i18n)
+  language String @default("en")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}

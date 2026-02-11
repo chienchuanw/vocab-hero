@@ -566,7 +566,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ### Phase 2: Database Abstraction
 
-- [ ] 5. Create SQLite-Compatible Prisma Schema for Desktop
+- [x] 5. Create SQLite-Compatible Prisma Schema for Desktop
 
   **What to do**:
   - 在 `packages/desktop/prisma/` 建立 `schema.prisma`，provider 設為 `sqlite`

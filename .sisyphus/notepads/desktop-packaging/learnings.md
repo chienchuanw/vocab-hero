@@ -130,3 +130,31 @@
 - `pnpm tsc --noEmit` in packages/shared: passes cleanly (zero errors)
 - `pnpm tsc --noEmit` in packages/web: still passes cleanly (zero web files modified)
 - `git diff --name-only packages/web/`: empty — confirmed no web changes
+
+## Task 5: Desktop SQLite Prisma Schema (2026-02-11)
+
+### SQLite vs PostgreSQL Prisma Schema Differences
+
+- SQLite does not support `enum` blocks — all enum types must be replaced with `String`
+- Enum default values change syntax: `@default(FLASHCARD)` becomes `@default("FLASHCARD")` (quoted strings)
+- Same pattern for all 5 enums: StudyMode, QuizType, NotificationType, NotificationPriority, ThemePreference
+- `binaryTargets = ["native", "darwin-arm64"]` added for macOS Apple Silicon compatibility
+- `provider = "sqlite"` with `url = env("DATABASE_URL")` where URL is `file:./dev.db` format
+
+### Prisma Client Generation in Desktop Package
+
+- `prisma db push` from packages/desktop/ generates client to hoisted node_modules: `node_modules/.pnpm/@prisma+client@6.1.0_prisma@6.1.0/node_modules/@prisma/client`
+- This means web and desktop share the same @prisma/client binary but each has its own schema
+- The LAST `prisma generate` wins for the shared client — need to be careful in CI to generate for the right context
+- For development, each `prisma db push` auto-generates client for that schema
+
+### Implicit Many-to-Many Works in SQLite
+
+- Prisma implicit M:N (VocabularyGroup ↔ VocabularyItem via `VocabularyGroup[]` / `VocabularyItem[]`) works in SQLite
+- Prisma creates the junction table `_VocabularyGroupToVocabularyItem` automatically
+- Connect/disconnect/include all work as expected
+
+### .gitignore for SQLite
+
+- Root .gitignore didn't have `*.db` or `*.db-journal` patterns — added them
+- SQLite journal files (`*.db-journal`) must also be gitignored (WAL mode creates these)

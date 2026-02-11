@@ -50,3 +50,7 @@ playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# SQLite databases
+*.db
+*.db-journal
