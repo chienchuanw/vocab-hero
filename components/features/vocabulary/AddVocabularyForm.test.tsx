@@ -30,7 +30,7 @@ describe('AddVocabularyForm', () => {
     await user.type(screen.getByLabelText(/reading/i), 'べんきょう');
     await user.type(screen.getByLabelText(/meaning/i), 'study');
 
-    await user.click(screen.getByRole('button', { name: /add word/i }));
+    await user.click(screen.getByRole('button', { name: /^add$/i }));
 
     expect(mockOnSubmit).toHaveBeenCalledWith({
       word: '勉強',
@@ -60,7 +60,7 @@ describe('AddVocabularyForm', () => {
     const meaningInputs = screen.getAllByPlaceholderText(/I study every day/i);
     await user.type(meaningInputs[0]!, 'I study every day');
 
-    await user.click(screen.getByRole('button', { name: /add word/i }));
+    await user.click(screen.getByRole('button', { name: /^add$/i }));
 
     expect(mockOnSubmit).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -84,7 +84,7 @@ describe('AddVocabularyForm', () => {
     const freshMockOnSubmit = vi.fn();
     render(<AddVocabularyForm onSubmit={freshMockOnSubmit} />);
 
-    await user.click(screen.getByRole('button', { name: /add word/i }));
+    await user.click(screen.getByRole('button', { name: /^add$/i }));
 
     expect(screen.getByText(/please enter word/i)).toBeInTheDocument();
     expect(screen.getByText(/please enter reading/i)).toBeInTheDocument();
@@ -103,7 +103,7 @@ describe('AddVocabularyForm', () => {
     // Add empty example sentence
     await user.click(screen.getByRole('button', { name: /add example sentence/i }));
 
-    await user.click(screen.getByRole('button', { name: /add word/i }));
+    await user.click(screen.getByRole('button', { name: /^add$/i }));
 
     expect(mockOnSubmit).toHaveBeenCalledWith({
       word: '勉強',
