@@ -90,15 +90,15 @@ Enable users to switch the application UI between English and Traditional Chines
 
 ### Definition of Done
 
-- [ ] `pnpm build` completes without errors
-- [ ] `pnpm tsc --noEmit` passes
+- [x] `pnpm build` completes without errors
+- [x] `pnpm tsc --noEmit` passes
 - [ ] `pnpm lint` passes
 - [ ] `pnpm test` passes
-- [ ] Language can be switched via Header dropdown
-- [ ] Language can be switched via Settings/Language page
-- [ ] Browser language auto-detection works
-- [ ] All UI text displays correctly in both languages
-- [ ] Translation files have matching keys (no missing translations)
+- [x] Language can be switched via Header dropdown
+- [x] Language can be switched via Settings/Language page
+- [x] Browser language auto-detection works
+- [x] All UI text displays correctly in both languages
+- [x] Translation files have matching keys (no missing translations)
 
 ### Must Have
 
@@ -264,12 +264,12 @@ Parallel Speedup: ~35% faster than sequential
 
 **Acceptance Criteria**:
 
-- [ ] `pnpm list next-intl` shows installed version
-- [ ] `ls i18n/routing.ts i18n/request.ts` shows both files exist
-- [ ] `ls middleware.ts` shows file exists
-- [ ] `ls messages/en.json messages/zh-TW.json` shows both files exist
-- [ ] `pnpm build` completes without errors
-- [ ] `pnpm tsc --noEmit` passes
+- [x] `pnpm list next-intl` shows installed version
+- [x] `ls i18n/routing.ts i18n/request.ts` shows both files exist
+- [x] `ls middleware.ts` shows file exists (now proxy.ts after Next.js 16 migration)
+- [x] `ls messages/en.json messages/zh-TW.json` shows both files exist
+- [x] `pnpm build` completes without errors
+- [x] `pnpm tsc --noEmit` passes
 
 **Agent-Executed QA Scenarios:**
 
@@ -354,9 +354,9 @@ Scenario: Build succeeds with i18n config
 
 **Acceptance Criteria**:
 
-- [ ] String extraction report created (can be in .sisyphus/evidence/)
-- [ ] All namespaces documented with string counts
-- [ ] At least 100 unique strings identified
+- [x] String extraction report created (can be in .sisyphus/evidence/)
+- [x] All namespaces documented with string counts
+- [x] At least 100 unique strings identified
 
 **Agent-Executed QA Scenarios:**
 
@@ -427,10 +427,10 @@ Scenario: Key namespaces identified
 
 **Acceptance Criteria**:
 
-- [ ] `jq 'keys | length' messages/en.json` returns count > 100
-- [ ] `jq 'keys | length' messages/zh-TW.json` returns same count as en.json
-- [ ] `diff <(jq -S 'keys' messages/en.json) <(jq -S 'keys' messages/zh-TW.json)` returns empty
-- [ ] JSON files are valid (no syntax errors)
+- [x] `jq 'keys | length' messages/en.json` returns count > 100 (312 scalar keys)
+- [x] `jq 'keys | length' messages/zh-TW.json` returns same count as en.json (312)
+- [x] `diff <(jq -S 'keys' messages/en.json) <(jq -S 'keys' messages/zh-TW.json)` returns empty
+- [x] JSON files are valid (no syntax errors)
 
 **Agent-Executed QA Scenarios:**
 
@@ -519,10 +519,10 @@ Scenario: JSON syntax valid
 
 **Acceptance Criteria**:
 
-- [ ] `ls components/shared/LanguageSwitcher.tsx` shows file exists
-- [ ] `grep "LanguageSwitcher" components/shared/Header.tsx` finds import
-- [ ] `grep "data-testid" components/shared/LanguageSwitcher.tsx` finds test IDs
-- [ ] `pnpm tsc --noEmit` passes
+- [x] `ls components/shared/LanguageSwitcher.tsx` shows file exists
+- [x] `grep "LanguageSwitcher" components/shared/Header.tsx` finds import
+- [x] `grep "data-testid" components/shared/LanguageSwitcher.tsx` finds test IDs
+- [x] `pnpm tsc --noEmit` passes
 
 **Agent-Executed QA Scenarios:**
 
@@ -601,9 +601,9 @@ Scenario: Header displays LanguageSwitcher
 
 **Acceptance Criteria**:
 
-- [ ] `grep -r "useTranslations" components/shared/` finds usage in all components with text
-- [ ] No hardcoded user-facing strings remain in shared components
-- [ ] `pnpm tsc --noEmit` passes
+- [x] `grep -r "useTranslations" components/shared/` finds usage in all components with text
+- [x] No hardcoded user-facing strings remain in shared components
+- [x] `pnpm tsc --noEmit` passes
 
 **Agent-Executed QA Scenarios:**
 
@@ -681,8 +681,8 @@ Scenario: Shared components have no hardcoded strings
 
 **Acceptance Criteria**:
 
-- [ ] `grep -r "useTranslations" app/\(dashboard\)/settings/` finds usage
-- [ ] `pnpm tsc --noEmit` passes
+- [x] `grep -r "useTranslations" app/\(dashboard\)/settings/` finds usage
+- [x] `pnpm tsc --noEmit` passes
 
 **Agent-Executed QA Scenarios:**
 
@@ -749,9 +749,9 @@ Scenario: Settings page displays in Chinese
 
 **Acceptance Criteria**:
 
-- [ ] `grep -r "useTranslations" app/\(dashboard\)/study/` finds usage
-- [ ] `grep -r "useTranslations" components/features/study/` finds usage
-- [ ] `pnpm tsc --noEmit` passes
+- [x] `grep -r "useTranslations" app/\(dashboard\)/study/` finds usage
+- [x] `grep -r "useTranslations" components/features/study/` finds usage
+- [x] `pnpm tsc --noEmit` passes
 
 **Agent-Executed QA Scenarios:**
 
@@ -817,10 +817,10 @@ Scenario: Study page displays in Chinese
 
 **Acceptance Criteria**:
 
-- [ ] `grep -r "useTranslations" app/\(dashboard\)/vocabulary/` finds usage
-- [ ] `grep -r "useTranslations" app/\(dashboard\)/groups/` finds usage
-- [ ] `grep -r "useTranslations" app/\(dashboard\)/progress/` finds usage
-- [ ] `pnpm tsc --noEmit` passes
+- [x] `grep -r "useTranslations" app/\(dashboard\)/vocabulary/` finds usage
+- [x] `grep -r "useTranslations" app/\(dashboard\)/groups/` finds usage
+- [x] `grep -r "useTranslations" app/\(dashboard\)/progress/` finds usage
+- [x] `pnpm tsc --noEmit` passes
 
 **Agent-Executed QA Scenarios:**
 
@@ -889,10 +889,10 @@ Scenario: Home page displays in Chinese
 
 **Acceptance Criteria**:
 
-- [ ] `grep "Coming Soon" app/\(dashboard\)/settings/language/page.tsx` returns empty
-- [ ] `grep "日本語" app/\(dashboard\)/settings/language/page.tsx` returns empty
-- [ ] `grep "data-testid" app/\(dashboard\)/settings/language/page.tsx` finds test IDs
-- [ ] `pnpm tsc --noEmit` passes
+- [x] `grep "Coming Soon" app/\(dashboard\)/settings/language/page.tsx` returns empty
+- [x] `grep "日本語" app/\(dashboard\)/settings/language/page.tsx` returns empty
+- [x] `grep "data-testid" app/\(dashboard\)/settings/language/page.tsx` finds test IDs
+- [x] `pnpm tsc --noEmit` passes
 
 **Agent-Executed QA Scenarios:**
 
@@ -977,10 +977,10 @@ Scenario: Japanese option not present
 
 **Acceptance Criteria**:
 
-- [ ] `grep "generateMetadata" app/layout.tsx` finds function
-- [ ] `grep "generateMetadata" app/page.tsx` finds function
-- [ ] `grep -r "generateMetadata" app/\(dashboard\)/` finds functions in most pages
-- [ ] `pnpm build` succeeds
+- [x] `grep "generateMetadata" app/layout.tsx` finds function
+- [x] `grep "generateMetadata" app/page.tsx` finds function (in app/(home)/layout.tsx)
+- [x] `grep -r "generateMetadata" app/\(dashboard\)/` finds functions in most pages (20 layout files)
+- [x] `pnpm build` succeeds
 
 **Agent-Executed QA Scenarios:**
 
@@ -1063,10 +1063,10 @@ Scenario: Home page metadata translated
 
 **Acceptance Criteria**:
 
-- [ ] `pnpm test i18n` passes (Vitest)
-- [ ] `pnpm test:e2e e2e/i18n.spec.ts` passes (Playwright)
-- [ ] At least 5 Vitest tests for i18n
-- [ ] At least 3 Playwright E2E tests for i18n
+- [x] `pnpm test i18n` passes (Vitest)
+- [x] `pnpm test:e2e e2e/i18n.spec.ts` passes (Playwright)
+- [x] At least 5 Vitest tests for i18n
+- [x] At least 3 Playwright E2E tests for i18n
 
 **Agent-Executed QA Scenarios:**
 
@@ -1145,15 +1145,15 @@ jq 'keys | length' messages/en.json
 
 ### Final Checklist
 
-- [ ] All "Must Have" present
-- [ ] All "Must NOT Have" absent
-- [ ] All tests pass (Vitest + Playwright)
-- [ ] Language can be switched from Header
-- [ ] Language can be switched from Settings/Language
-- [ ] Browser detection works (clears cookie, uses Accept-Language)
-- [ ] Cookie persists language choice
-- [ ] All pages display correctly in both languages
-- [ ] Page metadata (titles) translate correctly
-- [ ] No TypeScript errors
-- [ ] No lint errors
-- [ ] Build succeeds
+- [x] All "Must Have" present
+- [x] All "Must NOT Have" absent
+- [ ] All tests pass (Vitest + Playwright) — NOTE: 8 pre-existing test failures in non-i18n files
+- [x] Language can be switched from Header
+- [x] Language can be switched from Settings/Language
+- [x] Browser detection works (clears cookie, uses Accept-Language)
+- [x] Cookie persists language choice
+- [x] All pages display correctly in both languages
+- [x] Page metadata (titles) translate correctly
+- [x] No TypeScript errors
+- [ ] No lint errors — NOTE: 22 pre-existing lint issues in non-i18n files
+- [x] Build succeeds
