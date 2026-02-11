@@ -438,7 +438,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 3. Create packages/shared with Zod Schemas & Types
+- [x] 3. Create packages/shared with Zod Schemas & Types
 
   **What to do**:
   - 建立 `packages/shared/package.json` 和 `packages/shared/tsconfig.json`

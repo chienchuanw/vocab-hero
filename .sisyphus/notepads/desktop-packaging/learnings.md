@@ -100,3 +100,33 @@
 
 - `.npmrc`: pnpm hoisting configuration for eslint/next
 - Root `package.json`: Only workspace filter scripts + `pnpm.onlyBuiltDependencies` config
+
+## Task 3: Shared Package Creation (2026-02-11)
+
+### Platform Detection Without DOM Types
+
+- `packages/shared/tsconfig.json` uses `"lib": ["ES2022"]` (no DOM) since it's a platform-agnostic package
+- `navigator` type isn't available without DOM lib — use `declare const navigator` ambient declaration for the specific shape needed
+- `navigator.userAgent` approach for Electron detection is simpler and works with `contextIsolation: true`
+
+### Direct TS Source Imports for Workspace Packages
+
+- No build step needed: `"main": "./src/index.ts"` and `"types": "./src/index.ts"` point directly to source
+- Consuming packages (Next.js via Turbopack) transpile the TS source on-the-fly
+- `composite: true` in tsconfig enables project references for incremental builds if needed later
+
+### Zod Installation in Workspace
+
+- Adding `zod` to `packages/shared/package.json` dependencies, then `pnpm install` from root: resolves and installs cleanly (Packages: +1)
+- pnpm correctly scopes zod to the shared package while deduping with any existing workspace copies
+
+### SM-2 File Copy Strategy
+
+- Exact copy of SM-2 files from packages/web — relative imports (`'./sm2.types'`) work unchanged
+- Web package retains its own copy; Task 6 will update web imports to use `@vocab-hero/shared`
+
+### Verification
+
+- `pnpm tsc --noEmit` in packages/shared: passes cleanly (zero errors)
+- `pnpm tsc --noEmit` in packages/web: still passes cleanly (zero web files modified)
+- `git diff --name-only packages/web/`: empty — confirmed no web changes
