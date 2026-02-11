@@ -2,6 +2,9 @@
   "name": "@vocab-hero/desktop",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.1.0"
   },

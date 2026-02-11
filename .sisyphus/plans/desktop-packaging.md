@@ -826,7 +826,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 9. Create Desktop Seed Script
+- [x] 9. Create Desktop Seed Script
 
   **What to do**:
   - 在 `packages/desktop/prisma/seed.ts` 建立 seed script
