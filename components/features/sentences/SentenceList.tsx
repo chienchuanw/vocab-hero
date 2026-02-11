@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Pencil, Trash2, BookOpen, Plus, AlertCircle } from 'lucide-react';
+import { Pencil, Trash2, BookOpen, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { useSentences, useDeleteSentence, type SentenceCard } from '@/hooks/useSentences';
 import { Button } from '@/components/ui/button';

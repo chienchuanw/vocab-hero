@@ -36,16 +36,6 @@ export function ImageUpload({
     };
   }, [previews]);
 
-  const validateFile = (file: File): string | null => {
-    if (!file.type.startsWith('image/')) {
-      return t('invalidType');
-    }
-    if (file.size > maxSizeBytes) {
-      return t('tooLarge', { name: file.name, size: maxSizeBytes / (1024 * 1024) });
-    }
-    return null;
-  };
-
   const addFiles = useCallback(
     (newFiles: File[]) => {
       setError(null);
@@ -59,10 +49,14 @@ export function ImageUpload({
       let validationError: string | null = null;
 
       for (const file of newFiles) {
-        const error = validateFile(file);
-        if (error) {
-          validationError = error;
-          break; // Stop on first error
+        // 驗證檔案類型和大小
+        if (!file.type.startsWith('image/')) {
+          validationError = t('invalidType');
+          break;
+        }
+        if (file.size > maxSizeBytes) {
+          validationError = t('tooLarge', { name: file.name, size: maxSizeBytes / (1024 * 1024) });
+          break;
         }
         validFiles.push(file);
       }
@@ -204,6 +198,7 @@ export function ImageUpload({
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {files.map((file, index) => (
               <div key={`${file.name}-${index}`} className="relative group aspect-square">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={previews[index]}
                   alt={file.name}

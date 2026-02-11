@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db/prisma';
  * GET /api/sentences
  * 取得句子卡片列表，按建立時間倒序排列
  */
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // 查詢所有句子卡片，按建立時間倒序排列
     const sentenceCards = await prisma.sentenceCard.findMany({

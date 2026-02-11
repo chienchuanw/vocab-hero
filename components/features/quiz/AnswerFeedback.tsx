@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 /**
@@ -18,7 +17,6 @@ export interface AnswerFeedbackProps {
  * 顯示答題後的動畫反饋
  */
 export function AnswerFeedback({ isCorrect, message, onAnimationComplete }: AnswerFeedbackProps) {
-  const t = useTranslations('quiz');
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

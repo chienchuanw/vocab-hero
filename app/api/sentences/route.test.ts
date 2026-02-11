@@ -24,7 +24,7 @@ describe('GET /api/sentences', () => {
   });
 
   it('should return empty array when no sentences exist', async () => {
-    (prisma.sentenceCard.findMany as any).mockResolvedValue([]);
+    (prisma.sentenceCard.findMany as ReturnType<typeof vi.fn>).mockResolvedValue([]);
 
     const request = new NextRequest('http://localhost:3000/api/sentences');
     const response = await GET(request);
@@ -54,7 +54,7 @@ describe('GET /api/sentences', () => {
         updatedAt: new Date(),
       },
     ];
-    (prisma.sentenceCard.findMany as any).mockResolvedValue(mockSentences);
+    (prisma.sentenceCard.findMany as ReturnType<typeof vi.fn>).mockResolvedValue(mockSentences);
 
     const request = new NextRequest('http://localhost:3000/api/sentences');
     const response = await GET(request);
@@ -81,7 +81,7 @@ describe('POST /api/sentences', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    (prisma.sentenceCard.create as any).mockResolvedValue(mockSentence);
+    (prisma.sentenceCard.create as ReturnType<typeof vi.fn>).mockResolvedValue(mockSentence);
 
     const request = new NextRequest('http://localhost:3000/api/sentences', {
       method: 'POST',

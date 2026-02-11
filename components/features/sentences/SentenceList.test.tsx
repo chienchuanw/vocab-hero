@@ -15,13 +15,13 @@ describe('SentenceList', () => {
 
   beforeEach(() => {
     vi.resetAllMocks();
-    (useSentencesHook.useDeleteSentence as any).mockReturnValue({
+    (useSentencesHook.useDeleteSentence as ReturnType<typeof vi.fn>).mockReturnValue({
       mutateAsync: mockDeleteMutate,
     });
   });
 
   it('renders loading state', () => {
-    (useSentencesHook.useSentences as any).mockReturnValue({
+    (useSentencesHook.useSentences as ReturnType<typeof vi.fn>).mockReturnValue({
       isLoading: true,
       data: undefined,
     });
@@ -31,7 +31,7 @@ describe('SentenceList', () => {
   });
 
   it('renders error state', () => {
-    (useSentencesHook.useSentences as any).mockReturnValue({
+    (useSentencesHook.useSentences as ReturnType<typeof vi.fn>).mockReturnValue({
       isLoading: false,
       isError: true,
       data: undefined,
@@ -43,7 +43,7 @@ describe('SentenceList', () => {
   });
 
   it('renders empty state', () => {
-    (useSentencesHook.useSentences as any).mockReturnValue({
+    (useSentencesHook.useSentences as ReturnType<typeof vi.fn>).mockReturnValue({
       isLoading: false,
       isError: false,
       data: [],
@@ -73,7 +73,7 @@ describe('SentenceList', () => {
       },
     ];
 
-    (useSentencesHook.useSentences as any).mockReturnValue({
+    (useSentencesHook.useSentences as ReturnType<typeof vi.fn>).mockReturnValue({
       isLoading: false,
       isError: false,
       data: mockSentences,
@@ -98,7 +98,7 @@ describe('SentenceList', () => {
       updatedAt: '2023-01-01',
     };
 
-    (useSentencesHook.useSentences as any).mockReturnValue({
+    (useSentencesHook.useSentences as ReturnType<typeof vi.fn>).mockReturnValue({
       isLoading: false,
       isError: false,
       data: [mockSentence],
@@ -113,7 +113,7 @@ describe('SentenceList', () => {
   });
 
   it('calls onStudy when study button is clicked', () => {
-    (useSentencesHook.useSentences as any).mockReturnValue({
+    (useSentencesHook.useSentences as ReturnType<typeof vi.fn>).mockReturnValue({
       isLoading: false,
       isError: false,
       data: [{ id: '1', japanese: 'A', english: 'B', createdAt: '2023-01-01' }],
@@ -136,7 +136,7 @@ describe('SentenceList', () => {
       updatedAt: '2023-01-01',
     };
 
-    (useSentencesHook.useSentences as any).mockReturnValue({
+    (useSentencesHook.useSentences as ReturnType<typeof vi.fn>).mockReturnValue({
       isLoading: false,
       isError: false,
       data: [mockSentence],

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
 import { ExampleSentence } from '@/components/features/vocabulary/ExampleSentence';
 import { SpeakerButton } from '@/components/features/audio';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
@@ -15,7 +14,6 @@ import type { ExampleSentenceData } from '@/components/features/vocabulary/Examp
  * Back: meaning + example sentences
  */
 export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardProps) {
-  const t = useTranslations('study');
   const [isFlipped, setIsFlipped] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 

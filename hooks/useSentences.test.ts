@@ -39,7 +39,7 @@ describe('useSentences Hooks', () => {
         { id: '1', japanese: 'こんにちは', english: 'Hello', createdAt: '2023-01-01' },
       ];
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockData }),
       });
@@ -60,7 +60,7 @@ describe('useSentences Hooks', () => {
       const newSentence = { japanese: '猫', english: 'Cat' };
       const mockResponse = { id: '2', ...newSentence };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true, data: mockResponse }),
       });
@@ -83,7 +83,7 @@ describe('useSentences Hooks', () => {
     it('should call PUT endpoint', async () => {
       const updateData = { id: '1', data: { english: 'Good afternoon' } };
 
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true }),
       });
@@ -104,7 +104,7 @@ describe('useSentences Hooks', () => {
 
   describe('useDeleteSentence', () => {
     it('should call DELETE endpoint', async () => {
-      (global.fetch as any).mockResolvedValueOnce({
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
         ok: true,
         json: async () => ({ success: true }),
       });
