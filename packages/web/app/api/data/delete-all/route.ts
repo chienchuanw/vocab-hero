@@ -25,19 +25,19 @@ export async function POST(request: NextRequest) {
     }
 
     await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      await tx.$executeRaw`TRUNCATE TABLE "example_sentences" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "review_schedules" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "_VocabularyGroupToVocabularyItem" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "vocabulary_items" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "vocabulary_groups" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "study_sessions" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "progress_logs" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "user_streaks" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "notifications" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "notification_preferences" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "user_settings" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "daily_goals" RESTART IDENTITY CASCADE`;
-      await tx.$executeRaw`TRUNCATE TABLE "users" RESTART IDENTITY CASCADE`;
+      await tx.exampleSentence.deleteMany();
+      await tx.reviewSchedule.deleteMany();
+      await tx.notification.deleteMany();
+      await tx.notificationPreference.deleteMany();
+      await tx.userSettings.deleteMany();
+      await tx.studySession.deleteMany();
+      await tx.progressLog.deleteMany();
+      await tx.userStreak.deleteMany();
+      await tx.dailyGoal.deleteMany();
+      await tx.vocabularyGroup.deleteMany();
+      await tx.vocabularyItem.deleteMany();
+      await tx.sentenceCard.deleteMany();
+      await tx.user.deleteMany();
     });
 
     const userId = await recreateDefaultUserData();

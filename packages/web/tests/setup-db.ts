@@ -11,17 +11,19 @@ import { prisma } from '@/lib/db/prisma';
  * Order matters due to foreign key constraints
  */
 export async function cleanDatabase() {
-  // Delete in correct order to respect foreign key constraints
-  await prisma.$executeRaw`TRUNCATE TABLE "example_sentences" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "review_schedules" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "_VocabularyGroupToVocabularyItem" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "vocabulary_items" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "vocabulary_groups" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "study_sessions" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "progress_logs" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "user_streaks" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "daily_goals" RESTART IDENTITY CASCADE`;
-  await prisma.$executeRaw`TRUNCATE TABLE "users" RESTART IDENTITY CASCADE`;
+  await prisma.exampleSentence.deleteMany();
+  await prisma.reviewSchedule.deleteMany();
+  await prisma.notification.deleteMany();
+  await prisma.notificationPreference.deleteMany();
+  await prisma.userSettings.deleteMany();
+  await prisma.studySession.deleteMany();
+  await prisma.progressLog.deleteMany();
+  await prisma.userStreak.deleteMany();
+  await prisma.dailyGoal.deleteMany();
+  await prisma.vocabularyGroup.deleteMany();
+  await prisma.vocabularyItem.deleteMany();
+  await prisma.sentenceCard.deleteMany();
+  await prisma.user.deleteMany();
 }
 
 /**

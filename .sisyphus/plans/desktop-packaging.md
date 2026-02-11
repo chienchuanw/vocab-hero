@@ -711,7 +711,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 7. Replace Raw SQL (TRUNCATE → Provider-Aware DELETE)
+- [x] 7. Replace Raw SQL (TRUNCATE → Provider-Aware DELETE)
 
   **What to do**:
   - 修改 `app/api/data/delete-all/route.ts`:
