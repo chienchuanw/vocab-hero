@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NotificationCenter } from '@/components/features/notifications/NotificationCenter';
-import type { NotificationType, NotificationPriority } from '@prisma/client';
+import type { NotificationType, NotificationPriority } from '@vocab-hero/shared';
 
 /**
  * Notification Flow Integration Tests

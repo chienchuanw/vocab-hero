@@ -649,7 +649,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 6. Replace Prisma ENUM Imports with String Literals + Zod Validation
+- [x] 6. Replace Prisma ENUM Imports with String Literals + Zod Validation
 
   **What to do**:
   - 使用 `ast_grep_search` 找出所有從 `@prisma/client` import enum 的位置

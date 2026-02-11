@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GET, POST } from './route';
 import { prisma } from '@/lib/db/prisma';
-import type { NotificationType, NotificationPriority } from '@prisma/client';
+import type { NotificationType, NotificationPriority } from '@vocab-hero/shared';
 
 /**
  * Notifications API Route Tests

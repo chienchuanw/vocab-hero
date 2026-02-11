@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GET, POST } from '@/app/api/notifications/route';
 import { PATCH } from '@/app/api/notifications/[id]/route';
 import { prisma } from '@/lib/db/prisma';
-import type { NotificationType, NotificationPriority } from '@prisma/client';
+import type { NotificationType, NotificationPriority } from '@vocab-hero/shared';
 
 /**
  * Notification API Integration Tests

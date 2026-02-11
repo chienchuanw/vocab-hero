@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db/prisma';
 import { successResponse, ApiErrors } from '@/lib/api/response';
 import { updateUserSettingsSchema } from '@/lib/validations/user-settings';
 import { z } from 'zod';
-import type { StudyMode, ThemePreference } from '@prisma/client';
+import type { StudyMode, ThemePreference } from '@vocab-hero/shared';
 
 export async function GET(request: NextRequest) {
   try {

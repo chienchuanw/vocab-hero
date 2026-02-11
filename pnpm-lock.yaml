@@ -87,6 +87,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.90.12
         version: 5.90.12(react@19.2.3)
+      '@vocab-hero/shared':
+        specifier: workspace:*
+        version: link:../shared
       canvas-confetti:
         specifier: ^1.9.4
         version: 1.9.4

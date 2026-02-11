@@ -158,3 +158,14 @@
 
 - Root .gitignore didn't have `*.db` or `*.db-journal` patterns — added them
 - SQLite journal files (`*.db-journal`) must also be gitignored (WAL mode creates these)
+
+## Task 4: Replace Prisma enum imports with @vocab-hero/shared (2026-02-11)
+
+### Key Findings
+- seed-dev.ts used Prisma runtime enum dot-access (StudyMode.FLASHCARD) which must become string literals ('FLASHCARD') since shared exports Zod-inferred types, not objects
+- The notificationMessages object used computed keys [NotificationType.GOAL_ACHIEVED] which became plain string keys 'GOAL_ACHIEVED' with explicit Record<NotificationType, ...> typing
+- randomChoice needed explicit generic <NotificationPriority> to maintain type safety with string literal arrays
+- 4 files had type-only imports (simple swap), 1 file (seed-dev.ts) had runtime enum usage requiring 8 separate dot-access replacements
+- grep on packages/web/ catches .next/ build cache files - use --include='*.ts' --include='*.tsx' to filter source only
+- pnpm install with workspace:* just resolved existing packages, no downloads needed
+- Test baseline confirmed: 103 files, 1132 passed, 4 skipped (unchanged)

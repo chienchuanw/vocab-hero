@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-import {
-  PrismaClient,
+import { PrismaClient } from '@prisma/client';
+import type {
   StudyMode,
   QuizType,
   NotificationType,
   NotificationPriority,
-} from '@prisma/client';
+} from '@vocab-hero/shared';
 
 const prisma = new PrismaClient();
 
@@ -354,19 +354,15 @@ async function main() {
 
   log.section('Creating study sessions');
   const studyModes: StudyMode[] = [
-    StudyMode.FLASHCARD,
-    StudyMode.MULTIPLE_CHOICE,
-    StudyMode.SPELLING,
-    StudyMode.MATCHING,
-    StudyMode.LISTENING,
-    StudyMode.RANDOM,
+    'FLASHCARD',
+    'MULTIPLE_CHOICE',
+    'SPELLING',
+    'MATCHING',
+    'LISTENING',
+    'RANDOM',
   ];
 
-  const quizTypes: QuizType[] = [
-    QuizType.WORD_TO_MEANING,
-    QuizType.MEANING_TO_WORD,
-    QuizType.MIXED,
-  ];
+  const quizTypes: QuizType[] = ['WORD_TO_MEANING', 'MEANING_TO_WORD', 'MIXED'];
 
   for (let i = 0; i < 50; i++) {
     const mode = randomChoice(studyModes);
@@ -388,12 +384,8 @@ async function main() {
         timeSpentMinutes: timeSpent,
         startedAt,
         completedAt,
-        quizType:
-          mode === StudyMode.MULTIPLE_CHOICE || mode === StudyMode.RANDOM
-            ? randomChoice(quizTypes)
-            : null,
-        questionCount:
-          mode === StudyMode.MULTIPLE_CHOICE || mode === StudyMode.RANDOM ? cardsReviewed : null,
+        quizType: mode === 'MULTIPLE_CHOICE' || mode === 'RANDOM' ? randomChoice(quizTypes) : null,
+        questionCount: mode === 'MULTIPLE_CHOICE' || mode === 'RANDOM' ? cardsReviewed : null,
       },
     });
   }
@@ -481,7 +473,7 @@ async function main() {
       ttsPitch: 1.0,
       ttsVoice: null,
       cardsPerSession: 25,
-      defaultStudyMode: StudyMode.FLASHCARD,
+      defaultStudyMode: 'FLASHCARD',
       autoAdvance: false,
       showReading: true,
       language: 'en',
@@ -491,31 +483,31 @@ async function main() {
 
   log.section('Creating notifications');
   const notificationTypes: NotificationType[] = [
-    NotificationType.GOAL_ACHIEVED,
-    NotificationType.STREAK_WARNING,
-    NotificationType.STUDY_REMINDER,
-    NotificationType.MILESTONE_REACHED,
-    NotificationType.FREEZE_USED,
+    'GOAL_ACHIEVED',
+    'STREAK_WARNING',
+    'STUDY_REMINDER',
+    'MILESTONE_REACHED',
+    'FREEZE_USED',
   ];
 
-  const notificationMessages = {
-    [NotificationType.GOAL_ACHIEVED]: {
+  const notificationMessages: Record<NotificationType, { title: string; message: string }> = {
+    GOAL_ACHIEVED: {
       title: 'Daily Goal Achieved!',
       message: 'Congratulations! You have completed your daily goal.',
     },
-    [NotificationType.STREAK_WARNING]: {
+    STREAK_WARNING: {
       title: 'Streak Warning',
       message: 'Your study streak is at risk! Study today to keep it alive.',
     },
-    [NotificationType.STUDY_REMINDER]: {
+    STUDY_REMINDER: {
       title: 'Time to Study',
       message: "Don't forget your daily study session!",
     },
-    [NotificationType.MILESTONE_REACHED]: {
+    MILESTONE_REACHED: {
       title: 'Milestone Reached',
       message: 'You have reached a new learning milestone!',
     },
-    [NotificationType.FREEZE_USED]: {
+    FREEZE_USED: {
       title: 'Streak Freeze Used',
       message: 'A streak freeze has been used to protect your streak.',
     },
@@ -523,7 +515,7 @@ async function main() {
 
   for (let i = 0; i < 20; i++) {
     const type = randomChoice(notificationTypes);
-    const { title, message } = notificationMessages[type];
+    const { title, message } = notificationMessages[type]!;
 
     await prisma.notification.create({
       data: {
@@ -531,11 +523,7 @@ async function main() {
         type,
         title,
         message,
-        priority: randomChoice([
-          NotificationPriority.LOW,
-          NotificationPriority.MEDIUM,
-          NotificationPriority.HIGH,
-        ]),
+        priority: randomChoice<NotificationPriority>(['LOW', 'MEDIUM', 'HIGH']),
         isRead: Math.random() < 0.6,
         createdAt: randomPastDate(7),
       },
