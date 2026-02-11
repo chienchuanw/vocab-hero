@@ -507,7 +507,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 4. Verify Zero Regressions — Full Test Suite
+- [x] 4. Verify Zero Regressions — Full Test Suite
 
   **What to do**:
   - 執行 `packages/web/` 的完整 Vitest test suite
