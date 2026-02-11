@@ -311,7 +311,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ### Phase 1: Monorepo Migration
 
-- [ ] 1. Initialize pnpm Workspace Configuration
+- [x] 1. Initialize pnpm Workspace Configuration
 
   **What to do**:
   - 建立 `pnpm-workspace.yaml` 定義 workspace packages

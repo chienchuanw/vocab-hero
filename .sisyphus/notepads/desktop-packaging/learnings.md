@@ -42,3 +42,15 @@
 - Next.js 16.1.1 + React 19.2.3 + next-intl 4.8.2 + Electron 40.3.0 = compatible
 - Build uses Turbopack by default in Next.js 16
 - Electron 40.3.0 is latest stable as of 2026-02
+
+## Task 1: Workspace Initialization (2026-02-11)
+
+### pnpm Workspace Setup
+
+- Creating `pnpm-workspace.yaml` with `packages: ['packages/*']` immediately makes pnpm recognize sub-package.json files
+- `pnpm install` after adding workspace config says "Scope: all 4 workspace projects" — confirms auto-detection
+- Lockfile update was instant ("Lockfile is up to date, resolution step is skipped") because no new deps were added
+- Empty workspace packages (no dependencies) don't show in `pnpm -r list --depth 0` output — use `--depth -1` to see package names only
+- Adding workspace-level filter scripts (`pnpm --filter @vocab-hero/web dev`) to root package.json works; they'll be no-ops until code moves
+- Existing `tsc --noEmit` and `lint` pass without issues after workspace config is added — no interference with current codebase
+- Root package.json keeps `"private": true` — this is required for workspace roots
