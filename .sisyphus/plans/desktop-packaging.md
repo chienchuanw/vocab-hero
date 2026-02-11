@@ -880,7 +880,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 10. Integration Test — Full CRUD on SQLite
+- [x] 10. Integration Test — Full CRUD on SQLite
 
   **What to do**:
   - 撰寫整合測試驗證所有 11 個 Prisma model 的 CRUD 在 SQLite 上正常
