@@ -10,6 +10,7 @@ import { GroupDistributionPieChart } from '@/components/features/progress/GroupD
 import { MasteryLevelBarChart } from '@/components/features/progress/MasteryLevelBarChart';
 import { GoalProgressBar } from '@/components/features/goals/GoalProgressBar';
 import { useDailyGoal } from '@/hooks/useDailyGoal';
+import { useDefaultUserId } from '@/hooks/useDefaultUserId';
 import { BookOpen, Clock, TrendingUp, Award } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
@@ -20,10 +21,10 @@ import { Card } from '@/components/ui/card';
  */
 export default function ProgressPage() {
   const t = useTranslations('progress');
-  const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'year'>('month');
-  const { data: goal } = useDailyGoal(DEFAULT_USER_ID);
+  const { data: userId } = useDefaultUserId();
+  const { data: goal } = useDailyGoal(userId || '');
 
   // TODO: 從 API 取得今日實際進度
   const todayProgress = {

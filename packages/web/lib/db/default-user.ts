@@ -16,6 +16,11 @@ export async function getOrCreateDefaultUser() {
   return user;
 }
 
+export async function getDefaultUserId(): Promise<string> {
+  const user = await getOrCreateDefaultUser();
+  return user.id;
+}
+
 export async function recreateDefaultUserData(): Promise<string> {
   const user = await getOrCreateDefaultUser();
   const userId = user.id;

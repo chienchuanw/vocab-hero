@@ -15,11 +15,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useUserSettings, useUpdateUserSettings } from '@/hooks/useUserSettings';
+import { useDefaultUserId } from '@/hooks/useDefaultUserId';
 import { TTS_LIMITS } from '@/lib/validations/user-settings';
 import { toast } from 'sonner';
 import { Loader2, Volume2, Play, Gauge, Music } from 'lucide-react';
-
-const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
 
 interface VoiceOption {
   name: string;
@@ -29,8 +28,10 @@ interface VoiceOption {
 
 function AudioSettingsForm({
   settings,
+  userId,
 }: {
   settings: NonNullable<ReturnType<typeof useUserSettings>['data']>;
+  userId: string;
 }) {
   const t = useTranslations('settings');
   const updateMutation = useUpdateUserSettings();
@@ -82,7 +83,7 @@ function AudioSettingsForm({
 
     try {
       await updateMutation.mutateAsync({
-        userId: DEFAULT_USER_ID,
+        userId,
         ttsSpeed: formData.ttsSpeed,
         ttsVolume: formData.ttsVolume,
         ttsPitch: formData.ttsPitch,
@@ -283,7 +284,8 @@ function AudioSettingsForm({
 }
 
 export default function AudioSettingsPage() {
-  const { data: settings, isLoading } = useUserSettings(DEFAULT_USER_ID);
+  const { data: userId } = useDefaultUserId();
+  const { data: settings, isLoading } = useUserSettings(userId || '');
 
   if (isLoading) {
     return (
@@ -307,7 +309,7 @@ export default function AudioSettingsPage() {
 
   return (
     <Layout>
-      <AudioSettingsForm key={settings.id} settings={settings} />
+      <AudioSettingsForm key={settings.id} settings={settings} userId={userId || ''} />
     </Layout>
   );
 }

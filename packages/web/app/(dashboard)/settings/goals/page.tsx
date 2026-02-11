@@ -8,15 +8,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useDailyGoal, useUpdateDailyGoal } from '@/hooks/useDailyGoal';
+import { useDefaultUserId } from '@/hooks/useDefaultUserId';
 import { toast } from 'sonner';
 import { Loader2, Target, Clock, Bell } from 'lucide-react';
 
-const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
-
 function GoalSettingsForm({
   goal,
+  userId,
 }: {
   goal: NonNullable<ReturnType<typeof useDailyGoal>['data']>;
+  userId: string;
 }) {
   const t = useTranslations('settings');
   const updateMutation = useUpdateDailyGoal();
@@ -32,7 +33,7 @@ function GoalSettingsForm({
 
     try {
       await updateMutation.mutateAsync({
-        userId: DEFAULT_USER_ID,
+        userId,
         ...formData,
       });
       toast.success('Goals updated successfully!');
@@ -132,7 +133,8 @@ function GoalSettingsForm({
 }
 
 export default function GoalSettingsPage() {
-  const { data: goal, isLoading } = useDailyGoal(DEFAULT_USER_ID);
+  const { data: userId } = useDefaultUserId();
+  const { data: goal, isLoading } = useDailyGoal(userId || '');
 
   if (isLoading) {
     return (
@@ -156,7 +158,7 @@ export default function GoalSettingsPage() {
 
   return (
     <Layout>
-      <GoalSettingsForm key={goal.id} goal={goal} />
+      <GoalSettingsForm key={goal.id} goal={goal} userId={userId || ''} />
     </Layout>
   );
 }

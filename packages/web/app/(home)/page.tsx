@@ -6,14 +6,15 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { GoalProgressBar } from '@/components/features/goals/GoalProgressBar';
 import { useDailyGoal } from '@/hooks/useDailyGoal';
+import { useDefaultUserId } from '@/hooks/useDefaultUserId';
 import { BookOpen, GraduationCap, TrendingUp, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
   const t = useTranslations('home');
   const tc = useTranslations('common');
-  const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
-  const { data: goal, isLoading: isLoadingGoal } = useDailyGoal(DEFAULT_USER_ID);
+  const { data: userId } = useDefaultUserId();
+  const { data: goal, isLoading: isLoadingGoal } = useDailyGoal(userId || '');
 
   // TODO: 從 API 取得今日實際進度
   const todayProgress = {

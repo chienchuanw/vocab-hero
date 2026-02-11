@@ -770,7 +770,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 8. Fix Hardcoded User ID in useTTSConfig
+- [x] 8. Fix Hardcoded User ID in useTTSConfig
 
   **What to do**:
   - 修改 `hooks/useTTSConfig.ts`:

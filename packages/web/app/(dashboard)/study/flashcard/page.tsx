@@ -5,11 +5,11 @@ import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { useDueVocabulary } from '@/hooks/useVocabulary';
 import { useUserSettings } from '@/hooks/useUserSettings';
+import { useDefaultUserId } from '@/hooks/useDefaultUserId';
 import { Flashcard } from '@/components/features/study/Flashcard';
 import { QualityRatingButtons } from '@/components/features/study/QualityRatingButtons';
 import type { QualityRating } from '@/components/features/study/QualityRatingButtons.types';
 
-const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
 const DEFAULT_CARDS_PER_SESSION = 20;
 
 export default function FlashcardStudyPage() {
@@ -18,7 +18,8 @@ export default function FlashcardStudyPage() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [ratings, setRatings] = useState<Record<string, QualityRating>>({});
 
-  const { data: settings } = useUserSettings(DEFAULT_USER_ID);
+  const { data: userId } = useDefaultUserId();
+  const { data: settings } = useUserSettings(userId || '');
   const cardsPerSession = settings?.cardsPerSession ?? DEFAULT_CARDS_PER_SESSION;
 
   const { data: vocabulary, isLoading, error } = useDueVocabulary(cardsPerSession);

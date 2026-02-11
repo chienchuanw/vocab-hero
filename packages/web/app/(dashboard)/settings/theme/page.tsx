@@ -7,15 +7,15 @@ import { Layout } from '@/components/shared';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/features/settings';
 import { useUserSettings, useUpdateUserSettings } from '@/hooks/useUserSettings';
+import { useDefaultUserId } from '@/hooks/useDefaultUserId';
 import { toast } from 'sonner';
 import { Loader2, Sun, Moon, Monitor } from 'lucide-react';
-
-const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
 
 export default function ThemeSettingsPage() {
   const t = useTranslations('settings');
   const { theme, setTheme } = useTheme();
-  const { data: settings, isLoading } = useUserSettings(DEFAULT_USER_ID);
+  const { data: userId } = useDefaultUserId();
+  const { data: settings, isLoading } = useUserSettings(userId || '');
   const updateMutation = useUpdateUserSettings();
 
   // Sync theme from database on initial load
@@ -33,10 +33,10 @@ export default function ThemeSettingsPage() {
     if (!theme || !settings) return;
 
     const dbTheme = settings.theme.toLowerCase();
-    if (theme !== dbTheme) {
+    if (theme !== dbTheme && userId) {
       const themeUppercase = theme.toUpperCase() as 'LIGHT' | 'DARK' | 'SYSTEM';
       updateMutation.mutate(
-        { userId: DEFAULT_USER_ID, theme: themeUppercase },
+        { userId, theme: themeUppercase },
         {
           onError: (error) => {
             toast.error(error instanceof Error ? error.message : 'Failed to save theme');

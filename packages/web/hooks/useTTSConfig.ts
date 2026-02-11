@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
 import { useUserSettings } from './useUserSettings';
+import { useDefaultUserId } from './useDefaultUserId';
 import type { TTSConfig } from '@/lib/tts';
 
-const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
-
-export function useTTSConfig(userId: string = DEFAULT_USER_ID) {
-  const { data: settings, isLoading, error } = useUserSettings(userId);
+export function useTTSConfig(userId?: string) {
+  const { data: defaultUserId } = useDefaultUserId();
+  const resolvedUserId = userId || defaultUserId;
+  const { data: settings, isLoading, error } = useUserSettings(resolvedUserId || '');
 
   const ttsConfig: TTSConfig | undefined = useMemo(() => {
     if (!settings) return undefined;

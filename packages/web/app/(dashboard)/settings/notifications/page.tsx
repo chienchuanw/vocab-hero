@@ -5,35 +5,24 @@ import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
 import { NotificationPreferences } from '@/components/features/notifications/NotificationPreferences';
 import type { NotificationPreference } from '@/components/features/notifications/NotificationPreferences.types';
+import { useDefaultUserId } from '@/hooks/useDefaultUserId';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
-
-const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
-
-const DEFAULT_PREFERENCES: NotificationPreference = {
-  id: '',
-  userId: DEFAULT_USER_ID,
-  goalAchievementEnabled: true,
-  streakWarningEnabled: true,
-  studyReminderEnabled: true,
-  milestoneEnabled: true,
-  pushEnabled: false,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
 
 export default function NotificationSettingsPage() {
   const t = useTranslations('settings');
   const queryClient = useQueryClient();
+  const { data: userId } = useDefaultUserId();
 
   const {
     data: preferences,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['notificationPreferences', DEFAULT_USER_ID],
+    queryKey: ['notificationPreferences', userId],
     queryFn: async () => {
-      const response = await fetch(`/api/notification-preferences?userId=${DEFAULT_USER_ID}`);
+      if (!userId) return null;
+      const response = await fetch(`/api/notification-preferences?userId=${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch notification preferences');
       }
@@ -41,17 +30,19 @@ export default function NotificationSettingsPage() {
       const result = await response.json();
       return result.data as NotificationPreference | null;
     },
+    enabled: !!userId,
   });
 
   const updateMutation = useMutation({
     mutationFn: async (updates: Partial<NotificationPreference>) => {
+      if (!userId) throw new Error('User ID not available');
       const response = await fetch('/api/notification-preferences', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: DEFAULT_USER_ID,
+          userId,
           ...updates,
         }),
       });
@@ -64,7 +55,7 @@ export default function NotificationSettingsPage() {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notificationPreferences', DEFAULT_USER_ID] });
+      queryClient.invalidateQueries({ queryKey: ['notificationPreferences', userId] });
       toast.success('Notification preferences updated');
     },
     onError: (error) => {
@@ -107,7 +98,19 @@ export default function NotificationSettingsPage() {
           <p className="text-muted-foreground mt-2">{t('notificationsDesc')}</p>
         </div>
         <NotificationPreferences
-          preferences={preferences || DEFAULT_PREFERENCES}
+          preferences={
+            preferences || {
+              id: '',
+              userId: userId || '',
+              goalAchievementEnabled: true,
+              streakWarningEnabled: true,
+              studyReminderEnabled: true,
+              milestoneEnabled: true,
+              pushEnabled: false,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            }
+          }
           onUpdate={handleUpdate}
           isLoading={updateMutation.isPending}
         />

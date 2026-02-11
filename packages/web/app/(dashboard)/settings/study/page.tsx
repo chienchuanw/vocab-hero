@@ -16,11 +16,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useUserSettings, useUpdateUserSettings } from '@/hooks/useUserSettings';
+import { useDefaultUserId } from '@/hooks/useDefaultUserId';
 import { STUDY_MODES, CARDS_PER_SESSION_LIMITS } from '@/lib/validations/user-settings';
 import { toast } from 'sonner';
 import { Loader2, BookOpen, LayoutGrid, Eye, Play } from 'lucide-react';
-
-const DEFAULT_USER_ID = 'cmjod038p00008o9qathx7chz';
 
 const STUDY_MODE_LABELS: Record<string, string> = {
   FLASHCARD: 'Flashcard',
@@ -33,8 +32,10 @@ const STUDY_MODE_LABELS: Record<string, string> = {
 
 function StudySettingsForm({
   settings,
+  userId,
 }: {
   settings: NonNullable<ReturnType<typeof useUserSettings>['data']>;
+  userId: string;
 }) {
   const t = useTranslations('settings');
   const updateMutation = useUpdateUserSettings();
@@ -51,7 +52,7 @@ function StudySettingsForm({
 
     try {
       await updateMutation.mutateAsync({
-        userId: DEFAULT_USER_ID,
+        userId,
         cardsPerSession: formData.cardsPerSession,
         defaultStudyMode: formData.defaultStudyMode as
           | 'FLASHCARD'
@@ -204,7 +205,8 @@ function StudySettingsForm({
 }
 
 export default function StudySettingsPage() {
-  const { data: settings, isLoading } = useUserSettings(DEFAULT_USER_ID);
+  const { data: userId } = useDefaultUserId();
+  const { data: settings, isLoading } = useUserSettings(userId || '');
 
   if (isLoading) {
     return (
@@ -228,7 +230,7 @@ export default function StudySettingsPage() {
 
   return (
     <Layout>
-      <StudySettingsForm key={settings.id} settings={settings} />
+      <StudySettingsForm key={settings.id} settings={settings} userId={userId || ''} />
     </Layout>
   );
 }
