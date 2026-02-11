@@ -36,7 +36,7 @@ function getPreferredLocale(acceptLanguage: string | null): Locale {
   return defaultLocale;
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const cookieLocale = request.cookies.get(COOKIE_NAME)?.value;
   const response = NextResponse.next();
 
