@@ -25,15 +25,39 @@ describe('GET /api/goals', () => {
     testUserId = user.id;
   });
 
-  it('should return 404 when no daily goal exists for user', async () => {
+  it('should auto-create and return default daily goal when none exists', async () => {
     const request = new NextRequest(
       `http://localhost:3000/api/goals?userId=${testUserId}`
     );
     const response = await GET(request);
     const data = await response.json();
 
-    expect(response.status).toBe(404);
-    expect(data.success).toBe(false);
+    expect(response.status).toBe(200);
+    expect(data.success).toBe(true);
+    expect(data.data.wordsPerDay).toBe(10);
+    expect(data.data.minutesPerDay).toBe(30);
+    expect(data.data.reminderTime).toBe('10:00');
+    expect(data.data.pushEnabled).toBe(false);
+    expect(data.data.userId).toBe(testUserId);
+    expect(data.data.id).toBeDefined();
+  });
+
+  it('should return the same auto-created goal on subsequent calls', async () => {
+    const request1 = new NextRequest(
+      `http://localhost:3000/api/goals?userId=${testUserId}`
+    );
+    const response1 = await GET(request1);
+    const data1 = await response1.json();
+
+    const request2 = new NextRequest(
+      `http://localhost:3000/api/goals?userId=${testUserId}`
+    );
+    const response2 = await GET(request2);
+    const data2 = await response2.json();
+
+    expect(response1.status).toBe(200);
+    expect(response2.status).toBe(200);
+    expect(data1.data.id).toBe(data2.data.id);
   });
 
   it('should return daily goal when it exists', async () => {

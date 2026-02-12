@@ -21,13 +21,17 @@ export async function GET(request: NextRequest) {
       return ApiErrors.BAD_REQUEST('User ID is required');
     }
 
-    const dailyGoal = await prisma.dailyGoal.findUnique({
+    const dailyGoal = await prisma.dailyGoal.upsert({
       where: { userId },
+      update: {},
+      create: {
+        userId,
+        wordsPerDay: 10,
+        minutesPerDay: 30,
+        reminderTime: '10:00',
+        pushEnabled: false,
+      },
     });
-
-    if (!dailyGoal) {
-      return ApiErrors.NOT_FOUND('Daily goal not found for this user');
-    }
 
     return successResponse(dailyGoal);
   } catch (error) {
