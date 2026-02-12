@@ -8,22 +8,20 @@ directories:
 
 files:
   - dist/electron/**/*
-  - "!node_modules"
+  - package.json
+  - "!node_modules/electron/**"
+  - "!node_modules/electron-builder/**"
+  - "!node_modules/typescript/**"
+  - "!node_modules/tsx/**"
 
 asarUnpack:
-  - "node_modules/.prisma/**/*"
+  - "node_modules/@prisma/client/**/*"
   - "node_modules/@prisma/engines/**/*"
   - "node_modules/prisma/**/*"
 
+afterPack: scripts/after-pack.js
+
 extraResources:
-  - from: "../web/.next/standalone"
-    to: "standalone"
-    filter:
-      - "**/*"
-  - from: "../web/.next/static"
-    to: "standalone-static"
-    filter:
-      - "**/*"
   - from: "prisma"
     to: "prisma"
     filter:

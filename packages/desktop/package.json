@@ -8,7 +8,7 @@
     "build:next": "cd ../web && STANDALONE=true pnpm build && node ../desktop/scripts/copy-static.js",
     "build:electron": "tsc -p tsconfig.electron.json",
     "build": "pnpm build:next && pnpm build:electron",
-    "electron:build": "pnpm build && electron-builder --mac",
+    "electron:build": "pnpm build && node scripts/copy-prisma-client.js && node scripts/resolve-standalone.js && electron-builder --mac",
     "electron:dev": "pnpm build:electron && electron ."
   },
   "prisma": {
@@ -16,12 +16,12 @@
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
-    "electron-updater": "^6.7.3"
+    "electron-updater": "^6.7.3",
+    "prisma": "^6.1.0"
   },
   "devDependencies": {
     "electron": "^40.3.0",
     "electron-builder": "^26.7.0",
-    "prisma": "^6.1.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"
   }

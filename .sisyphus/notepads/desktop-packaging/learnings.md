@@ -297,3 +297,162 @@
 - 1x `latest-mac.yml` (auto-update manifest with version, URLs, SHA-512)
 - 2x `.app` bundles in `mac/` and `mac-arm64/` subdirectories
 - 1x `builder-debug.yml` (build configuration log)
+
+## Task 25: Final GUI Verification (2026-02-12)
+
+### Packaged App (.app Bundle) — FAILS at Runtime
+
+The packaged `.app` bundle launches (Electron main process starts, GPU/network helpers spawn) but **fails silently** at two critical points:
+
+#### Bug 1: `node` Not on GUI PATH
+- `startServer()` uses `spawn('node', [serverPath])` — but in a macOS GUI app, `node` (installed via nvm at `~/.nvm/versions/node/v22.9.0/bin/node`) is NOT on the default launchd PATH (`/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin`)
+- The standalone server.js never starts, so no HTTP server, no BrowserWindow content
+- **Fix**: Use `process.execPath` (Electron's bundled Node) or embed a portable Node binary, or use Electron's `utilityProcess` API
+
+#### Bug 2: `npx prisma` / `npx tsx` Not Available in Packaged App
+- `initializeDatabase()` uses `execSync('npx prisma db push ...')` and `execSync('npx tsx prisma/seed.ts')`
+- In a packaged GUI app, `npx`, `prisma`, and `tsx` are NOT on PATH
+- Even if they were, the `@prisma/client` in the app is generated for PostgreSQL (web), not SQLite (desktop)
+- **Fix**: Bundle `prisma` CLI + `better-sqlite3` driver directly, OR use `@prisma/client` programmatically to create tables, OR use raw SQL for schema init
+
+#### Bug 3: Silent Failure / No User Feedback
+- Both bugs cause errors caught by try/catch, but `console.error` output is invisible in macOS GUI mode
+- No dialog or user-facing error is shown — the window opens but shows blank/placeholder content
+- macOS GUI apps don't write to stdout/stderr that's visible from terminal
+- **Fix**: Use `dialog.showErrorBox()` in the catch handlers for production visibility
+
+### Behavior When DB Pre-Created
+- Even with `vocab-hero.db` pre-created (so `isDatabaseInitialized()` returns true), the server still fails because Bug 1 (`node` not on PATH) prevents `spawn('node', ...)` from working
+
+### Dev Mode — WORKS Perfectly
+- `pnpm build:electron && NEXT_DEV_PORT=3000 npx electron .` works end-to-end
+- Dev mode skips database init (connects to existing Next.js dev server)
+- BrowserWindow loads `http://localhost:3000` successfully
+- Full UI renders: Home page (dashboard), Settings page, navigation
+- DevTools auto-open in dev mode
+- Two renderer processes confirm the window is properly loaded
+
+### UI Verification (via Dev Mode)
+- **Home page**: VH logo, streak badge, stat cards (0/0/0), Daily Goal, "Start Studying" CTA, bottom nav (Home/Vocabulary/Study/Progress/Settings)
+- **Settings page**: Appearance, Audio, Study, Daily Goals sections with chevron navigation
+- **Vocabulary page**: Error boundary fires (DB-related, pre-existing web issue)
+- Navigation between pages works correctly
+
+### Recommendations for Production Fix
+1. Replace `spawn('node', ...)` with `utilityProcess.fork(serverPath)` — Electron's built-in way to run Node.js processes from the embedded runtime
+2. Replace `execSync('npx prisma...')` with programmatic DB init using `better-sqlite3` directly
+3. Add `dialog.showErrorBox()` in catch blocks for user-visible error reporting
+4. Consider bundling a pre-seeded SQLite database instead of generating at runtime
+
+## Production Runtime Fix (2026-02-12)
+
+### ELECTRON_RUN_AS_NODE Pattern
+- In packaged Electron apps, `node`, `npx`, `tsx` are NOT in PATH
+- `process.execPath` points to the Electron binary (not system Node)
+- Setting `ELECTRON_RUN_AS_NODE=1` in env makes `process.execPath` behave as plain Node.js
+- This pattern applies to: server spawn, prisma CLI, any child_process usage
+
+### Prisma CLI in Packaged App
+- Prisma CLI lives at: `process.resourcesPath/app.asar.unpacked/node_modules/prisma/build/index.js`
+- Schema lives at: `process.resourcesPath/prisma/schema.prisma` (via extraResources)
+- Must quote paths in execSync command due to potential spaces in macOS paths
+- `--schema` flag required since CWD no longer has prisma/ at expected relative path
+
+### Seed Script Strategy
+- `tsx` is not available in packaged app — cannot run .ts files directly
+- Chose to inline seed logic using PrismaClient directly in database.ts
+- PrismaClient is already a production dependency, so it works in the asar
+- Used `datasources: { db: { url: dbUrl } }` to explicitly pass the DB URL
+- Dev mode still uses `npx tsx prisma/seed.ts` for parity with standalone development
+
+### Dev vs Production Branching
+- `app.isPackaged` is the reliable check for production vs development
+- Both main.ts and database.ts now branch on `app.isPackaged` for child process invocations
+- Dev mode: uses `node`, `npx` (available via PATH in terminal)
+- Production mode: uses `process.execPath` + `ELECTRON_RUN_AS_NODE=1`
+
+## Fix: electron-builder files config excluding node_modules (2026-02-12)
+
+### Root Cause
+- `files: ["!node_modules"]` in electron-builder.yml was blanket-excluding ALL node_modules from the asar
+- This made `asarUnpack` useless — can't unpack what isn't in the asar
+- Result: @prisma/client, prisma CLI, electron-updater all missing at runtime
+
+### Fix Applied (Option B — let electron-builder auto-detect)
+- Removed `"!node_modules"` blanket exclusion
+- Added targeted exclusions for known dev-only large packages: `!node_modules/electron/**`, `!node_modules/electron-builder/**`, `!node_modules/typescript/**`, `!node_modules/tsx/**`
+- electron-builder's default behavior includes production deps and excludes devDependencies automatically
+- Added `package.json` to files list (needed for electron-builder to read dependencies)
+
+### prisma Moved to dependencies
+- `prisma` package was in devDependencies but is needed at runtime for `prisma db push` in packaged app
+- Moved to `dependencies` in packages/desktop/package.json so electron-builder includes it
+
+### Verification Results
+- asar now contains 505 node_modules entries (was 0)
+- `@prisma/client` — in asar ✓
+- `electron-updater` — in asar ✓  
+- `prisma` CLI — in asar ✓
+- `app.asar.unpacked/node_modules/@prisma/engines/` — has `libquery_engine-darwin-arm64.dylib.node` and `schema-engine-darwin-arm64` ✓
+- `app.asar.unpacked/node_modules/prisma/` — has runtime files ✓
+- `.prisma` directory not separately unpacked — in pnpm, generated client is under `@prisma/client` directly
+- tsc compiles cleanly, electron-builder build succeeds
+
+### Key Insight
+- electron-builder uses `pm=npm` for node module searching (logged: "searching for node modules pm=npm")
+- Even in pnpm workspace, electron-builder falls back to npm-style resolution
+- The `packageManager not detected by file, falling back to environment detection` warning is benign
+
+## Bug 4 Fix: Replace prisma db push with raw SQL via PrismaClient (2026-02-12)
+
+### Root Cause
+- `prisma db push` in packaged app uses `execSync` with `ELECTRON_RUN_AS_NODE=1`
+- Child processes with `ELECTRON_RUN_AS_NODE=1` run as plain Node.js and CANNOT read from asar archives
+- The prisma CLI binary is inside the asar, so the child process fails to load it
+
+### Solution: createSchema() with PrismaClient.$executeRawUnsafe()
+- PrismaClient runs in the Electron main process, which CAN read from asar
+- Created `createSchema(dbUrl)` function with 14 CREATE TABLE + 23 CREATE INDEX statements
+- All statements use `IF NOT EXISTS` for idempotency (safe to re-run)
+- Prisma to SQLite type mapping: String -> TEXT, Int -> INTEGER, Float -> REAL, Boolean -> BOOLEAN (0/1), DateTime -> DATETIME
+- `@unique` fields get UNIQUE constraint inline; `@@unique([a, b])` gets a CREATE UNIQUE INDEX
+- `@default(now())` maps to `DEFAULT CURRENT_TIMESTAMP`
+- `@default(false)` maps to `DEFAULT 0`, `@default(true)` maps to `DEFAULT 1`
+- `@map("col")` and `@@map("table")` must be used for actual column/table names in SQL
+
+### Junction Table Pattern
+- Prisma implicit M:N junction table `_VocabularyGroupToVocabularyItem` has specific naming convention
+- Columns are "A" and "B" (alphabetical model name order)
+- Needs UNIQUE index on (A, B) and regular index on B
+- Foreign keys reference the mapped table names, not Prisma model names
+
+### Dev Path Unchanged
+- Dev mode still uses `npx prisma db push --skip-generate` — works fine in terminal
+- Only the production path (`app.isPackaged`) was changed
+
+## Bug 5 Fix: .prisma/client Not in asar Bundle (2026-02-12)
+
+### Root Cause
+- electron-builder uses npm-style resolution (`pm=npm`) even in pnpm workspaces
+- In pnpm, the generated Prisma client lives at `node_modules/.pnpm/@prisma+client@<ver>_prisma@<ver>/node_modules/.prisma/client/`
+- electron-builder expects `node_modules/.prisma/client/` — can't find the pnpm store path
+- `asarUnpack: ["node_modules/.prisma/**/*"]` was already configured but useless without the files being found
+
+### Solution: Pre-build Copy Script
+- Created `scripts/copy-prisma-client.js` that dynamically resolves the pnpm store path
+- Resolution strategy: `require.resolve('@prisma/client')` → walk up to `@prisma` dir → go to sibling `.prisma/client/`
+- Copies all files (12 total, ~17MB) to `packages/desktop/node_modules/.prisma/client/`
+- No version numbers hardcoded — works regardless of Prisma version upgrades
+- Script runs between `pnpm build` and `electron-builder --mac` in `electron:build`
+
+### Key Files Copied
+- `default.js` — the entry point that `require('.prisma/client/default')` resolves to
+- `index.js` — the full generated Prisma client (62KB)
+- `libquery_engine-darwin-arm64.dylib.node` — native query engine (~16MB)
+- `schema.prisma` — schema for runtime validation
+- `package.json` — module resolution metadata
+
+### Verification
+- `node scripts/copy-prisma-client.js` outputs source/dest paths, file count, native engine name
+- Script validates critical files exist and warns if native engine missing
+- `pnpm build:electron` still compiles with zero TS errors

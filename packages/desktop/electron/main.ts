@@ -117,7 +117,6 @@ function startServer(port: number): ChildProcess {
     HOSTNAME: 'localhost',
   };
 
-  // In production, static assets are in extraResources/standalone-static
   if (app.isPackaged) {
     const staticDir = path.join(process.resourcesPath, 'standalone-static');
     if (fs.existsSync(staticDir)) {
@@ -125,8 +124,16 @@ function startServer(port: number): ChildProcess {
     }
   }
 
-  const child = spawn('node', [serverPath], {
-    env: serverEnv,
+  // In packaged app, 'node' is not in PATH. Use Electron's own Node.js runtime
+  // by setting ELECTRON_RUN_AS_NODE=1 and using process.execPath.
+  const nodeBinary = app.isPackaged ? process.execPath : 'node';
+  const spawnEnv: Record<string, string> = {
+    ...serverEnv,
+    ...(app.isPackaged ? { ELECTRON_RUN_AS_NODE: '1' } : {}),
+  };
+
+  const child = spawn(nodeBinary, [serverPath], {
+    env: spawnEnv,
     stdio: ['ignore', 'pipe', 'pipe'],
     cwd: path.dirname(serverPath),
   });
@@ -334,7 +341,6 @@ app.whenReady().then(async () => {
       console.error('[electron] Error:', err);
     }
   } else {
-    // Production mode: full initialization
     try {
       await initializeDatabase();
 

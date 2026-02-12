@@ -1,0 +1,13 @@
+# Build outputs
+dist/
+release/
+
+# Resolved standalone (temp build artifact)
+standalone-resolved/
+
+# SQLite databases
+*.db
+*.db-journal
+
+# Copied Prisma client (build artifact from copy-prisma-client.js)
+node_modules/.prisma/
