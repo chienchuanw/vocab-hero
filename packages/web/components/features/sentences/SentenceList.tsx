@@ -98,7 +98,7 @@ export function SentenceList({ onEdit, onStudy, className }: SentenceListProps) 
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {sentences.map((sentence) => (
-          <Card key={sentence.id} className="flex flex-col h-full" data-testid="sentence-item">
+          <Card key={sentence.id} className="flex flex-col h-full card-shadow card-shadow-hover" data-testid="sentence-item">
             <CardHeader>
               <CardTitle className="text-xl font-medium leading-relaxed">
                 {sentence.japanese}

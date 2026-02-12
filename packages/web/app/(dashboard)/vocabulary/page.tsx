@@ -2,9 +2,12 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Layout } from '@/components/shared';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Plus, ImageIcon } from 'lucide-react';
+import { calculateMasteryLevel, MasteryLevel, MASTERY_LEVEL_CONFIGS } from '@/lib/srs/mastery';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Dialog,
@@ -236,20 +239,56 @@ export default function VocabularyPage() {
             <TabsTrigger value="sentences">{t('tabs.sentences')}</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="vocabulary">
-            <DndContext
-              sensors={sensors}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-              onDragCancel={handleDragCancel}
-            >
-              <div className="space-y-6">
-                <div className="flex justify-end">
-                  <Button onClick={() => setAddDialogOpen(true)}>
-                    <Plus className="h-4 w-4 mr-2" />
-                    {t('addWord')}
-                  </Button>
-                </div>
+           <TabsContent value="vocabulary">
+             <DndContext
+               sensors={sensors}
+               onDragStart={handleDragStart}
+               onDragEnd={handleDragEnd}
+               onDragCancel={handleDragCancel}
+             >
+               <div className="space-y-6">
+                 {/* Mastery Stats Section */}
+                 {!vocabularyQuery.isLoading && (
+                   (() => {
+                     const vocabularyItems = vocabularyQuery.data?.pages.flatMap((page) => page.items) ?? [];
+                     const masteryDistribution = vocabularyItems.reduce((acc, item) => {
+                       const level = calculateMasteryLevel(
+                         item.reviewSchedule ? {
+                           easinessFactor: item.reviewSchedule.easinessFactor,
+                           interval: item.reviewSchedule.interval,
+                           repetitions: item.reviewSchedule.repetitions,
+                         } : null
+                       );
+                       acc[level] = (acc[level] || 0) + 1;
+                       return acc;
+                     }, {} as Record<MasteryLevel, number>);
+
+                     return vocabularyItems.length > 0 ? (
+                       <div className="flex flex-wrap gap-2" data-testid="mastery-stats">
+                         <Badge variant="outline" className="text-xs">
+                           Total: {vocabularyItems.length}
+                         </Badge>
+                         {Object.values(MasteryLevel).map((level) => {
+                           const count = masteryDistribution[level] || 0;
+                           if (count === 0) return null;
+                           const config = MASTERY_LEVEL_CONFIGS[level];
+                           return (
+                             <Badge key={level} variant="outline" className="text-xs">
+                               {config.label}: {count}
+                             </Badge>
+                           );
+                         })}
+                       </div>
+                     ) : null;
+                   })()
+                 )}
+
+                 <div className="flex justify-end">
+                   <Button onClick={() => setAddDialogOpen(true)} className="btn-shadow">
+                     <Plus className="h-4 w-4 mr-2" />
+                     {t('addWord')}
+                   </Button>
+                 </div>
 
                 <VocabularyFilterBar
                   filters={filters}
@@ -257,18 +296,27 @@ export default function VocabularyPage() {
                   groups={groups?.map((g) => ({ id: g.id, name: g.name })) || []}
                 />
 
-                {groups && groups.length > 0 && (
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                    <h2 className="text-sm font-semibold text-gray-700 mb-3">
-                      {t('dragToGroups')}
-                    </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                      {groups.map((group) => (
-                        <GroupCard key={group.id} group={group} />
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <AnimatePresence>
+                  {activeVocabulary && groups && groups.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="border-2 border-dashed border-muted-foreground/30 rounded-lg p-4"
+                      data-testid="group-drop-zone"
+                    >
+                      <h2 className="text-sm font-semibold text-muted-foreground mb-3">
+                        {t('dragToGroups')}
+                      </h2>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                        {groups.map((group) => (
+                          <GroupCard key={group.id} group={group} />
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 <VocabularyList
                   query={vocabularyQuery}
