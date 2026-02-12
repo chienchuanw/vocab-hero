@@ -211,3 +211,33 @@
 - `"main": "dist/electron/main.js"` — Electron reads this to find the main process entry
 - `"electron:dev": "pnpm build:electron && electron ."` — compile then launch
 - `electron` added to root `pnpm.onlyBuiltDependencies` to allow postinstall script
+
+## Task: Next.js Standalone + Electron Integration
+
+### Conditional Standalone in next.config.ts
+
+- Used `STANDALONE=true` env var to conditionally set `output: 'standalone'` and `images: { unoptimized: true }`
+- This avoids needing a separate next.config.ts for desktop — web's config handles both modes
+- `images: { unoptimized: true }` is required because standalone mode has no image optimization server
+
+### Server Path Discovery
+
+- `__dirname` in compiled Electron main process = `packages/desktop/dist/electron/`
+- Path to web's standalone: `path.resolve(__dirname, '..', '..', '..', 'web', '.next', 'standalone')`
+- Implemented recursive search (up to depth 3) for `server.js` to handle workspace root nesting
+- Both flat (`standalone/server.js`) and nested (`standalone/<project>/server.js`) layouts supported
+
+### Build Script Architecture
+
+- `build:next` runs from packages/web via `cd ../web && STANDALONE=true pnpm build`
+- Static asset copy extracted to `scripts/copy-static.js` for maintainability (was inline Node -e initially)
+- `build` = `build:next` + `build:electron` in sequence
+- `electron:dev` only compiles TS, doesn't rebuild Next.js (for fast iteration)
+
+### Electron Main Process Lifecycle
+
+- Order: configureCSP → configurePermissions → registerIpcHandlers → findAvailablePort → startServer → waitForServer → setServerPort → createWindow
+- Server failure is graceful — window still shows with placeholder HTML
+- Cleanup via both `before-quit` and `will-quit` events for robustness
+- `req.setTimeout(2000)` in waitForServer prevents hanging on slow responses
+- `res.resume()` in HTTP polling prevents memory leaks from unconsumed response bodies

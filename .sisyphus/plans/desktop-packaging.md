@@ -1003,7 +1003,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 12. Next.js Standalone Integration (Random Port)
+- [x] 12. Next.js Standalone Integration (Random Port)
 
   **What to do**:
   - 在 `packages/desktop/next.config.ts` 設定 `output: 'standalone'`

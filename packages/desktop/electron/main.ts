@@ -1,4 +1,8 @@
 import { app, BrowserWindow, ipcMain, Notification, session, shell } from 'electron';
+import { spawn, ChildProcess } from 'child_process';
+import * as fs from 'fs';
+import * as http from 'http';
+import * as net from 'net';
 import * as path from 'path';
 
 let serverPort: number | null = null;
@@ -12,6 +16,161 @@ export function setServerPort(port: number): void {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let serverProcess: ChildProcess | null = null;
+
+// ---------------------------------------------------------------------------
+// Server management
+// ---------------------------------------------------------------------------
+
+function findAvailablePort(): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const server = net.createServer();
+    server.listen(0, () => {
+      const addr = server.address() as net.AddressInfo;
+      const port = addr.port;
+      server.close(() => resolve(port));
+    });
+    server.on('error', reject);
+  });
+}
+
+/**
+ * Discover the path to `server.js` inside the Next.js standalone output.
+ *
+ * The standalone build nests the server under the project directory name:
+ *   .next/standalone/<project-dir>/server.js
+ *
+ * In development, `__dirname` is `packages/desktop/dist/electron/`.
+ * The web standalone output lives at `packages/web/.next/standalone/`.
+ */
+function findServerJs(): string {
+  // __dirname = packages/desktop/dist/electron
+  // ../../.. = packages/desktop, then ../web = packages/web
+  const webDir = path.resolve(__dirname, '..', '..', '..', 'web');
+  const standaloneDir = path.join(webDir, '.next', 'standalone');
+
+  // Try direct path first (no nesting)
+  const directPath = path.join(standaloneDir, 'server.js');
+  if (fs.existsSync(directPath)) return directPath;
+
+  // Try nested under project directory names
+  // Structure may be .next/standalone/<workspace-root>/<project>/server.js
+  // or .next/standalone/<project>/server.js
+  const candidates: string[] = [];
+
+  function searchDir(dir: string, depth: number): void {
+    if (depth > 3) return; // limit search depth
+    try {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        if (!entry.isDirectory()) continue;
+        const serverPath = path.join(dir, entry.name, 'server.js');
+        if (fs.existsSync(serverPath)) {
+          candidates.push(serverPath);
+        } else {
+          searchDir(path.join(dir, entry.name), depth + 1);
+        }
+      }
+    } catch {
+      // Directory may not exist yet
+    }
+  }
+
+  searchDir(standaloneDir, 0);
+
+  if (candidates.length > 0) {
+    return candidates[0];
+  }
+
+  throw new Error(
+    `Could not find server.js in standalone output at ${standaloneDir}. ` +
+      'Run "pnpm build:next" from packages/desktop first.'
+  );
+}
+
+function startServer(port: number): ChildProcess {
+  const serverPath = findServerJs();
+
+  console.log(`[electron] Starting standalone server: ${serverPath}`);
+  console.log(`[electron] Port: ${port}`);
+
+  const child = spawn('node', [serverPath], {
+    env: {
+      ...process.env,
+      PORT: String(port),
+      HOSTNAME: 'localhost',
+    },
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+
+  child.stdout?.on('data', (data: Buffer) => {
+    console.log(`[server stdout] ${data.toString().trim()}`);
+  });
+
+  child.stderr?.on('data', (data: Buffer) => {
+    console.error(`[server stderr] ${data.toString().trim()}`);
+  });
+
+  child.on('error', (err) => {
+    console.error('[electron] Failed to start server:', err);
+  });
+
+  child.on('exit', (code, signal) => {
+    console.log(`[electron] Server process exited (code=${code}, signal=${signal})`);
+    serverProcess = null;
+  });
+
+  serverProcess = child;
+  return child;
+}
+
+function waitForServer(port: number, timeout = 15000): Promise<void> {
+  const start = Date.now();
+  console.log('[electron] Waiting for server to be ready...');
+
+  return new Promise((resolve, reject) => {
+    const check = () => {
+      if (Date.now() - start > timeout) {
+        reject(new Error(`Server did not start within ${timeout}ms`));
+        return;
+      }
+
+      const req = http.get(`http://localhost:${port}`, (res) => {
+        res.resume(); // consume response body to free memory
+        if (res.statusCode === 200 || res.statusCode === 302) {
+          console.log('[electron] Server is ready!');
+          resolve();
+        } else {
+          setTimeout(check, 100);
+        }
+      });
+
+      req.on('error', () => {
+        setTimeout(check, 100);
+      });
+
+      // Prevent hanging on slow responses
+      req.setTimeout(2000, () => {
+        req.destroy();
+        setTimeout(check, 100);
+      });
+    };
+
+    check();
+  });
+}
+
+function killServer(): void {
+  if (serverProcess) {
+    console.log('[electron] Killing server process...');
+    serverProcess.kill();
+    serverProcess = null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Window management
+// ---------------------------------------------------------------------------
 
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -34,6 +193,7 @@ function createWindow(): void {
   });
 
   if (serverPort) {
+    console.log(`[electron] Loading http://localhost:${serverPort}`);
     mainWindow.loadURL(`http://localhost:${serverPort}`);
   } else {
     mainWindow.loadURL(
@@ -64,6 +224,10 @@ function createWindow(): void {
     mainWindow = null;
   });
 }
+
+// ---------------------------------------------------------------------------
+// Security
+// ---------------------------------------------------------------------------
 
 function configureCSP(): void {
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
@@ -97,6 +261,10 @@ function configurePermissions(): void {
   });
 }
 
+// ---------------------------------------------------------------------------
+// IPC handlers
+// ---------------------------------------------------------------------------
+
 function registerIpcHandlers(): void {
   ipcMain.on('show-notification', (_event, { title, body }: { title: string; body: string }) => {
     new Notification({ title, body }).show();
@@ -111,10 +279,25 @@ function registerIpcHandlers(): void {
   });
 }
 
-app.whenReady().then(() => {
+// ---------------------------------------------------------------------------
+// App lifecycle
+// ---------------------------------------------------------------------------
+
+app.whenReady().then(async () => {
   configureCSP();
   configurePermissions();
   registerIpcHandlers();
+
+  try {
+    const port = await findAvailablePort();
+    startServer(port);
+    await waitForServer(port);
+    setServerPort(port);
+  } catch (err) {
+    console.error('[electron] Failed to start Next.js server:', err);
+    // Still create window with placeholder
+  }
+
   createWindow();
 
   app.on('activate', () => {
@@ -122,6 +305,15 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+});
+
+// Clean up server process on quit
+app.on('before-quit', () => {
+  killServer();
+});
+
+app.on('will-quit', () => {
+  killServer();
 });
 
 app.on('window-all-closed', () => {
