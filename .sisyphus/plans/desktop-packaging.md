@@ -1575,7 +1575,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 21. Prisma Binary + WASM Bundling (asarUnpack)
+- [x] 21. Prisma Binary + WASM Bundling (asarUnpack)
 
   **What to do**:
   - 配置 electron-builder 的 `asarUnpack` 包含:
