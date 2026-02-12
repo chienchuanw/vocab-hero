@@ -1087,7 +1087,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 13. First-Run Initialization Flow
+- [x] 13. First-Run Initialization Flow
 
   **What to do**:
   - 在 Electron main process 中實作 first-run 檢測:

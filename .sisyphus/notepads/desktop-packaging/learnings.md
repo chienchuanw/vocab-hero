@@ -241,3 +241,25 @@
 - Cleanup via both `before-quit` and `will-quit` events for robustness
 - `req.setTimeout(2000)` in waitForServer prevents hanging on slow responses
 - `res.resume()` in HTTP polling prevents memory leaks from unconsumed response bodies
+
+## Database Initialization (2026-02-12)
+
+### First-Run Database Init Pattern
+- `electron/database.ts` — separate module for DB lifecycle
+- `initializeDatabase()` called BEFORE `startServer()` in `app.whenReady()`
+- Sets `process.env.DATABASE_URL` so the spawned Next.js standalone server inherits it
+- Uses `execSync` for `prisma db push --skip-generate` and `npx tsx prisma/seed.ts` — blocking is fine for one-time first-run
+- `--skip-generate` is critical: avoids overwriting web's Prisma client at build time
+
+### WAL Mode
+- SQLite WAL enabled via `?journal_mode=WAL` query param in the `DATABASE_URL`
+- Prisma SQLite driver supports this query param natively — no need for raw SQL PRAGMA
+
+### Path Resolution
+- In compiled output: `__dirname` = `packages/desktop/dist/electron/`
+- `path.resolve(__dirname, '..', '..')` = `packages/desktop/` (where prisma dir lives)
+- `app.getPath('userData')` on macOS = `~/Library/Application Support/@vocab-hero/desktop/`
+
+### tsconfig.electron.json
+- `include: ["electron/**/*.ts"]` — automatically picks up new files like `database.ts`
+- No config change needed when adding new electron modules

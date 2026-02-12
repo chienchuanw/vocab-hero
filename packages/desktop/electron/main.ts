@@ -5,6 +5,8 @@ import * as http from 'http';
 import * as net from 'net';
 import * as path from 'path';
 
+import { initializeDatabase } from './database';
+
 let serverPort: number | null = null;
 
 export function getServerPort(): number | null {
@@ -289,13 +291,14 @@ app.whenReady().then(async () => {
   registerIpcHandlers();
 
   try {
+    await initializeDatabase();
+
     const port = await findAvailablePort();
     startServer(port);
     await waitForServer(port);
     setServerPort(port);
   } catch (err) {
-    console.error('[electron] Failed to start Next.js server:', err);
-    // Still create window with placeholder
+    console.error('[electron] Failed to start:', err);
   }
 
   createWindow();
