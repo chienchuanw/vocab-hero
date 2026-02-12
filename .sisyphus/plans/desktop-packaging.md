@@ -79,9 +79,9 @@
 ### Definition of Done
 
 - [x] Web 版所有現有測試通過（zero regression）
-- [ ] Desktop 版可從 .dmg 安裝並啟動
-- [ ] Desktop 版所有核心功能運作（單字學習、復習、進度追蹤）
-- [ ] Desktop 版通知功能正常
+- [x] Desktop 版可從 .dmg 安裝並啟動
+- [ ] Desktop 版所有核心功能運作（單字學習、復習、進度追蹤）— API routes 需要 SQLite Prisma client (Bug 8, 非阻塞)
+- [x] Desktop 版通知功能正常
 - [x] electron-updater 可從 GitHub Releases 檢查更新
 
 ### Must Have

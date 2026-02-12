@@ -456,3 +456,74 @@ The packaged `.app` bundle launches (Electron main process starts, GPU/network h
 - `node scripts/copy-prisma-client.js` outputs source/dest paths, file count, native engine name
 - Script validates critical files exist and warns if native engine missing
 - `pnpm build:electron` still compiles with zero TS errors
+
+## Bug 6 Fix: Dynamic require from app.asar.unpacked (2026-02-12)
+
+### Root Cause
+- @prisma/client loaded from inside asar cannot resolve `.prisma/client/default` inside app.asar.unpacked
+- Node's module resolution looks for `.prisma/client/` relative to the asar, not the unpacked directory
+
+### Solution: getPrismaClient()
+- `database.ts` exports `getPrismaClient(dbUrl)` that dynamically requires from `app.asar.unpacked` path
+- In production: `require(path.join(process.resourcesPath, 'app.asar.unpacked', 'node_modules', '@prisma', 'client'))`
+- In dev: standard `require('@prisma/client')`
+- Passes `datasources: { db: { url: dbUrl } }` to override DATABASE_URL
+
+## Bug 7 Fix: pnpm symlinks in standalone output (2026-02-12)
+
+### Root Cause
+- pnpm standalone output uses symlinks for dependency resolution (`.pnpm/<pkg>@<ver>/node_modules/<pkg>`)
+- electron-builder's `extraResources` auto-excludes `node_modules/` directories
+- Even when copied manually, symlinks don't resolve in packaged app (targets are outside the bundle)
+
+### Solution: resolve-standalone.js (~340 lines)
+- Step 1: Copy non-symlink files from standalone output
+- Step 2: Extract real packages from `.pnpm/<pkg>@<ver>/node_modules/` into flat top-level `node_modules/`
+- Step 3: Resolve remaining symlinks by reading targets from SOURCE directory
+- Step 4: Remove `.pnpm/` directory
+- Step 5: Verify zero symlinks remain
+- Result: fully self-contained standalone output with zero symlinks, flat node_modules
+
+### Solution: after-pack.js hook
+- Copies `standalone-resolved/` into `Resources/standalone/` (bypasses electron-builder's node_modules filter)
+- Copies `web/.next/static` into `Resources/standalone-static/`
+- Copies `.prisma/client` into `app.asar.unpacked/node_modules/.prisma/`
+- Must use `afterPack` hook instead of `extraResources` for anything containing node_modules
+
+### Key Insight: electron-builder + node_modules
+- electron-builder ALWAYS filters out `node_modules/` from `extraResources` 
+- The only way to include node_modules in extraResources is via `afterPack` hook that copies directly
+- `asarUnpack` works for asar contents, but `extraResources` strips node_modules silently
+
+## Known Issue: Bug 8 — Standalone Prisma Provider Mismatch (2026-02-12)
+
+### Description
+- Next.js standalone server was built with web's PostgreSQL Prisma client
+- Desktop sets `DATABASE_URL=file:...sqlite` but Prisma expects `postgresql://`
+- API routes that use Prisma fail with "URL must start with postgresql://"
+- UI renders via SSR (pre-rendered pages work fine)
+
+### Impact
+- Non-blocking for MVP — app launches, UI renders, database initializes
+- Core desktop functionality (viewing pages, navigation) works
+- API mutations (create/edit/delete vocabulary) fail in packaged app
+
+### Future Fix Options
+1. Build standalone with SQLite-compatible Prisma client (requires separate prisma generate before next build)
+2. Proxy API requests from renderer to Electron main process (which has SQLite PrismaClient)
+3. Use IPC bridge for data operations instead of HTTP API routes
+
+## Final Session Summary (2026-02-12)
+
+### Web Test Suite Baseline
+- 103 test files, 1132 passed, 4 skipped — CONFIRMED after Prisma client regeneration
+- PostgreSQL Prisma client must be regenerated after any desktop prisma generate (they share the hoisted client)
+
+### Production Packaging Pipeline (Verified Working)
+1. `cd packages/web && pnpm prisma generate` (PostgreSQL client)
+2. `cd packages/desktop && DATABASE_URL="file:/tmp/d.db" pnpm prisma generate` (SQLite client)
+3. `node scripts/copy-prisma-client.js` (copy from pnpm store to local)
+4. `cd packages/web && STANDALONE=true pnpm build` (Next.js standalone)
+5. `node scripts/resolve-standalone.js` (flatten pnpm symlinks)
+6. `pnpm build:electron` (compile TS)
+7. `npx electron-builder --mac` (package .app + .dmg)
