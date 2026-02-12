@@ -292,18 +292,41 @@ app.whenReady().then(async () => {
   configurePermissions();
   registerIpcHandlers();
 
-  try {
-    await initializeDatabase();
+  const isDev = !app.isPackaged;
 
-    const port = await findAvailablePort();
-    startServer(port);
-    await waitForServer(port);
-    setServerPort(port);
-  } catch (err) {
-    console.error('[electron] Failed to start:', err);
+  if (isDev) {
+    // Dev mode: connect to next dev server
+    const devPort = parseInt(process.env.NEXT_DEV_PORT || '3000', 10);
+    setServerPort(devPort);
+    console.log('[electron] Dev mode detected. Connecting to next dev server on port', devPort);
+
+    try {
+      await waitForServer(devPort, 30000); // longer timeout for dev
+      console.log('[electron] Connected to next dev server');
+    } catch (err) {
+      console.error('[electron] next dev server not ready. Start it with: cd ../web && pnpm dev');
+      console.error('[electron] Error:', err);
+    }
+  } else {
+    // Production mode: full initialization
+    try {
+      await initializeDatabase();
+
+      const port = await findAvailablePort();
+      startServer(port);
+      await waitForServer(port);
+      setServerPort(port);
+    } catch (err) {
+      console.error('[electron] Failed to start:', err);
+    }
   }
 
   createWindow();
+
+  // Auto-open DevTools in dev mode
+  if (isDev && mainWindow) {
+    mainWindow.webContents.openDevTools();
+  }
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

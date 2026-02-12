@@ -1202,7 +1202,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 15. Development Workflow (next dev + Electron)
+- [x] 15. Development Workflow (next dev + Electron)
 
   **What to do**:
   - 設定 `packages/desktop/package.json` scripts:

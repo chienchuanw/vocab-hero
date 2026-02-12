@@ -4,6 +4,7 @@
   "private": true,
   "main": "dist/electron/main.js",
   "scripts": {
+    "dev": "pnpm build:electron && electron .",
     "build:next": "cd ../web && STANDALONE=true pnpm build && node ../desktop/scripts/copy-static.js",
     "build:electron": "tsc -p tsconfig.electron.json",
     "build": "pnpm build:next && pnpm build:electron",
