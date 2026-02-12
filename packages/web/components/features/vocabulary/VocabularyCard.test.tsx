@@ -144,9 +144,7 @@ describe('VocabularyCard', () => {
 
   it('should display formatted creation date', () => {
     render(<VocabularyCard vocabulary={mockVocabulary} />);
-    // Date format is locale-dependent, just check it exists
-    const dateElement = screen.getByText(/1\/1\/2024/);
-    expect(dateElement).toBeInTheDocument();
+    expect(screen.getByText('2024-01-01')).toBeInTheDocument();
   });
 
   describe('TTS Integration', () => {
@@ -170,8 +168,70 @@ describe('VocabularyCard', () => {
       vi.mocked(mockTTSEngine.isSupported).mockReturnValue(false);
       render(<VocabularyCard vocabulary={mockVocabulary} />);
 
-      const speakerButton = screen.queryByRole('button', { name: /play pronunciation/i });
-      expect(speakerButton).not.toBeInTheDocument();
+     const speakerButton = screen.queryByRole('button', { name: /play pronunciation/i });
+     expect(speakerButton).not.toBeInTheDocument();
     });
+  });
+
+  it('should have card-shadow and card-shadow-hover classes', () => {
+    render(<VocabularyCard vocabulary={mockVocabulary} />);
+    const card = screen.getByTestId('vocabulary-card');
+    expect(card).toHaveClass('card-shadow');
+    expect(card).toHaveClass('card-shadow-hover');
+  });
+
+  it('should have group class for hover support', () => {
+    render(<VocabularyCard vocabulary={mockVocabulary} />);
+    const card = screen.getByTestId('vocabulary-card');
+    expect(card).toHaveClass('group');
+  });
+
+  it('should render drag handle icon', () => {
+    render(<VocabularyCard vocabulary={mockVocabulary} />);
+    const dragHandle = screen.getByTestId('drag-handle');
+    expect(dragHandle).toBeInTheDocument();
+  });
+
+  it('should show due badge when item is due for review', () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const dueVocab = {
+      ...mockVocabulary,
+      reviewSchedule: {
+        ...mockVocabulary.reviewSchedule!,
+        nextReviewDate: yesterday.toISOString(),
+      },
+    };
+    render(<VocabularyCard vocabulary={dueVocab} />);
+    expect(screen.getByText('Due')).toBeInTheDocument();
+  });
+
+  it('should not show due badge when item is not due', () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const notDueVocab = {
+      ...mockVocabulary,
+      reviewSchedule: {
+        ...mockVocabulary.reviewSchedule!,
+        nextReviewDate: tomorrow.toISOString(),
+      },
+    };
+    render(<VocabularyCard vocabulary={notDueVocab} />);
+    expect(screen.queryByText('Due')).not.toBeInTheDocument();
+  });
+
+  it('should not show due badge when no review schedule', () => {
+    const newVocab = { ...mockVocabulary, reviewSchedule: null };
+    render(<VocabularyCard vocabulary={newVocab} />);
+    expect(screen.queryByText('Due')).not.toBeInTheDocument();
+  });
+
+  it('should use semantic color tokens (no hardcoded gray)', () => {
+    const { container } = render(
+      <VocabularyCard vocabulary={mockVocabulary} onEdit={vi.fn()} onDelete={vi.fn()} />
+    );
+    const html = container.innerHTML;
+    expect(html).not.toMatch(/text-gray-\d+/);
+    expect(html).not.toMatch(/bg-gray-\d+/);
   });
 });
