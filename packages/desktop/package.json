@@ -5,10 +5,10 @@
   "main": "dist/electron/main.js",
   "scripts": {
     "dev": "pnpm build:electron && electron .",
-    "build:next": "cd ../web && STANDALONE=true pnpm build && node ../desktop/scripts/copy-static.js",
+    "build:next": "node scripts/build-standalone.js",
     "build:electron": "tsc -p tsconfig.electron.json",
     "build": "pnpm build:next && pnpm build:electron",
-    "electron:build": "pnpm build && node scripts/copy-prisma-client.js && node scripts/resolve-standalone.js && electron-builder --mac",
+    "electron:build": "pnpm build && node scripts/resolve-standalone.js && electron-builder --mac",
     "electron:dev": "pnpm build:electron && electron ."
   },
   "prisma": {

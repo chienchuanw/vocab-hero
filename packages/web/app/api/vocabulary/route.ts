@@ -50,14 +50,16 @@ export async function GET(request: NextRequest) {
     // 建立查詢條件
     const where: Prisma.VocabularyItemWhereInput = {};
 
-    // 搜尋條件：搜尋 word, reading, meaning
-    if (search) {
-      where.OR = [
-        { word: { contains: search, mode: 'insensitive' } },
-        { reading: { contains: search, mode: 'insensitive' } },
-        { meaning: { contains: search, mode: 'insensitive' } },
-      ];
-    }
+     // 搜尋條件：搜尋 word, reading, meaning
+     // mode: 'insensitive' removed for SQLite compatibility (desktop Electron build).
+     // Japanese characters (hiragana/kanji) have no case; SQLite LIKE is case-insensitive for ASCII.
+     if (search) {
+       where.OR = [
+         { word: { contains: search } },
+         { reading: { contains: search } },
+         { meaning: { contains: search } },
+       ];
+     }
 
     // 群組篩選
     if (groupId) {
