@@ -50,3 +50,8 @@ dmg:
       y: 220
       type: link
       path: /Applications
+
+publish:
+  provider: github
+  owner: chienchuanw
+  repo: vocab-hero

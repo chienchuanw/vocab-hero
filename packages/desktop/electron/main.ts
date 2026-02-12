@@ -7,6 +7,7 @@ import * as path from 'path';
 
 import { initializeDatabase } from './database';
 import { setupMenu } from './menu';
+import { setupAutoUpdater } from './updater';
 
 let serverPort: number | null = null;
 
@@ -315,6 +316,7 @@ app.whenReady().then(async () => {
   configureCSP();
   configurePermissions();
   registerIpcHandlers();
+  setupAutoUpdater();
 
   const isDev = !app.isPackaged;
 

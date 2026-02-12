@@ -1633,7 +1633,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 22. electron-updater + GitHub Releases Configuration
+- [x] 22. electron-updater + GitHub Releases Configuration
 
   **What to do**:
   - 安裝 `electron-updater`
