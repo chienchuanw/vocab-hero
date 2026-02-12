@@ -193,9 +193,41 @@
       "vocabulary": "單字",
       "sentences": "句子"
     },
-    "importFromImage": "從圖片匯入",
-    "importFromImageDescription": "上傳 Duolingo 截圖以擷取句子配對"
-  },
+     "importFromImage": "從圖片匯入",
+     "importFromImageDescription": "上傳 Duolingo 截圖以擷取句子配對",
+     "list": {
+       "error": "無法載入單字",
+       "retry": "重試",
+       "empty": "尚無單字項目",
+       "emptyDescription": "點擊「新增單字」開始建立您的收藏",
+       "emptyAction": "新增單字",
+       "loadingMore": "載入更多..."
+     },
+     "card": {
+       "due": "待複習",
+       "editLabel": "編輯單字",
+       "deleteLabel": "刪除單字",
+       "actionsLabel": "操作",
+       "edit": "編輯",
+       "delete": "刪除"
+     },
+     "filter": {
+       "title": "篩選",
+       "advanced": "進階篩選",
+       "reset": "重設",
+       "newestFirst": "最新優先",
+       "az": "A-Z"
+     },
+     "exampleSentences": {
+       "title": "例句（選填）",
+       "add": "新增例句",
+       "empty": "尚未新增例句。點擊上方按鈕新增。",
+       "sentenceNumber": "句子 {number}",
+       "japanese": "日文句子",
+       "reading": "讀音（假名）",
+       "translation": "翻譯"
+     }
+   },
   "groups": {
     "addDialog": {
       "title": "新增群組",
@@ -217,15 +249,18 @@
       "description": "您確定要刪除「{group}」嗎？",
       "warning": "此群組包含 {count, plural, one {# 個單字} other {# 個單字}}。單字不會被刪除，只會從此群組中移除。"
     },
-    "toast": {
-      "addSuccess": "群組新增成功！",
-      "addError": "新增失敗，請重試",
-      "updateSuccess": "群組更新成功！",
-      "updateError": "更新失敗，請重試",
-      "deleteSuccess": "群組已刪除",
-      "deleteError": "刪除失敗，請重試"
-    }
-  },
+     "toast": {
+       "addSuccess": "群組新增成功！",
+       "addError": "新增失敗，請重試",
+       "updateSuccess": "群組更新成功！",
+       "updateError": "更新失敗，請重試",
+       "deleteSuccess": "群組已刪除",
+       "deleteError": "刪除失敗，請重試"
+     },
+     "wordCount": "{count, plural, one {# 個單字} other {# 個單字}}",
+     "editLabel": "編輯群組",
+     "deleteLabel": "刪除群組"
+   },
   "progress": {
     "title": "進度",
     "description": "追蹤您的學習旅程與成就",

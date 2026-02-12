@@ -193,9 +193,41 @@
       "vocabulary": "Vocabulary",
       "sentences": "Sentences"
     },
-    "importFromImage": "Import from Image",
-    "importFromImageDescription": "Upload Duolingo screenshots to extract sentence pairs"
-  },
+     "importFromImage": "Import from Image",
+     "importFromImageDescription": "Upload Duolingo screenshots to extract sentence pairs",
+     "list": {
+       "error": "Failed to load vocabulary",
+       "retry": "Retry",
+       "empty": "No vocabulary items yet",
+       "emptyDescription": "Click 'Add Word' to start building your collection",
+       "emptyAction": "Add Word",
+       "loadingMore": "Loading more..."
+     },
+     "card": {
+       "due": "Due",
+       "editLabel": "Edit word",
+       "deleteLabel": "Delete word",
+       "actionsLabel": "Actions",
+       "edit": "Edit",
+       "delete": "Delete"
+     },
+     "filter": {
+       "title": "Filters",
+       "advanced": "Advanced Filters",
+       "reset": "Reset",
+       "newestFirst": "Newest First",
+       "az": "A-Z"
+     },
+     "exampleSentences": {
+       "title": "Example Sentences (Optional)",
+       "add": "Add Example Sentence",
+       "empty": "No example sentences added yet. Click the button above to add one.",
+       "sentenceNumber": "Sentence {number}",
+       "japanese": "Japanese Sentence",
+       "reading": "Reading (Furigana)",
+       "translation": "Translation"
+     }
+   },
   "groups": {
     "addDialog": {
       "title": "Add Group",
@@ -217,15 +249,18 @@
       "description": "Are you sure you want to delete \"{group}\"?",
       "warning": "This group contains {count, plural, one {# vocabulary item} other {# vocabulary items}}. The vocabulary items will not be deleted, only removed from this group."
     },
-    "toast": {
-      "addSuccess": "Group added successfully!",
-      "addError": "Failed to add group, please try again",
-      "updateSuccess": "Group updated successfully!",
-      "updateError": "Failed to update, please try again",
-      "deleteSuccess": "Group deleted successfully",
-      "deleteError": "Failed to delete, please try again"
-    }
-  },
+     "toast": {
+       "addSuccess": "Group added successfully!",
+       "addError": "Failed to add group, please try again",
+       "updateSuccess": "Group updated successfully!",
+       "updateError": "Failed to update, please try again",
+       "deleteSuccess": "Group deleted successfully",
+       "deleteError": "Failed to delete, please try again"
+     },
+     "wordCount": "{count, plural, one {# word} other {# words}}",
+     "editLabel": "Edit group",
+     "deleteLabel": "Delete group"
+   },
   "progress": {
     "title": "Progress",
     "description": "Track your learning journey and achievements",
