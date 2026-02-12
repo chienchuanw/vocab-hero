@@ -49,6 +49,8 @@ test.describe('Vocabulary CRUD', () => {
     
     // Click edit button on first card
     const firstCard = page.locator('[data-slot="card"]').first();
+    // Hover to reveal action buttons on desktop
+    await firstCard.hover();
     await firstCard.getByLabel('Edit word').click();
     
     // Update the meaning
@@ -74,6 +76,8 @@ test.describe('Vocabulary CRUD', () => {
     const firstCard = page.locator('[data-slot="card"]').first();
     const wordText = await firstCard.locator('h3').textContent();
     
+    // Hover to reveal action buttons on desktop
+    await firstCard.hover();
     // Click delete button
     await firstCard.getByLabel('Delete word').click();
     
@@ -100,7 +104,7 @@ test.describe('Vocabulary CRUD', () => {
     await page.waitForSelector('[data-slot="card"]', { timeout: 10000 });
     
     // Type in search box
-    const searchInput = page.getByPlaceholder('Search vocabulary...');
+    const searchInput = page.getByPlaceholder('Search word, reading, or meaning...');
     await searchInput.fill('勉強');
     
     // Wait for filtered results
@@ -114,19 +118,19 @@ test.describe('Vocabulary CRUD', () => {
     // Wait for cards to load
     await page.waitForSelector('[data-slot="card"]', { timeout: 10000 });
     
-    // Click mastery filter dropdown
-    await page.getByRole('button', { name: 'All Levels' }).click();
+    // Open filter popover
+    await page.getByTestId('filter-popover-trigger').click();
     
-    // Select a mastery level
-    await page.getByRole('option', { name: 'Beginner' }).click();
+    // Select a mastery level (using the actual mastery level labels from MASTERY_LEVEL_CONFIGS)
+    await page.getByRole('option', { name: 'Learning' }).click();
     
     // Wait for filtered results
     await page.waitForTimeout(500);
     
-    // Verify filter is applied (should show Beginner badge)
+    // Verify filter is applied (should show Learning badge)
     const cards = page.locator('[data-slot="card"]');
     if (await cards.count() > 0) {
-      await expect(cards.first().getByText('Beginner')).toBeVisible();
+      await expect(cards.first().getByText('Learning')).toBeVisible();
     }
   });
 
@@ -134,11 +138,11 @@ test.describe('Vocabulary CRUD', () => {
     // Wait for cards to load
     await page.waitForSelector('[data-slot="card"]', { timeout: 10000 });
     
-    // Click sort dropdown
-    await page.getByRole('button', { name: /Sort by/ }).click();
+    // Click sort select
+    await page.getByTestId('sort-select').click();
     
-    // Select sort option
-    await page.getByRole('option', { name: 'Word (A-Z)' }).click();
+    // Select sort option (A-Z)
+    await page.getByRole('option', { name: 'A-Z' }).click();
     
     // Wait for re-sort
     await page.waitForTimeout(500);
