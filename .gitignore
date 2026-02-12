@@ -57,3 +57,6 @@ playwright-report/
 
 # Electron compiled output
 packages/desktop/dist/
+
+# Electron builder output
+packages/desktop/release/

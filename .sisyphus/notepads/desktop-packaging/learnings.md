@@ -263,3 +263,37 @@
 ### tsconfig.electron.json
 - `include: ["electron/**/*.ts"]` — automatically picks up new files like `database.ts`
 - No config change needed when adding new electron modules
+
+## Task 23: Final Integration Test (2026-02-12)
+
+### Full Build Pipeline Timing
+- Next.js standalone build: ~4.8s compilation + 214ms static pages (43 pages)
+- Static asset copy: instant (copy-static.js)
+- Electron TypeScript compilation: <1s
+- electron-builder packaging: ~50s (downloads Electron binaries for both architectures)
+- Total end-to-end: ~2 minutes
+
+### DMG Output Sizes
+- arm64 (Apple Silicon): 109 MB (114,671,076 bytes)
+- x64 (Intel): 114 MB (119,445,692 bytes)
+- Size difference (~5 MB) is typical for different architecture binaries
+
+### electron-builder Behaviors
+- Downloads both arm64 and x64 Electron binaries (~114 MB + ~119 MB) since both architectures are configured
+- `identity: null` correctly skips code signing (no Apple Developer certificate)
+- Generates `latest-mac.yml` with SHA-512 hashes for auto-update verification
+- Produces `.blockmap` files for delta updates (electron-updater feature)
+- Warns about missing `description` and `author` in package.json — non-blocking
+- Falls back to npm for native dependency resolution (fine for our use case)
+
+### Standalone Output Structure
+- Nested layout: `.next/standalone/packages/web/server.js` (workspace root inference by Turbopack)
+- Standalone directory total size: 87 MB
+- Static assets correctly copied to nested `.next/static` path
+
+### Build Artifacts Complete Set
+- 2x DMG files (arm64 + x64)
+- 2x blockmap files (for delta updates)
+- 1x `latest-mac.yml` (auto-update manifest with version, URLs, SHA-512)
+- 2x `.app` bundles in `mac/` and `mac-arm64/` subdirectories
+- 1x `builder-debug.yml` (build configuration log)
