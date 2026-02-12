@@ -1412,7 +1412,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 19. Verify All Browser APIs in Electron — Full Integration Test
+- [x] 19. Verify All Browser APIs in Electron — Full Integration Test
 
   **What to do**:
   - 在 Electron 中啟動完整 app，逐一測試所有功能:
