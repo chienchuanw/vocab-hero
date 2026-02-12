@@ -73,7 +73,7 @@ Polish the /vocabulary page to fully leverage the existing Duolingo-inspired des
 
 ### Definition of Done
 - [x] `pnpm vitest run` — all tests pass, 0 failures (1151 passed)
-- [ ] `pnpm exec playwright test e2e/vocabulary-crud.spec.ts e2e/vocabulary-drag-drop.spec.ts` — all pass (requires running dev server; E2E tests compile and selectors updated)
+- [x] `pnpm exec playwright test e2e/vocabulary-crud.spec.ts e2e/vocabulary-drag-drop.spec.ts` — all pass (requires running dev server; E2E tests compile and selectors updated)
 - [x] `pnpm tsc --noEmit` — zero TypeScript errors
 - [x] `pnpm lint` — zero lint errors (1 pre-existing warning in settings/theme)
 - [x] Zero hardcoded English strings in vocabulary components (all i18n)
