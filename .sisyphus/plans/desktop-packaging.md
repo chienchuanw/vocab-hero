@@ -1254,7 +1254,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ### Phase 4: Platform API Replacements
 
-- [ ] 16. Electron Notification API (Replace Push Notifications)
+- [x] 16. Electron Notification API (Replace Push Notifications)
 
   **What to do**:
   - 建立 `packages/desktop/lib/notifications/electron-notifications.ts`:
@@ -1317,7 +1317,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 17. Platform-Aware useOnlineStatus
+- [x] 17. Platform-Aware useOnlineStatus
 
   **What to do**:
   - 修改 `hooks/useOnlineStatus.ts`:
@@ -1363,7 +1363,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 18. Electron Microphone Permission Handling
+- [x] 18. Electron Microphone Permission Handling
 
   **What to do**:
   - 在 Electron main process 中設定 `session.setPermissionRequestHandler`:
