@@ -1151,7 +1151,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ---
 
-- [ ] 14. Basic macOS Menu Bar
+- [x] 14. Basic macOS Menu Bar
 
   **What to do**:
   - 建立 macOS 原生 menu bar:

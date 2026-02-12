@@ -6,6 +6,7 @@ import * as net from 'net';
 import * as path from 'path';
 
 import { initializeDatabase } from './database';
+import { setupMenu } from './menu';
 
 let serverPort: number | null = null;
 
@@ -286,6 +287,7 @@ function registerIpcHandlers(): void {
 // ---------------------------------------------------------------------------
 
 app.whenReady().then(async () => {
+  setupMenu();
   configureCSP();
   configurePermissions();
   registerIpcHandlers();
