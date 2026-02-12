@@ -54,3 +54,6 @@ playwright-report/
 # SQLite databases
 *.db
 *.db-journal
+
+# Electron compiled output
+packages/desktop/dist/

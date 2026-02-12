@@ -169,3 +169,45 @@
 - grep on packages/web/ catches .next/ build cache files - use --include='*.ts' --include='*.tsx' to filter source only
 - pnpm install with workspace:* just resolved existing packages, no downloads needed
 - Test baseline confirmed: 103 files, 1132 passed, 4 skipped (unchanged)
+
+## Task 11: Electron Main Process & Preload Script (2026-02-11)
+
+### Electron TypeScript Compilation Strategy
+
+- Electron main/preload files target Node.js (CommonJS), not browser — need separate tsconfig with `"module": "commonjs"` and `"moduleResolution": "node"`
+- Source lives in `electron/`, compiles to `dist/electron/` — `package.json` `"main"` points to `dist/electron/main.js`
+- `tsconfig.electron.json` is separate from the general `tsconfig.json` (which targets ESNext/bundler for Prisma code)
+- `pnpm build:electron` compiles cleanly; output includes `.js` + `.js.map` for both main and preload
+
+### Electron Security Configuration
+
+- `nodeIntegration: false` + `contextIsolation: true` + `sandbox: true` — full security lockdown
+- CSP configured via `session.defaultSession.webRequest.onHeadersReceived` — adds Content-Security-Policy header to all responses
+- CSP allows `connect-src http://localhost:*` for the local Next.js server
+- Permission handler: only `'media'` (microphone) is allowed; all other permissions denied
+- Navigation restricted: only `data:` URLs and `http://localhost:<serverPort>` allowed
+- New windows denied; external URLs opened in system browser via `shell.openExternal`
+
+### Preload Script / contextBridge API
+
+- `contextBridge.exposeInMainWorld('electronAPI', {...})` exposes safe IPC bridge to renderer
+- Exposed: `platform`, `isElectron`, `sendNotification`, `getAppPath`, `getVersion`
+- IPC channels: `show-notification` (one-way), `get-app-path` (invoke), `get-app-version` (invoke)
+
+### Electron Types Hoisting Side Effect
+
+- Installing Electron in `packages/desktop` causes Electron's ambient DOM type extensions to be hoisted
+- This makes `document.createElement('a')` return type conflict with Electron's `WebviewTag` in packages/web test files
+- The `useExport.test.ts` error is pre-existing (confirmed by testing before/after stash) — not caused by this task
+- Fix would require either isolating Electron types or casting in the test file
+
+### electron-builder & electron-winstaller
+
+- `electron-builder` installs cleanly; `electron-winstaller` build script is blocked by pnpm (Windows-only, not needed on macOS)
+- Warning about `electron-winstaller` is harmless — only needed for Windows builds
+
+### Package.json Configuration
+
+- `"main": "dist/electron/main.js"` — Electron reads this to find the main process entry
+- `"electron:dev": "pnpm build:electron && electron ."` — compile then launch
+- `electron` added to root `pnpm.onlyBuiltDependencies` to allow postinstall script

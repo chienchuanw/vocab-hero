@@ -21,7 +21,8 @@
       "sharp",
       "@parcel/watcher",
       "unrs-resolver",
-      "tesseract.js"
+      "tesseract.js",
+      "electron"
     ]
   }
 }

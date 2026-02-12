@@ -2,6 +2,11 @@
   "name": "@vocab-hero/desktop",
   "version": "0.1.0",
   "private": true,
+  "main": "dist/electron/main.js",
+  "scripts": {
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "electron:dev": "pnpm build:electron && electron ."
+  },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
@@ -9,8 +14,10 @@
     "@prisma/client": "^6.1.0"
   },
   "devDependencies": {
+    "electron": "^40.3.0",
+    "electron-builder": "^26.7.0",
     "prisma": "^6.1.0",
-    "typescript": "^5.0.0",
-    "tsx": "^4.0.0"
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
   }
 }

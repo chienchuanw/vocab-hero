@@ -935,7 +935,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ### Phase 3: Electron Shell
 
-- [ ] 11. Electron Main Process + Preload Script
+- [x] 11. Electron Main Process + Preload Script
 
   **What to do**:
   - 在 `packages/desktop/` 安裝 Electron 依賴: `electron`, `electron-builder`
