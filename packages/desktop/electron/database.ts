@@ -29,11 +29,18 @@ export function isDatabaseInitialized(): boolean {
 }
 
 /**
- * Get the root directory of the desktop package.
- * In compiled output, __dirname = packages/desktop/dist/electron
- * So we resolve two levels up to get packages/desktop.
+ * Get the directory containing Prisma schema files.
+ *
+ * In development: __dirname = packages/desktop/dist/electron, resolve
+ * two levels up to packages/desktop (which contains prisma/).
+ *
+ * In production: Prisma files are in extraResources at
+ * process.resourcesPath/prisma/.
  */
 function getDesktopDir(): string {
+  if (app.isPackaged) {
+    return process.resourcesPath;
+  }
   return path.resolve(__dirname, '..', '..');
 }
 

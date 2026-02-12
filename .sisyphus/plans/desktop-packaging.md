@@ -1507,7 +1507,7 @@ Phase 5 — Packaging & Distribution (After Phase 4):
 
 ### Phase 5: Packaging & Distribution
 
-- [ ] 20. electron-builder Configuration for macOS DMG
+- [x] 20. electron-builder Configuration for macOS DMG
 
   **What to do**:
   - 安裝 `electron-builder` 和相關依賴

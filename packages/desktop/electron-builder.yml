@@ -1,0 +1,47 @@
+appId: com.vocab-hero.desktop
+productName: Vocab Hero
+copyright: Copyright (c) 2026 Vocab Hero
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/electron/**/*
+  - "!node_modules"
+
+extraResources:
+  - from: "../web/.next/standalone"
+    to: "standalone"
+    filter:
+      - "**/*"
+  - from: "../web/.next/static"
+    to: "standalone-static"
+    filter:
+      - "**/*"
+  - from: "prisma"
+    to: "prisma"
+    filter:
+      - "schema.prisma"
+      - "seed.ts"
+
+mac:
+  category: public.app-category.education
+  target:
+    - target: dmg
+      arch:
+        - arm64
+        - x64
+  icon: build/icon.icns
+  darkModeSupport: true
+  identity: null
+
+dmg:
+  title: "Vocab Hero"
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications

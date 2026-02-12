@@ -38,6 +38,29 @@ function findAvailablePort(): Promise<number> {
 }
 
 /**
+ * Recursively search a directory for server.js up to a given depth.
+ */
+function searchForServerJs(dir: string, depth: number): string[] {
+  const candidates: string[] = [];
+  if (depth > 3) return candidates;
+  try {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      const serverPath = path.join(dir, entry.name, 'server.js');
+      if (fs.existsSync(serverPath)) {
+        candidates.push(serverPath);
+      } else {
+        candidates.push(...searchForServerJs(path.join(dir, entry.name), depth + 1));
+      }
+    }
+  } catch {
+    // Directory may not exist yet
+  }
+  return candidates;
+}
+
+/**
  * Discover the path to `server.js` inside the Next.js standalone output.
  *
  * The standalone build nests the server under the project directory name:
@@ -45,41 +68,29 @@ function findAvailablePort(): Promise<number> {
  *
  * In development, `__dirname` is `packages/desktop/dist/electron/`.
  * The web standalone output lives at `packages/web/.next/standalone/`.
+ *
+ * In production (packaged), the standalone output is in extraResources
+ * at `process.resourcesPath/standalone/`.
  */
 function findServerJs(): string {
-  // __dirname = packages/desktop/dist/electron
-  // ../../.. = packages/desktop, then ../web = packages/web
-  const webDir = path.resolve(__dirname, '..', '..', '..', 'web');
-  const standaloneDir = path.join(webDir, '.next', 'standalone');
+  let standaloneDir: string;
+
+  if (app.isPackaged) {
+    // Production: standalone is bundled as an extraResource
+    standaloneDir = path.join(process.resourcesPath, 'standalone');
+  } else {
+    // Development: resolve relative to compiled output
+    // __dirname = packages/desktop/dist/electron
+    const webDir = path.resolve(__dirname, '..', '..', '..', 'web');
+    standaloneDir = path.join(webDir, '.next', 'standalone');
+  }
 
   // Try direct path first (no nesting)
   const directPath = path.join(standaloneDir, 'server.js');
   if (fs.existsSync(directPath)) return directPath;
 
   // Try nested under project directory names
-  // Structure may be .next/standalone/<workspace-root>/<project>/server.js
-  // or .next/standalone/<project>/server.js
-  const candidates: string[] = [];
-
-  function searchDir(dir: string, depth: number): void {
-    if (depth > 3) return; // limit search depth
-    try {
-      const entries = fs.readdirSync(dir, { withFileTypes: true });
-      for (const entry of entries) {
-        if (!entry.isDirectory()) continue;
-        const serverPath = path.join(dir, entry.name, 'server.js');
-        if (fs.existsSync(serverPath)) {
-          candidates.push(serverPath);
-        } else {
-          searchDir(path.join(dir, entry.name), depth + 1);
-        }
-      }
-    } catch {
-      // Directory may not exist yet
-    }
-  }
-
-  searchDir(standaloneDir, 0);
+  const candidates = searchForServerJs(standaloneDir, 0);
 
   if (candidates.length > 0) {
     return candidates[0];
@@ -87,7 +98,9 @@ function findServerJs(): string {
 
   throw new Error(
     `Could not find server.js in standalone output at ${standaloneDir}. ` +
-      'Run "pnpm build:next" from packages/desktop first.'
+      (app.isPackaged
+        ? 'The standalone output may be missing from the app bundle.'
+        : 'Run "pnpm build:next" from packages/desktop first.')
   );
 }
 
@@ -97,13 +110,24 @@ function startServer(port: number): ChildProcess {
   console.log(`[electron] Starting standalone server: ${serverPath}`);
   console.log(`[electron] Port: ${port}`);
 
+  const serverEnv: Record<string, string> = {
+    ...process.env as Record<string, string>,
+    PORT: String(port),
+    HOSTNAME: 'localhost',
+  };
+
+  // In production, static assets are in extraResources/standalone-static
+  if (app.isPackaged) {
+    const staticDir = path.join(process.resourcesPath, 'standalone-static');
+    if (fs.existsSync(staticDir)) {
+      serverEnv.NEXT_STATIC_DIR = staticDir;
+    }
+  }
+
   const child = spawn('node', [serverPath], {
-    env: {
-      ...process.env,
-      PORT: String(port),
-      HOSTNAME: 'localhost',
-    },
+    env: serverEnv,
     stdio: ['ignore', 'pipe', 'pipe'],
+    cwd: path.dirname(serverPath),
   });
 
   child.stdout?.on('data', (data: Buffer) => {

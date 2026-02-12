@@ -8,6 +8,7 @@
     "build:next": "cd ../web && STANDALONE=true pnpm build && node ../desktop/scripts/copy-static.js",
     "build:electron": "tsc -p tsconfig.electron.json",
     "build": "pnpm build:next && pnpm build:electron",
+    "electron:build": "pnpm build && electron-builder --mac",
     "electron:dev": "pnpm build:electron && electron ."
   },
   "prisma": {
