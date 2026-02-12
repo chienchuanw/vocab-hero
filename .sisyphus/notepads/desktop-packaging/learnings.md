@@ -527,3 +527,15 @@ The packaged `.app` bundle launches (Electron main process starts, GPU/network h
 5. `node scripts/resolve-standalone.js` (flatten pnpm symlinks)
 6. `pnpm build:electron` (compile TS)
 7. `npx electron-builder --mac` (package .app + .dmg)
+
+## Bug 8 Fix: SQLite Prisma Client in Standalone Build (2026-02-12)
+
+### Build-Standalone.js Script
+- `scripts/build-standalone.js` orchestrates: SQLite generate → standalone build → static copy → PostgreSQL restore
+- Uses try/finally to guarantee PostgreSQL client restoration even on build failure
+- `DATABASE_URL=file:/tmp/build-temp.db` passed via env to `prisma generate` for SQLite schema
+- Temp DB and journal files cleaned up in finally block
+- `pnpm prisma generate` from desktop dir writes to hoisted `@prisma/client` — confirmed SQLite provider in schema.prisma
+- `pnpm prisma generate` from web dir overwrites with PostgreSQL — confirmed restoration works
+- Round-trip verified: SQLite generate → check schema.prisma shows `provider = "sqlite"` → PostgreSQL restore → shows `provider = "postgresql"`
+- `build:next` script changed from inline `cd ../web && ...` to `node scripts/build-standalone.js`

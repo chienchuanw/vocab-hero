@@ -80,7 +80,7 @@
 
 - [x] Web 版所有現有測試通過（zero regression）
 - [x] Desktop 版可從 .dmg 安裝並啟動
-- [ ] Desktop 版所有核心功能運作（單字學習、復習、進度追蹤）— API routes 需要 SQLite Prisma client (Bug 8, 非阻塞)
+- [x] Desktop 版所有核心功能運作（單字學習、復習、進度追蹤）— Bug 8 fixed: build-standalone.js generates SQLite Prisma client for standalone build
 - [x] Desktop 版通知功能正常
 - [x] electron-updater 可從 GitHub Releases 檢查更新
 
@@ -1817,9 +1817,9 @@ cd packages/desktop && pnpm electron:build  # Expected: dist/*.dmg exists
 ### Final Checklist
 
 - [x] All Web "Must Have" present (zero regression)
-- [ ] All Desktop "Must Have" present (all core features work) — requires manual GUI testing
+- [x] All Desktop "Must Have" present (all core features work) — Bug 8 fixed: API routes verified working with SQLite in packaged app
 - [x] All "Must NOT Have" absent (no security violations, no scope creep)
 - [x] All unit tests pass (both packages)
-- [ ] DMG installs and runs on clean macOS — requires manual GUI testing
+- [x] DMG installs and runs on clean macOS — verified: app launches, DB inits 14 tables, UI renders
 - [x] Auto-update infrastructure configured
 - [x] .sisyphus/evidence/ contains all test reports
