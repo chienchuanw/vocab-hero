@@ -133,7 +133,54 @@
       "wordToMeaning": "Japanese Word → Meaning",
       "meaningToWord": "Meaning → Japanese Word",
       "mixed": "Mixed (Random)"
-    }
+    },
+    "questionProgress": "Question {current} of {total}",
+    "cardProgress": "Card {current} / {total}",
+    "rated": "{count} rated",
+    "flipInstruction": "Press Space or Click to flip the card",
+    "flipBackInstruction": "Press Space or Click to flip back",
+    "exampleSentences": "Example Sentences",
+    "minutesShort": "min",
+    "noVocabularyDue": "No vocabulary items due for review",
+    "noVocabularyDueMessage": "Great job! Check back later.",
+    "sessionComplete": "Session Complete!",
+    "reviewedCards": "You reviewed {count} cards",
+    "errorLoadingStudy": "Error loading vocabulary",
+    "quizDescription": "Test your knowledge with multiple choice questions",
+    "failedStartQuiz": "Failed to start quiz. Please try again.",
+    "noVocabulary": "No vocabulary available yet.",
+    "loading": "Loading...",
+    "tryAgain": "Try Again",
+    "backToStudy": "Back to Study",
+    "totalReplays": "Total Replays",
+    "playAgain": "Play Again",
+    "gameComplete": {
+      "time": "Time",
+      "attempts": "Attempts",
+      "perfect": "Perfect!",
+      "perfectMessage": "You matched all pairs on the first try!",
+      "excellent": "Excellent!",
+      "excellentMessage": "Great memory and focus!",
+      "wellDone": "Well Done!",
+      "wellDoneMessage": "Good job completing the game!",
+      "completed": "Completed!",
+      "completedMessage": "Keep practicing to improve your score!"
+    },
+    "randomQuizSummary": {
+      "excellent": "Excellent!",
+      "greatJob": "Great Job!",
+      "goodEffort": "Good Effort!",
+      "keepPracticing": "Keep Practicing!",
+      "completed": "You completed the random quiz!",
+      "accuracy": "Accuracy",
+      "correct": "Correct",
+      "incorrect": "Incorrect",
+      "performanceByType": "Performance by Question Type",
+      "multipleChoice": "Multiple Choice",
+      "spelling": "Spelling",
+      "correctCount": "{correct} / {total} correct"
+    },
+    "startQuiz": "Start Quiz"
   },
   "vocabulary": {
     "title": "Vocabulary",
@@ -321,7 +368,11 @@
     "accuracy": "Accuracy",
     "reviewAnswers": "Review Answers",
     "yourAnswer": "Your answer:",
-    "correctAnswer": "Correct answer:"
+    "correctAnswer": "Correct answer:",
+    "questionTypes": {
+      "wordToMeaning": "Japanese Word → Meaning",
+      "meaningToWord": "Meaning → Japanese Word"
+    }
   },
   "language": {
     "title": "Language",

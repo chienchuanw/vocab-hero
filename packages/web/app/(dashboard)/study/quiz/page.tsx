@@ -17,7 +17,8 @@ import { generateQuizQuestions, type QuizQuestion } from '@/lib/quiz/quiz-utils'
  */
 export default function QuizStudyPage() {
   const router = useRouter();
-  const t = useTranslations('common');
+  const tCommon = useTranslations('common');
+  const tStudy = useTranslations('study');
   const [config, setConfig] = useState<QuizConfig | null>(null);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +52,7 @@ export default function QuizStudyPage() {
       setQuestions(generatedQuestions);
     } catch (error) {
       console.error('Failed to start quiz:', error);
-      alert('Failed to start quiz. Please try again.');
+      alert(tStudy('failedStartQuiz'));
     } finally {
       setIsLoading(false);
     }
@@ -84,9 +85,9 @@ export default function QuizStudyPage() {
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold">{t('startQuiz')}</h1>
+            <h1 className="text-3xl font-bold">{tCommon('startQuiz')}</h1>
             <p className="mt-2 text-muted-foreground">
-              Test your knowledge with multiple choice questions
+              {tStudy('quizDescription')}
             </p>
           </div>
 
@@ -134,9 +135,9 @@ export default function QuizStudyPage() {
     <Layout streak={0}>
       <div className="max-w-3xl mx-auto">
         <div className="mb-4 flex items-center justify-between">
-          <Button variant="ghost" onClick={() => router.push('/study')}>
-            ← {t('backToStudy')}
-          </Button>
+            <Button variant="ghost" onClick={() => router.push('/study')}>
+              ← {tCommon('backToStudy')}
+            </Button>
           <div className="text-sm text-muted-foreground">
             {quiz.currentQuestionNumber} / {quiz.totalQuestions}
           </div>

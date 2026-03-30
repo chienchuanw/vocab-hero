@@ -133,7 +133,54 @@
       "wordToMeaning": "日文單字 → 意思",
       "meaningToWord": "意思 → 日文單字",
       "mixed": "混合（隨機）"
-    }
+    },
+    "questionProgress": "第 {current} 題，共 {total} 題",
+    "cardProgress": "第 {current} / {total} 張",
+    "rated": "已評 {count} 張",
+    "flipInstruction": "按空白鍵或點擊翻轉卡片",
+    "flipBackInstruction": "按空白鍵或點擊翻回正面",
+    "exampleSentences": "例句",
+    "minutesShort": "分",
+    "noVocabularyDue": "目前沒有需要複習的單字",
+    "noVocabularyDueMessage": "做得好！稍後再回來看看。",
+    "sessionComplete": "學習完成！",
+    "reviewedCards": "您複習了 {count} 張卡片",
+    "errorLoadingStudy": "載入單字時發生錯誤",
+    "quizDescription": "透過選擇題測試您的知識",
+    "failedStartQuiz": "啟動測驗失敗，請重試。",
+    "noVocabulary": "目前沒有可用的單字。",
+    "loading": "載入中...",
+    "tryAgain": "再試一次",
+    "backToStudy": "返回學習",
+    "totalReplays": "重播次數",
+    "playAgain": "再玩一次",
+    "gameComplete": {
+      "time": "時間",
+      "attempts": "嘗試次數",
+      "perfect": "完美！",
+      "perfectMessage": "第一次就全部配對成功！",
+      "excellent": "太棒了！",
+      "excellentMessage": "記憶力和專注力超強！",
+      "wellDone": "做得好！",
+      "wellDoneMessage": "順利完成了遊戲！",
+      "completed": "完成！",
+      "completedMessage": "繼續練習來提升成績！"
+    },
+    "randomQuizSummary": {
+      "excellent": "太棒了！",
+      "greatJob": "做得很好！",
+      "goodEffort": "表現不錯！",
+      "keepPracticing": "繼續練習！",
+      "completed": "您已完成隨機測驗！",
+      "accuracy": "正確率",
+      "correct": "正確",
+      "incorrect": "錯誤",
+      "performanceByType": "各題型表現",
+      "multipleChoice": "選擇題",
+      "spelling": "拼寫",
+      "correctCount": "答對 {correct} / {total} 題"
+    },
+    "startQuiz": "開始測驗"
   },
   "vocabulary": {
     "title": "單字",
@@ -321,7 +368,11 @@
     "accuracy": "準確率",
     "reviewAnswers": "檢視答案",
     "yourAnswer": "您的答案：",
-    "correctAnswer": "正確答案："
+    "correctAnswer": "正確答案：",
+    "questionTypes": {
+      "wordToMeaning": "日文單字 → 意思",
+      "meaningToWord": "意思 → 日文單字"
+    }
   },
   "language": {
     "title": "語言",

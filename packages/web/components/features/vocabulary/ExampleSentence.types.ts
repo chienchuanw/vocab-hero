@@ -14,5 +14,5 @@ export interface ExampleSentenceProps {
   sentence: ExampleSentenceData | null;
   className?: string;
   emptyMessage?: string;
+  showAudio?: boolean;
 }
-

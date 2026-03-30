@@ -102,7 +102,7 @@ export default function SpellingQuizPage() {
 
         {/* 進度指示 */}
         <div className="mb-6 text-center text-sm text-muted-foreground">
-          Question {spelling.currentQuestionNumber} of {spelling.totalQuestions}
+          {t('questionProgress', { current: spelling.currentQuestionNumber, total: spelling.totalQuestions })}
         </div>
 
         {/* 拼寫輸入 */}

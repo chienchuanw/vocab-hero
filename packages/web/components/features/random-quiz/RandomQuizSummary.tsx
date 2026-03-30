@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 
 /**
@@ -33,6 +34,9 @@ export function RandomQuizSummary({
   onRestart,
   onBackToStudy,
 }: RandomQuizSummaryProps) {
+  const t = useTranslations('study');
+  const tCommon = useTranslations('common');
+
   // 計算統計數據
   const correctCount = results.filter((r) => r.isCorrect).length;
   const incorrectCount = results.filter((r) => !r.isCorrect).length;
@@ -58,15 +62,15 @@ export function RandomQuizSummary({
    */
   const getPerformanceRating = () => {
     if (accuracy >= 90) {
-      return { title: 'Excellent!', emoji: '🏆', color: 'text-green-600' };
+      return { title: t('randomQuizSummary.excellent'), emoji: '🏆', color: 'text-green-600' };
     }
     if (accuracy >= 75) {
-      return { title: 'Great Job!', emoji: '⭐', color: 'text-blue-600' };
+      return { title: t('randomQuizSummary.greatJob'), emoji: '⭐', color: 'text-blue-600' };
     }
     if (accuracy >= 60) {
-      return { title: 'Good Effort!', emoji: '👍', color: 'text-yellow-600' };
+      return { title: t('randomQuizSummary.goodEffort'), emoji: '👍', color: 'text-yellow-600' };
     }
-    return { title: 'Keep Practicing!', emoji: '💪', color: 'text-orange-600' };
+    return { title: t('randomQuizSummary.keepPracticing'), emoji: '💪', color: 'text-orange-600' };
   };
 
   const rating = getPerformanceRating();
@@ -78,25 +82,25 @@ export function RandomQuizSummary({
         <div className="text-center">
           <div className="text-6xl mb-4">{rating.emoji}</div>
           <h2 className={`text-3xl font-bold ${rating.color}`}>{rating.title}</h2>
-          <p className="mt-2 text-muted-foreground">You completed the random quiz!</p>
+          <p className="mt-2 text-muted-foreground">{t('randomQuizSummary.completed')}</p>
         </div>
 
         {/* 總體統計 */}
         <div className="grid grid-cols-3 gap-4">
           <div className="rounded-lg border bg-muted/50 p-4 text-center">
-            <div className="text-sm text-muted-foreground">Accuracy</div>
+            <div className="text-sm text-muted-foreground">{t('randomQuizSummary.accuracy')}</div>
             <div className="mt-1 text-3xl font-bold">{accuracy.toFixed(1)}%</div>
           </div>
 
           <div className="rounded-lg border bg-green-100 dark:bg-green-900/30 p-4 text-center">
-            <div className="text-sm text-muted-foreground">Correct</div>
+            <div className="text-sm text-muted-foreground">{t('randomQuizSummary.correct')}</div>
             <div className="mt-1 text-3xl font-bold text-green-600 dark:text-green-400">
               {correctCount}
             </div>
           </div>
 
           <div className="rounded-lg border bg-red-100 dark:bg-red-900/30 p-4 text-center">
-            <div className="text-sm text-muted-foreground">Incorrect</div>
+            <div className="text-sm text-muted-foreground">{t('randomQuizSummary.incorrect')}</div>
             <div className="mt-1 text-3xl font-bold text-red-600 dark:text-red-400">
               {incorrectCount}
             </div>
@@ -105,16 +109,19 @@ export function RandomQuizSummary({
 
         {/* 按題型統計 */}
         <div className="space-y-3">
-          <h3 className="font-medium">Performance by Question Type</h3>
+          <h3 className="font-medium">{t('randomQuizSummary.performanceByType')}</h3>
 
           <div className="space-y-2">
             {/* Multiple Choice */}
             {multipleChoiceResults.length > 0 && (
               <div className="flex items-center justify-between rounded-lg border p-3">
                 <div>
-                  <div className="font-medium">Multiple Choice</div>
+                  <div className="font-medium">{t('randomQuizSummary.multipleChoice')}</div>
                   <div className="text-sm text-muted-foreground">
-                    {multipleChoiceCorrect} / {multipleChoiceResults.length} correct
+                    {t('randomQuizSummary.correctCount', {
+                      correct: multipleChoiceCorrect,
+                      total: multipleChoiceResults.length,
+                    })}
                   </div>
                 </div>
                 <div className="text-lg font-bold">{multipleChoiceAccuracy.toFixed(1)}%</div>
@@ -125,9 +132,12 @@ export function RandomQuizSummary({
             {spellingResults.length > 0 && (
               <div className="flex items-center justify-between rounded-lg border p-3">
                 <div>
-                  <div className="font-medium">Spelling</div>
+                  <div className="font-medium">{t('randomQuizSummary.spelling')}</div>
                   <div className="text-sm text-muted-foreground">
-                    {spellingCorrect} / {spellingResults.length} correct
+                    {t('randomQuizSummary.correctCount', {
+                      correct: spellingCorrect,
+                      total: spellingResults.length,
+                    })}
                   </div>
                 </div>
                 <div className="text-lg font-bold">{spellingAccuracy.toFixed(1)}%</div>
@@ -139,14 +149,13 @@ export function RandomQuizSummary({
         {/* 按鈕 */}
         <div className="flex gap-4 pt-4">
           <Button onClick={onRestart} size="lg" className="flex-1">
-            Try Again
+            {tCommon('tryAgain')}
           </Button>
           <Button onClick={onBackToStudy} variant="outline" size="lg" className="flex-1">
-            Back to Study
+            {tCommon('backToStudy')}
           </Button>
         </div>
       </div>
     </div>
   );
 }
-

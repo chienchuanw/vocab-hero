@@ -216,9 +216,12 @@ export default function RandomQuizPage() {
         </div>
 
         {/* 進度指示 */}
-        <div className="mb-6 text-center text-sm text-muted-foreground">
-          Question {quiz.currentQuestionNumber} of {quiz.totalQuestions}
-        </div>
+          <div className="mb-6 text-center text-sm text-muted-foreground">
+            {t('questionProgress', {
+              current: quiz.currentQuestionNumber,
+              total: quiz.totalQuestions,
+            })}
+          </div>
 
         {/* 題目 */}
         {quiz.currentQuestion && (

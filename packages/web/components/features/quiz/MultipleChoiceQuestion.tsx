@@ -43,6 +43,7 @@ export function MultipleChoiceQuestion({
   isCorrect,
 }: MultipleChoiceQuestionProps) {
   const t = useTranslations('quiz');
+  const tStudy = useTranslations('study');
   const handleOptionClick = (option: string) => {
     // 如果已經選擇答案，不允許再次選擇
     if (selectedAnswer) return;
@@ -78,7 +79,7 @@ export function MultipleChoiceQuestion({
   return (
     <div className="space-y-6">
       <div className="text-center text-sm text-muted-foreground">
-        Question {currentQuestionNumber} of {totalQuestions}
+        {tStudy('questionProgress', { current: currentQuestionNumber, total: totalQuestions })}
       </div>
 
       <div className="rounded-lg border bg-card p-8 text-center">
@@ -103,9 +104,9 @@ export function MultipleChoiceQuestion({
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-        {question.options.map((option, index) => (
+        {question.options.map((option) => (
           <Button
-            key={index}
+            key={option}
             variant="outline"
             size="lg"
             className={cn('h-auto min-h-[60px] text-lg transition-all', getOptionClassName(option))}

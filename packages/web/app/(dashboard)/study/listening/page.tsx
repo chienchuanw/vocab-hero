@@ -147,7 +147,7 @@ export default function ListeningQuizPage() {
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium mb-2">{t('questionType')}</label>
+                <p className="block text-sm font-medium mb-2">{t('questionType')}</p>
                 <div className="flex gap-4">
                   <Button
                     variant={questionType === 'multiple-choice' ? 'default' : 'outline'}
@@ -188,7 +188,7 @@ export default function ListeningQuizPage() {
               <p>
                 {t('correctAnswers')}: {stats.correctAnswers}/{stats.totalQuestions}
               </p>
-              <p>Total Replays: {stats.totalReplays}</p>
+              <p>{t('totalReplays')}: {stats.totalReplays}</p>
             </div>
             <Button onClick={() => router.push('/study')} className="mt-6">
               {t('backToStudy')}
@@ -219,7 +219,7 @@ export default function ListeningQuizPage() {
       <div className="max-w-2xl mx-auto">
         <div className="mb-4">
           <p className="text-sm text-gray-600">
-            Question {currentIndex + 1} of {questions.length}
+            {t('questionProgress', { current: currentIndex + 1, total: questions.length })}
           </p>
         </div>
 

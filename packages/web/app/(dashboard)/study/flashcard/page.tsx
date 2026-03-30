@@ -14,6 +14,7 @@ const DEFAULT_CARDS_PER_SESSION = 20;
 
 export default function FlashcardStudyPage() {
   const t = useTranslations('common');
+  const tStudy = useTranslations('study');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [ratings, setRatings] = useState<Record<string, QualityRating>>({});
@@ -80,7 +81,7 @@ export default function FlashcardStudyPage() {
       <Layout streak={0}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <p className="text-destructive text-lg mb-4">Error loading vocabulary</p>
+            <p className="text-destructive text-lg mb-4">{tStudy('errorLoadingStudy')}</p>
             <p className="text-muted-foreground">{error.message}</p>
           </div>
         </div>
@@ -94,8 +95,8 @@ export default function FlashcardStudyPage() {
       <Layout streak={0}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <p className="text-lg mb-4">No vocabulary items due for review</p>
-            <p className="text-muted-foreground">Great job! Check back later.</p>
+            <p className="text-lg mb-4">{tStudy('noVocabularyDue')}</p>
+            <p className="text-muted-foreground">{tStudy('noVocabularyDueMessage')}</p>
           </div>
         </div>
       </Layout>
@@ -108,8 +109,10 @@ export default function FlashcardStudyPage() {
       <Layout streak={0}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4">Session Complete!</h2>
-            <p className="text-muted-foreground mb-4">You reviewed {vocabulary.length} cards</p>
+            <h2 className="text-2xl font-bold mb-4">{tStudy('sessionComplete')}</h2>
+            <p className="text-muted-foreground mb-4">
+              {tStudy('reviewedCards', { count: vocabulary.length })}
+            </p>
           </div>
         </div>
       </Layout>
@@ -130,10 +133,10 @@ export default function FlashcardStudyPage() {
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-muted-foreground">
-              Card {currentIndex + 1} / {vocabulary.length}
+              {tStudy('cardProgress', { current: currentIndex + 1, total: vocabulary.length })}
             </span>
             <span className="text-sm text-muted-foreground">
-              {Object.keys(ratings).length} rated
+              {tStudy('rated', { count: Object.keys(ratings).length })}
             </span>
           </div>
           <div className="w-full bg-muted rounded-full h-2">
@@ -166,7 +169,7 @@ export default function FlashcardStudyPage() {
         {/* Instructions */}
         {!isFlipped && (
           <div className="text-center text-sm text-muted-foreground mt-4">
-            <p>Press Space or Click to flip the card</p>
+            <p>{tStudy('flipInstruction')}</p>
           </div>
         )}
       </div>

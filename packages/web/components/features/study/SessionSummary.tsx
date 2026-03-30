@@ -50,7 +50,9 @@ export function SessionSummary({ stats, onContinue, onEnd }: SessionSummaryProps
         {/* Time spent */}
         <div className="flex justify-between items-center p-4 bg-muted rounded-lg">
           <span className="text-muted-foreground">{t('timeSpent')}</span>
-          <span className="text-2xl font-bold">{stats.timeSpent} min</span>
+          <span className="text-2xl font-bold">
+            {stats.timeSpent} {t('minutesShort')}
+          </span>
         </div>
       </div>
 

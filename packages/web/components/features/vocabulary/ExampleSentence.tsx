@@ -17,6 +17,7 @@ export function ExampleSentence({
   sentence,
   className,
   emptyMessage = 'No example sentences',
+  showAudio = true,
 }: ExampleSentenceProps) {
   // Display empty state when no sentence is provided
   if (!sentence) {
@@ -34,7 +35,7 @@ export function ExampleSentence({
         <p className="text-base text-gray-900 dark:text-gray-100 font-medium flex-1">
           {sentence.sentence}
         </p>
-        <SpeakerButton text={sentence.sentence} />
+        {showAudio && <SpeakerButton text={sentence.sentence} />}
       </div>
 
       {/* Reading (furigana) - only show if provided */}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { ExampleSentence } from '@/components/features/vocabulary/ExampleSentence';
 import { SpeakerButton } from '@/components/features/audio';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
@@ -14,8 +15,9 @@ import type { ExampleSentenceData } from '@/components/features/vocabulary/Examp
  * Back: meaning + example sentences
  */
 export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardProps) {
+  const t = useTranslations('study');
   const [isFlipped, setIsFlipped] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLButtonElement>(null);
 
   const handleFlip = useCallback(() => {
     const newFlippedState = !isFlipped;
@@ -54,9 +56,10 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
     })) || [];
 
   return (
-    <div className="flashcard-container perspective-1000">
-      <div
+    <div className="flashcard-container relative perspective-1000">
+      <button
         ref={cardRef}
+        type="button"
         onClick={handleFlip}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -64,8 +67,6 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
             handleFlip();
           }
         }}
-        role="button"
-        tabIndex={0}
         className="flashcard-inner relative w-full h-96 transition-transform duration-500 transform-style-3d focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg cursor-pointer"
         style={{
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -81,16 +82,11 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
           }}
         >
           <div className="text-center space-y-4">
-            <div className="flex items-center justify-center gap-4">
-              <h2 className="text-6xl font-bold text-foreground">{vocabulary.word}</h2>
-              <div onClick={(e) => e.stopPropagation()}>
-                <SpeakerButton text={vocabulary.word} size="default" />
-              </div>
-            </div>
+            <h2 className="text-6xl font-bold text-foreground">{vocabulary.word}</h2>
             <p className="text-3xl text-muted-foreground">{vocabulary.reading}</p>
           </div>
           <p className="absolute bottom-4 text-sm text-muted-foreground">
-            Press Space or Click to flip
+            {t('flipInstruction')}
           </p>
         </div>
 
@@ -111,11 +107,11 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
             </div>
 
             <div className="border-t pt-4">
-              <h4 className="text-lg font-semibold mb-3">Example Sentences</h4>
+              <h4 className="text-lg font-semibold mb-3">{t('exampleSentences')}</h4>
               {exampleSentences.length > 0 ? (
                 <div className="space-y-4">
                   {exampleSentences.map((sentence) => (
-                    <ExampleSentence key={sentence.id} sentence={sentence} />
+                    <ExampleSentence key={sentence.id} sentence={sentence} showAudio={false} />
                   ))}
                 </div>
               ) : (
@@ -124,10 +120,16 @@ export function Flashcard({ vocabulary, onFlip, onNext, onPrevious }: FlashcardP
             </div>
           </div>
           <p className="absolute bottom-4 left-0 right-0 text-center text-sm text-muted-foreground">
-            Press Space or Click to flip back
+            {t('flipBackInstruction')}
           </p>
         </div>
-      </div>
+      </button>
+
+      {!isFlipped && (
+        <div className="absolute right-8 top-8 z-10">
+          <SpeakerButton text={vocabulary.word} size="default" />
+        </div>
+      )}
     </div>
   );
 }
