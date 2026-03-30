@@ -16,14 +16,14 @@
 - [x] 3.1 Create `MatchingGameHeader` component in `components/features/matching/` with three sections: X close button (left), progress bar (center), elapsed timer (right)
 - [x] 3.2 Implement X close button that navigates to `/study` using `router.push('/study')`
 - [x] 3.3 Implement elapsed timer display formatted as `M:SS`, showing `0:00` before first selection and updating every second during gameplay
-- [ ] 3.4 Add unit tests for `MatchingGameHeader`: renders close button, displays timer, shows progress bar, close button navigates to /study
+- [x] 3.4 Add unit tests for `MatchingGameHeader`: renders close button, displays timer, shows progress bar, close button navigates to /study
 
 ## 4. Visual Progress Bar Component
 
 - [x] 4.1 Create `MatchingProgressBar` component in `components/features/matching/` accepting `current` and `total` props
 - [x] 4.2 Implement filled bar visualization (0% to 100%) with smooth transition on progress change
 - [x] 4.3 Display current matched count as a visual indicator/badge on the progress bar
-- [ ] 4.4 Add unit tests for `MatchingProgressBar`: renders empty at 0, fills proportionally, shows 100% when current equals total, displays count indicator
+- [x] 4.4 Add unit tests for `MatchingProgressBar`: renders empty at 0, fills proportionally, shows 100% when current equals total, displays count indicator
 
 ## 5. Inline Card Feedback
 
@@ -31,7 +31,7 @@
 - [x] 5.2 Update `MatchingCard.tsx` error state: brief red flash using Tailwind transition classes, auto-reset handled by hook's 800-1000ms timeout
 - [x] 5.3 Add selection highlight state that clearly indicates first-pick card (primary color border/ring — preserve existing `isSelected` styling)
 - [x] 5.4 Remove `MatchAnimation.tsx` component file entirely
-- [ ] 5.5 Update `MatchingCard.test.tsx` to verify inline feedback states: matched cards show green + reduced opacity, error cards show red flash, selected cards show highlight
+- [x] 5.5 Update `MatchingCard.test.tsx` to verify inline feedback states: matched cards show green + reduced opacity, error cards show red flash, selected cards show highlight
 
 ## 6. Page Restructure — Two-Column Layout + Immersive Mode
 
@@ -45,8 +45,8 @@
 
 ## 7. Test Updates
 
-- [ ] 7.1 Update E2E test `matching.spec.ts`: update selectors for immersive header (X button instead of "Back to Study"), two-column layout (no `grid-cols-2` class), progress bar visibility, timer display
-- [ ] 7.2 Add E2E scenario: clicking X close button navigates to `/study`
-- [ ] 7.3 Add E2E scenario: progress bar fills as pairs are matched
-- [ ] 7.4 Verify existing E2E tests for card selection and attempt counting still pass with updated selectors
-- [ ] 7.5 Run full test suite (`pnpm test:web`) and fix any regressions
+- [x] 7.1 Update E2E test `matching.spec.ts`: update selectors for immersive header (X button instead of "Back to Study"), two-column layout (no `grid-cols-2` class), progress bar visibility, timer display
+- [x] 7.2 Add E2E scenario: clicking X close button navigates to `/study`
+- [x] 7.3 Add E2E scenario: progress bar fills as pairs are matched
+- [x] 7.4 Verify existing E2E tests for card selection and attempt counting still pass with updated selectors
+- [x] 7.5 Run full test suite (`pnpm test:web`) and fix any regressions
