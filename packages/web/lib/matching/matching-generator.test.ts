@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   generateMatchingPairs,
+  generateColumnPairs,
   shuffleCards,
   isMatchingPair,
   type VocabularyItem,
@@ -149,6 +150,61 @@ describe('matching-generator', () => {
 
       // 這個測試有極小機率失敗（如果洗牌後順序完全相同）
       expect(hasChanged).toBe(true);
+    });
+  });
+
+  describe('generateColumnPairs', () => {
+    it('should return leftColumn with only word-type cards', () => {
+      const result = generateColumnPairs(mockVocabulary, 5);
+
+      expect(result.leftColumn).toHaveLength(5);
+      result.leftColumn.forEach((card) => {
+        expect(card.type).toBe('word');
+      });
+    });
+
+    it('should return rightColumn with only meaning-type cards', () => {
+      const result = generateColumnPairs(mockVocabulary, 5);
+
+      expect(result.rightColumn).toHaveLength(5);
+      result.rightColumn.forEach((card) => {
+        expect(card.type).toBe('meaning');
+      });
+    });
+
+    it('should return correct number of cards for custom pair count', () => {
+      const result = generateColumnPairs(mockVocabulary, 3);
+
+      expect(result.leftColumn).toHaveLength(3);
+      expect(result.rightColumn).toHaveLength(3);
+    });
+
+    it('should have matching pairIds across columns', () => {
+      const result = generateColumnPairs(mockVocabulary, 5);
+
+      const leftPairIds = new Set(result.leftColumn.map((c) => c.pairId));
+      const rightPairIds = new Set(result.rightColumn.map((c) => c.pairId));
+
+      expect(leftPairIds).toEqual(rightPairIds);
+    });
+
+    it('should shuffle columns independently (probabilistic test)', () => {
+      const results = Array.from({ length: 10 }, () => generateColumnPairs(mockVocabulary, 5));
+
+      const leftOrders = results.map((r) => r.leftColumn.map((c) => c.pairId).join(','));
+      const rightOrders = results.map((r) => r.rightColumn.map((c) => c.pairId).join(','));
+
+      const uniqueLeftOrders = new Set(leftOrders);
+      const uniqueRightOrders = new Set(rightOrders);
+
+      expect(uniqueLeftOrders.size).toBeGreaterThan(1);
+      expect(uniqueRightOrders.size).toBeGreaterThan(1);
+    });
+
+    it('should throw error if not enough vocabulary items', () => {
+      const smallVocab = mockVocabulary.slice(0, 2);
+
+      expect(() => generateColumnPairs(smallVocab, 5)).toThrow();
     });
   });
 

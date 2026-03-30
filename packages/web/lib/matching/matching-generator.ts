@@ -136,3 +136,37 @@ export function generateShuffledPairs(
   const pairs = generateMatchingPairs(vocabulary, pairCount);
   return shuffleCards(pairs);
 }
+
+/**
+ * Column Pairs 結果型別
+ * 左欄放單字卡，右欄放意思卡，各自獨立洗牌
+ */
+export interface ColumnPairs {
+  leftColumn: MatchingCard[];
+  rightColumn: MatchingCard[];
+}
+
+/**
+ * 生成分欄配對卡片
+ * 左欄為單字卡（word），右欄為意思卡（meaning），各自獨立洗牌
+ *
+ * @param vocabulary - 單字列表
+ * @param pairCount - 配對數量（預設 5）
+ * @returns 分欄的配對卡片
+ */
+export function generateColumnPairs(
+  vocabulary: VocabularyItem[],
+  pairCount: number = 5
+): ColumnPairs {
+  const pairs = generateMatchingPairs(vocabulary, pairCount);
+
+  // 依類型分成左右欄
+  const wordCards = pairs.filter((card) => card.type === 'word');
+  const meaningCards = pairs.filter((card) => card.type === 'meaning');
+
+  // 各自獨立洗牌
+  return {
+    leftColumn: shuffleCards(wordCards),
+    rightColumn: shuffleCards(meaningCards),
+  };
+}
