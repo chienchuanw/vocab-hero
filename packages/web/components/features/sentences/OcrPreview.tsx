@@ -13,14 +13,17 @@ export interface OcrPreviewItem {
   japanese: string;
   english: string;
   imageUrl?: string;
+  serverImageUrl?: string;
   isProcessing?: boolean;
 }
 
 export interface OcrPreviewProps {
   items: OcrPreviewItem[];
-  onSave: (item: { japanese: string; english: string; notes?: string }) => void;
+  onSave: (item: { japanese: string; english: string; notes?: string; imageUrl?: string }) => void;
   onDiscard: (id: string) => void;
-  onSaveAll: (items: { japanese: string; english: string; notes?: string }[]) => void;
+  onSaveAll: (
+    items: { japanese: string; english: string; notes?: string; imageUrl?: string }[]
+  ) => void;
   className?: string;
 }
 
@@ -41,6 +44,7 @@ export function OcrPreview({ items, onSave, onDiscard, onSaveAll, className }: O
         japanese: draft.japanese ?? item.japanese,
         english: draft.english ?? item.english,
         notes: draft.notes ?? '',
+        imageUrl: item.serverImageUrl,
       };
     },
     [drafts]

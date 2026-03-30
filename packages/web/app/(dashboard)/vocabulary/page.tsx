@@ -31,7 +31,12 @@ import {
   type VocabularyItem,
 } from '@/hooks/useVocabulary';
 import { useGroups } from '@/hooks/useGroups';
-import { useSentences, useCreateSentence } from '@/hooks/useSentences';
+import {
+  useSentences,
+  useCreateSentence,
+  useUploadSentenceImage,
+  useDeleteSentenceImage,
+} from '@/hooks/useSentences';
 import { recognizeText } from '@/lib/ocr/tesseract-worker';
 import { parseDuolingoText } from '@/lib/ocr/duolingo-parser';
 import {
@@ -76,6 +81,8 @@ export default function VocabularyPage() {
   const { data: groups } = useGroups();
   const { data: sentences } = useSentences();
   const createSentence = useCreateSentence();
+  const uploadImage = useUploadSentenceImage();
+  const deleteImage = useDeleteSentenceImage();
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -163,6 +170,13 @@ export default function VocabularyPage() {
       const placeholder = placeholders[i];
       if (!placeholder) continue;
 
+      let serverImageUrl: string | undefined;
+      try {
+        serverImageUrl = await uploadImage.mutateAsync(file);
+      } catch (error) {
+        console.error('Image upload failed for file:', file.name, error);
+      }
+
       try {
         const ocrResult = await recognizeText(file);
         const parsed = parseDuolingoText(ocrResult.text);
@@ -170,6 +184,7 @@ export default function VocabularyPage() {
           ...placeholder,
           japanese: parsed.japanese,
           english: parsed.english,
+          serverImageUrl,
           isProcessing: false,
         });
       } catch (error) {
@@ -178,6 +193,7 @@ export default function VocabularyPage() {
           ...placeholder,
           japanese: '',
           english: '',
+          serverImageUrl,
           isProcessing: false,
         });
       }
@@ -187,12 +203,18 @@ export default function VocabularyPage() {
     setIsOcrProcessing(false);
   };
 
-  const handleOcrSave = async (item: { japanese: string; english: string; notes?: string }) => {
+  const handleOcrSave = async (item: {
+    japanese: string;
+    english: string;
+    notes?: string;
+    imageUrl?: string;
+  }) => {
     try {
       await createSentence.mutateAsync({
         japanese: item.japanese,
         english: item.english,
         notes: item.notes,
+        imageUrl: item.imageUrl,
       });
       toast.success('Sentence saved');
     } catch (error) {
@@ -202,11 +224,15 @@ export default function VocabularyPage() {
   };
 
   const handleOcrDiscard = (id: string) => {
-    setOcrItems((prev) => prev.filter((item) => item.id !== id));
+    const item = ocrItems.find((i) => i.id === id);
+    if (item?.serverImageUrl) {
+      deleteImage.mutate(item.serverImageUrl);
+    }
+    setOcrItems((prev) => prev.filter((i) => i.id !== id));
   };
 
   const handleOcrSaveAll = async (
-    items: { japanese: string; english: string; notes?: string }[]
+    items: { japanese: string; english: string; notes?: string; imageUrl?: string }[]
   ) => {
     try {
       for (const item of items) {
@@ -214,6 +240,7 @@ export default function VocabularyPage() {
           japanese: item.japanese,
           english: item.english,
           notes: item.notes,
+          imageUrl: item.imageUrl,
         });
       }
       toast.success(`${items.length} sentences saved`);
@@ -366,6 +393,11 @@ export default function VocabularyPage() {
         open={importDialogOpen}
         onOpenChange={(open) => {
           if (!open) {
+            ocrItems.forEach((item) => {
+              if (item.serverImageUrl) {
+                deleteImage.mutate(item.serverImageUrl);
+              }
+            });
             setImportDialogOpen(false);
             setOcrItems([]);
             setIsOcrProcessing(false);
