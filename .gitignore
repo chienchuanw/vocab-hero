@@ -60,3 +60,7 @@ packages/desktop/dist/
 
 # Electron builder output
 packages/desktop/release/
+
+# Uploaded files (keep .gitkeep)
+packages/web/public/uploads/sentences/*
+!packages/web/public/uploads/sentences/.gitkeep
