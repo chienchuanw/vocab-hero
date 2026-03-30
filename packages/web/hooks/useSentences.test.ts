@@ -5,6 +5,8 @@ import {
   useCreateSentence,
   useDeleteSentence,
   useUpdateSentence,
+  useUploadSentenceImage,
+  useDeleteSentenceImage,
 } from './useSentences';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createElement, ReactNode } from 'react';
@@ -117,6 +119,67 @@ describe('useSentences Hooks', () => {
 
       expect(global.fetch).toHaveBeenCalledWith('/api/sentences/1', {
         method: 'DELETE',
+      });
+    });
+  });
+
+  describe('useUploadSentenceImage', () => {
+    it('should upload file via POST multipart/form-data', async () => {
+      const mockImageUrl = '/uploads/sentences/test-uuid.png';
+
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true, data: { imageUrl: mockImageUrl } }),
+      });
+
+      const file = new File(['fake-image'], 'test.png', { type: 'image/png' });
+
+      const { result } = renderHook(() => useUploadSentenceImage(), {
+        wrapper: createWrapper(),
+      });
+
+      const imageUrl = await result.current.mutateAsync(file);
+
+      expect(imageUrl).toBe(mockImageUrl);
+      expect(global.fetch).toHaveBeenCalledWith('/api/sentences/upload', {
+        method: 'POST',
+        body: expect.any(FormData),
+      });
+    });
+
+    it('should throw on upload failure', async () => {
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({ error: { message: 'Invalid file type' } }),
+      });
+
+      const file = new File(['fake'], 'test.pdf', { type: 'application/pdf' });
+
+      const { result } = renderHook(() => useUploadSentenceImage(), {
+        wrapper: createWrapper(),
+      });
+
+      await expect(result.current.mutateAsync(file)).rejects.toThrow('Invalid file type');
+    });
+  });
+
+  describe('useDeleteSentenceImage', () => {
+    it('should call DELETE with imageUrl body', async () => {
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ success: true }),
+      });
+
+      const { result } = renderHook(() => useDeleteSentenceImage(), {
+        wrapper: createWrapper(),
+      });
+
+      await result.current.mutateAsync('/uploads/sentences/test.png');
+
+      expect(global.fetch).toHaveBeenCalledWith('/api/sentences/upload', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl: '/uploads/sentences/test.png' }),
       });
     });
   });

@@ -8,6 +8,7 @@ export interface SentenceCard {
   japanese: string;
   english: string;
   notes?: string | null;
+  imageUrl?: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -19,6 +20,7 @@ export interface CreateSentenceInput {
   japanese: string;
   english: string;
   notes?: string;
+  imageUrl?: string;
 }
 
 /**
@@ -140,6 +142,60 @@ export function useDeleteSentence() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sentences'] });
+    },
+  });
+}
+
+interface UploadImageResponse {
+  success: boolean;
+  data: { imageUrl: string };
+}
+
+/**
+ * useUploadSentenceImage Hook
+ * Uploads a Duolingo screenshot image for a sentence card
+ */
+export function useUploadSentenceImage() {
+  return useMutation({
+    mutationFn: async (file: File): Promise<string> => {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/sentences/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error?.message || 'Failed to upload image');
+      }
+
+      const result: UploadImageResponse = await response.json();
+      return result.data.imageUrl;
+    },
+  });
+}
+
+/**
+ * useDeleteSentenceImage Hook
+ * Deletes an uploaded sentence image from the server
+ */
+export function useDeleteSentenceImage() {
+  return useMutation({
+    mutationFn: async (imageUrl: string) => {
+      const response = await fetch('/api/sentences/upload', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error?.message || 'Failed to delete image');
+      }
+
+      return response.json();
     },
   });
 }
