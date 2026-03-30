@@ -6,10 +6,10 @@
 
 ## 2. Game Hook — Cross-Column Selection Logic
 
-- [ ] 2.1 Update `useMatchingGame.ts` to accept column-based card input (`leftColumn` + `rightColumn`) and track which column each selected card belongs to
-- [ ] 2.2 Add cross-column selection enforcement: after selecting a card from one column, only cards from the opposite column are selectable as the second pick
-- [ ] 2.3 Remove `showMatchAnimation` state flag from the hook (no longer needed without full-screen overlay)
-- [ ] 2.4 Verify existing match detection, attempt counting, completion, and elapsed timer logic remain unchanged
+- [x] 2.1 Update `useMatchingGame.ts` to accept column-based card input (`leftColumn` + `rightColumn`) and track which column each selected card belongs to
+- [x] 2.2 Add cross-column selection enforcement: after selecting a card from one column, only cards from the opposite column are selectable as the second pick
+- [x] 2.3 Remove `showMatchAnimation` state flag from the hook (no longer needed without full-screen overlay)
+- [x] 2.4 Verify existing match detection, attempt counting, completion, and elapsed timer logic remain unchanged
 
 ## 3. Immersive Game Header Component
 

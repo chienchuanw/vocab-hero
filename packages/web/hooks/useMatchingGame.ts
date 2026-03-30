@@ -1,48 +1,71 @@
 import { useState, useCallback, useEffect } from 'react';
-import { isMatchingPair, type MatchingCard } from '@/lib/matching/matching-generator';
+import {
+  isMatchingPair,
+  type MatchingCard,
+  type ColumnPairs,
+} from '@/lib/matching/matching-generator';
 
-/**
- * Matching Game State
- */
 export interface MatchingGameState {
-  cards: MatchingCard[];
-  selectedCards: string[]; // Card IDs
-  matchedPairs: string[]; // Pair IDs
+  leftColumn: MatchingCard[];
+  rightColumn: MatchingCard[];
+  selectedCards: string[];
+  matchedPairs: string[];
   attempts: number;
   startTime: number | null;
   endTime: number | null;
   isComplete: boolean;
-  showMatchAnimation: boolean;
 }
 
-/**
- * useMatchingGame Hook
- * 管理配對遊戲的狀態和邏輯
- */
-export function useMatchingGame(initialCards: MatchingCard[]) {
+export function useMatchingGame(initialColumns: ColumnPairs) {
+  const totalPairs = initialColumns.leftColumn.length;
+
   const [state, setState] = useState<MatchingGameState>({
-    cards: initialCards,
+    leftColumn: initialColumns.leftColumn,
+    rightColumn: initialColumns.rightColumn,
     selectedCards: [],
     matchedPairs: [],
     attempts: 0,
     startTime: null,
     endTime: null,
     isComplete: false,
-    showMatchAnimation: false,
   });
 
-  /**
-   * 選擇卡片
-   */
+  const findCard = useCallback(
+    (cardId: string): MatchingCard | undefined => {
+      return state.leftColumn.find((c) => c.id === cardId)
+        ?? state.rightColumn.find((c) => c.id === cardId);
+    },
+    [state.leftColumn, state.rightColumn]
+  );
+
+  const getCardColumn = useCallback(
+    (cardId: string): 'left' | 'right' | null => {
+      if (state.leftColumn.some((c) => c.id === cardId)) return 'left';
+      if (state.rightColumn.some((c) => c.id === cardId)) return 'right';
+      return null;
+    },
+    [state.leftColumn, state.rightColumn]
+  );
+
+  const firstSelectedColumn = state.selectedCards.length > 0
+    ? getCardColumn(state.selectedCards[0]!)
+    : null;
+
   const selectCard = useCallback(
     (cardId: string) => {
       if (state.selectedCards.length >= 2) return;
 
-      const card = state.cards.find((c) => c.id === cardId);
+      const card = findCard(cardId);
       if (!card) return;
 
       if (state.matchedPairs.includes(card.pairId)) return;
       if (state.selectedCards.includes(cardId)) return;
+
+      if (state.selectedCards.length === 1) {
+        const firstColumn = getCardColumn(state.selectedCards[0]!);
+        const secondColumn = getCardColumn(cardId);
+        if (firstColumn === secondColumn) return;
+      }
 
       setState((prev) => ({
         ...prev,
@@ -50,21 +73,17 @@ export function useMatchingGame(initialCards: MatchingCard[]) {
         startTime: prev.startTime === null ? Date.now() : prev.startTime,
       }));
     },
-    [state.selectedCards, state.cards, state.matchedPairs]
+    [state.selectedCards, state.matchedPairs, findCard, getCardColumn]
   );
 
-  /**
-   * 檢查配對
-   */
   useEffect(() => {
     if (state.selectedCards.length === 2) {
       const [card1Id, card2Id] = state.selectedCards;
-      const card1 = state.cards.find((c) => c.id === card1Id);
-      const card2 = state.cards.find((c) => c.id === card2Id);
+      const card1 = findCard(card1Id!);
+      const card2 = findCard(card2Id!);
 
       if (card1 && card2) {
         const isMatch = isMatchingPair(card1, card2);
-        const totalPairs = initialCards.length / 2;
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setState((prev) => {
@@ -77,7 +96,6 @@ export function useMatchingGame(initialCards: MatchingCard[]) {
             ...prev,
             attempts: prev.attempts + 1,
             matchedPairs: newMatchedPairs,
-            showMatchAnimation: isMatch,
             isComplete: isGameComplete,
             endTime: isGameComplete ? Date.now() : prev.endTime,
           };
@@ -87,32 +105,25 @@ export function useMatchingGame(initialCards: MatchingCard[]) {
           setState((prev) => ({
             ...prev,
             selectedCards: [],
-            showMatchAnimation: false,
           }));
         }, 1000);
       }
     }
-  }, [state.selectedCards, state.cards, initialCards.length]);
+  }, [state.selectedCards, findCard, totalPairs]);
 
-  /**
-   * 重新開始遊戲
-   */
   const restart = useCallback(() => {
     setState({
-      cards: initialCards,
+      leftColumn: initialColumns.leftColumn,
+      rightColumn: initialColumns.rightColumn,
       selectedCards: [],
       matchedPairs: [],
       attempts: 0,
       startTime: null,
       endTime: null,
       isComplete: false,
-      showMatchAnimation: false,
     });
-  }, [initialCards]);
+  }, [initialColumns]);
 
-  /**
-   * 計算遊戲時間（秒）
-   */
   const getElapsedTime = useCallback(() => {
     if (!state.startTime) return 0;
     const endTime = state.endTime || Date.now();
@@ -120,19 +131,18 @@ export function useMatchingGame(initialCards: MatchingCard[]) {
   }, [state.startTime, state.endTime]);
 
   return {
-    // State
-    cards: state.cards,
+    leftColumn: state.leftColumn,
+    rightColumn: state.rightColumn,
     selectedCards: state.selectedCards,
     matchedPairs: state.matchedPairs,
     attempts: state.attempts,
     isComplete: state.isComplete,
-    showMatchAnimation: state.showMatchAnimation,
+    firstSelectedColumn,
 
-    // Actions
     selectCard,
     restart,
 
-    // Computed
     elapsedTime: getElapsedTime(),
+    totalPairs,
   };
 }
