@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Pencil, Trash2, BookOpen, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
@@ -6,6 +7,7 @@ import { useSentences, useDeleteSentence, type SentenceCard } from '@/hooks/useS
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SpeakerButton } from '@/components/features/audio';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -100,11 +102,24 @@ export function SentenceList({ onEdit, onStudy, className }: SentenceListProps) 
         {sentences.map((sentence) => (
           <Card key={sentence.id} className="flex flex-col h-full card-shadow card-shadow-hover" data-testid="sentence-item">
             <CardHeader>
-              <CardTitle className="text-xl font-medium leading-relaxed">
-                {sentence.japanese}
-              </CardTitle>
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-xl font-medium leading-relaxed">
+                  {sentence.japanese}
+                </CardTitle>
+                <SpeakerButton text={sentence.japanese} />
+              </div>
             </CardHeader>
             <CardContent className="flex-grow space-y-4">
+              {sentence.imageUrl && (
+                <div className="relative h-[120px] w-full rounded-md overflow-hidden border bg-muted">
+                  <Image
+                    src={sentence.imageUrl}
+                    alt="Duolingo screenshot"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              )}
               <p className="text-muted-foreground text-lg">{sentence.english}</p>
               {sentence.notes && (
                 <p className="text-sm text-muted-foreground italic border-l-2 pl-3 border-muted">

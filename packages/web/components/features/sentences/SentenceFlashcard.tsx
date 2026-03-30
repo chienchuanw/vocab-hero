@@ -7,6 +7,8 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 import { cn } from '@/lib/utils';
+import { SpeakerButton } from '@/components/features/audio';
+import { ttsEngine } from '@/lib/tts';
 
 export interface SentenceCardData {
   id: string;
@@ -42,6 +44,7 @@ export function SentenceFlashcard({
 
   const handleNext = useCallback(() => {
     if (currentIndex < totalSentences - 1) {
+      ttsEngine.stop();
       setIsFlipped(false);
       setTimeout(() => setCurrentIndex((prev) => prev + 1), 150);
     }
@@ -49,6 +52,7 @@ export function SentenceFlashcard({
 
   const handlePrevious = useCallback(() => {
     if (currentIndex > 0) {
+      ttsEngine.stop();
       setIsFlipped(false);
       setTimeout(() => setCurrentIndex((prev) => prev - 1), 150);
     }
@@ -132,10 +136,18 @@ export function SentenceFlashcard({
             style={{ backfaceVisibility: 'hidden' }}
             data-testid="flashcard-front"
           >
-            <div className="flex-1 flex items-center justify-center w-full">
+            <div className="flex-1 flex flex-col items-center justify-center w-full">
               <p className="text-2xl md:text-3xl font-bold leading-relaxed text-foreground">
                 {currentSentence.japanese}
               </p>
+              <div 
+                className="mt-4" 
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => e.stopPropagation()}
+                role="presentation"
+              >
+                <SpeakerButton text={currentSentence.japanese} size="default" />
+              </div>
             </div>
             <p className="text-sm text-muted-foreground mt-4">{t('flipToReveal')}</p>
           </Card>

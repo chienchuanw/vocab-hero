@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@/tests/test-utils';
 import { SentenceFlashcard, SentenceCardData } from './SentenceFlashcard';
+import { ttsEngine } from '@/lib/tts';
 
 vi.mock('@/hooks/useSwipeGesture', () => ({
   useSwipeGesture: vi.fn(),
@@ -148,5 +149,48 @@ describe('SentenceFlashcard', () => {
   it('renders empty state when no sentences provided', () => {
     render(<SentenceFlashcard sentences={[]} />);
     expect(screen.getByText('No sentences to review')).toBeInTheDocument();
+  });
+
+  it('renders speaker button on flashcard front', () => {
+    render(<SentenceFlashcard sentences={mockSentences} />);
+    expect(screen.getByRole('button', { name: 'Play pronunciation' })).toBeInTheDocument();
+  });
+
+  it('stops TTS when navigating to next card', async () => {
+    const stopSpy = vi.spyOn(ttsEngine, 'stop');
+    render(<SentenceFlashcard sentences={mockSentences} />);
+
+    fireEvent.click(screen.getByTestId('flashcard-next'));
+
+    await waitFor(() => {
+      expect(stopSpy).toHaveBeenCalled();
+    });
+
+    stopSpy.mockRestore();
+  });
+
+  it('stops TTS when navigating to previous card', async () => {
+    const stopSpy = vi.spyOn(ttsEngine, 'stop');
+    render(<SentenceFlashcard sentences={mockSentences} initialIndex={1} />);
+
+    fireEvent.click(screen.getByTestId('flashcard-prev'));
+
+    await waitFor(() => {
+      expect(stopSpy).toHaveBeenCalled();
+    });
+
+    stopSpy.mockRestore();
+  });
+
+  it('speaker button click does not flip the card', () => {
+    render(<SentenceFlashcard sentences={mockSentences} />);
+
+    const card = screen.getByTestId('flashcard-front').parentElement;
+    expect(card).not.toHaveClass('rotate-y-180');
+
+    const speakerBtn = screen.getByRole('button', { name: 'Play pronunciation' });
+    fireEvent.click(speakerBtn);
+
+    expect(card).not.toHaveClass('rotate-y-180');
   });
 });
