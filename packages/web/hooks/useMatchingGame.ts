@@ -106,7 +106,7 @@ export function useMatchingGame(initialColumns: ColumnPairs) {
             ...prev,
             selectedCards: [],
           }));
-        }, 1000);
+        }, 300);
       }
     }
   }, [state.selectedCards, findCard, totalPairs]);

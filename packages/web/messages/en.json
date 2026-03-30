@@ -104,6 +104,8 @@
     "spellingDesc": "Practice typing Japanese readings",
     "matching": "Matching",
     "matchingDesc": "Match words with their meanings",
+    "notEnoughVocabulary": "You need at least {count} vocabulary items to play this game. Add more words first!",
+    "errorLoadingVocabulary": "Something went wrong while loading vocabulary. Please try again.",
     "listening": "Listening",
     "listeningDesc": "Listen and identify vocabulary",
     "random": "Random",

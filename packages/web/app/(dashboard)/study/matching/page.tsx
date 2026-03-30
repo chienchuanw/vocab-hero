@@ -1,29 +1,80 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Loader2 } from 'lucide-react';
 import { Layout } from '@/components/shared';
+import { Button } from '@/components/ui/button';
 import { MatchingCard } from '@/components/features/matching/MatchingCard';
 import { MatchingGameHeader } from '@/components/features/matching/MatchingGameHeader';
 import { GameComplete } from '@/components/features/matching/GameComplete';
 import { useMatchingGame } from '@/hooks/useMatchingGame';
+import { useVocabulary } from '@/hooks/useVocabulary';
 import { generateColumnPairs } from '@/lib/matching/matching-generator';
 
 import type { VocabularyItem } from '@/lib/matching/matching-generator';
 
+const PAIR_COUNT = 5;
+
 export default function MatchingGamePage() {
   const router = useRouter();
+  const t = useTranslations('study');
 
-  // TODO: 從 API 獲取單字資料
-  const [vocabulary] = useState<VocabularyItem[]>([
-    { id: '1', word: '勉強', meaning: 'study', reading: 'べんきょう' },
-    { id: '2', word: '学校', meaning: 'school', reading: 'がっこう' },
-    { id: '3', word: '先生', meaning: 'teacher', reading: 'せんせい' },
-    { id: '4', word: '学生', meaning: 'student', reading: 'がくせい' },
-    { id: '5', word: '本', meaning: 'book', reading: 'ほん' },
-  ]);
+  const { data, isLoading, isError } = useVocabulary({ limit: 50 });
 
-  const initialColumns = useMemo(() => generateColumnPairs(vocabulary, 5), [vocabulary]);
+  const vocabulary: VocabularyItem[] = useMemo(() => {
+    const items = data?.pages.flatMap((page) => page.items) ?? [];
+    return items.map((item) => ({
+      id: item.id,
+      word: item.word,
+      meaning: item.meaning,
+      reading: item.reading,
+    }));
+  }, [data]);
+
+  const hasEnoughVocabulary = vocabulary.length >= PAIR_COUNT;
+
+  const initialColumns = useMemo(
+    () => (hasEnoughVocabulary ? generateColumnPairs(vocabulary, PAIR_COUNT) : null),
+    [vocabulary, hasEnoughVocabulary]
+  );
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (isError || !hasEnoughVocabulary || !initialColumns) {
+    return (
+      <Layout streak={0}>
+        <div className="mx-auto max-w-md py-16 text-center">
+          <h2 className="text-2xl font-bold">{t('matching')}</h2>
+          <p className="mt-4 text-muted-foreground">
+            {isError
+              ? t('errorLoadingVocabulary')
+              : t('notEnoughVocabulary', { count: PAIR_COUNT })}
+          </p>
+          <Button className="mt-6" onClick={() => router.push('/study')}>
+            {t('backToStudy')}
+          </Button>
+        </div>
+      </Layout>
+    );
+  }
+
+  return <MatchingGameContent initialColumns={initialColumns} />;
+}
+
+function MatchingGameContent({
+  initialColumns,
+}: {
+  initialColumns: ReturnType<typeof generateColumnPairs>;
+}) {
+  const router = useRouter();
   const game = useMatchingGame(initialColumns);
 
   const isCardSelected = (cardId: string) => game.selectedCards.includes(cardId);
@@ -52,7 +103,7 @@ export default function MatchingGamePage() {
   if (game.isComplete) {
     return (
       <Layout streak={0}>
-        <div className="max-w-2xl mx-auto">
+        <div className="mx-auto max-w-2xl">
           <GameComplete
             elapsedTime={game.elapsedTime}
             attempts={game.attempts}

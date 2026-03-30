@@ -104,6 +104,8 @@
     "spellingDesc": "練習輸入日文讀音",
     "matching": "配對",
     "matchingDesc": "將單字與其意思配對",
+    "notEnoughVocabulary": "至少需要 {count} 個單字才能進行配對遊戲，請先新增更多單字！",
+    "errorLoadingVocabulary": "載入單字時發生錯誤，請重試。",
     "listening": "聽力",
     "listeningDesc": "聽取並辨識單字",
     "random": "隨機",
