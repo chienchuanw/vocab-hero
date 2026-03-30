@@ -35,13 +35,14 @@ describe('GET /api/sentences', () => {
     expect(data.data).toEqual([]);
   });
 
-  it('should return list of sentences', async () => {
+  it('should return list of sentences with imageUrl field', async () => {
     const mockSentences = [
       {
         id: '1',
         japanese: 'これはテストです',
         english: 'This is a test',
         notes: null,
+        imageUrl: '/uploads/sentences/abc.png',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -50,6 +51,7 @@ describe('GET /api/sentences', () => {
         japanese: '日本語を勉強しています',
         english: 'I am studying Japanese',
         notes: 'Present continuous',
+        imageUrl: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -64,6 +66,8 @@ describe('GET /api/sentences', () => {
     expect(data.success).toBe(true);
     expect(data.data).toHaveLength(2);
     expect(data.data[0].japanese).toBe('これはテストです');
+    expect(data.data[0].imageUrl).toBe('/uploads/sentences/abc.png');
+    expect(data.data[1].imageUrl).toBeNull();
   });
 });
 
@@ -78,6 +82,7 @@ describe('POST /api/sentences', () => {
       japanese: 'これはテストです',
       english: 'This is a test',
       notes: null,
+      imageUrl: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -97,6 +102,35 @@ describe('POST /api/sentences', () => {
     expect(data.success).toBe(true);
     expect(data.data.id).toBe('1');
     expect(data.data.japanese).toBe('これはテストです');
+    expect(data.data.imageUrl).toBeNull();
+  });
+
+  it('should create sentence with imageUrl', async () => {
+    const mockSentence = {
+      id: '2',
+      japanese: '日本語を勉強しています',
+      english: 'I am studying Japanese',
+      notes: null,
+      imageUrl: '/uploads/sentences/abc123.png',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    (prisma.sentenceCard.create as ReturnType<typeof vi.fn>).mockResolvedValue(mockSentence);
+
+    const request = new NextRequest('http://localhost:3000/api/sentences', {
+      method: 'POST',
+      body: JSON.stringify({
+        japanese: '日本語を勉強しています',
+        english: 'I am studying Japanese',
+        imageUrl: '/uploads/sentences/abc123.png',
+      }),
+    });
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.success).toBe(true);
+    expect(data.data.imageUrl).toBe('/uploads/sentences/abc123.png');
   });
 
   it('should return 400 for empty japanese', async () => {
