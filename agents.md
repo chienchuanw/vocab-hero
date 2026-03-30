@@ -1,369 +1,191 @@
-# AI Agent Operational Guidelines
+# AGENTS.md - Vocab Hero
 
-## Overview
+## Project Structure
 
-This document provides detailed operational commands and conventions for AI agents working on the Vocab Hero project. It supplements the rules in `.augment/rules/` with specific instructions for code generation and development tasks.
+pnpm monorepo with three packages:
 
-## Project Context
+- `packages/web` — Next.js 16 App Router (primary app)
+- `packages/desktop` — Electron wrapper (shares Prisma schema)
+- `packages/shared` — Shared Zod schemas and types
 
-### Technology Stack
+All web development happens in `packages/web`. Run commands from repo root using `--filter`.
 
-- **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript 5 (strict mode)
-- **Styling**: Tailwind CSS 4
-- **UI Components**: shadcn/ui
-- **Database**: PostgreSQL + Prisma ORM
-- **Authentication**: NextAuth.js
-- **State Management**: TanStack Query
-- **Testing**: Vitest + React Testing Library + Playwright
-- **Package Manager**: pnpm
+## Commands
 
-### Development Methodology
-
-- **TDD (Test-Driven Development)**: Always write tests before implementation
-- **Red-Green-Refactor**: Follow the TDD cycle strictly
-
-## Code Generation Rules
-
-### File Creation Priority
-
-1. **Always check existing files first** - Use codebase-retrieval before creating new files
-2. **Prefer editing over creating** - Modify existing files when possible
-3. **Follow naming conventions** - Refer to coding-standards.md
-4. **Create tests first** - In TDD, test files come before implementation
-
-### Component Generation
-
-When creating a new React component:
-
-```typescript
-// 1. Create test file first (TDD)
-// components/features/vocabulary/VocabularyCard.test.tsx
-
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { VocabularyCard } from "./VocabularyCard";
-
-describe("VocabularyCard", () => {
-  it("should render vocabulary word", () => {
-    // Test implementation
-  });
-});
-
-// 2. Create types file
-// components/features/vocabulary/VocabularyCard.types.ts
-
-export interface VocabularyCardProps {
-  vocabulary: VocabularyItem;
-  onFlip: () => void;
-}
-
-// 3. Create component implementation
-// components/features/vocabulary/VocabularyCard.tsx
-
-import type { VocabularyCardProps } from "./VocabularyCard.types";
-
-export function VocabularyCard({ vocabulary, onFlip }: VocabularyCardProps) {
-  // Implementation
-}
-```
-
-### API Route Generation
-
-When creating API routes:
-
-```typescript
-// 1. Create test file first
-// app/api/vocabulary/route.test.ts
-
-import { describe, it, expect } from "vitest";
-import { GET, POST } from "./route";
-
-describe("GET /api/vocabulary", () => {
-  it("should return vocabulary list", async () => {
-    // Test implementation
-  });
-});
-
-// 2. Create route implementation
-// app/api/vocabulary/route.ts
-
-import { NextRequest, NextResponse } from "next/server";
-
-export async function GET(request: NextRequest) {
-  // Implementation
-}
-
-export async function POST(request: NextRequest) {
-  // Implementation
-}
-```
-
-### Database Schema Generation
-
-When creating Prisma models:
-
-```prisma
-// 1. Define model in schema.prisma
-model VocabularyItem {
-  id        String   @id @default(cuid())
-  word      String
-  reading   String
-  meaning   String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("vocabulary_items")
-}
-
-// 2. Generate migration
-// Run: pnpm prisma migrate dev --name add_vocabulary_items
-
-// 3. Create seed data (if needed)
-// prisma/seed.ts
-```
-
-## Common Commands
-
-### Development
+### Build & Dev
 
 ```bash
-# Start development server
-pnpm dev
+pnpm dev:web                        # Start Next.js dev server (port 3000)
+pnpm build:web                      # Production build
+pnpm --filter @vocab-hero/web start # Start production server
+```
 
-# Run type checking
-pnpm tsc --noEmit
+### Lint & Format
 
-# Run linter
-pnpm lint
-
-# Format code
-pnpm format
+```bash
+pnpm lint:web                              # ESLint (next/core-web-vitals + typescript + prettier)
+pnpm --filter @vocab-hero/web format       # Prettier --write .
+pnpm --filter @vocab-hero/web format:check # Prettier --check .
 ```
 
 ### Testing
 
 ```bash
-# Run all tests
-pnpm test
-
-# Run tests in watch mode
-pnpm test --watch
-
-# Run tests with coverage
-pnpm test:coverage
-
-# Run E2E tests
-pnpm test:e2e
-
-# Run specific test file
-pnpm test VocabularyCard.test.tsx
+pnpm test:web                                            # All unit/integration tests (Vitest)
+pnpm --filter @vocab-hero/web test -- path/to/file.test.ts  # Single test file
+pnpm --filter @vocab-hero/web test:coverage              # Coverage report (thresholds: 78%)
+pnpm --filter @vocab-hero/web test:e2e                   # Playwright E2E (chromium/firefox/webkit)
 ```
+
+Vitest config: jsdom env, globals enabled, setup at `tests/setup.ts`, 10s timeout.
+E2E tests live in `packages/web/e2e/`. Playwright uses baseURL `http://localhost:3000`.
 
 ### Database
 
 ```bash
-# Generate Prisma client
-pnpm prisma generate
-
-# Create migration
-pnpm prisma migrate dev --name migration_name
-
-# Apply migrations
-pnpm prisma migrate deploy
-
-# Open Prisma Studio
-pnpm prisma studio
-
-# Seed database
-pnpm prisma db seed
+pnpm --filter @vocab-hero/web prisma generate           # Generate Prisma client
+pnpm --filter @vocab-hero/web prisma migrate dev --name <name>  # Create migration
+pnpm --filter @vocab-hero/web prisma db seed             # Seed database
+pnpm --filter @vocab-hero/web seed:dev                   # Dev seed data
 ```
 
-### Build and Deploy
+PostgreSQL. Test DB: `postgresql://postgres:postgres@localhost:5432/db_vocab_hero_test`.
 
-```bash
-# Build for production
-pnpm build
+## Code Style
 
-# Start production server
-pnpm start
+### Formatting (Prettier)
 
-# Analyze bundle size
-pnpm build --analyze
-```
+- Single quotes, semicolons, 2-space indent
+- Trailing commas: `es5`
+- Print width: 100
+- Arrow parens: always
 
-## Code Patterns
+### TypeScript
 
-### Custom Hooks Pattern
+- **Strict mode** with `noUncheckedIndexedAccess`, `noImplicitReturns`, `noFallthroughCasesInSwitch`
+- Path alias: `@/*` maps to `packages/web/*`
+- Never use `any`, `@ts-ignore`, or `@ts-expect-error`
+- Use `import type { ... }` for type-only imports
+- Use named exports (avoid default exports for components/hooks)
+
+### ESLint Rules
+
+- `no-console: warn` (allow `console.warn` and `console.error` only)
+- `@typescript-eslint/no-unused-vars: warn` (prefix unused with `_`)
+
+### Naming Conventions
+
+| What | Convention | Example |
+|------|-----------|---------|
+| Components | PascalCase file + named export | `VocabularyCard.tsx`, `export function VocabularyCard()` |
+| Hooks | camelCase with `use` prefix | `useVocabulary.ts`, `export function useVocabulary()` |
+| Utility files | kebab-case | `date-formatter.ts`, `srs-calculator.ts` |
+| Test files | Co-located, `.test.ts(x)` suffix | `VocabularyCard.test.tsx`, `route.test.ts` |
+| API routes | `route.ts` in App Router dirs | `app/api/vocabulary/route.ts` |
+| Prisma models | PascalCase model, snake_case columns | `@map("created_at")`, `@@map("vocabulary_items")` |
+| Enums | SCREAMING_SNAKE_CASE values | `FLASHCARD`, `MULTIPLE_CHOICE` |
+
+### Comments
+
+- JSDoc (`/** */`) for public API functions and types
+- Traditional Chinese (zh-TW) for inline logic comments
+- No emoji in code or comments
+
+### Imports Order
+
+1. External packages (`next`, `react`, third-party)
+2. Internal aliases (`@/lib/...`, `@/components/...`, `@/hooks/...`)
+3. Relative imports (`./`, `../`)
+4. Type imports last (using `import type`)
+
+Barrel exports via `index.ts` files (e.g., `lib/api/index.ts` re-exports `response`, `errors`, `fetch`).
+
+## Architecture Patterns
+
+### API Routes
+
+Standard response format via `@/lib/api`:
 
 ```typescript
-// hooks/useVocabulary.ts
+import { successResponse, ApiErrors } from '@/lib/api';
 
-import { useQuery } from "@tanstack/react-query";
+// Success: { success: true, data: T }
+return successResponse(data, 201);
 
+// Error: { success: false, error: { code, message, details? } }
+return ApiErrors.VALIDATION_ERROR('Invalid input', zodError.flatten());
+return ApiErrors.NOT_FOUND('Vocabulary item not found');
+return ApiErrors.INTERNAL_ERROR('Failed to fetch');
+```
+
+Custom error classes: `ApiError`, `ValidationError`, `NotFoundError`, `DatabaseError`.
+Input validation: Zod schemas in `lib/validations/`.
+
+### Components
+
+- `components/ui/` — shadcn/ui primitives (Button, Card, Dialog, etc.)
+- `components/features/<domain>/` — Feature components (vocabulary, study, progress, etc.)
+- `components/shared/` — Cross-feature components (Layout, OfflineBanner, etc.)
+
+Styling: Tailwind CSS 4 + `cn()` utility (clsx + tailwind-merge). No inline styles.
+
+### Hooks
+
+TanStack Query for server state. Located in `hooks/` directory.
+
+```typescript
+import { useQuery } from '@tanstack/react-query';
 export function useVocabulary() {
-  return useQuery({
-    queryKey: ["vocabulary"],
-    queryFn: async () => {
-      const response = await fetch("/api/vocabulary");
-      if (!response.ok) throw new Error("Failed to fetch vocabulary");
-      return response.json();
-    },
-  });
+  return useQuery({ queryKey: ['vocabulary'], queryFn: ... });
 }
 ```
 
-### API Response Pattern
+### Database
 
-```typescript
-// Consistent API response format
+Prisma ORM with PostgreSQL. Schema at `packages/web/prisma/schema.prisma`.
+All models use `cuid()` IDs, `createdAt`/`updatedAt` timestamps with `@map("snake_case")`.
 
-// Success
-return NextResponse.json({
-  success: true,
-  data: result,
-});
+### i18n
 
-// Error
-return NextResponse.json(
-  {
-    success: false,
-    error: {
-      code: "VALIDATION_ERROR",
-      message: "Invalid input data",
-    },
-  },
-  { status: 400 }
-);
-```
+`next-intl` for internationalization. Translations loaded server-side via `getMessages()`.
 
-### Error Handling Pattern
+## Testing Patterns
 
-```typescript
-// Client-side error handling
+### Unit/Integration Tests (Vitest)
 
-try {
-  const data = await fetchVocabulary();
-  return data;
-} catch (error) {
-  console.error("Failed to fetch vocabulary:", error);
-  throw new Error("Failed to fetch vocabulary");
-}
-```
+- Co-located with source files (`.test.ts` / `.test.tsx`)
+- API tests use `cleanDatabase()` from `@/tests/setup-db` in `beforeEach`
+- Component tests use custom `render` from `@/tests/test-utils`
+- Use `vi.mock()` for module mocking, `vi.fn()` for function mocks
+- `afterEach`: `cleanup()` + `vi.clearAllMocks()` (handled in setup)
 
-## Prohibited Actions
+### E2E Tests (Playwright)
 
-### Never Do
+- Located in `packages/web/e2e/`
+- Runs against `http://localhost:3000`
+- Auto-starts dev server in non-CI environments
 
-- Create files without checking existing codebase first
-- Use `any` type without explicit justification
-- Skip writing tests (TDD is mandatory)
-- Add console.log statements in production code
-- Use emoji in code or comments
-- Hardcode sensitive data (use environment variables)
-- Directly manipulate DOM (use React patterns)
-- Create inline styles (use Tailwind or CSS modules)
+## Key Dependencies
 
-### Always Do
+| Package | Purpose |
+|---------|---------|
+| `next` 16 | App framework |
+| `@tanstack/react-query` | Server state management |
+| `zod` | Schema validation |
+| `@prisma/client` | Database ORM |
+| `framer-motion` | Animations |
+| `next-intl` | i18n |
+| `next-themes` | Dark/light theme |
+| `sonner` | Toast notifications |
+| `lucide-react` | Icons |
+| `recharts` | Charts |
+| `msw` | API mocking in tests |
 
-- Write tests before implementation (TDD)
-- Use TypeScript strict mode
-- Follow naming conventions
-- Add Traditional Chinese comments for complex logic
-- Use semantic HTML and ARIA labels
-- Validate user input on both client and server
-- Use Prisma for database queries (prevents SQL injection)
-- Implement proper error handling
+## Prohibited
 
-## Feature Development Workflow
-
-### Step-by-Step Process
-
-1. **Understand Requirements**
-
-   - Read feature description carefully
-   - Identify affected components and files
-   - Plan database schema changes if needed
-
-2. **Write Tests First (Red)**
-
-   - Create test file
-   - Write failing tests for expected behavior
-   - Run tests to confirm they fail
-
-3. **Implement Feature (Green)**
-
-   - Write minimal code to pass tests
-   - Follow coding standards
-   - Add Traditional Chinese comments
-
-4. **Refactor (Refactor)**
-
-   - Improve code quality
-   - Extract reusable logic
-   - Ensure tests still pass
-
-5. **Documentation**
-
-   - Update README if needed
-   - Add JSDoc comments
-   - Update API documentation
-
-6. **Code Review**
-   - Self-review using review-checklist.md
-   - Create pull request
-   - Address reviewer feedback
-
-## Debugging Guidelines
-
-### When Tests Fail
-
-1. Read error message carefully
-2. Check test expectations vs actual output
-3. Use `screen.debug()` for component tests
-4. Use `console.log` temporarily (remove before commit)
-5. Run single test file for faster iteration
-
-### When Build Fails
-
-1. Check TypeScript errors first
-2. Verify all imports are correct
-3. Ensure environment variables are set
-4. Clear `.next` cache and rebuild
-
-### When Runtime Errors Occur
-
-1. Check browser console for errors
-2. Verify API responses in Network tab
-3. Check server logs for API errors
-4. Use React DevTools for component state
-
-## Best Practices Reminders
-
-### Performance
-
-- Use dynamic imports for code splitting
-- Implement proper loading states
-- Optimize images with Next.js Image
-- Use TanStack Query for caching
-
-### Security
-
-- Validate all user inputs
-- Use NextAuth for authentication
-- Implement CSRF protection
-- Never expose sensitive data
-
-### Accessibility
-
-- Use semantic HTML
-- Add ARIA labels where needed
-- Ensure keyboard navigation
-- Maintain color contrast ratios
-
-### Maintainability
-
-- Keep functions small and focused
-- Extract complex logic into utilities
-- Use meaningful variable names
-- Write self-documenting code
+- `any` type, `@ts-ignore`, `@ts-expect-error`
+- `console.log` in production code (use `console.warn`/`console.error`)
+- Default exports for components/hooks
+- Inline styles (use Tailwind)
+- Hardcoded secrets (use env vars)
+- Committing without passing lint + tests
