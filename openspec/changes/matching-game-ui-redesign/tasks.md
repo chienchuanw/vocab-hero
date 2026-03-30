@@ -13,24 +13,24 @@
 
 ## 3. Immersive Game Header Component
 
-- [ ] 3.1 Create `MatchingGameHeader` component in `components/features/matching/` with three sections: X close button (left), progress bar (center), elapsed timer (right)
-- [ ] 3.2 Implement X close button that navigates to `/study` using `router.push('/study')`
-- [ ] 3.3 Implement elapsed timer display formatted as `M:SS`, showing `0:00` before first selection and updating every second during gameplay
+- [x] 3.1 Create `MatchingGameHeader` component in `components/features/matching/` with three sections: X close button (left), progress bar (center), elapsed timer (right)
+- [x] 3.2 Implement X close button that navigates to `/study` using `router.push('/study')`
+- [x] 3.3 Implement elapsed timer display formatted as `M:SS`, showing `0:00` before first selection and updating every second during gameplay
 - [ ] 3.4 Add unit tests for `MatchingGameHeader`: renders close button, displays timer, shows progress bar, close button navigates to /study
 
 ## 4. Visual Progress Bar Component
 
-- [ ] 4.1 Create `MatchingProgressBar` component in `components/features/matching/` accepting `current` and `total` props
-- [ ] 4.2 Implement filled bar visualization (0% to 100%) with smooth transition on progress change
-- [ ] 4.3 Display current matched count as a visual indicator/badge on the progress bar
+- [x] 4.1 Create `MatchingProgressBar` component in `components/features/matching/` accepting `current` and `total` props
+- [x] 4.2 Implement filled bar visualization (0% to 100%) with smooth transition on progress change
+- [x] 4.3 Display current matched count as a visual indicator/badge on the progress bar
 - [ ] 4.4 Add unit tests for `MatchingProgressBar`: renders empty at 0, fills proportionally, shows 100% when current equals total, displays count indicator
 
 ## 5. Inline Card Feedback
 
-- [ ] 5.1 Update `MatchingCard.tsx` to enhance matched state: green color transition with reduced opacity, no checkmark icon overlay needed (keep existing green color scheme but add opacity transition)
-- [ ] 5.2 Update `MatchingCard.tsx` error state: brief red flash using Tailwind transition classes, auto-reset handled by hook's 800-1000ms timeout
-- [ ] 5.3 Add selection highlight state that clearly indicates first-pick card (primary color border/ring — preserve existing `isSelected` styling)
-- [ ] 5.4 Remove `MatchAnimation.tsx` component file entirely
+- [x] 5.1 Update `MatchingCard.tsx` to enhance matched state: green color transition with reduced opacity, no checkmark icon overlay needed (keep existing green color scheme but add opacity transition)
+- [x] 5.2 Update `MatchingCard.tsx` error state: brief red flash using Tailwind transition classes, auto-reset handled by hook's 800-1000ms timeout
+- [x] 5.3 Add selection highlight state that clearly indicates first-pick card (primary color border/ring — preserve existing `isSelected` styling)
+- [x] 5.4 Remove `MatchAnimation.tsx` component file entirely
 - [ ] 5.5 Update `MatchingCard.test.tsx` to verify inline feedback states: matched cards show green + reduced opacity, error cards show red flash, selected cards show highlight
 
 ## 6. Page Restructure — Two-Column Layout + Immersive Mode
