@@ -2,25 +2,19 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
 import { Layout } from '@/components/shared';
-import { Button } from '@/components/ui/button';
 import { MatchingCard } from '@/components/features/matching/MatchingCard';
-import { MatchAnimation } from '@/components/features/matching/MatchAnimation';
+import { MatchingGameHeader } from '@/components/features/matching/MatchingGameHeader';
 import { GameComplete } from '@/components/features/matching/GameComplete';
 import { useMatchingGame } from '@/hooks/useMatchingGame';
-import { generateShuffledPairs, type VocabularyItem } from '@/lib/matching/matching-generator';
+import { generateColumnPairs } from '@/lib/matching/matching-generator';
 
-/**
- * Matching Game Page
- * 配對遊戲頁面 - 5 組配對、不限時但記錄完成時間
- */
+import type { VocabularyItem } from '@/lib/matching/matching-generator';
+
 export default function MatchingGamePage() {
   const router = useRouter();
-  const t = useTranslations('study');
 
   // TODO: 從 API 獲取單字資料
-  // 暫時使用模擬資料
   const [vocabulary] = useState<VocabularyItem[]>([
     { id: '1', word: '勉強', meaning: 'study', reading: 'べんきょう' },
     { id: '2', word: '学校', meaning: 'school', reading: 'がっこう' },
@@ -29,32 +23,17 @@ export default function MatchingGamePage() {
     { id: '5', word: '本', meaning: 'book', reading: 'ほん' },
   ]);
 
-  // 生成並洗牌配對卡片
-  const initialCards = useMemo(() => generateShuffledPairs(vocabulary, 5), [vocabulary]);
+  const initialColumns = useMemo(() => generateColumnPairs(vocabulary, 5), [vocabulary]);
+  const game = useMatchingGame(initialColumns);
 
-  const game = useMatchingGame(initialCards);
-
-  /**
-   * 檢查卡片是否被選中
-   */
   const isCardSelected = (cardId: string) => game.selectedCards.includes(cardId);
-
-  /**
-   * 檢查卡片是否已配對
-   */
   const isCardMatched = (pairId: string) => game.matchedPairs.includes(pairId);
 
-  /**
-   * 檢查卡片是否顯示錯誤狀態
-   */
   const isCardError = (cardId: string) => {
-    // 如果選擇了兩張卡片且當前卡片是其中之一
     if (game.selectedCards.length === 2 && game.selectedCards.includes(cardId)) {
-      const [card1Id, card2Id] = game.selectedCards;
-      const card1 = game.cards.find((c) => c.id === card1Id);
-      const card2 = game.cards.find((c) => c.id === card2Id);
-
-      // 如果兩張卡片的 pairId 不同，顯示錯誤
+      const allCards = [...game.leftColumn, ...game.rightColumn];
+      const card1 = allCards.find((c) => c.id === game.selectedCards[0]);
+      const card2 = allCards.find((c) => c.id === game.selectedCards[1]);
       if (card1 && card2 && card1.pairId !== card2.pairId) {
         return true;
       }
@@ -62,7 +41,14 @@ export default function MatchingGamePage() {
     return false;
   };
 
-  // 顯示完成畫面
+  const isCardDisabled = (cardId: string, column: 'left' | 'right') => {
+    if (game.selectedCards.length >= 2) return true;
+    if (game.selectedCards.length === 1 && game.firstSelectedColumn === column) {
+      return !isCardSelected(cardId);
+    }
+    return false;
+  };
+
   if (game.isComplete) {
     return (
       <Layout streak={0}>
@@ -79,53 +65,47 @@ export default function MatchingGamePage() {
   }
 
   return (
-    <Layout streak={0}>
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h1 className="text-3xl font-bold">{t('matching')}</h1>
-            <Button variant="ghost" onClick={() => router.push('/study')}>
-              ← {t('backToStudy')}
-            </Button>
-          </div>
-          <p className="text-muted-foreground">{t('matchingDesc')}</p>
-        </div>
+    <div className="flex min-h-screen flex-col bg-background">
+      <MatchingGameHeader
+        matchedCount={game.matchedPairs.length}
+        totalPairs={game.totalPairs}
+        elapsedTime={game.elapsedTime}
+        onClose={() => {}}
+      />
 
-        {/* 遊戲統計 */}
-        <div className="mb-6 flex gap-4 justify-center text-sm text-muted-foreground">
-          <div>Matched: {game.matchedPairs.length} / 5</div>
-          <div>•</div>
-          <div>Attempts: {game.attempts}</div>
-          {game.elapsedTime > 0 && (
-            <>
-              <div>•</div>
-              <div>
-                Time: {Math.floor(game.elapsedTime / 60)}:
-                {(game.elapsedTime % 60).toString().padStart(2, '0')}
+      <main className="flex flex-1 flex-col items-center justify-center px-4 pb-8">
+        <div className="grid w-full max-w-2xl grid-cols-2 gap-4">
+          {Array.from({ length: game.totalPairs }).map((_, rowIndex) => {
+            const leftCard = game.leftColumn[rowIndex];
+            const rightCard = game.rightColumn[rowIndex];
+
+            if (!leftCard || !rightCard) return null;
+
+            return (
+              <div key={leftCard.pairId + rightCard.pairId} className="contents">
+                <MatchingCard
+                  content={leftCard.content}
+                  type={leftCard.type}
+                  onClick={() => game.selectCard(leftCard.id)}
+                  isSelected={isCardSelected(leftCard.id)}
+                  isMatched={isCardMatched(leftCard.pairId)}
+                  isError={isCardError(leftCard.id)}
+                  disabled={isCardDisabled(leftCard.id, 'left')}
+                />
+                <MatchingCard
+                  content={rightCard.content}
+                  type={rightCard.type}
+                  onClick={() => game.selectCard(rightCard.id)}
+                  isSelected={isCardSelected(rightCard.id)}
+                  isMatched={isCardMatched(rightCard.pairId)}
+                  isError={isCardError(rightCard.id)}
+                  disabled={isCardDisabled(rightCard.id, 'right')}
+                />
               </div>
-            </>
-          )}
+            );
+          })}
         </div>
-
-        {/* 配對卡片網格 */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {game.cards.map((card) => (
-            <MatchingCard
-              key={card.id}
-              content={card.content}
-              type={card.type}
-              onClick={() => game.selectCard(card.id)}
-              isSelected={isCardSelected(card.id)}
-              isMatched={isCardMatched(card.pairId)}
-              isError={isCardError(card.id)}
-              disabled={game.selectedCards.length >= 2 && !isCardSelected(card.id)}
-            />
-          ))}
-        </div>
-
-        {/* 配對成功動畫 */}
-        <MatchAnimation show={game.showMatchAnimation} />
-      </div>
-    </Layout>
+      </main>
+    </div>
   );
 }

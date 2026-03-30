@@ -35,13 +35,13 @@
 
 ## 6. Page Restructure — Two-Column Layout + Immersive Mode
 
-- [ ] 6.1 Update `matching/page.tsx` to use `generateColumnPairs` instead of `generateShuffledPairs`, passing separate column arrays to the hook
-- [ ] 6.2 Replace `Layout` wrapper with `MatchingGameHeader` for active gameplay (keep `Layout` for `GameComplete` screen)
-- [ ] 6.3 Replace the shuffled grid (`grid-cols-2 md:grid-cols-4`) with a fixed two-column layout: left column renders word cards, right column renders meaning cards, 5 rows with consistent gap
-- [ ] 6.4 Remove `MatchAnimation` import and usage from the page
-- [ ] 6.5 Remove text-based stats section ("Matched: X / 5 · Attempts · Time") — replaced by header progress bar and timer
-- [ ] 6.6 Wire `MatchingGameHeader` props: pass `matchedPairs.length`, total pairs count (5), `elapsedTime`, and close handler
-- [ ] 6.7 Add cross-column selection visual feedback: when a card in one column is selected, visually dim or indicate the same-column cards as non-selectable
+- [x] 6.1 Update `matching/page.tsx` to use `generateColumnPairs` instead of `generateShuffledPairs`, passing separate column arrays to the hook
+- [x] 6.2 Replace `Layout` wrapper with `MatchingGameHeader` for active gameplay (keep `Layout` for `GameComplete` screen)
+- [x] 6.3 Replace the shuffled grid (`grid-cols-2 md:grid-cols-4`) with a fixed two-column layout: left column renders word cards, right column renders meaning cards, 5 rows with consistent gap
+- [x] 6.4 Remove `MatchAnimation` import and usage from the page
+- [x] 6.5 Remove text-based stats section ("Matched: X / 5 · Attempts · Time") — replaced by header progress bar and timer
+- [x] 6.6 Wire `MatchingGameHeader` props: pass `matchedPairs.length`, total pairs count (5), `elapsedTime`, and close handler
+- [x] 6.7 Add cross-column selection visual feedback: when a card in one column is selected, visually dim or indicate the same-column cards as non-selectable
 
 ## 7. Test Updates
 
