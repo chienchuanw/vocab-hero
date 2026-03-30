@@ -8,6 +8,12 @@ export const sentenceSchema = z.object({
   japanese: z.string().min(1, 'Japanese text cannot be empty').max(1000),
   english: z.string().min(1, 'English text cannot be empty').max(1000),
   notes: z.string().max(2000).optional().nullable(),
+  imageUrl: z
+    .string()
+    .max(500)
+    .regex(/^\/uploads\/sentences\//, 'Image URL must start with /uploads/sentences/')
+    .optional()
+    .nullable(),
 });
 
 /**

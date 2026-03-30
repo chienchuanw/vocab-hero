@@ -180,6 +180,45 @@ describe('Sentence Validation Schemas', () => {
       const result = sentenceSchema.safeParse(validData);
       expect(result.success).toBe(true);
     });
+
+    it('should accept valid imageUrl', () => {
+      const validData = {
+        japanese: 'これはテストです',
+        english: 'This is a test',
+        imageUrl: '/uploads/sentences/abc123.png',
+      };
+      const result = sentenceSchema.safeParse(validData);
+      expect(result.success).toBe(true);
+    });
+
+    it('should accept null imageUrl', () => {
+      const validData = {
+        japanese: 'これはテストです',
+        english: 'This is a test',
+        imageUrl: null,
+      };
+      const result = sentenceSchema.safeParse(validData);
+      expect(result.success).toBe(true);
+    });
+
+    it('should accept omitted imageUrl', () => {
+      const validData = {
+        japanese: 'これはテストです',
+        english: 'This is a test',
+      };
+      const result = sentenceSchema.safeParse(validData);
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject imageUrl with invalid path prefix', () => {
+      const invalidData = {
+        japanese: 'これはテストです',
+        english: 'This is a test',
+        imageUrl: '/images/abc123.png',
+      };
+      const result = sentenceSchema.safeParse(invalidData);
+      expect(result.success).toBe(false);
+    });
   });
 
   describe('createSentenceSchema', () => {
