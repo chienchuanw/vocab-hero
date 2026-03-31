@@ -84,7 +84,7 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/db_vocab_hero_test?schema=public
 
       - name: Run unit tests
-        run: pnpm test:coverage
+        run: pnpm --filter @vocab-hero/web test:coverage
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/db_vocab_hero_test?schema=public
 
