@@ -178,7 +178,7 @@ describe('ContributionWall', () => {
     const cellsArray = Array.from(cells);
 
     const hasMutedCell = cellsArray.some((cell) => cell.className.includes('bg-muted'));
-    const hasGreenCells = cellsArray.some((cell) => cell.className.includes('bg-green'));
+    const hasGreenCells = cellsArray.some((cell) => cell.className.includes('bg-success'));
 
     expect(hasMutedCell).toBe(true);
     expect(hasGreenCells).toBe(true);

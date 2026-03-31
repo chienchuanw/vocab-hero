@@ -129,10 +129,10 @@ describe('MultipleChoiceQuestion', () => {
     );
 
     const correctButton = screen.getByRole('button', { name: /study/i });
-    expect(correctButton.className).toContain('bg-green');
+    expect(correctButton.className).toContain('bg-success');
   });
 
-  it('should highlight wrong answer in red and show correct answer', () => {
+  it('should highlight wrong answer in destructive and show correct answer', () => {
     const onAnswer = vi.fn();
     render(
       <MultipleChoiceQuestion
@@ -148,7 +148,7 @@ describe('MultipleChoiceQuestion', () => {
     const wrongButton = screen.getByRole('button', { name: /work/i });
     const correctButton = screen.getByRole('button', { name: /study/i });
 
-    expect(wrongButton.className).toContain('bg-red');
-    expect(correctButton.className).toContain('bg-green');
+    expect(wrongButton.className).toContain('bg-destructive');
+    expect(correctButton.className).toContain('bg-success');
   });
 });

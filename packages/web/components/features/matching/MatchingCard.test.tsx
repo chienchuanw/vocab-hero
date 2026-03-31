@@ -52,11 +52,11 @@ describe('MatchingCard', () => {
       expect(button).toHaveClass('ring-2');
     });
 
-    it('should show matched state with green color and reduced opacity', () => {
+    it('should show matched state with success color and reduced opacity', () => {
       render(<MatchingCard content="勉強" onClick={mockOnClick} isMatched />);
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('bg-green-100');
+      expect(button.className).toContain('bg-success');
       expect(button).toHaveClass('opacity-50');
     });
 
@@ -71,7 +71,7 @@ describe('MatchingCard', () => {
       render(<MatchingCard content="勉強" onClick={mockOnClick} isError />);
 
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('bg-red-100');
+      expect(button.className).toContain('bg-destructive');
     });
   });
 

@@ -76,8 +76,8 @@ describe('NotificationCenter', () => {
   it('should display notification priority with correct styling', () => {
     render(<NotificationCenter notifications={mockNotifications} onMarkAsRead={vi.fn()} />);
 
-    const highPriorityNotif = screen.getByText('Goal Achieved!').closest('article');
-    expect(highPriorityNotif).toHaveClass('border-red-500');
+    const highPriorityNotif = screen.getByText('Goal Achieved!').closest('button');
+    expect(highPriorityNotif).toHaveClass('border-destructive');
   });
 
   it('should display notification type icon', () => {
@@ -91,25 +91,25 @@ describe('NotificationCenter', () => {
   it('should format notification time correctly', () => {
     render(<NotificationCenter notifications={mockNotifications} onMarkAsRead={vi.fn()} />);
 
-    // Should show relative time in Chinese (大約 X 年前)
-    const timeElements = screen.getAllByText(/大約/i);
+    // Should show relative time in English (e.g. "about 2 years ago")
+    const timeElements = screen.getAllByText(/ago/i);
     expect(timeElements.length).toBeGreaterThan(0);
   });
 
   it('should distinguish read and unread notifications visually', () => {
     render(<NotificationCenter notifications={mockNotifications} onMarkAsRead={vi.fn()} />);
 
-    const unreadNotif = screen.getByText('Goal Achieved!').closest('article');
-    const readNotif = screen.getByText('Streak Warning').closest('article');
+    const unreadNotif = screen.getByText('Goal Achieved!').closest('button');
+    const readNotif = screen.getByText('Streak Warning').closest('button');
 
-    expect(unreadNotif).toHaveClass('bg-blue-50');
-    expect(readNotif).not.toHaveClass('bg-blue-50');
+    expect(unreadNotif?.className).toContain('bg-primary/5');
+    expect(readNotif?.className).not.toContain('bg-primary/5');
   });
 
   it('should have proper accessibility attributes', () => {
     render(<NotificationCenter notifications={mockNotifications} onMarkAsRead={vi.fn()} />);
 
     expect(screen.getByRole('region', { name: /notifications/i })).toBeInTheDocument();
-    expect(screen.getAllByRole('article')).toHaveLength(2);
+    expect(screen.getAllByRole('button')).toHaveLength(2);
   });
 });

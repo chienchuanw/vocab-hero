@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { NextIntlClientProvider } from 'next-intl';
+import messages from '@/messages/en.json';
 import { NotificationCenter } from '@/components/features/notifications/NotificationCenter';
 import type { NotificationType, NotificationPriority } from '@vocab-hero/shared';
 
@@ -19,7 +21,11 @@ function TestWrapper({ children }: { children: React.ReactNode }) {
     },
   });
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <NextIntlClientProvider messages={messages} locale="en">
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </NextIntlClientProvider>
+  );
 }
 
 // Mock notification data
@@ -132,7 +138,7 @@ describe('Notification Flow Integration Tests', () => {
       );
 
       // Click on unread notification
-      const unreadNotification = screen.getByText('Goal Achieved!').closest('article');
+      const unreadNotification = screen.getByText('Goal Achieved!').closest('button');
       await user.click(unreadNotification!);
 
       expect(handleMarkAsRead).toHaveBeenCalledWith('notif-1');
@@ -196,8 +202,8 @@ describe('Notification Flow Integration Tests', () => {
         </TestWrapper>
       );
 
-      const highPriorityNotif = screen.getByText('Goal Achieved!').closest('article');
-      expect(highPriorityNotif).toHaveClass('border-red-500');
+      const highPriorityNotif = screen.getByText('Goal Achieved!').closest('button');
+      expect(highPriorityNotif).toHaveClass('border-destructive');
     });
 
     it('should display medium priority notifications with yellow border', () => {
@@ -207,8 +213,8 @@ describe('Notification Flow Integration Tests', () => {
         </TestWrapper>
       );
 
-      const mediumPriorityNotif = screen.getByText('Streak Warning').closest('article');
-      expect(mediumPriorityNotif).toHaveClass('border-yellow-500');
+      const mediumPriorityNotif = screen.getByText('Streak Warning').closest('button');
+      expect(mediumPriorityNotif).toHaveClass('border-warning');
     });
 
     it('should display low priority notifications with gray border', () => {
@@ -218,8 +224,8 @@ describe('Notification Flow Integration Tests', () => {
         </TestWrapper>
       );
 
-      const lowPriorityNotif = screen.getByText('Time to Study').closest('article');
-      expect(lowPriorityNotif).toHaveClass('border-gray-300');
+      const lowPriorityNotif = screen.getByText('Time to Study').closest('button');
+      expect(lowPriorityNotif).toHaveClass('border-border');
     });
   });
 
