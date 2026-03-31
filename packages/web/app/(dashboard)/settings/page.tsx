@@ -32,7 +32,7 @@ function SettingsLink({ href, icon: Icon, title, description }: SettingsLinkProp
             <Icon className="h-5 w-5 text-primary" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-medium">{title}</h3>
+            <h2 className="font-medium">{title}</h2>
             <p className="text-sm text-muted-foreground truncate">{description}</p>
           </div>
           <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />

@@ -62,7 +62,7 @@ export function GroupDistributionPieChart({
       <text
         x={x}
         y={y}
-        fill="white"
+        fill="var(--primary-foreground)"
         textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
         className="text-xs font-semibold"
@@ -92,7 +92,7 @@ export function GroupDistributionPieChart({
                 labelLine={false}
                 label={renderCustomizedLabel}
                 outerRadius={80}
-                fill="#8884d8"
+                fill="var(--chart-4)"
                 dataKey="value"
               >
                 {data.map((entry, index) => (
@@ -101,11 +101,11 @@ export function GroupDistributionPieChart({
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'hsl(var(--background))',
-                  border: '1px solid hsl(var(--border))',
+                  backgroundColor: 'var(--background)',
+                  border: '1px solid var(--border)',
                   borderRadius: '6px',
                 }}
-                labelStyle={{ color: 'hsl(var(--foreground))' }}
+                labelStyle={{ color: 'var(--foreground)' }}
               />
               <Legend />
             </PieChart>

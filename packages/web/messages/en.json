@@ -381,6 +381,43 @@
     "zhTW": "繁體中文",
     "current": "Current language"
   },
+  "notifications": {
+    "center": {
+      "title": "Notifications",
+      "empty": "No notifications yet",
+      "goalAchievedAria": "Goal achieved notification",
+      "streakWarningAria": "Streak warning notification",
+      "studyReminderAria": "Study reminder notification",
+      "milestoneReachedAria": "Milestone reached notification",
+      "freezeUsedAria": "Freeze used notification",
+      "notificationAria": "Notification",
+      "unreadAria": "Unread"
+    },
+    "prompt": {
+      "title": "Enable Push Notifications",
+      "description": "Stay on track with your Japanese learning journey! Get timely reminders and celebrate your achievements.",
+      "benefitReminder": "Daily study reminders to maintain your streak",
+      "benefitGoal": "Goal achievement alerts when you complete your daily target",
+      "benefitStreak": "Streak warnings to help you stay consistent",
+      "enable": "Enable Notifications",
+      "requesting": "Requesting...",
+      "maybeLater": "Maybe Later"
+    },
+    "preferences": {
+      "title": "Notification Preferences",
+      "description": "Customize which notifications you want to receive",
+      "goalAchievement": "Goal Achievement Notifications",
+      "goalAchievementDesc": "Get notified when you complete your daily goal",
+      "streakWarning": "Streak Warning Notifications",
+      "streakWarningDesc": "Get notified when your streak is at risk",
+      "studyReminder": "Study Reminder Notifications",
+      "studyReminderDesc": "Receive daily reminders to study",
+      "milestone": "Milestone Notifications",
+      "milestoneDesc": "Get notified when you reach important milestones",
+      "pushNotifications": "Push Notifications",
+      "pushNotificationsDesc": "Enable browser push notifications for all alerts"
+    }
+  },
   "metadata": {
     "title": "Vocab Hero - Japanese Vocabulary Learning",
     "description": "Master Japanese vocabulary with spaced repetition and interactive study modes",

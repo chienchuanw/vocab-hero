@@ -22,7 +22,7 @@ export function StreakDisplay({
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Current Streak</CardTitle>
           <Flame
-            className={`h-4 w-4 ${currentStreak > 0 ? 'text-orange-500' : 'text-muted-foreground'}`}
+            className={`h-4 w-4 ${currentStreak > 0 ? 'text-warning' : 'text-muted-foreground'}`}
           />
         </CardHeader>
         <CardContent>
@@ -41,7 +41,7 @@ export function StreakDisplay({
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Longest Streak</CardTitle>
-          <Trophy className="h-4 w-4 text-yellow-500" />
+          <Trophy className="h-4 w-4 text-warning" />
         </CardHeader>
         <CardContent>
           <div className="flex items-baseline gap-2">
@@ -55,7 +55,7 @@ export function StreakDisplay({
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Freezes Remaining</CardTitle>
           <Snowflake
-            className={`h-4 w-4 ${freezesRemaining > 0 ? 'text-blue-500' : 'text-muted-foreground'}`}
+            className={`h-4 w-4 ${freezesRemaining > 0 ? 'text-info' : 'text-muted-foreground'}`}
           />
         </CardHeader>
         <CardContent>

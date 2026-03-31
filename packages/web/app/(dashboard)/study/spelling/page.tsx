@@ -63,6 +63,7 @@ export default function SpellingQuizPage() {
     return (
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
+          <h1 className="sr-only">{t('spelling')}</h1>
           <div className="rounded-lg border bg-card p-8 text-center">
             <h2 className="text-2xl font-bold">{t('sessionSummary')}</h2>
             <div className="mt-6 space-y-2">

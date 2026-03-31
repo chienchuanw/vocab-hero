@@ -39,9 +39,9 @@ export function MatchingCard({
         !isSelected && !isMatched && !isError && 'border-border bg-card hover:border-primary',
         isSelected && !isMatched && !isError && 'border-primary bg-primary/10 ring-2 ring-primary',
         isMatched &&
-          'border-green-500 bg-green-100 text-green-800 opacity-50 dark:bg-green-900/30 dark:text-green-400',
+          'border-success bg-success/10 text-success opacity-50',
         isError &&
-          'border-red-500 bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+          'border-destructive bg-destructive/10 text-destructive',
         (disabled || isMatched) && 'cursor-not-allowed',
         type === 'word' ? 'text-2xl' : 'text-lg'
       )}

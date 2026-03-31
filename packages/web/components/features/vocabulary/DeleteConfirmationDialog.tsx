@@ -62,7 +62,7 @@ export function DeleteConfirmationDialog({
           <AlertDialogCancel>{tc('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-destructive hover:bg-destructive/90"
             disabled={deleteMutation.isPending}
           >
             {deleteMutation.isPending ? tc('deleting') : tc('delete')}

@@ -1,6 +1,7 @@
 'use client';
 
 import { Bell, Target, AlertTriangle, Clock } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import type { PushNotificationPromptProps } from './PushNotificationPrompt.types';
@@ -15,6 +16,8 @@ export function PushNotificationPrompt({
   isLoading = false,
   isDismissed = false,
 }: PushNotificationPromptProps) {
+  const t = useTranslations('notifications.prompt');
+
   // 如果已經關閉提示，不顯示
   if (isDismissed) {
     return null;
@@ -22,47 +25,36 @@ export function PushNotificationPrompt({
 
   return (
     <Card
-      className="p-6 border-2 border-blue-200 bg-blue-50"
+      className="p-6 border-2 border-primary/20 bg-primary/5"
       role="dialog"
-      aria-label="Push notifications permission prompt"
+      aria-label={t('title')}
     >
       <div className="flex items-start gap-4">
         {/* Icon */}
         <div className="flex-shrink-0">
-          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-            <Bell className="h-6 w-6 text-white" aria-hidden="true" />
+          <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+            <Bell className="h-6 w-6 text-primary-foreground" aria-hidden="true" />
           </div>
         </div>
 
         {/* Content */}
         <div className="flex-1">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">
-            Enable Push Notifications
-          </h2>
-          <p className="text-gray-700 mb-4">
-            Stay on track with your Japanese learning journey! Get timely reminders and
-            celebrate your achievements.
-          </p>
+          <h2 className="text-xl font-bold text-foreground mb-2">{t('title')}</h2>
+          <p className="text-foreground mb-4">{t('description')}</p>
 
           {/* Benefits List */}
           <ul className="space-y-3 mb-6">
             <li className="flex items-center gap-3">
-              <Clock className="h-5 w-5 text-blue-600 flex-shrink-0" role="img" aria-hidden="true" />
-              <span className="text-sm text-gray-700">
-                Daily study reminders to maintain your streak
-              </span>
+              <Clock className="h-5 w-5 text-primary flex-shrink-0" role="img" aria-hidden="true" />
+              <span className="text-sm text-foreground">{t('benefitReminder')}</span>
             </li>
             <li className="flex items-center gap-3">
-              <Target className="h-5 w-5 text-green-600 flex-shrink-0" role="img" aria-hidden="true" />
-              <span className="text-sm text-gray-700">
-                Goal achievement alerts when you complete your daily target
-              </span>
+              <Target className="h-5 w-5 text-success flex-shrink-0" role="img" aria-hidden="true" />
+              <span className="text-sm text-foreground">{t('benefitGoal')}</span>
             </li>
             <li className="flex items-center gap-3">
-              <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0" role="img" aria-hidden="true" />
-              <span className="text-sm text-gray-700">
-                Streak warnings to help you stay consistent
-              </span>
+              <AlertTriangle className="h-5 w-5 text-warning flex-shrink-0" role="img" aria-hidden="true" />
+              <span className="text-sm text-foreground">{t('benefitStreak')}</span>
             </li>
           </ul>
 
@@ -71,16 +63,16 @@ export function PushNotificationPrompt({
             <Button
               onClick={onPermissionGranted}
               disabled={isLoading}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              {isLoading ? 'Requesting...' : 'Enable Notifications'}
+              {isLoading ? t('requesting') : t('enable')}
             </Button>
             <Button
               onClick={onPermissionDenied}
               disabled={isLoading}
               variant="outline"
             >
-              Maybe Later
+              {t('maybeLater')}
             </Button>
           </div>
         </div>
@@ -88,4 +80,3 @@ export function PushNotificationPrompt({
     </Card>
   );
 }
-

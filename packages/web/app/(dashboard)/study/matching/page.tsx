@@ -43,6 +43,7 @@ export default function MatchingGamePage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
+        <h1 className="sr-only">{t('matching')}</h1>
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
@@ -52,7 +53,7 @@ export default function MatchingGamePage() {
     return (
       <Layout streak={0}>
         <div className="mx-auto max-w-md py-16 text-center">
-          <h2 className="text-2xl font-bold">{t('matching')}</h2>
+          <h1 className="text-2xl font-bold">{t('matching')}</h1>
           <p className="mt-4 text-muted-foreground">
             {isError
               ? t('errorLoadingVocabulary')
@@ -75,6 +76,7 @@ function MatchingGameContent({
   initialColumns: ReturnType<typeof generateColumnPairs>;
 }) {
   const router = useRouter();
+  const t = useTranslations('study');
   const game = useMatchingGame(initialColumns);
 
   const isCardSelected = (cardId: string) => game.selectedCards.includes(cardId);
@@ -104,6 +106,7 @@ function MatchingGameContent({
     return (
       <Layout streak={0}>
         <div className="mx-auto max-w-2xl">
+          <h1 className="sr-only">{t('matching')}</h1>
           <GameComplete
             elapsedTime={game.elapsedTime}
             attempts={game.attempts}
@@ -117,6 +120,7 @@ function MatchingGameContent({
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <h1 className="sr-only">{t('matching')}</h1>
       <MatchingGameHeader
         matchedCount={game.matchedPairs.length}
         totalPairs={game.totalPairs}

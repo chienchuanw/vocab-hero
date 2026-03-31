@@ -129,7 +129,7 @@ export function RecordButton({
           onClick={handleStart}
           variant="default"
           size="lg"
-          className="bg-red-500 hover:bg-red-600"
+          className="bg-destructive hover:bg-destructive/90"
           aria-label="Start recording"
         >
           <Mic className="h-5 w-5 mr-2" />

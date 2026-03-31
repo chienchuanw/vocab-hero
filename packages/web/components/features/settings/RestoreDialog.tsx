@@ -165,17 +165,17 @@ export function RestoreDialog({ open, onOpenChange }: RestoreDialogProps) {
             </DialogHeader>
 
             <div className="space-y-4 py-4">
-              <div className="grid grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg">
                 <div className="space-y-1">
                   <p className="text-2xl font-bold">{previewData.totalItems}</p>
                   <p className="text-sm text-muted-foreground">{t('totalItems')}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-2xl font-bold text-green-600">{previewData.newItems.length}</p>
+                  <p className="text-2xl font-bold text-success">{previewData.newItems.length}</p>
                   <p className="text-sm text-muted-foreground">{t('newItems')}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-2xl font-bold text-amber-600">{previewData.duplicateCount}</p>
+                  <p className="text-2xl font-bold text-warning">{previewData.duplicateCount}</p>
                   <p className="text-sm text-muted-foreground">{t('duplicates')}</p>
                 </div>
               </div>

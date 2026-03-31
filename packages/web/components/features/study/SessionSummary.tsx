@@ -42,7 +42,7 @@ export function SessionSummary({ stats, onContinue, onEnd }: SessionSummaryProps
         {/* Correct count */}
         <div className="flex justify-between items-center p-4 bg-muted rounded-lg">
           <span className="text-muted-foreground">{t('correctAnswers')}</span>
-          <span className="text-2xl font-bold text-green-600">
+          <span className="text-2xl font-bold text-success">
             {stats.correctCount} / {stats.totalCards}
           </span>
         </div>

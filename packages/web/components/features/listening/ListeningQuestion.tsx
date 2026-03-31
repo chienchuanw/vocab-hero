@@ -90,9 +90,9 @@ export function ListeningQuestion({
   return (
     <div className="space-y-6">
       {/* Audio playback section */}
-      <div className="flex flex-col items-center gap-4 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg">
+      <div className="flex flex-col items-center gap-4 rounded-lg bg-muted p-6">
         <Volume2 className="h-16 w-16 text-primary" />
-        <p className="text-lg text-gray-600 dark:text-gray-400">
+        <p className="text-lg text-muted-foreground">
           Listen and select the correct meaning
         </p>
 
@@ -131,6 +131,7 @@ export function ListeningQuestion({
             value={typedAnswer}
             onChange={(e) => setTypedAnswer(e.target.value)}
             placeholder="Type the meaning..."
+            aria-label="Type your answer"
             className="text-lg"
             autoFocus
           />

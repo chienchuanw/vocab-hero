@@ -53,7 +53,7 @@ export function DeleteGroupDialog({ open, onOpenChange, group }: DeleteGroupDial
           <AlertDialogDescription>
             {t('deleteDialog.description', { group: group?.name || '' })}
             {group && group.vocabularyCount > 0 && (
-              <span className="block mt-2 text-amber-600 dark:text-amber-500 font-medium">
+              <span className="block mt-2 text-warning font-medium">
                 {t('deleteDialog.warning', { count: group.vocabularyCount })}
               </span>
             )}
@@ -63,7 +63,7 @@ export function DeleteGroupDialog({ open, onOpenChange, group }: DeleteGroupDial
           <AlertDialogCancel>{tc('cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-destructive hover:bg-destructive/90"
             disabled={deleteMutation.isPending}
           >
             {deleteMutation.isPending ? tc('deleting') : tc('delete')}

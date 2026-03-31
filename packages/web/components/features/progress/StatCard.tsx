@@ -60,7 +60,7 @@ export function StatCard({
           <div
             className={cn(
               'flex items-center text-xs mt-2',
-              trend > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+              trend > 0 ? 'text-success' : 'text-destructive'
             )}
           >
             {trend > 0 ? (
@@ -78,4 +78,3 @@ export function StatCard({
     </Card>
   );
 }
-

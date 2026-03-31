@@ -44,7 +44,7 @@ export default function ThemeSettingsPage() {
         }
       );
     }
-  }, [theme, settings, updateMutation]);
+  }, [theme, settings, updateMutation, userId]);
 
   if (isLoading) {
     return (
@@ -73,31 +73,31 @@ export default function ThemeSettingsPage() {
             <ThemeToggle variant="buttons" className="justify-center" />
 
             <div className="pt-4 border-t">
-              <h4 className="text-sm font-medium mb-4">Theme Preview</h4>
-              <div className="grid grid-cols-3 gap-4">
+              <h2 className="text-sm font-medium mb-4">Theme Preview</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <ThemePreviewCard
                   title="Light"
                   icon={Sun}
                   isActive={theme === 'light'}
-                  bgClass="bg-white"
-                  textClass="text-gray-900"
-                  borderClass="border-gray-200"
+                  bgClass="bg-background"
+                  textClass="text-foreground"
+                  borderClass="border-border"
                 />
                 <ThemePreviewCard
                   title="Dark"
                   icon={Moon}
                   isActive={theme === 'dark'}
-                  bgClass="bg-gray-900"
-                  textClass="text-gray-100"
-                  borderClass="border-gray-700"
+                  bgClass="bg-foreground"
+                  textClass="text-background"
+                  borderClass="border-border"
                 />
                 <ThemePreviewCard
                   title="System"
                   icon={Monitor}
                   isActive={theme === 'system'}
-                  bgClass="bg-gradient-to-br from-white to-gray-900"
-                  textClass="text-gray-600"
-                  borderClass="border-gray-400"
+                  bgClass="bg-gradient-to-br from-background to-muted"
+                  textClass="text-muted-foreground"
+                  borderClass="border-border"
                 />
               </div>
             </div>

@@ -37,8 +37,8 @@ export function MultipleChoiceCard({
   return (
     <div className="space-y-6">
       {/* 題目 */}
-      <div className="rounded-lg border-2 border-gray-200 bg-white p-6 text-center">
-        <p className="text-xl font-medium text-gray-900">{question}</p>
+      <div className="rounded-lg border-2 border-border bg-card p-6 text-center">
+        <p className="text-xl font-medium text-foreground">{question}</p>
       </div>
 
       {/* 選項 */}
@@ -50,28 +50,28 @@ export function MultipleChoiceCard({
 
           return (
             <Button
-              key={index}
+              key={option}
               variant="outline"
               className={cn(
                 'h-auto min-h-[60px] w-full justify-start px-6 py-4 text-left text-base transition-all',
-                !isAnswered && 'hover:border-blue-500 hover:bg-blue-50',
+                !isAnswered && 'hover:border-primary hover:bg-primary/5',
                 isAnswered && 'cursor-default',
-                showFeedback && isSelected && isCorrectOption && 'border-green-500 bg-green-50',
-                showFeedback && isSelected && !isCorrectOption && 'border-red-500 bg-red-50',
-                showFeedback && !isSelected && isCorrectOption && 'border-green-500 bg-green-50'
+                showFeedback && isSelected && isCorrectOption && 'border-success bg-success/10',
+                showFeedback && isSelected && !isCorrectOption && 'border-destructive bg-destructive/10',
+                showFeedback && !isSelected && isCorrectOption && 'border-success bg-success/10'
               )}
               onClick={() => handleOptionClick(option)}
               disabled={isAnswered}
             >
               <span className="flex-1">{option}</span>
               {showFeedback && isSelected && isCorrectOption && (
-                <Check className="ml-2 h-5 w-5 text-green-600" />
+                <Check className="ml-2 h-5 w-5 text-success" />
               )}
               {showFeedback && isSelected && !isCorrectOption && (
-                <X className="ml-2 h-5 w-5 text-red-600" />
+                <X className="ml-2 h-5 w-5 text-destructive" />
               )}
               {showFeedback && !isSelected && isCorrectOption && (
-                <Check className="ml-2 h-5 w-5 text-green-600" />
+                <Check className="ml-2 h-5 w-5 text-success" />
               )}
             </Button>
           );
@@ -80,4 +80,3 @@ export function MultipleChoiceCard({
     </div>
   );
 }
-

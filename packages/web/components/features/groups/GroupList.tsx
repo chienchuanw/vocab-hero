@@ -27,7 +27,7 @@ export function GroupList({ query, onEdit, onDelete, onClick }: GroupListProps) 
     return (
       <div className="flex justify-center items-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-2 text-gray-600">Loading...</span>
+        <span className="ml-2 text-muted-foreground">Loading...</span>
       </div>
     );
   }
@@ -36,7 +36,7 @@ export function GroupList({ query, onEdit, onDelete, onClick }: GroupListProps) 
   if (isError) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-600">Failed to load: {error.message}</p>
+        <p className="text-destructive">Failed to load: {error.message}</p>
       </div>
     );
   }
@@ -45,8 +45,8 @@ export function GroupList({ query, onEdit, onDelete, onClick }: GroupListProps) 
   if (!groups || groups.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">No groups yet</p>
-        <p className="text-sm text-gray-400 mt-2">
+        <p className="text-muted-foreground">No groups yet</p>
+        <p className="text-sm text-muted-foreground mt-2">
           Click &ldquo;Add Group&rdquo; to start organizing your vocabulary
         </p>
       </div>

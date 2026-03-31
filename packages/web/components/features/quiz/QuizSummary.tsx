@@ -50,7 +50,7 @@ export function QuizSummary({
       <div className="rounded-lg border bg-card p-8 text-center">
         <h2 className="text-3xl font-bold">{t('complete')}</h2>
 
-        <div className="mt-8 grid grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
           <div>
             <div className="text-4xl font-bold text-primary">{correctAnswers}</div>
             <div className="mt-2 text-sm text-muted-foreground">{t('correct')}</div>
@@ -80,13 +80,13 @@ export function QuizSummary({
           {answers.map((answer, index) => (
             <div
               key={answer.questionId}
-              className={cn(
-                'rounded-lg border p-4',
-                answer.isCorrect
-                  ? 'border-green-500/50 bg-green-50 dark:bg-green-950/20'
-                  : 'border-red-500/50 bg-red-50 dark:bg-red-950/20'
-              )}
-            >
+                className={cn(
+                  'rounded-lg border p-4',
+                  answer.isCorrect
+                    ? 'border-success/50 bg-success/10'
+                    : 'border-destructive/50 bg-destructive/10'
+                )}
+              >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
@@ -104,8 +104,8 @@ export function QuizSummary({
                         className={cn(
                           'font-medium',
                           answer.isCorrect
-                            ? 'text-green-700 dark:text-green-400'
-                            : 'text-red-700 dark:text-red-400'
+                            ? 'text-success'
+                            : 'text-destructive'
                         )}
                       >
                         {answer.selectedAnswer}
@@ -115,7 +115,7 @@ export function QuizSummary({
                     {!answer.isCorrect && (
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-muted-foreground">{t('correctAnswer')}</span>
-                        <span className="font-medium text-green-700 dark:text-green-400">
+                        <span className="font-medium text-success">
                           {answer.correctAnswer}
                         </span>
                       </div>
@@ -125,8 +125,10 @@ export function QuizSummary({
 
                 <div
                   className={cn(
-                    'flex h-8 w-8 items-center justify-center rounded-full text-lg',
-                    answer.isCorrect ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                    'flex h-10 w-10 items-center justify-center rounded-full text-lg',
+                    answer.isCorrect
+                      ? 'bg-success text-primary-foreground'
+                      : 'bg-destructive text-destructive-foreground'
                   )}
                 >
                   {answer.isCorrect ? '✓' : '✗'}

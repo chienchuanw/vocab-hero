@@ -43,14 +43,15 @@ export function AnswerFeedback({ isCorrect, message, onAnimationComplete }: Answ
   }, [onAnimationComplete]);
 
   return (
-    <div
+    <output
+      aria-live="polite"
       className={cn(
         'transform transition-all duration-500 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
         'rounded-lg p-6 text-center font-medium shadow-lg',
         isCorrect
-          ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-          : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+          ? 'bg-success/10 text-success'
+          : 'bg-destructive/10 text-destructive'
       )}
     >
       <div className="flex items-center justify-center gap-3">
@@ -58,8 +59,8 @@ export function AnswerFeedback({ isCorrect, message, onAnimationComplete }: Answ
           className={cn(
             'flex h-12 w-12 items-center justify-center rounded-full text-2xl',
             isCorrect
-              ? 'bg-green-500 text-white dark:bg-green-600'
-              : 'bg-red-500 text-white dark:bg-red-600'
+              ? 'bg-success text-primary-foreground'
+              : 'bg-destructive text-destructive-foreground'
           )}
         >
           {isCorrect ? '✓' : '✗'}
@@ -67,6 +68,6 @@ export function AnswerFeedback({ isCorrect, message, onAnimationComplete }: Answ
 
         <div className="text-lg">{message}</div>
       </div>
-    </div>
+    </output>
   );
 }

@@ -34,15 +34,15 @@ export function MasteryLevelBarChart({
   const hasData = data && data.length > 0;
 
   const LEVEL_COLORS: Record<string, string> = {
-    NEW: '#94a3b8',
-    LEARNING: '#60a5fa',
-    FAMILIAR: '#34d399',
-    LEARNED: '#fbbf24',
-    MASTERED: '#f87171',
+    NEW: 'var(--muted-foreground)',
+    LEARNING: 'var(--info)',
+    FAMILIAR: 'var(--success)',
+    LEARNED: 'var(--warning)',
+    MASTERED: 'var(--destructive)',
   };
 
   const getBarColor = (level: string): string => {
-    return LEVEL_COLORS[level] || '#94a3b8';
+    return LEVEL_COLORS[level] || 'var(--muted-foreground)';
   };
 
   return (
@@ -70,19 +70,19 @@ export function MasteryLevelBarChart({
               <XAxis
                 dataKey="level"
                 className="text-xs"
-                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                tick={{ fill: 'var(--muted-foreground)' }}
               />
               <YAxis
                 className="text-xs"
-                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                tick={{ fill: 'var(--muted-foreground)' }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'hsl(var(--background))',
-                  border: '1px solid hsl(var(--border))',
+                  backgroundColor: 'var(--background)',
+                  border: '1px solid var(--border)',
                   borderRadius: '6px',
                 }}
-                labelStyle={{ color: 'hsl(var(--foreground))' }}
+                labelStyle={{ color: 'var(--foreground)' }}
               />
               <Bar dataKey="count" radius={[8, 8, 0, 0]}>
                 {data.map((entry, index) => (
@@ -96,4 +96,3 @@ export function MasteryLevelBarChart({
     </Card>
   );
 }
-

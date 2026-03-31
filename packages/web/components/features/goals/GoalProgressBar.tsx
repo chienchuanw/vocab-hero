@@ -42,7 +42,7 @@ export function GoalProgressBar({
               <Target className="h-4 w-4 text-muted-foreground" />
               <span>{t('words')}</span>
             </div>
-            <span className={cn('font-medium', isWordsComplete && 'text-green-600')}>
+            <span className={cn('font-medium', isWordsComplete && 'text-success')}>
               {wordsProgress} / {wordsGoal}
               {isWordsComplete && <CheckCircle2 className="inline ml-1 h-4 w-4" />}
             </span>
@@ -60,7 +60,7 @@ export function GoalProgressBar({
               <Clock className="h-4 w-4 text-muted-foreground" />
               <span>{t('minutes')}</span>
             </div>
-            <span className={cn('font-medium', isMinutesComplete && 'text-green-600')}>
+            <span className={cn('font-medium', isMinutesComplete && 'text-success')}>
               {minutesProgress} / {minutesGoal}
               {isMinutesComplete && <CheckCircle2 className="inline ml-1 h-4 w-4" />}
             </span>
@@ -85,7 +85,7 @@ export function GoalProgressBar({
                 <Target className="h-5 w-5 text-primary" />
                 <span className="font-medium">{t('wordsGoal')}</span>
               </div>
-              <span className={cn('text-lg font-bold', isWordsComplete && 'text-green-600')}>
+              <span className={cn('text-lg font-bold', isWordsComplete && 'text-success')}>
                 {wordsProgress} / {wordsGoal}
               </span>
             </div>
@@ -105,7 +105,7 @@ export function GoalProgressBar({
                 <Clock className="h-5 w-5 text-primary" />
                 <span className="font-medium">{t('timeGoal')}</span>
               </div>
-              <span className={cn('text-lg font-bold', isMinutesComplete && 'text-green-600')}>
+              <span className={cn('text-lg font-bold', isMinutesComplete && 'text-success')}>
                 {minutesProgress} / {minutesGoal} min
               </span>
             </div>
@@ -120,7 +120,7 @@ export function GoalProgressBar({
           </div>
 
           {isWordsComplete && isMinutesComplete && (
-            <div className="flex items-center justify-center gap-2 text-green-600 font-medium">
+            <div className="flex items-center justify-center gap-2 text-success font-medium">
               <CheckCircle2 className="h-5 w-5" />
               <span>{t('goalsAchieved')}</span>
             </div>

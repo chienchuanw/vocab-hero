@@ -29,10 +29,10 @@ function getIntensityLevel(wordsStudied: number): number {
 function getIntensityColor(level: number): string {
   const colors = [
     'bg-muted',
-    'bg-green-200 dark:bg-green-900',
-    'bg-green-400 dark:bg-green-700',
-    'bg-green-600 dark:bg-green-500',
-    'bg-green-800 dark:bg-green-300',
+    'bg-success/20',
+    'bg-success/40',
+    'bg-success/70',
+    'bg-success',
   ];
   return colors[level] ?? colors[0] ?? 'bg-muted';
 }
@@ -156,7 +156,7 @@ export function ContributionWall({ progressData, year, onYearChange }: Contribut
           </div>
         </div>
 
-        <div className="relative">
+        <div className="relative overflow-x-auto">
           <div className="flex gap-1">
             <div className="flex flex-col justify-around text-xs text-muted-foreground w-8">
               {WEEKDAYS.map((day) => (

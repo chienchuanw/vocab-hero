@@ -22,7 +22,7 @@ export function ExampleSentence({
   // Display empty state when no sentence is provided
   if (!sentence) {
     return (
-      <div className={cn('text-sm text-gray-500 dark:text-gray-400 italic', className)}>
+      <div className={cn('text-sm text-muted-foreground italic', className)}>
         {emptyMessage}
       </div>
     );
@@ -32,7 +32,7 @@ export function ExampleSentence({
     <div className={cn('space-y-1', className)}>
       {/* Japanese sentence with pronunciation button */}
       <div className="flex items-start gap-2">
-        <p className="text-base text-gray-900 dark:text-gray-100 font-medium flex-1">
+        <p className="text-base text-foreground font-medium flex-1">
           {sentence.sentence}
         </p>
         {showAudio && <SpeakerButton text={sentence.sentence} />}
@@ -40,11 +40,11 @@ export function ExampleSentence({
 
       {/* Reading (furigana) - only show if provided */}
       {sentence.reading && (
-        <p className="text-sm text-gray-600 dark:text-gray-400">{sentence.reading}</p>
+        <p className="text-sm text-muted-foreground">{sentence.reading}</p>
       )}
 
       {/* English translation */}
-      <p className="text-sm text-gray-700 dark:text-gray-300">{sentence.meaning}</p>
+      <p className="text-sm text-foreground">{sentence.meaning}</p>
     </div>
   );
 }

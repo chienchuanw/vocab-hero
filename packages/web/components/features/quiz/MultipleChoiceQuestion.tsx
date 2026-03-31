@@ -64,12 +64,12 @@ export function MultipleChoiceQuestion({
     // 選擇答案後的樣式
     if (option === question.correctAnswer) {
       // 正確答案永遠顯示綠色
-      return 'bg-green-500 text-white hover:bg-green-600';
+      return 'bg-success text-primary-foreground hover:bg-success/90';
     }
 
     if (option === selectedAnswer && !isCorrect) {
       // 選錯的答案顯示紅色
-      return 'bg-red-500 text-white hover:bg-red-600';
+      return 'bg-destructive text-destructive-foreground hover:bg-destructive/90';
     }
 
     // 其他選項保持預設樣式但變暗

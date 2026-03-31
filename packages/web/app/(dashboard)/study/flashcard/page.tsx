@@ -15,6 +15,7 @@ const DEFAULT_CARDS_PER_SESSION = 20;
 export default function FlashcardStudyPage() {
   const t = useTranslations('common');
   const tStudy = useTranslations('study');
+  const pageTitle = tStudy('flashcard');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [ratings, setRatings] = useState<Record<string, QualityRating>>({});
@@ -66,6 +67,7 @@ export default function FlashcardStudyPage() {
     return (
       <Layout streak={0}>
         <div className="flex items-center justify-center min-h-[60vh]">
+          <h1 className="sr-only">{pageTitle}</h1>
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">{t('loading')}</p>
@@ -80,6 +82,7 @@ export default function FlashcardStudyPage() {
     return (
       <Layout streak={0}>
         <div className="flex items-center justify-center min-h-[60vh]">
+          <h1 className="sr-only">{pageTitle}</h1>
           <div className="text-center">
             <p className="text-destructive text-lg mb-4">{tStudy('errorLoadingStudy')}</p>
             <p className="text-muted-foreground">{error.message}</p>
@@ -94,6 +97,7 @@ export default function FlashcardStudyPage() {
     return (
       <Layout streak={0}>
         <div className="flex items-center justify-center min-h-[60vh]">
+          <h1 className="sr-only">{pageTitle}</h1>
           <div className="text-center">
             <p className="text-lg mb-4">{tStudy('noVocabularyDue')}</p>
             <p className="text-muted-foreground">{tStudy('noVocabularyDueMessage')}</p>
@@ -108,6 +112,7 @@ export default function FlashcardStudyPage() {
     return (
       <Layout streak={0}>
         <div className="flex items-center justify-center min-h-[60vh]">
+          <h1 className="sr-only">{pageTitle}</h1>
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">{tStudy('sessionComplete')}</h2>
             <p className="text-muted-foreground mb-4">
@@ -129,6 +134,7 @@ export default function FlashcardStudyPage() {
   return (
     <Layout streak={0}>
       <div className="max-w-4xl mx-auto">
+        <h1 className="sr-only">{pageTitle}</h1>
         {/* Progress indicator */}
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
@@ -141,7 +147,7 @@ export default function FlashcardStudyPage() {
           </div>
           <div className="w-full bg-muted rounded-full h-2">
             <div
-              className="bg-primary h-2 rounded-full transition-all duration-300"
+              className="bg-primary h-2 rounded-full transition-[width] duration-300"
               style={{
                 width: `${((currentIndex + 1) / vocabulary.length) * 100}%`,
               }}

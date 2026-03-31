@@ -91,9 +91,9 @@ export function AddVocabularyForm({
           value={formData.word}
           onChange={(e) => setFormData({ ...formData, word: e.target.value })}
           placeholder={t('form.wordPlaceholder')}
-          className={errors.word ? 'border-red-500' : ''}
+          className={errors.word ? 'border-destructive' : ''}
         />
-        {errors.word && <p className="text-sm text-red-500 mt-1">{errors.word}</p>}
+        {errors.word && <p className="text-sm text-destructive mt-1">{errors.word}</p>}
       </div>
 
       {/* Reading */}
@@ -104,9 +104,9 @@ export function AddVocabularyForm({
           value={formData.reading}
           onChange={(e) => setFormData({ ...formData, reading: e.target.value })}
           placeholder={t('form.readingPlaceholder')}
-          className={errors.reading ? 'border-red-500' : ''}
+          className={errors.reading ? 'border-destructive' : ''}
         />
-        {errors.reading && <p className="text-sm text-red-500 mt-1">{errors.reading}</p>}
+        {errors.reading && <p className="text-sm text-destructive mt-1">{errors.reading}</p>}
       </div>
 
       {/* Meaning */}
@@ -117,9 +117,9 @@ export function AddVocabularyForm({
           value={formData.meaning}
           onChange={(e) => setFormData({ ...formData, meaning: e.target.value })}
           placeholder={t('form.meaningPlaceholder')}
-          className={errors.meaning ? 'border-red-500' : ''}
+          className={errors.meaning ? 'border-destructive' : ''}
         />
-        {errors.meaning && <p className="text-sm text-red-500 mt-1">{errors.meaning}</p>}
+        {errors.meaning && <p className="text-sm text-destructive mt-1">{errors.meaning}</p>}
       </div>
 
       {/* Notes */}

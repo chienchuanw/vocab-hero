@@ -59,36 +59,36 @@ export function ProgressLineChart({
               <XAxis
                 dataKey="date"
                 className="text-xs"
-                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                tick={{ fill: 'var(--muted-foreground)' }}
               />
               <YAxis
                 className="text-xs"
-                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+                tick={{ fill: 'var(--muted-foreground)' }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'hsl(var(--background))',
-                  border: '1px solid hsl(var(--border))',
+                  backgroundColor: 'var(--background)',
+                  border: '1px solid var(--border)',
                   borderRadius: '6px',
                 }}
-                labelStyle={{ color: 'hsl(var(--foreground))' }}
+                labelStyle={{ color: 'var(--foreground)' }}
               />
               <Legend />
               <Line
                 type="monotone"
                 dataKey="wordsStudied"
-                stroke="hsl(var(--primary))"
+                stroke="var(--primary)"
                 strokeWidth={2}
                 name="Words Studied"
-                dot={{ fill: 'hsl(var(--primary))' }}
+                dot={{ fill: 'var(--primary)' }}
               />
               <Line
                 type="monotone"
                 dataKey="timeSpent"
-                stroke="hsl(var(--chart-2))"
+                stroke="var(--chart-2)"
                 strokeWidth={2}
                 name="Time Spent (min)"
-                dot={{ fill: 'hsl(var(--chart-2))' }}
+                dot={{ fill: 'var(--chart-2)' }}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -97,4 +97,3 @@ export function ProgressLineChart({
     </Card>
   );
 }
-

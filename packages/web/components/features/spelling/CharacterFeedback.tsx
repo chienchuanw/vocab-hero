@@ -31,36 +31,40 @@ export function CharacterFeedback({
 
   // 取得較長的長度以顯示所有字元
   const maxLength = Math.max(normalizedUser.length, normalizedCorrect.length);
+  const feedbackItems = Array.from({ length: maxLength }, (_, itemIndex) => ({
+    key: `${userAnswer}-${correctAnswer}-${itemIndex}`,
+    userChar: normalizedUser[itemIndex] || '',
+    correctChar: normalizedCorrect[itemIndex] || '',
+  }));
 
   return (
     <div className="space-y-3">
       <div className="text-sm font-medium text-muted-foreground">Character-by-character feedback:</div>
 
       <div className="flex flex-wrap gap-2 justify-center">
-        {Array.from({ length: maxLength }).map((_, index) => {
-          const userChar = normalizedUser[index] || '';
-          const correctChar = normalizedCorrect[index] || '';
+        {feedbackItems.map((item) => {
+          const { key, userChar, correctChar } = item;
           const isCorrect = userChar === correctChar;
           const isMissing = !userChar && correctChar;
           const isExtra = userChar && !correctChar;
 
           return (
             <div
-              key={index}
+              key={key}
               className={cn(
                 'flex flex-col items-center gap-1 rounded-lg border-2 p-3 min-w-[60px]',
-                isCorrect && 'border-green-500 bg-green-50 dark:bg-green-950/20',
-                !isCorrect && userChar && 'border-red-500 bg-red-50 dark:bg-red-950/20',
-                isMissing && 'border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20'
+                isCorrect && 'border-success bg-success/10',
+                !isCorrect && userChar && 'border-destructive bg-destructive/10',
+                isMissing && 'border-warning bg-warning/10'
               )}
             >
               {/* 使用者輸入的字元 */}
               <div
                 className={cn(
                   'text-2xl font-bold',
-                  isCorrect && 'text-green-700 dark:text-green-400',
-                  !isCorrect && userChar && 'text-red-700 dark:text-red-400',
-                  isMissing && 'text-yellow-700 dark:text-yellow-400'
+                  isCorrect && 'text-success',
+                  !isCorrect && userChar && 'text-destructive',
+                  isMissing && 'text-warning'
                 )}
               >
                 {userChar || '?'}
@@ -68,14 +72,14 @@ export function CharacterFeedback({
 
               {/* 正確/錯誤指示 */}
               <div className="text-xs">
-                {isCorrect && <span className="text-green-600 dark:text-green-400">✓</span>}
+                {isCorrect && <span className="text-success">✓</span>}
                 {!isCorrect && userChar && (
-                  <span className="text-red-600 dark:text-red-400">✗</span>
+                  <span className="text-destructive">✗</span>
                 )}
                 {isMissing && (
-                  <span className="text-yellow-600 dark:text-yellow-400">Missing</span>
+                  <span className="text-warning">Missing</span>
                 )}
-                {isExtra && <span className="text-red-600 dark:text-red-400">Extra</span>}
+                {isExtra && <span className="text-destructive">Extra</span>}
               </div>
 
               {/* 顯示正確答案（如果錯誤） */}
@@ -96,4 +100,3 @@ export function CharacterFeedback({
     </div>
   );
 }
-

@@ -62,15 +62,15 @@ export function RandomQuizSummary({
    */
   const getPerformanceRating = () => {
     if (accuracy >= 90) {
-      return { title: t('randomQuizSummary.excellent'), emoji: '🏆', color: 'text-green-600' };
+      return { title: t('randomQuizSummary.excellent'), emoji: '🏆', color: 'text-success' };
     }
     if (accuracy >= 75) {
-      return { title: t('randomQuizSummary.greatJob'), emoji: '⭐', color: 'text-blue-600' };
+      return { title: t('randomQuizSummary.greatJob'), emoji: '⭐', color: 'text-info' };
     }
     if (accuracy >= 60) {
-      return { title: t('randomQuizSummary.goodEffort'), emoji: '👍', color: 'text-yellow-600' };
+      return { title: t('randomQuizSummary.goodEffort'), emoji: '👍', color: 'text-warning' };
     }
-    return { title: t('randomQuizSummary.keepPracticing'), emoji: '💪', color: 'text-orange-600' };
+    return { title: t('randomQuizSummary.keepPracticing'), emoji: '💪', color: 'text-warning' };
   };
 
   const rating = getPerformanceRating();
@@ -86,22 +86,22 @@ export function RandomQuizSummary({
         </div>
 
         {/* 總體統計 */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-lg border bg-muted/50 p-4 text-center">
             <div className="text-sm text-muted-foreground">{t('randomQuizSummary.accuracy')}</div>
             <div className="mt-1 text-3xl font-bold">{accuracy.toFixed(1)}%</div>
           </div>
 
-          <div className="rounded-lg border bg-green-100 dark:bg-green-900/30 p-4 text-center">
+          <div className="rounded-lg border bg-success/10 p-4 text-center">
             <div className="text-sm text-muted-foreground">{t('randomQuizSummary.correct')}</div>
-            <div className="mt-1 text-3xl font-bold text-green-600 dark:text-green-400">
+            <div className="mt-1 text-3xl font-bold text-success">
               {correctCount}
             </div>
           </div>
 
-          <div className="rounded-lg border bg-red-100 dark:bg-red-900/30 p-4 text-center">
+          <div className="rounded-lg border bg-destructive/10 p-4 text-center">
             <div className="text-sm text-muted-foreground">{t('randomQuizSummary.incorrect')}</div>
-            <div className="mt-1 text-3xl font-bold text-red-600 dark:text-red-400">
+            <div className="mt-1 text-3xl font-bold text-destructive">
               {incorrectCount}
             </div>
           </div>

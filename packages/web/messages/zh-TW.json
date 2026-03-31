@@ -381,6 +381,43 @@
     "zhTW": "繁體中文",
     "current": "目前語言"
   },
+  "notifications": {
+    "center": {
+      "title": "通知",
+      "empty": "目前尚無通知",
+      "goalAchievedAria": "達成目標通知",
+      "streakWarningAria": "連續天數警告通知",
+      "studyReminderAria": "學習提醒通知",
+      "milestoneReachedAria": "里程碑達成通知",
+      "freezeUsedAria": "凍結卡使用通知",
+      "notificationAria": "通知",
+      "unreadAria": "未讀"
+    },
+    "prompt": {
+      "title": "啟用推播通知",
+      "description": "持續你的日文學習旅程！及時收到提醒並慶祝你的學習成就。",
+      "benefitReminder": "每日學習提醒，幫助你維持連續天數",
+      "benefitGoal": "完成每日目標時的達成提醒",
+      "benefitStreak": "連續天數風險警示，幫助你保持穩定學習",
+      "enable": "啟用通知",
+      "requesting": "請求中...",
+      "maybeLater": "稍後再說"
+    },
+    "preferences": {
+      "title": "通知偏好設定",
+      "description": "自訂你想接收的通知類型",
+      "goalAchievement": "目標達成通知",
+      "goalAchievementDesc": "當你完成每日目標時收到通知",
+      "streakWarning": "連續天數警告通知",
+      "streakWarningDesc": "當你的連續學習即將中斷時收到通知",
+      "studyReminder": "學習提醒通知",
+      "studyReminderDesc": "每日接收學習提醒",
+      "milestone": "里程碑通知",
+      "milestoneDesc": "當你達成重要里程碑時收到通知",
+      "pushNotifications": "推播通知",
+      "pushNotificationsDesc": "啟用瀏覽器推播通知以接收所有提醒"
+    }
+  },
   "metadata": {
     "title": "Vocab Hero - 日文單字學習",
     "description": "透過間隔重複和互動學習模式精通日文單字",

@@ -15,10 +15,10 @@ import type {
  */
 const RATING_COLORS: Record<number, string> = {
   0: 'bg-destructive hover:bg-destructive/90 text-destructive-foreground',
-  1: 'bg-orange-500 hover:bg-orange-600 text-white',
-  2: 'bg-yellow-500 hover:bg-yellow-600 text-white',
-  3: 'bg-blue-500 hover:bg-blue-600 text-white',
-  4: 'bg-green-500 hover:bg-green-600 text-white',
+  1: 'bg-warning hover:bg-warning/90 text-white',
+  2: 'bg-warning hover:bg-warning/90 text-white',
+  3: 'bg-info hover:bg-info/90 text-white',
+  4: 'bg-success hover:bg-success/90 text-white',
   5: 'bg-primary hover:bg-primary/90 text-primary-foreground',
 };
 

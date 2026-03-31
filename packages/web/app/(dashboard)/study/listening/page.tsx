@@ -179,6 +179,7 @@ export default function ListeningQuizPage() {
     return (
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
+          <h1 className="sr-only">{t('listening')}</h1>
           <Card className="p-6">
             <h2 className="text-2xl font-bold mb-4">{t('sessionSummary')}</h2>
             <div className="space-y-2">
@@ -206,8 +207,9 @@ export default function ListeningQuizPage() {
     return (
       <Layout streak={0}>
         <div className="max-w-2xl mx-auto">
+          <h1 className="sr-only">{t('listening')}</h1>
           <Card className="p-6">
-            <p className="text-center text-gray-600">{t('loading')}</p>
+            <p className="text-center text-muted-foreground">{t('loading')}</p>
           </Card>
         </div>
       </Layout>
@@ -217,8 +219,9 @@ export default function ListeningQuizPage() {
   return (
     <Layout streak={0}>
       <div className="max-w-2xl mx-auto">
+        <h1 className="sr-only">{t('listening')}</h1>
         <div className="mb-4">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             {t('questionProgress', { current: currentIndex + 1, total: questions.length })}
           </p>
         </div>
