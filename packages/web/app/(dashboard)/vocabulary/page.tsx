@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Layout } from '@/components/shared';
@@ -37,8 +37,7 @@ import {
   useUploadSentenceImage,
   useDeleteSentenceImage,
 } from '@/hooks/useSentences';
-import { recognizeText } from '@/lib/ocr/tesseract-worker';
-import { parseDuolingoText } from '@/lib/ocr/duolingo-parser';
+// OCR 模組透過動態 import 載入，避免增加初始 bundle 大小
 import {
   DndContext,
   DragOverlay,
@@ -78,6 +77,31 @@ export default function VocabularyPage() {
   const [ocrItems, setOcrItems] = useState<OcrPreviewItem[]>([]);
 
   const vocabularyQuery = useVocabulary(filters);
+
+  const vocabularyItems = useMemo(
+    () => vocabularyQuery.data?.pages.flatMap((page) => page.items) ?? [],
+    [vocabularyQuery.data]
+  );
+
+  const masteryDistribution = useMemo(() => {
+    return vocabularyItems.reduce(
+      (acc, item) => {
+        const level = calculateMasteryLevel(
+          item.reviewSchedule
+            ? {
+                easinessFactor: item.reviewSchedule.easinessFactor,
+                interval: item.reviewSchedule.interval,
+                repetitions: item.reviewSchedule.repetitions,
+              }
+            : null
+        );
+        acc[level] = (acc[level] || 0) + 1;
+        return acc;
+      },
+      {} as Record<MasteryLevel, number>
+    );
+  }, [vocabularyItems]);
+
   const { data: groups } = useGroups();
   const { data: sentences } = useSentences();
   const createSentence = useCreateSentence();
@@ -178,6 +202,8 @@ export default function VocabularyPage() {
       }
 
       try {
+        const { recognizeText } = await import('@/lib/ocr/tesseract-worker');
+        const { parseDuolingoText } = await import('@/lib/ocr/duolingo-parser');
         const ocrResult = await recognizeText(file);
         const parsed = parseDuolingoText(ocrResult.text);
         results.push({
@@ -274,41 +300,23 @@ export default function VocabularyPage() {
                onDragCancel={handleDragCancel}
              >
                <div className="space-y-6">
-                 {/* Mastery Stats Section */}
-                 {!vocabularyQuery.isLoading && (
-                   (() => {
-                     const vocabularyItems = vocabularyQuery.data?.pages.flatMap((page) => page.items) ?? [];
-                     const masteryDistribution = vocabularyItems.reduce((acc, item) => {
-                       const level = calculateMasteryLevel(
-                         item.reviewSchedule ? {
-                           easinessFactor: item.reviewSchedule.easinessFactor,
-                           interval: item.reviewSchedule.interval,
-                           repetitions: item.reviewSchedule.repetitions,
-                         } : null
-                       );
-                       acc[level] = (acc[level] || 0) + 1;
-                       return acc;
-                     }, {} as Record<MasteryLevel, number>);
-
-                     return vocabularyItems.length > 0 ? (
-                       <div className="flex flex-wrap gap-2" data-testid="mastery-stats">
-                         <Badge variant="outline" className="text-xs">
-                           Total: {vocabularyItems.length}
-                         </Badge>
-                         {Object.values(MasteryLevel).map((level) => {
-                           const count = masteryDistribution[level] || 0;
-                           if (count === 0) return null;
-                           const config = MASTERY_LEVEL_CONFIGS[level];
-                           return (
-                             <Badge key={level} variant="outline" className="text-xs">
-                               {config.label}: {count}
-                             </Badge>
-                           );
-                         })}
-                       </div>
-                     ) : null;
-                   })()
-                 )}
+                  {!vocabularyQuery.isLoading && vocabularyItems.length > 0 && (
+                    <div className="flex flex-wrap gap-2" data-testid="mastery-stats">
+                      <Badge variant="outline" className="text-xs">
+                        Total: {vocabularyItems.length}
+                      </Badge>
+                      {Object.values(MasteryLevel).map((level) => {
+                        const count = masteryDistribution[level] || 0;
+                        if (count === 0) return null;
+                        const config = MASTERY_LEVEL_CONFIGS[level];
+                        return (
+                          <Badge key={level} variant="outline" className="text-xs">
+                            {config.label}: {count}
+                          </Badge>
+                        );
+                      })}
+                    </div>
+                  )}
 
                  <div className="flex justify-end">
                    <Button onClick={() => setAddDialogOpen(true)} className="btn-shadow">

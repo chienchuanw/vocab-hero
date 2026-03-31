@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,7 +31,7 @@ export interface VocabularyCardProps {
  * VocabularyCard component
  * Displays a single vocabulary item card with word, reading, meaning, and mastery level
  */
-export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardProps) {
+export const VocabularyCard = memo(function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardProps) {
    const t = useTranslations('vocabulary');
    const masteryLevel = calculateMasteryLevel(
     vocabulary.reviewSchedule
@@ -176,4 +177,4 @@ export function VocabularyCard({ vocabulary, onEdit, onDelete }: VocabularyCardP
       </CardFooter>
     </Card>
   );
-}
+});

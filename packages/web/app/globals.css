@@ -235,7 +235,7 @@
   /* Duolingo 風格的按鈕陰影效果 */
   .btn-shadow {
     box-shadow: 0 4px 0 0 oklch(0.6 0.19 142);
-    transition: all 0.1s ease;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
   }
 
   .btn-shadow:active {
@@ -249,7 +249,7 @@
   }
 
   .card-shadow-hover {
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
   .card-shadow-hover:hover {
@@ -261,7 +261,7 @@
   .progress-bar {
     background: linear-gradient(90deg, oklch(0.72 0.19 142) 0%, oklch(0.75 0.19 142) 100%);
     border-radius: 9999px;
-    transition: width 0.3s ease;
+    transition: transform 0.3s ease;
   }
 
   /* 成功狀態的動畫 */
