@@ -8,7 +8,7 @@
   --color-foreground: var(--foreground);
 
   /* 字體 */
-  --font-sans: "komet", "noto-sans-sc", system-ui, sans-serif;
+  --font-sans: "komet", "noto-sans-sc", "meiryo", system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 
   /* 卡片 */
