@@ -123,9 +123,9 @@ jobs:
         run: pnpm --filter @vocab-hero/web prisma generate
 
       - name: Build application
-        run: pnpm build
+        run: pnpm build:web
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
 
       - name: Check build output
-        run: ls -la .next
+        run: ls -la packages/web/.next
