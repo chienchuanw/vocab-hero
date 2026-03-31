@@ -33,7 +33,7 @@ jobs:
         run: pnpm --filter @vocab-hero/web prisma generate
 
       - name: Run ESLint
-        run: pnpm lint
+        run: pnpm lint:web
 
       - name: Run TypeScript type check
         run: pnpm tsc --noEmit
