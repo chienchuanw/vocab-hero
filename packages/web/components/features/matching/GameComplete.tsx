@@ -73,7 +73,7 @@ export function GameComplete({
           <p className="mt-2 text-muted-foreground">{rating.message}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-6">
           <div className="rounded-lg border bg-muted/50 p-4">
             <div className="text-sm text-muted-foreground">{t('gameComplete.time')}</div>
             <div className="mt-1 text-3xl font-bold">{formatTime(elapsedTime)}</div>

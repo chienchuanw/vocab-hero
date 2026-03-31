@@ -138,6 +138,7 @@ export function SentenceList({ onEdit, onStudy, className }: SentenceListProps) 
                   onClick={() => onEdit?.(sentence)}
                   data-testid="sentence-edit"
                   title={t('edit')}
+                  aria-label={t('edit')}
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
@@ -154,6 +155,7 @@ export function SentenceList({ onEdit, onStudy, className }: SentenceListProps) 
                       onClick={() => setSentenceToDelete(sentence.id)}
                       data-testid="sentence-delete"
                       title={t('delete')}
+                      aria-label={t('delete')}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

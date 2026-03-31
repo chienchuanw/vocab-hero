@@ -32,7 +32,9 @@ export function ImageUpload({
   // Cleanup previews on unmount
   useEffect(() => {
     return () => {
-      previews.forEach((url) => URL.revokeObjectURL(url));
+      previews.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
     };
   }, [previews]);
 
@@ -156,6 +158,15 @@ export function ImageUpload({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={triggerFileInput}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            triggerFileInput();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Upload images dropzone"
         data-testid="image-upload-dropzone"
       >
         <CardContent className="flex flex-col items-center justify-center py-10 text-center space-y-4">
@@ -175,6 +186,7 @@ export function ImageUpload({
             type="file"
             accept="image/*"
             multiple
+            aria-label="Select image files"
             className="hidden"
             onChange={handleFileSelect}
             disabled={isProcessing}
@@ -186,6 +198,7 @@ export function ImageUpload({
       {error && (
         <div
           className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-3 rounded-md"
+          role="alert"
           data-testid="image-upload-error"
         >
           <AlertCircle className="w-4 h-4" />
@@ -221,7 +234,7 @@ export function ImageUpload({
                     <span className="sr-only">{t('remove')}</span>
                   </Button>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] p-1 rounded-b-lg px-2 flex justify-between items-center">
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs p-1 rounded-b-lg px-2 flex justify-between items-center">
                   <span className="truncate mr-1">{file.name}</span>
                   <span className="shrink-0 opacity-80">{formatSize(file.size)}</span>
                 </div>

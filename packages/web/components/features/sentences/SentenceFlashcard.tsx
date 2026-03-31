@@ -33,7 +33,7 @@ export function SentenceFlashcard({
   const t = useTranslations('sentences.flashcard');
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isFlipped, setIsFlipped] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLButtonElement>(null);
 
   const currentSentence = sentences[currentIndex];
   const totalSentences = sentences.length;
@@ -119,11 +119,19 @@ export function SentenceFlashcard({
       </div>
 
       <div className="relative w-full aspect-[4/3] perspective-1000 mb-6">
-        <div
+        <button
           ref={cardRef}
+          type="button"
           onClick={handleFlip}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleFlip();
+            }
+          }}
+          aria-label="Flip card"
           className={cn(
-            'w-full h-full transition-transform duration-500 transform-style-3d cursor-pointer relative',
+            'w-full h-full transition-transform duration-500 transform-style-3d cursor-pointer relative rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
             isFlipped ? 'rotate-y-180' : ''
           )}
           style={{
@@ -140,14 +148,6 @@ export function SentenceFlashcard({
               <p className="text-2xl md:text-3xl font-bold leading-relaxed text-foreground">
                 {currentSentence.japanese}
               </p>
-              <div 
-                className="mt-4" 
-                onClick={(e) => e.stopPropagation()}
-                onKeyDown={(e) => e.stopPropagation()}
-                role="presentation"
-              >
-                <SpeakerButton text={currentSentence.japanese} size="default" />
-              </div>
             </div>
             <p className="text-sm text-muted-foreground mt-4">{t('flipToReveal')}</p>
           </Card>
@@ -172,7 +172,13 @@ export function SentenceFlashcard({
             </div>
             <p className="text-sm text-muted-foreground mt-4">{t('flipBack')}</p>
           </Card>
-        </div>
+        </button>
+
+        {!isFlipped && (
+          <div className="absolute right-6 top-6 z-10">
+            <SpeakerButton text={currentSentence.japanese} size="default" />
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-4 w-full justify-center">

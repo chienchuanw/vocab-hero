@@ -46,14 +46,15 @@ export function VocabularyFilterBar({
     <div className="flex flex-col md:flex-row gap-4 mb-6">
        <div className="flex-1 relative">
          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-         <Input
-           type="text"
-           placeholder={t('searchPlaceholder')}
-           value={filters.search || ''}
-           onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
-           className="pl-10"
-         />
-       </div>
+          <Input
+            type="text"
+            placeholder={t('searchPlaceholder')}
+            value={filters.search || ''}
+            onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
+            className="pl-10"
+            aria-label={t('searchPlaceholder')}
+          />
+        </div>
 
        <Select
          value={filters.sortBy || 'createdAt'}
@@ -61,9 +62,13 @@ export function VocabularyFilterBar({
            onFiltersChange({ ...filters, sortBy: value as VocabularyQueryParams['sortBy'] })
          }
        >
-         <SelectTrigger className="w-full md:w-[180px]" data-testid="sort-select">
-           <SelectValue placeholder={t('sortBy')} />
-         </SelectTrigger>
+          <SelectTrigger
+            className="w-full md:w-[180px]"
+            data-testid="sort-select"
+            aria-label={t('sortBy')}
+          >
+            <SelectValue placeholder={t('sortBy')} />
+          </SelectTrigger>
          <SelectContent>
            <SelectItem value="createdAt">{t('filter.newestFirst')}</SelectItem>
            <SelectItem value="word">{t('filter.az')}</SelectItem>
@@ -77,9 +82,9 @@ export function VocabularyFilterBar({
            onFiltersChange({ ...filters, sortOrder: value as VocabularyQueryParams['sortOrder'] })
          }
        >
-         <SelectTrigger className="w-full md:w-[120px]">
-           <SelectValue placeholder={t('order')} />
-         </SelectTrigger>
+          <SelectTrigger className="w-full md:w-[120px]" aria-label={t('order')}>
+            <SelectValue placeholder={t('order')} />
+          </SelectTrigger>
          <SelectContent>
            <SelectItem value="asc">{t('orderOptions.ascending')}</SelectItem>
            <SelectItem value="desc">{t('orderOptions.descending')}</SelectItem>
@@ -119,20 +124,28 @@ export function VocabularyFilterBar({
                )}
             </div>
 
-             <div className="space-y-2">
-               <label className="text-sm font-medium text-muted-foreground">{t('masteryLevel')}</label>
-               <Select
-                 value={filters.masteryLevel || 'all'}
-                 onValueChange={(value: string) =>
+              <div className="space-y-2">
+                <label
+                  htmlFor="vocabulary-filter-mastery-level"
+                  className="text-sm font-medium text-muted-foreground"
+                >
+                  {t('masteryLevel')}
+                </label>
+                <Select
+                  value={filters.masteryLevel || 'all'}
+                  onValueChange={(value: string) =>
                    onFiltersChange({
                      ...filters,
                      masteryLevel: value === 'all' ? undefined : (value as MasteryLevel),
                    })
                  }
-               >
-                 <SelectTrigger>
-                   <SelectValue placeholder={t('allLevels')} />
-                 </SelectTrigger>
+                >
+                  <SelectTrigger
+                    id="vocabulary-filter-mastery-level"
+                    aria-label={t('masteryLevel')}
+                  >
+                    <SelectValue placeholder={t('allLevels')} />
+                  </SelectTrigger>
                  <SelectContent>
                    <SelectItem value="all">{t('allLevels')}</SelectItem>
                   {Object.values(MasteryLevel).map((level) => {
@@ -147,18 +160,23 @@ export function VocabularyFilterBar({
               </Select>
             </div>
 
-             {groups.length > 0 && (
-               <div className="space-y-2">
-                 <label className="text-sm font-medium text-muted-foreground">{t('selectGroup')}</label>
-                 <Select
-                   value={filters.groupId || 'all'}
-                   onValueChange={(value: string) =>
-                     onFiltersChange({ ...filters, groupId: value === 'all' ? undefined : value })
-                   }
-                 >
-                   <SelectTrigger>
-                     <SelectValue placeholder={t('allGroups')} />
-                   </SelectTrigger>
+              {groups.length > 0 && (
+                <div className="space-y-2">
+                  <label
+                    htmlFor="vocabulary-filter-group"
+                    className="text-sm font-medium text-muted-foreground"
+                  >
+                    {t('selectGroup')}
+                  </label>
+                  <Select
+                    value={filters.groupId || 'all'}
+                    onValueChange={(value: string) =>
+                      onFiltersChange({ ...filters, groupId: value === 'all' ? undefined : value })
+                    }
+                  >
+                    <SelectTrigger id="vocabulary-filter-group" aria-label={t('selectGroup')}>
+                      <SelectValue placeholder={t('allGroups')} />
+                    </SelectTrigger>
                    <SelectContent>
                      <SelectItem value="all">{t('allGroups')}</SelectItem>
                     {groups.map((group) => (

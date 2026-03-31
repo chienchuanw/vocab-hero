@@ -99,6 +99,9 @@ export function OcrPreview({ items, onSave, onDiscard, onSaveAll, className }: O
           }
 
           const data = getDraft(item);
+          const japaneseInputId = `ocr-japanese-${item.id}`;
+          const englishInputId = `ocr-english-${item.id}`;
+          const notesInputId = `ocr-notes-${item.id}`;
 
           return (
             <Card key={item.id} className="overflow-hidden" data-testid="ocr-preview-item">
@@ -112,10 +115,14 @@ export function OcrPreview({ items, onSave, onDiscard, onSaveAll, className }: O
 
                   <div className="flex-1 space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      <label
+                        htmlFor={japaneseInputId}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
                         {t('japanese')}
                       </label>
                       <Textarea
+                        id={japaneseInputId}
                         value={data.japanese}
                         onChange={(e) => updateDraft(item.id, 'japanese', e.target.value)}
                         placeholder={t('japanese')}
@@ -125,10 +132,14 @@ export function OcrPreview({ items, onSave, onDiscard, onSaveAll, className }: O
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      <label
+                        htmlFor={englishInputId}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
                         {t('english')}
                       </label>
                       <Textarea
+                        id={englishInputId}
                         value={data.english}
                         onChange={(e) => updateDraft(item.id, 'english', e.target.value)}
                         placeholder={t('english')}
@@ -138,10 +149,14 @@ export function OcrPreview({ items, onSave, onDiscard, onSaveAll, className }: O
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      <label
+                        htmlFor={notesInputId}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
                         {t('notes')}
                       </label>
                       <Input
+                        id={notesInputId}
                         value={data.notes}
                         onChange={(e) => updateDraft(item.id, 'notes', e.target.value)}
                         placeholder={t('notes')}
