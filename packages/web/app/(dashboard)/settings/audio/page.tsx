@@ -128,10 +128,10 @@ function AudioSettingsForm({
     formData.ttsVoice !== settings.ttsVoice;
 
   return (
-    <div className="container max-w-2xl py-8">
-      <div className="mb-8">
+    <div className="space-y-6">
+      <div>
         <h1 className="text-3xl font-bold">{t('audio')}</h1>
-        <p className="text-muted-foreground mt-2">{t('audioDesc')}</p>
+        <p className="text-muted-foreground mt-1">{t('audioDesc')}</p>
       </div>
 
       <form onSubmit={handleSubmit}>

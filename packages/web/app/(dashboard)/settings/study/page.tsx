@@ -77,10 +77,10 @@ function StudySettingsForm({
     formData.showReading !== settings.showReading;
 
   return (
-    <div className="container max-w-2xl py-8">
-      <div className="mb-8">
+    <div className="space-y-6">
+      <div>
         <h1 className="text-3xl font-bold">{t('study')}</h1>
-        <p className="text-muted-foreground mt-2">{t('studyDesc')}</p>
+        <p className="text-muted-foreground mt-1">{t('studyDesc')}</p>
       </div>
 
       <form onSubmit={handleSubmit}>

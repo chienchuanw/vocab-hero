@@ -43,10 +43,10 @@ function GoalSettingsForm({
   };
 
   return (
-    <div className="container max-w-2xl py-8">
-      <div className="mb-8">
+    <div className="space-y-6">
+      <div>
         <h1 className="text-3xl font-bold">{t('dailyGoals')}</h1>
-        <p className="text-muted-foreground mt-2">{t('dailyGoalsDesc')}</p>
+        <p className="text-muted-foreground mt-1">{t('dailyGoalsDesc')}</p>
       </div>
 
       <Card>

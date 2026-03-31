@@ -23,10 +23,10 @@ export default function LanguageSettingsPage() {
 
   return (
     <Layout>
-      <div className="container max-w-2xl py-8">
-        <div className="mb-8">
+      <div className="space-y-6">
+        <div>
           <h1 className="text-3xl font-bold">{t('title')}</h1>
-          <p className="text-muted-foreground mt-2">{t('description')}</p>
+          <p className="text-muted-foreground mt-1">{t('description')}</p>
         </div>
 
         <div className="grid gap-4">
