@@ -6,6 +6,9 @@ on:
   push:
     branches: [main, develop]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   lint-and-typecheck:
     name: Lint and Type Check
@@ -89,10 +92,10 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/db_vocab_hero_test?schema=public
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         if: always()
         with:
-          files: ./coverage/coverage-final.json
+          files: ./packages/web/coverage/coverage-final.json
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false

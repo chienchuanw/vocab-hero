@@ -43,7 +43,7 @@ export function MultipleChoiceCard({
 
       {/* 選項 */}
       <div className="grid gap-3">
-        {options.map((option, index) => {
+        {options.map((option) => {
           const isSelected = userAnswer === option;
           const isCorrectOption = option === correctAnswer;
           const showFeedback = isAnswered;
