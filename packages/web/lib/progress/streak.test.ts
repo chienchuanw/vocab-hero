@@ -202,6 +202,7 @@ describe('Streak Calculation', () => {
   describe('resetMonthlyFreezes', () => {
     it('should reset freezes to monthly amount if last reset was last month', async () => {
       const lastMonth = new Date();
+      lastMonth.setDate(15);
       lastMonth.setMonth(lastMonth.getMonth() - 1);
 
       await prisma.userStreak.create({
@@ -239,6 +240,7 @@ describe('Streak Calculation', () => {
 
     it('should cap freezes at maximum allowed', async () => {
       const lastMonth = new Date();
+      lastMonth.setDate(15);
       lastMonth.setMonth(lastMonth.getMonth() - 1);
 
       await prisma.userStreak.create({
