@@ -1,0 +1,55 @@
+name: Cache Cleanup
+
+on:
+  pull_request:
+    types: [closed]
+  schedule:
+    - cron: '0 3 * * 6'
+
+jobs:
+  cleanup-branch-cache:
+    name: Cleanup Branch Cache
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Cleanup caches for closed branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          echo "Fetching caches for branch: $BRANCH"
+          gh cache list --ref "$BRANCH" --json id --jq '.[].id' -R "$REPO" | \
+            xargs -I {} gh cache delete {} -R "$REPO" || true
+
+          # Also clean head branch ref
+          HEAD_BRANCH="refs/heads/$HEAD_REF"
+          echo "Fetching caches for head branch: $HEAD_BRANCH"
+          gh cache list --ref "$HEAD_BRANCH" --json id --jq '.[].id' -R "$REPO" | \
+            xargs -I {} gh cache delete {} -R "$REPO" || true
+
+          echo "Cache cleanup complete"
+
+  cleanup-stale-caches:
+    name: Cleanup Stale Caches
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Cleanup stale caches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "Fetching all caches..."
+
+          # Keep main-branch caches, delete all others
+          gh cache list --json id,key,ref,lastAccessedAt --limit 100 -R "$REPO" | \
+            jq -r '.[] | select(.ref != "refs/heads/main") | .id' | \
+            xargs -I {} gh cache delete {} -R "$REPO" || true
+
+          echo "Stale cache cleanup complete"
