@@ -1,9 +1,17 @@
 {
-  "active_plan": "/Users/chienchuanw/Documents/vocab-hero/.sisyphus/plans/vocabulary-ui-ux-optimization.md",
-  "started_at": "2026-02-12T08:48:11.073Z",
+  "active_plan": null,
+  "started_at": "2026-04-03T10:03:57.788Z",
+  "completed_at": "2026-04-03T10:30:00.000Z",
+  "status": "archived",
   "session_ids": [
-    "ses_3af04ee6dffeG7LE4baWu9sLdY"
+    "ses_2ad5971a8ffe4ffBQoTd2WTNM4",
+    "ses_2ad30f016ffei3nVJzxIGBZPLw",
+    "ses_2ad30c249ffe7ON3ddATv8a0As",
+    "ses_2ad2d3ddaffeM5Cbx6I3LMKM5n",
+    "ses_2ad2a7b77ffeWbo2aWYZ6A9SPa",
+    "ses_2ad2a9837ffeYlirso1BuejLKl",
+    "ses_2ad2a4b52ffemwzA5E9e1KOB8I"
   ],
-  "plan_name": "vocabulary-ui-ux-optimization",
+  "plan_name": "optimize-github-actions-storage",
   "agent": "atlas"
 }

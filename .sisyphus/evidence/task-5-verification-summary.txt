@@ -1,0 +1,35 @@
+=== actionlint Results (All 3 files) ===
+
+ci.yml: PASS (exit 0)
+pr-checks.yml: PASS (exit 0)
+cache-cleanup.yml: PASS (exit 0)
+
+=== Trigger Verification ===
+
+ci.yml:
+  - pull_request: branches [main] with paths-ignore
+  - push: branches [main] with paths-ignore
+  - concurrency: workflow+ref, cancel-in-progress: true
+
+pr-checks.yml:
+  - pull_request: types [opened, synchronize, reopened]
+  - concurrency: pr-checks-{pr-number}, cancel-in-progress: true
+
+cache-cleanup.yml:
+  - pull_request: types [closed]
+  - schedule: cron '0 3 * * 6' (Saturday 3AM UTC)
+
+=== Branch References ===
+
+No 'develop' references found in any workflow file.
+
+=== Branch Protection ===
+
+Skipped: gh CLI not authenticated.
+User should check manually: gh api repos/chienchuanw/vocab-hero/branches/main/protection
+If required status checks reference old names (Lint and Type Check, Unit Tests, Build), update to 'CI'.
+
+=== Cache Baseline ===
+
+Skipped: gh CLI not authenticated.
+User should run: gh cache list --json id,key,sizeInBytes,ref --limit 100

@@ -1,0 +1,8 @@
+{
+  "status": "skipped",
+  "reason": "gh CLI not authenticated - cannot query GitHub Actions cache",
+  "timestamp": "2026-04-03T10:04:00Z",
+  "note": "Baseline measurement unavailable. Post-change verification (Task 5) will also be limited. User can run 'gh auth login' and then 'gh cache list --json id,key,sizeInBytes,ref --limit 100' to measure before/after.",
+  "total_caches": "unknown",
+  "total_size_mb": "unknown"
+}
